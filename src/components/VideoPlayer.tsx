@@ -24,10 +24,30 @@ export const VideoPlayer = memo(function VideoPlayer({
   
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
+  const [pendingUnmute, setPendingUnmute] = useState(false); // Aguardando primeira interação para desmutar
   const [volume, setVolume] = useState(() => {
     const saved = localStorage.getItem('tv-volume');
     return saved ? parseFloat(saved) : 1;
   });
+  
+  // Refs para manter valores atuais acessíveis nos callbacks
+  const volumeRef = useRef(volume);
+  const isMutedRef = useRef(isMuted);
+  const pendingUnmuteRef = useRef(false);
+  
+  // Atualiza refs quando states mudam
+  useEffect(() => {
+    volumeRef.current = volume;
+  }, [volume]);
+  
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+  }, [isMuted]);
+  
+  useEffect(() => {
+    pendingUnmuteRef.current = pendingUnmute;
+  }, [pendingUnmute]);
+  
   const [isMirrored, setIsMirrored] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPiP, setIsPiP] = useState(false);
@@ -66,8 +86,16 @@ export const VideoPlayer = memo(function VideoPlayer({
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         setIsLoading(false);
+        video.volume = volumeRef.current;
+        video.muted = false;
+        
+        // Tenta primeiro com som
         video.play().catch(() => {
-          // Autoplay blocked
+          // Se falhar, inicia mutado e agenda desmutar na primeira interação
+          video.muted = true;
+          setIsMuted(true);
+          setPendingUnmute(true);
+          video.play().catch(() => {});
         });
       });
 
@@ -91,7 +119,17 @@ export const VideoPlayer = memo(function VideoPlayer({
       video.src = channel.url;
       video.addEventListener('loadedmetadata', () => {
         setIsLoading(false);
-        video.play().catch(() => {});
+        video.volume = volumeRef.current;
+        video.muted = false;
+        
+        // Tenta primeiro com som
+        video.play().catch(() => {
+          // Se falhar, inicia mutado e agenda desmutar na primeira interação
+          video.muted = true;
+          setIsMuted(true);
+          setPendingUnmute(true);
+          video.play().catch(() => {});
+        });
       });
     } else {
       setError('Seu navegador não suporta reprodução de vídeo HLS.');
@@ -127,11 +165,12 @@ export const VideoPlayer = memo(function VideoPlayer({
     const handlePause = () => {
       setIsPlaying(false);
       // Auto-resume: se o vídeo pausar e NÃO foi pausa intencional do usuário
-      // Isso garante que o vídeo nunca fique pausado acidentalmente
       if (!intentionalPauseRef.current && channel && video.readyState >= 2) {
         video.play().catch(() => {
-          // Se autoplay falhar, tenta com muted
+          // Se falhar, tenta mutado
           video.muted = true;
+          setIsMuted(true);
+          setPendingUnmute(true);
           video.play().catch(() => {});
         });
       }
@@ -140,11 +179,12 @@ export const VideoPlayer = memo(function VideoPlayer({
     const handleCanPlay = () => {
       setIsLoading(false);
       // Quando o vídeo estiver pronto para reproduzir, garante que está em play
-      // (exceto se o usuário pausou intencionalmente)
       if (video.paused && channel && !intentionalPauseRef.current) {
         video.play().catch(() => {
-          // Se autoplay falhar, tenta com muted
+          // Se falhar, tenta mutado
           video.muted = true;
+          setIsMuted(true);
+          setPendingUnmute(true);
           video.play().catch(() => {});
         });
       }
@@ -162,6 +202,31 @@ export const VideoPlayer = memo(function VideoPlayer({
       video.removeEventListener('canplay', handleCanPlay);
     };
   }, [channel]);
+
+  // Auto-unmute na primeira interação do usuário (quando autoplay precisou de mute)
+  useEffect(() => {
+    if (!pendingUnmute) return;
+    
+    const handleUserInteraction = () => {
+      const video = videoRef.current;
+      if (video && pendingUnmuteRef.current) {
+        video.muted = false;
+        setIsMuted(false);
+        setPendingUnmute(false);
+      }
+    };
+    
+    // Escuta qualquer interação do usuário
+    document.addEventListener('click', handleUserInteraction, { once: true });
+    document.addEventListener('keydown', handleUserInteraction, { once: true });
+    document.addEventListener('touchstart', handleUserInteraction, { once: true });
+    
+    return () => {
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('keydown', handleUserInteraction);
+      document.removeEventListener('touchstart', handleUserInteraction);
+    };
+  }, [pendingUnmute]);
 
   // Fullscreen change listener
   useEffect(() => {
@@ -230,6 +295,8 @@ export const VideoPlayer = memo(function VideoPlayer({
   }, []);
 
   const toggleMute = useCallback(() => {
+    // Se o usuário manualmente mutar/desmutar, cancela o pendingUnmute
+    setPendingUnmute(false);
     setIsMuted((prev) => !prev);
   }, []);
 
