@@ -488,6 +488,95 @@
   }
 }
 
+/* Cast Message Toast */
+.cast-message {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(145deg, rgba(139, 92, 246, 0.9), rgba(124, 58, 237, 0.9));
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 150;
+  animation: castMessageIn 0.3s ease;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+}
+
+.cast-message svg {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes castMessageIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Cast Active Indicator */
+.cast-active-indicator {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(145deg, rgba(139, 92, 246, 0.95), rgba(124, 58, 237, 0.95));
+  color: white;
+  padding: 10px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 50;
+  animation: slideInRight 0.3s ease;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+}
+
+.cast-active-indicator svg {
+  width: 18px;
+  height: 18px;
+  animation: cast-pulse 2s ease-in-out infinite;
+}
+
+.cast-active-indicator button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: background 0.2s ease;
+}
+
+.cast-active-indicator button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* Cast Modal */
 .cast-modal-overlay {
   position: absolute;
@@ -498,6 +587,7 @@
   justify-content: center;
   z-index: 100;
   animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(4px);
 }
 
 @keyframes fadeIn {
@@ -513,8 +603,10 @@
   background: linear-gradient(145deg, #1a1a2e, #16162a);
   border-radius: 16px;
   padding: 24px;
-  max-width: 400px;
+  max-width: 450px;
   width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
   border: 1px solid rgba(139, 92, 246, 0.3);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.1);
   animation: slideUp 0.3s ease;
@@ -550,14 +642,35 @@
 .cast-options {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+}
+
+.cast-options.external-players {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.cast-options.external-players::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cast-options.external-players::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.cast-options.external-players::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.4);
+  border-radius: 3px;
 }
 
 .cast-option {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 16px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -573,29 +686,54 @@
 }
 
 .cast-option svg {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   color: #8b5cf6;
   flex-shrink: 0;
 }
 
 .cast-option span {
-  display: block;
-  font-size: 16px;
+  flex: 1;
+  min-width: 100px;
+  font-size: 15px;
   font-weight: 600;
   color: #fff;
 }
 
 .cast-option small {
-  display: block;
+  width: 100%;
   font-size: 12px;
   color: #888;
-  margin-top: 2px;
+  margin-top: -4px;
+  padding-left: 40px;
+}
+
+.cast-option.copy-url {
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cast-modal-back {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 10px;
+  color: #8b5cf6;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cast-modal-back:hover {
+  background: rgba(139, 92, 246, 0.2);
 }
 
 .cast-modal-close {
   width: 100%;
-  margin-top: 16px;
+  margin-top: 12px;
   padding: 14px;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -618,6 +756,7 @@
   .cast-modal {
     padding: 20px;
     border-radius: 12px;
+    max-height: 85vh;
   }
 
   .cast-modal h3 {
@@ -625,15 +764,34 @@
   }
 
   .cast-option {
-    padding: 14px;
+    padding: 12px 14px;
   }
 
   .cast-option svg {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 
   .cast-option span {
-    font-size: 15px;
+    font-size: 14px;
+  }
+
+  .cast-option small {
+    padding-left: 36px;
+    font-size: 11px;
+  }
+
+  .cast-message {
+    bottom: 80px;
+    font-size: 13px;
+    padding: 10px 20px;
+  }
+
+  .cast-active-indicator {
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }
+

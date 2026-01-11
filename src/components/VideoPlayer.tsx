@@ -2,6 +2,7 @@ import { useRef, useEffect, useState, useCallback, memo } from 'react';
 import Hls from 'hls.js';
 import type { Channel } from '../types/channel';
 import { ProgramInfo } from './ProgramInfo';
+import castService, { type CastMethod, type CastState } from '../services/castService';
 import './VideoPlayer.css';
 
 interface VideoPlayerProps {
@@ -51,8 +52,10 @@ export const VideoPlayer = memo(function VideoPlayer({
   const [isMirrored, setIsMirrored] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPiP, setIsPiP] = useState(false);
-  const [isCasting, setIsCasting] = useState(false);
+  const [castState, setCastState] = useState<CastState>({ isConnected: false, deviceName: null, method: null });
   const [showCastModal, setShowCastModal] = useState(false);
+  const [castMessage, setCastMessage] = useState<string | null>(null);
+  const [showExternalPlayers, setShowExternalPlayers] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showControls, setShowControls] = useState(true);
@@ -295,30 +298,17 @@ export const VideoPlayer = memo(function VideoPlayer({
     };
   }, [channel]);
 
-  // Cast availability listener
+  // Cast state listener - escuta mudanças do serviço de cast
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    const unsubscribe = castService.onStateChange((state) => {
+      setCastState(state);
+    });
 
-    // Check for Remote Playback API support
-    if ('remote' in video) {
-      const remote = (video as any).remote;
+    // Carrega estado inicial
+    setCastState(castService.getState());
 
-      const handleConnecting = () => setIsCasting(true);
-      const handleConnect = () => setIsCasting(true);
-      const handleDisconnect = () => setIsCasting(false);
-
-      remote.addEventListener('connecting', handleConnecting);
-      remote.addEventListener('connect', handleConnect);
-      remote.addEventListener('disconnect', handleDisconnect);
-
-      return () => {
-        remote.removeEventListener('connecting', handleConnecting);
-        remote.removeEventListener('connect', handleConnect);
-        remote.removeEventListener('disconnect', handleDisconnect);
-      };
-    }
-  }, [channel]);
+    return unsubscribe;
+  }, []);
 
   // Control handlers - declarados antes do useEffect que os usa
   const togglePlay = useCallback(() => {
@@ -371,77 +361,49 @@ export const VideoPlayer = memo(function VideoPlayer({
   }, []);
 
   const toggleCast = useCallback(async () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // Primeiro tenta a Remote Playback API nativa
-    if ('remote' in video) {
-      try {
-        const remote = (video as any).remote;
-        await remote.prompt();
-        return;
-      } catch (err) {
-        // Se falhar, mostra o modal com opções
-        console.log('Remote Playback não disponível, mostrando modal');
-      }
+    // Se já está transmitindo, oferece parar
+    if (castState.isConnected) {
+      castService.stopCasting();
+      setCastMessage('Transmissão encerrada');
+      setTimeout(() => setCastMessage(null), 3000);
+      return;
     }
 
-    // Mostra o modal de opções de cast
+    // Sempre mostra o modal com todas as opções
     setShowCastModal(true);
-  }, []);
+  }, [castState.isConnected]);
 
-  const handleCastOption = useCallback(async (option: 'airplay' | 'copy' | 'share') => {
-    const video = videoRef.current;
-    
-    switch (option) {
-      case 'airplay':
-        // Tenta usar AirPlay (Safari)
-        if (video && 'webkitShowPlaybackTargetPicker' in video) {
-          (video as any).webkitShowPlaybackTargetPicker();
-        } else {
-          alert('AirPlay não está disponível neste navegador. Use Safari no Mac ou iOS.');
-        }
-        break;
-      
-      case 'copy':
-        // Copia o link do canal
-        if (channel) {
-          try {
-            await navigator.clipboard.writeText(channel.url);
-            alert('Link copiado! Cole em outro dispositivo ou app de streaming.');
-          } catch {
-            // Fallback para navegadores antigos
-            const textArea = document.createElement('textarea');
-            textArea.value = channel.url;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            alert('Link copiado!');
-          }
-        }
-        break;
-      
-      case 'share':
-        // Usa Web Share API se disponível
-        if (navigator.share && channel) {
-          try {
-            await navigator.share({
-              title: `Assistir ${channel.name}`,
-              text: `Assista ${channel.name} ao vivo`,
-              url: channel.url,
-            });
-          } catch {
-            // User cancelled
-          }
-        } else {
-          alert('Compartilhamento não suportado neste navegador.');
-        }
-        break;
+  const handleCastOption = useCallback(async (method: CastMethod) => {
+    if (!channel) return;
+
+    if (method === 'openExternal') {
+      setShowExternalPlayers(true);
+      return;
     }
+
+    const result = await castService.cast(
+      method,
+      channel.url,
+      channel.name,
+      videoRef.current || undefined,
+      channel.logo
+    );
+
+    setCastMessage(result.message);
+    setTimeout(() => setCastMessage(null), 4000);
     
-    setShowCastModal(false);
+    if (result.success || method === 'copyLink' || method === 'share') {
+      setShowCastModal(false);
+    }
   }, [channel]);
+
+  const handleExternalPlayer = useCallback((playerUrl: string) => {
+    castService.openInExternalPlayer(playerUrl);
+    setCastMessage('Abrindo player externo...');
+    setTimeout(() => setCastMessage(null), 3000);
+    setShowExternalPlayers(false);
+    setShowCastModal(false);
+  }, []);
 
   const toggleMirror = useCallback(() => {
     setIsMirrored((prev) => !prev);
@@ -671,9 +633,9 @@ export const VideoPlayer = memo(function VideoPlayer({
               </button>
 
               <button
-                className={`control-btn cast-btn ${isCasting ? 'active casting' : ''}`}
+                className={`control-btn cast-btn ${castState.isConnected ? 'active casting' : ''}`}
                 onClick={() => { resetControlsTimeout(); toggleCast(); }}
-                title={isCasting ? 'Transmitindo...' : 'Transmitir (C)'}
+                title={castState.isConnected ? `Transmitindo para ${castState.deviceName}` : 'Transmitir (C)'}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
@@ -709,48 +671,131 @@ export const VideoPlayer = memo(function VideoPlayer({
             </div>
           </div>
 
-          {/* Modal de Cast */}
+          {/* Mensagem de cast */}
+          {castMessage && (
+            <div className="cast-message">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+                <circle cx="2" cy="20" r="2" fill="currentColor" />
+              </svg>
+              <span>{castMessage}</span>
+            </div>
+          )}
+
+          {/* Indicador de transmissão ativa */}
+          {castState.isConnected && (
+            <div className="cast-active-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+                <circle cx="2" cy="20" r="2" fill="currentColor" />
+              </svg>
+              <span>Transmitindo para {castState.deviceName}</span>
+              <button onClick={() => castService.stopCasting()}>Parar</button>
+            </div>
+          )}
+
+          {/* Modal de Cast Melhorado */}
           {showCastModal && (
-            <div className="cast-modal-overlay" onClick={() => setShowCastModal(false)}>
+            <div className="cast-modal-overlay" onClick={() => { setShowCastModal(false); setShowExternalPlayers(false); }}>
               <div className="cast-modal" onClick={(e) => e.stopPropagation()}>
-                <h3>Transmitir para dispositivo</h3>
-                <p>Escolha como deseja transmitir "{channel.name}"</p>
-                
-                <div className="cast-options">
-                  <button className="cast-option" onClick={() => handleCastOption('airplay')}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
-                      <polygon points="12 15 17 21 7 21 12 15" />
-                    </svg>
-                    <span>AirPlay</span>
-                    <small>Para Apple TV, Mac, iOS</small>
-                  </button>
+                {!showExternalPlayers ? (
+                  <>
+                    <h3>Transmitir para dispositivo</h3>
+                    <p>Escolha como deseja transmitir "{channel.name}"</p>
+                    
+                    <div className="cast-options">
+                      {castService.getAvailableMethods().map((method) => (
+                        <button 
+                          key={method.method}
+                          className="cast-option" 
+                          onClick={() => handleCastOption(method.method)}
+                        >
+                          {method.icon === 'chromecast' && (
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+                              <circle cx="2" cy="20" r="2" fill="currentColor" />
+                            </svg>
+                          )}
+                          {method.icon === 'airplay' && (
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
+                              <polygon points="12 15 17 21 7 21 12 15" />
+                            </svg>
+                          )}
+                          {method.icon === 'tv' && (
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <rect x="2" y="3" width="20" height="14" rx="2" />
+                              <path d="M8 21h8M12 17v4" />
+                            </svg>
+                          )}
+                          {method.icon === 'share' && (
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <circle cx="18" cy="5" r="3" />
+                              <circle cx="6" cy="12" r="3" />
+                              <circle cx="18" cy="19" r="3" />
+                              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                            </svg>
+                          )}
+                          {method.icon === 'copy' && (
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                          )}
+                          {method.icon === 'external' && (
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                              <polyline points="15 3 21 3 21 9" />
+                              <line x1="10" y1="14" x2="21" y2="3" />
+                            </svg>
+                          )}
+                          <span>{method.name}</span>
+                          <small>{method.description}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h3>Abrir em player externo</h3>
+                    <p>Escolha um player para abrir o stream</p>
+                    
+                    <div className="cast-options external-players">
+                      {castService.getExternalPlayerLinks(channel.url).map((player) => (
+                        <button 
+                          key={player.name}
+                          className="cast-option" 
+                          onClick={() => handleExternalPlayer(player.url)}
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polygon points="5 3 19 12 5 21 5 3" />
+                          </svg>
+                          <span>{player.name}</span>
+                          <small>{player.platforms.join(', ')}</small>
+                        </button>
+                      ))}
+                      
+                      <button 
+                        className="cast-option copy-url"
+                        onClick={() => handleCastOption('copyLink')}
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </svg>
+                        <span>Copiar URL do stream</span>
+                        <small>Para colar manualmente no player</small>
+                      </button>
+                    </div>
 
-                  <button className="cast-option" onClick={() => handleCastOption('copy')}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                    </svg>
-                    <span>Copiar Link</span>
-                    <small>Cole em Smart TV ou outro app</small>
-                  </button>
-
-                  {'share' in navigator && (
-                    <button className="cast-option" onClick={() => handleCastOption('share')}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="18" cy="5" r="3" />
-                        <circle cx="6" cy="12" r="3" />
-                        <circle cx="18" cy="19" r="3" />
-                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                      </svg>
-                      <span>Compartilhar</span>
-                      <small>Enviar para outro dispositivo</small>
+                    <button className="cast-modal-back" onClick={() => setShowExternalPlayers(false)}>
+                      ← Voltar
                     </button>
-                  )}
-                </div>
+                  </>
+                )}
 
-                <button className="cast-modal-close" onClick={() => setShowCastModal(false)}>
+                <button className="cast-modal-close" onClick={() => { setShowCastModal(false); setShowExternalPlayers(false); }}>
                   Cancelar
                 </button>
               </div>
