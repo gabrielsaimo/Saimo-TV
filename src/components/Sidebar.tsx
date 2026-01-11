@@ -14,6 +14,7 @@ interface SidebarProps {
   onToggleCollapse: () => void;
   isMobileView?: boolean;
   onUnlockAdultMode?: () => void;
+  onLockAdultMode?: () => void;
   isAdultModeUnlocked?: boolean;
 }
 
@@ -31,6 +32,7 @@ export const Sidebar = memo(function Sidebar({
   onToggleCollapse,
   isMobileView = false,
   onUnlockAdultMode,
+  onLockAdultMode,
   isAdultModeUnlocked = false,
 }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -144,7 +146,16 @@ export const Sidebar = memo(function Sidebar({
               style={{ cursor: !isAdultModeUnlocked ? 'pointer' : 'default', userSelect: 'none' }}
             >
               Saimo TV
-              {isAdultModeUnlocked && <span className="adult-badge">🔓</span>}
+              {isAdultModeUnlocked && (
+                <span 
+                  className="adult-badge" 
+                  onClick={(e) => { e.stopPropagation(); onLockAdultMode?.(); }}
+                  style={{ cursor: 'pointer' }}
+                  title="Clique para esconder canais adultos"
+                >
+                  🔓
+                </span>
+              )}
             </span>
           )}
         </div>

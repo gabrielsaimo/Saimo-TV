@@ -63,6 +63,12 @@ function App() {
     showToast('🔓 Modo secreto desbloqueado!', 'success');
   }, [setAdultModeUnlocked, showToast]);
 
+  // Handler para bloquear modo adulto
+  const handleLockAdultMode = useCallback(() => {
+    setAdultModeUnlocked(false);
+    showToast('🔒 Canais adultos ocultados', 'info');
+  }, [setAdultModeUnlocked, showToast]);
+
   const handleSelectChannel = useCallback((channel: Channel) => {
     setSelectedChannel(channel);
     setLastChannelId(channel.id);
@@ -162,6 +168,7 @@ function App() {
           isCollapsed={isSidebarCollapsed}
           onToggleCollapse={handleToggleSidebar}
           onUnlockAdultMode={handleUnlockAdultMode}
+          onLockAdultMode={handleLockAdultMode}
           isAdultModeUnlocked={adultModeUnlocked}
         />
       </div>
@@ -196,6 +203,7 @@ function App() {
               onToggleCollapse={() => {}}
               isMobileView={true}
               onUnlockAdultMode={handleUnlockAdultMode}
+              onLockAdultMode={handleLockAdultMode}
               isAdultModeUnlocked={adultModeUnlocked}
             />
           </div>
