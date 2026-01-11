@@ -1,6 +1,7 @@
 .app {
   display: flex;
   min-height: 100vh;
+  min-height: 100dvh;
   background: #0a0a0a;
   overflow: hidden;
 }
@@ -94,22 +95,24 @@
   display: none;
   flex: 1;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  min-height: 0;
 }
 
 .mobile-view {
   position: absolute;
-  inset: 0;
-  display: flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
   flex-direction: column;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  overflow: hidden;
+  background: #0a0a0a;
 }
 
 .mobile-view.active {
-  opacity: 1;
-  visibility: visible;
+  display: flex;
 }
 
 /* Desktop only class */
@@ -153,6 +156,8 @@
   .app {
     flex-direction: column;
     padding-bottom: 80px; /* Space for bottom tabs */
+    height: 100vh;
+    height: 100dvh;
   }
 
   .desktop-only {
@@ -167,10 +172,15 @@
     display: flex;
     flex: 1;
     min-height: 0;
+    position: relative;
   }
 
   .mobile-view {
-    padding-bottom: 0;
+    display: none;
+  }
+
+  .mobile-view.active {
+    display: flex;
   }
 
   .mobile-overlay {
