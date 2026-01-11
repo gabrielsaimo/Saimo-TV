@@ -62,6 +62,8 @@ export const VideoPlayer = memo(function VideoPlayer({
   const [videoResolution, setVideoResolution] = useState<string | null>(null);
   const controlsTimeoutRef = useRef<number | null>(null);
   const isPlayingRef = useRef(false);
+  const recoveryAttemptsRef = useRef(0);
+  const maxRecoveryAttempts = 3;
 
   // Initialize HLS
   useEffect(() => {
@@ -71,6 +73,7 @@ export const VideoPlayer = memo(function VideoPlayer({
     setIsLoading(true);
     setError(null);
     intentionalPauseRef.current = false; // Reset pausa intencional ao trocar de canal
+    recoveryAttemptsRef.current = 0; // Reset tentativas de recuperação ao trocar de canal
 
     // Cleanup previous instance
     if (hlsRef.current) {
@@ -90,6 +93,7 @@ export const VideoPlayer = memo(function VideoPlayer({
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         setIsLoading(false);
+        recoveryAttemptsRef.current = 0; // Reset tentativas quando manifest carregou com sucesso
         video.volume = volumeRef.current;
         video.muted = false;
         
@@ -105,16 +109,41 @@ export const VideoPlayer = memo(function VideoPlayer({
 
       hls.on(Hls.Events.ERROR, (_, data) => {
         if (data.fatal) {
-          setError('Erro ao carregar o canal. Tente novamente.');
-          setIsLoading(false);
+          recoveryAttemptsRef.current++;
           
+          // Se excedeu tentativas de recuperação, mostra erro
+          if (recoveryAttemptsRef.current > maxRecoveryAttempts) {
+            setError('Erro ao carregar o canal. Tente novamente.');
+            setIsLoading(false);
+            return;
+          }
+          
+          // Tenta recuperar primeiro, só mostra erro se falhar múltiplas vezes
           if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
-            // Try to recover
+            // Tenta recuperar erro de rede
             hls.startLoad();
           } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+            // Tenta recuperar erro de mídia
             hls.recoverMediaError();
+          } else {
+            // Erro irrecuperável
+            setError('Erro ao carregar o canal. Tente novamente.');
+            setIsLoading(false);
           }
         }
+      });
+
+      // Listener para detectar quando recuperou com sucesso após erro
+      hls.on(Hls.Events.FRAG_LOADED, () => {
+        // Se fragmento carregou, limpa qualquer erro anterior e reseta tentativas
+        setError(null);
+        recoveryAttemptsRef.current = 0;
+      });
+
+      hls.on(Hls.Events.LEVEL_LOADED, () => {
+        // Se nível carregou, limpa qualquer erro anterior e reseta tentativas
+        setError(null);
+        recoveryAttemptsRef.current = 0;
       });
 
       hlsRef.current = hls;
@@ -164,6 +193,7 @@ export const VideoPlayer = memo(function VideoPlayer({
 
     const handlePlay = () => {
       setIsPlaying(true);
+      setError(null); // Limpa erro quando o vídeo começa a reproduzir
       intentionalPauseRef.current = false;
     };
     const handlePause = () => {
@@ -182,6 +212,7 @@ export const VideoPlayer = memo(function VideoPlayer({
     const handleWaiting = () => setIsLoading(true);
     const handleCanPlay = () => {
       setIsLoading(false);
+      setError(null); // Limpa erro quando o vídeo está pronto para reproduzir
       // Quando o vídeo estiver pronto para reproduzir, garante que está em play
       if (video.paused && channel && !intentionalPauseRef.current) {
         video.play().catch(() => {
@@ -193,17 +224,41 @@ export const VideoPlayer = memo(function VideoPlayer({
         });
       }
     };
+    
+    // Evento quando o vídeo está reproduzindo dados (frames)
+    const handlePlaying = () => {
+      setIsLoading(false);
+      setError(null); // Limpa erro - vídeo está definitivamente funcionando
+      recoveryAttemptsRef.current = 0;
+    };
+    
+    // Evento timeupdate indica que o vídeo está progredindo
+    // Usamos um throttle simples para evitar muitas chamadas
+    let lastTimeUpdate = 0;
+    const handleTimeUpdate = () => {
+      const now = Date.now();
+      if (now - lastTimeUpdate < 1000) return; // Throttle a cada 1 segundo
+      lastTimeUpdate = now;
+      
+      // Se o vídeo está avançando, não há erro real
+      setError((currentError) => currentError ? null : currentError);
+      recoveryAttemptsRef.current = 0;
+    };
 
     video.addEventListener('play', handlePlay);
     video.addEventListener('pause', handlePause);
     video.addEventListener('waiting', handleWaiting);
     video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('playing', handlePlaying);
+    video.addEventListener('timeupdate', handleTimeUpdate);
 
     return () => {
       video.removeEventListener('play', handlePlay);
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('waiting', handleWaiting);
       video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('playing', handlePlaying);
+      video.removeEventListener('timeupdate', handleTimeUpdate);
     };
   }, [channel]);
 
