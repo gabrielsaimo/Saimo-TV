@@ -1,0 +1,351 @@
+.video-player-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: none;
+}
+
+.video-player-container.show-controls {
+  cursor: default;
+}
+
+.video-player-container.theater {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  transition: transform 0.3s ease;
+}
+
+.video-element.mirrored {
+  transform: scaleX(-1);
+}
+
+/* No channel state */
+.no-channel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+}
+
+.no-channel-content {
+  text-align: center;
+  color: #666;
+  padding: 40px;
+}
+
+.no-channel-content svg {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 24px;
+  opacity: 0.3;
+}
+
+.no-channel-content h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #888;
+  margin: 0 0 8px;
+}
+
+.no-channel-content p {
+  font-size: 14px;
+  margin: 0;
+  max-width: 300px;
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10;
+}
+
+.loader {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.loader-ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid transparent;
+  border-top-color: #8b5cf6;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+.loader-ring:nth-child(2) {
+  inset: 8px;
+  border-top-color: #06b6d4;
+  animation-duration: 1.2s;
+  animation-direction: reverse;
+}
+
+.loader-ring:nth-child(3) {
+  inset: 16px;
+  border-top-color: #ec4899;
+  animation-duration: 0.9s;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-overlay p {
+  margin-top: 24px;
+  color: #888;
+  font-size: 14px;
+}
+
+/* Error overlay */
+.error-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 10;
+  color: #ef4444;
+}
+
+.error-overlay svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+}
+
+.error-overlay p {
+  margin: 0 0 20px;
+  font-size: 16px;
+  color: #888;
+}
+
+.retry-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retry-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+}
+
+/* Video controls */
+.video-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 20px 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.video-player-container.show-controls .video-controls {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Top gradient for channel info */
+.video-player-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.video-player-container.show-controls::after {
+  opacity: 1;
+}
+
+.controls-left,
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.control-btn.active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(6, 182, 212, 0.5));
+  border-color: rgba(139, 92, 246, 0.6);
+}
+
+.control-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Volume control */
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.volume-slider {
+  width: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.volume-control:hover .volume-slider {
+  width: 80px;
+  opacity: 1;
+  margin-left: 4px;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+/* Channel indicator */
+.channel-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.live-badge {
+  padding: 4px 10px;
+  background: #ef4444;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: white;
+  animation: pulse-live 2s infinite;
+}
+
+@keyframes pulse-live {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.channel-indicator .channel-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .video-controls {
+    padding: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .control-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .control-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .channel-indicator {
+    display: none;
+  }
+
+  .volume-control:hover .volume-slider {
+    width: 60px;
+  }
+}

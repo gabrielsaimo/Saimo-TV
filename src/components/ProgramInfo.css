@@ -1,0 +1,349 @@
+.program-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.8), transparent);
+  padding: 0;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+  z-index: 25;
+  pointer-events: none;
+}
+
+.program-info.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.program-info.expanded {
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+}
+
+/* Barra de progresso */
+.program-progress-bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.program-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+  transition: width 0.5s ease;
+  position: relative;
+}
+
+.program-progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: #06b6d4;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #06b6d4;
+}
+
+/* Conteúdo principal */
+.program-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 16px 20px;
+}
+
+/* Programa atual */
+.current-program {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.program-now-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.program-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.program-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 6px;
+  line-height: 1.3;
+}
+
+.program-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.program-time {
+  font-size: 12px;
+  color: #888;
+}
+
+.program-duration {
+  font-size: 11px;
+  color: #666;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.program-category {
+  font-size: 11px;
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.program-rating {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #333;
+  color: white;
+}
+
+.program-rating.rating-L { background: #22c55e; }
+.program-rating.rating-10 { background: #3b82f6; }
+.program-rating.rating-12 { background: #eab308; }
+.program-rating.rating-14 { background: #f97316; }
+.program-rating.rating-16 { background: #ef4444; }
+.program-rating.rating-18 { background: #000; }
+
+.program-description {
+  font-size: 12px;
+  color: #888;
+  margin: 8px 0 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Próximo programa */
+.next-program {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.program-next-badge {
+  font-size: 9px;
+  font-weight: 700;
+  color: #06b6d4;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.program-title-small {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ddd;
+  margin: 0;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.program-time-small {
+  font-size: 11px;
+  color: #666;
+}
+
+/* Botões de ação */
+.program-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.program-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.program-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.program-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.expand-btn {
+  padding: 8px;
+}
+
+/* Lista de próximos programas (expandida) */
+.upcoming-programs {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.upcoming-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 12px;
+}
+
+.upcoming-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.upcoming-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.upcoming-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.upcoming-time {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8b5cf6;
+  min-width: 50px;
+}
+
+.upcoming-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.upcoming-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #eee;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.upcoming-category {
+  font-size: 11px;
+  color: #666;
+}
+
+.upcoming-duration {
+  font-size: 11px;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* Scrollbar customizada */
+.upcoming-programs::-webkit-scrollbar {
+  width: 6px;
+}
+
+.upcoming-programs::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.upcoming-programs::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 3px;
+}
+
+.upcoming-programs::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .program-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .next-program {
+    width: 100%;
+  }
+
+  .program-title-small {
+    max-width: none;
+  }
+
+  .program-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
