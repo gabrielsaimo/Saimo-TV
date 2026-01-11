@@ -282,11 +282,14 @@
 
   /* Mobile View - Full width sidebar in tab */
   .sidebar.mobile-view {
-    position: static !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
     width: 100% !important;
     max-width: none !important;
     height: 100% !important;
-    min-height: 100% !important;
     transform: none !important;
     border-right: none;
     display: flex !important;
@@ -294,6 +297,7 @@
     visibility: visible !important;
     opacity: 1 !important;
     background: linear-gradient(180deg, rgba(15, 15, 15, 0.98), rgba(10, 10, 10, 0.98)) !important;
+    overflow: hidden !important;
   }
 
   .sidebar.mobile-view .sidebar-header {
@@ -315,11 +319,12 @@
   }
 
   .sidebar.mobile-view .channels-list {
-    flex: 1;
-    overflow-y: auto;
+    flex: 1 !important;
+    overflow-y: auto !important;
     padding: 12px;
     gap: 10px;
     -webkit-overflow-scrolling: touch;
+    min-height: 0 !important;
   }
 
   .sidebar-header {
