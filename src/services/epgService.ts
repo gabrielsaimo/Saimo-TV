@@ -59,6 +59,7 @@ const channelToMeuGuiaCode: Record<string, string> = {
   'tv-brasil': 'TED',
   'aparecida': 'TAP',
   'cultura': 'CUL',
+  'tv-gazeta': 'GAZ',
   
   // Notícias
   'cnn-brasil': 'CNB',
