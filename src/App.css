@@ -1,5 +1,6 @@
 .app {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   min-height: 100dvh;
   background: #0a0a0a;
@@ -10,9 +11,80 @@
   background: #000;
 }
 
+/* Main Navigation - Sempre visível */
+.main-nav {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(15, 15, 15, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 200;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
+  border-color: rgba(139, 92, 246, 0.5);
+  color: #fff;
+}
+
+.nav-item.active svg {
+  color: #8b5cf6;
+}
+
+/* Oculta navegação principal em teatro mode */
+.app.theater-mode .main-nav {
+  display: none;
+}
+
+/* Movies View */
+.movies-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* TV View Container */
+.tv-view {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .sidebar-wrapper {
   display: flex;
   z-index: 100;
+  flex-shrink: 0;
 }
 
 .main-content {
@@ -159,6 +231,33 @@
     height: 100vh;
     height: 100dvh;
     overflow: hidden;
+  }
+
+  .main-nav {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .nav-item {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .nav-item svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .movies-view {
+    padding-bottom: 0;
+  }
+
+  .tv-view {
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
   }
 
   .desktop-only {
