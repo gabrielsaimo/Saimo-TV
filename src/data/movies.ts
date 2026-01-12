@@ -4,6 +4,7 @@
 
 import type { Movie } from '../types/movie';
 
+// @ts-ignore - Array muito grande para TypeScript processar
 export const moviesData: Movie[] = [
   {
     "id": "boca-de-fumo",
