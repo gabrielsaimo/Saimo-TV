@@ -99,6 +99,7 @@ const rawChannels = [
   { id: 'globo-es', name: 'Globo ES', url: 'https://canais.fazoeli.co.za/fontes/smart/globoes.m3u8', category: 'TV Aberta', logo: `${LOGO_BASE}/globo-br.png` },
   { id: 'tv-gazeta', name: 'TV Gazeta', url: 'https://canais.fazoeli.co.za/fontes/smart/tvgazeta.m3u8', category: 'TV Aberta', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/TV_Gazeta.svg/500px-TV_Gazeta.svg.png' },
   { id: 'globo-am', name: 'Globo AM', url: 'https://canais.fazoeli.co.za/fontes/smart/globoam.m3u8', category: 'TV Aberta', logo: `${LOGO_BASE}/globo-br.png` },
+  { id: 'impd', name: 'IMPD', url: 'https://68882bdaf156a.streamlock.net/impd/ngrp:impd_all/chunklist_w1366598577_b3715072.m3u8', category: 'TV Aberta', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Logotipo_da_Rede_Mundial.jpg' },
   
   // === ESPORTES ===
   { id: 'sportv', name: 'SporTV', url: 'https://canais.fazoeli.co.za/fontes/smart/sportv.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/sportv-br.png` },
