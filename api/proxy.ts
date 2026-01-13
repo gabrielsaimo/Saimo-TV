@@ -1,32 +1,43 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export const config = {
-  // Aumentar timeout para vídeos grandes
-  maxDuration: 60,
+  // Usar Edge Runtime para streaming real
+  runtime: 'edge',
 };
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: Request): Promise<Response> {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type');
-    return res.status(200).end();
+    return new Response(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Range, Content-Type',
+      },
+    });
   }
 
-  const { url } = req.query;
+  const url = new URL(req.url);
+  const videoUrl = url.searchParams.get('url');
 
-  if (!url || typeof url !== 'string') {
-    return res.status(400).json({ error: 'URL parameter is required' });
+  if (!videoUrl) {
+    return new Response(JSON.stringify({ error: 'URL parameter is required' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   try {
     // Decodificar a URL
-    const decodedUrl = decodeURIComponent(url);
+    const decodedUrl = decodeURIComponent(videoUrl);
     
     // Verificar se é uma URL HTTP válida
     if (!decodedUrl.startsWith('http://') && !decodedUrl.startsWith('https://')) {
-      return res.status(400).json({ error: 'Invalid URL protocol' });
+      return new Response(JSON.stringify({ error: 'Invalid URL protocol' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Headers para fazer o streaming do vídeo
@@ -35,59 +46,59 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     };
 
     // Suportar Range requests para seek no vídeo
-    if (req.headers.range) {
-      headers['Range'] = req.headers.range;
+    const rangeHeader = req.headers.get('range');
+    if (rangeHeader) {
+      headers['Range'] = rangeHeader;
     }
 
+    // Fazer a requisição seguindo redirects
     const response = await fetch(decodedUrl, {
       method: 'GET',
       headers,
+      redirect: 'follow', // Seguir redirects automaticamente
     });
 
     if (!response.ok && response.status !== 206) {
-      return res.status(response.status).json({ 
-        error: `Failed to fetch video: ${response.statusText}` 
+      return new Response(JSON.stringify({ 
+        error: `Failed to fetch video: ${response.statusText}`,
+        status: response.status
+      }), {
+        status: response.status,
+        headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // Copiar headers relevantes da resposta
+    // Criar headers da resposta
+    const responseHeaders = new Headers();
+    responseHeaders.set('Access-Control-Allow-Origin', '*');
+    responseHeaders.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    responseHeaders.set('Access-Control-Allow-Headers', 'Range');
+    responseHeaders.set('Access-Control-Expose-Headers', 'Content-Length, Content-Range, Accept-Ranges');
+    
+    // Copiar headers relevantes da resposta original
     const contentType = response.headers.get('content-type');
     const contentLength = response.headers.get('content-length');
     const contentRange = response.headers.get('content-range');
     const acceptRanges = response.headers.get('accept-ranges');
 
-    // Configurar headers da resposta
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Range');
-    res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range, Accept-Ranges');
-    
-    if (contentType) {
-      res.setHeader('Content-Type', contentType);
-    }
-    if (contentLength) {
-      res.setHeader('Content-Length', contentLength);
-    }
-    if (contentRange) {
-      res.setHeader('Content-Range', contentRange);
-    }
-    if (acceptRanges) {
-      res.setHeader('Accept-Ranges', acceptRanges);
-    }
+    if (contentType) responseHeaders.set('Content-Type', contentType);
+    if (contentLength) responseHeaders.set('Content-Length', contentLength);
+    if (contentRange) responseHeaders.set('Content-Range', contentRange);
+    if (acceptRanges) responseHeaders.set('Accept-Ranges', acceptRanges);
 
-    // Definir status code (200 ou 206 para partial content)
-    res.status(response.status);
-
-    // Converter response para ArrayBuffer e enviar
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    
-    return res.send(buffer);
+    // Retornar stream do vídeo (Edge Functions suportam streaming real)
+    return new Response(response.body, {
+      status: response.status,
+      headers: responseHeaders,
+    });
   } catch (error) {
     console.error('Proxy error:', error);
-    return res.status(500).json({ 
+    return new Response(JSON.stringify({ 
       error: 'Failed to proxy video',
       details: error instanceof Error ? error.message : 'Unknown error'
+    }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 }

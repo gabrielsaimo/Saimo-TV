@@ -1,15 +1,4 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
-    }
-  ],
-  "functions": {
-    "api/proxy.ts": {
-      "maxDuration": 60
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",
