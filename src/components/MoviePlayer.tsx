@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useCallback, memo } from 'react';
 import type { Movie } from '../types/movie';
+import { getProxiedUrl } from '../utils/proxyUrl';
 import './MoviePlayer.css';
 
 interface MoviePlayerProps {
@@ -77,7 +78,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack }: MoviePla
       }
     };
 
-    video.src = movie.url;
+    // Usar proxy para URLs HTTP em produção (resolve problema de Mixed Content)
+    video.src = getProxiedUrl(movie.url);
     video.load();
 
     const handleLoadedMetadata = () => {
