@@ -40,6 +40,15 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [showControls, setShowControls] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showExternalMenu, setShowExternalMenu] = useState(false);
+  const [isPiP, setIsPiP] = useState(false);
+  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
+  const [skipTime, setSkipTime] = useState(() => {
+    const saved = localStorage.getItem('movie-skip-time');
+    return saved ? parseInt(saved) : 10;
+  });
+  const [brightness, setBrightness] = useState(100);
+  const [showSkipIntro, setShowSkipIntro] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState<'auto' | '16:9' | '4:3' | '21:9'>('auto');
   
   const controlsTimeoutRef = useRef<number | null>(null);
 
@@ -296,55 +305,41 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
-  // Keyboard shortcuts
+  // Picture-in-Picture
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!videoRef.current) return;
-      
-      switch (e.key) {
-        case ' ':
-        case 'k':
-          e.preventDefault();
-          togglePlay();
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          seek(-10);
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          seek(10);
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          setVolume(v => Math.min(1, v + 0.1));
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          setVolume(v => Math.max(0, v - 0.1));
-          break;
-        case 'm':
-          e.preventDefault();
-          setIsMuted(m => !m);
-          break;
-        case 'f':
-          e.preventDefault();
-          toggleFullscreen();
-          break;
-        case 'Escape':
-          if (isFullscreen) {
-            document.exitFullscreen();
-          } else {
-            onBack();
-          }
-          break;
-      }
+    const handlePiPChange = () => {
+      setIsPiP(document.pictureInPictureElement === videoRef.current);
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isFullscreen, onBack]);
+    const video = videoRef.current;
+    if (video) {
+      video.addEventListener('enterpictureinpicture', handlePiPChange);
+      video.addEventListener('leavepictureinpicture', handlePiPChange);
+    }
 
+    return () => {
+      if (video) {
+        video.removeEventListener('enterpictureinpicture', handlePiPChange);
+        video.removeEventListener('leavepictureinpicture', handlePiPChange);
+      }
+    };
+  }, []);
+
+  // Skip intro detection (show button in first 5 minutes)
+  useEffect(() => {
+    if (currentTime > 30 && currentTime < 300 && seriesInfo) {
+      setShowSkipIntro(true);
+    } else {
+      setShowSkipIntro(false);
+    }
+  }, [currentTime, seriesInfo]);
+
+  // Save skip time preference
+  useEffect(() => {
+    localStorage.setItem('movie-skip-time', skipTime.toString());
+  }, [skipTime]);
+
+  // Callback functions - defined before keyboard shortcuts useEffect
   const togglePlay = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -363,16 +358,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + seconds));
   }, []);
 
-  const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const video = videoRef.current;
-    const progress = progressRef.current;
-    if (!video || !progress) return;
-
-    const rect = progress.getBoundingClientRect();
-    const percent = (e.clientX - rect.left) / rect.width;
-    video.currentTime = percent * video.duration;
-  }, []);
-
   const toggleFullscreen = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -382,6 +367,145 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     } else {
       container.requestFullscreen();
     }
+  }, []);
+
+  // Picture-in-Picture toggle
+  const togglePiP = useCallback(async () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    try {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+      } else if (document.pictureInPictureEnabled) {
+        await video.requestPictureInPicture();
+      }
+    } catch (err) {
+      console.error('PiP error:', err);
+    }
+  }, []);
+
+  // Skip intro (30 seconds forward)
+  const skipIntro = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = Math.min(video.duration, video.currentTime + 30);
+    setShowSkipIntro(false);
+  }, []);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!videoRef.current) return;
+      
+      switch (e.key) {
+        case ' ':
+        case 'k':
+          e.preventDefault();
+          togglePlay();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          seek(-skipTime);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          seek(skipTime);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          setVolume(v => Math.min(1, v + 0.1));
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          setVolume(v => Math.max(0, v - 0.1));
+          break;
+        case 'm':
+          e.preventDefault();
+          setIsMuted(m => !m);
+          break;
+        case 'f':
+          e.preventDefault();
+          toggleFullscreen();
+          break;
+        case 'p':
+          e.preventDefault();
+          togglePiP();
+          break;
+        case 'j':
+          e.preventDefault();
+          seek(-10);
+          break;
+        case 'l':
+          e.preventDefault();
+          seek(10);
+          break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+          e.preventDefault();
+          if (videoRef.current) {
+            const percent = parseInt(e.key) * 10;
+            videoRef.current.currentTime = (percent / 100) * videoRef.current.duration;
+          }
+          break;
+        case 'Home':
+          e.preventDefault();
+          if (videoRef.current) videoRef.current.currentTime = 0;
+          break;
+        case 'End':
+          e.preventDefault();
+          if (videoRef.current) videoRef.current.currentTime = videoRef.current.duration - 1;
+          break;
+        case 's':
+          e.preventDefault();
+          skipIntro();
+          break;
+        case ',':
+          e.preventDefault();
+          if (videoRef.current) videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 1/30);
+          break;
+        case '.':
+          e.preventDefault();
+          if (videoRef.current) videoRef.current.currentTime = Math.min(videoRef.current.duration, videoRef.current.currentTime + 1/30);
+          break;
+        case '<':
+          e.preventDefault();
+          setPlaybackRate(r => Math.max(0.25, r - 0.25));
+          break;
+        case '>':
+          e.preventDefault();
+          setPlaybackRate(r => Math.min(3, r + 0.25));
+          break;
+        case 'Escape':
+          if (isFullscreen) {
+            document.exitFullscreen();
+          } else {
+            onBack();
+          }
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen, onBack, skipTime, togglePiP, skipIntro, togglePlay, seek, toggleFullscreen]);
+
+  const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const video = videoRef.current;
+    const progress = progressRef.current;
+    if (!video || !progress) return;
+
+    const rect = progress.getBoundingClientRect();
+    const percent = (e.clientX - rect.left) / rect.width;
+    video.currentTime = percent * video.duration;
   }, []);
 
   const handleRetry = useCallback(() => {
@@ -446,14 +570,24 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       onClick={togglePlay}
     >
       {/* Video Container - com tamanho máximo fixo */}
-      <div className="video-container">
+      <div className="video-container" style={{ filter: `brightness(${brightness}%)` }}>
         <video
           ref={videoRef}
-          className="movie-video"
+          className={`movie-video aspect-${aspectRatio}`}
           playsInline
           onClick={(e) => e.stopPropagation()}
         />
       </div>
+
+      {/* Skip Intro Button */}
+      {showSkipIntro && (
+        <button className="skip-intro-btn" onClick={(e) => { e.stopPropagation(); skipIntro(); }}>
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+          </svg>
+          Pular Intro
+        </button>
+      )}
 
       {/* Loading overlay */}
       {isLoading && (
@@ -604,21 +738,19 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                 )}
               </button>
 
-              {/* Rewind 10s */}
-              <button className="control-btn" onClick={() => seek(-10)} title="Voltar 10s (←)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12.5 8L8 12l4.5 4" />
-                  <path d="M16 12H8" />
-                  <text x="12" y="20" fontSize="6" fill="currentColor" textAnchor="middle">10</text>
+              {/* Rewind */}
+              <button className="control-btn" onClick={() => seek(-skipTime)} title={`Voltar ${skipTime}s (←)`}>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+                  <text x="12" y="15" fontSize="7" fill="currentColor" textAnchor="middle" fontWeight="bold">{skipTime}</text>
                 </svg>
               </button>
 
-              {/* Forward 10s */}
-              <button className="control-btn" onClick={() => seek(10)} title="Avançar 10s (→)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M11.5 8L16 12l-4.5 4" />
-                  <path d="M8 12h8" />
-                  <text x="12" y="20" fontSize="6" fill="currentColor" textAnchor="middle">10</text>
+              {/* Forward */}
+              <button className="control-btn" onClick={() => seek(skipTime)} title={`Avançar ${skipTime}s (→)`}>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/>
+                  <text x="12" y="15" fontSize="7" fill="currentColor" textAnchor="middle" fontWeight="bold">{skipTime}</text>
                 </svg>
               </button>
 
@@ -660,27 +792,123 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
             <div className="controls-right">
               {/* Next Episode Button */}
               {nextEpisode && (
-                <button className="control-btn next-ep-btn" onClick={handleNextEpisode} title="Próximo episódio">
+                <button className="control-btn next-ep-btn" onClick={handleNextEpisode} title="Próximo episódio (N)">
                   <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
                   </svg>
                 </button>
               )}
 
-              {/* Playback speed */}
-              <select 
-                className="speed-select"
-                value={playbackRate}
-                onChange={(e) => setPlaybackRate(parseFloat(e.target.value))}
-                title="Velocidade"
-              >
-                <option value="0.5">0.5x</option>
-                <option value="0.75">0.75x</option>
-                <option value="1">1x</option>
-                <option value="1.25">1.25x</option>
-                <option value="1.5">1.5x</option>
-                <option value="2">2x</option>
-              </select>
+              {/* Settings Menu */}
+              <div className="settings-menu-wrapper">
+                <button 
+                  className="control-btn" 
+                  onClick={() => setShowSettingsMenu(!showSettingsMenu)}
+                  title="Configurações"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                  </svg>
+                </button>
+                {showSettingsMenu && (
+                  <div className="settings-dropdown" onClick={(e) => e.stopPropagation()}>
+                    <div className="settings-section">
+                      <label>Velocidade</label>
+                      <select 
+                        value={playbackRate}
+                        onChange={(e) => setPlaybackRate(parseFloat(e.target.value))}
+                      >
+                        <option value="0.25">0.25x</option>
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1">Normal</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="1.75">1.75x</option>
+                        <option value="2">2x</option>
+                        <option value="2.5">2.5x</option>
+                        <option value="3">3x</option>
+                      </select>
+                    </div>
+                    <div className="settings-section">
+                      <label>Pular (segundos)</label>
+                      <select 
+                        value={skipTime}
+                        onChange={(e) => setSkipTime(parseInt(e.target.value))}
+                      >
+                        <option value="5">5s</option>
+                        <option value="10">10s</option>
+                        <option value="15">15s</option>
+                        <option value="30">30s</option>
+                        <option value="60">1 min</option>
+                      </select>
+                    </div>
+                    <div className="settings-section">
+                      <label>Proporção</label>
+                      <select 
+                        value={aspectRatio}
+                        onChange={(e) => setAspectRatio(e.target.value as typeof aspectRatio)}
+                      >
+                        <option value="auto">Auto</option>
+                        <option value="16:9">16:9</option>
+                        <option value="4:3">4:3</option>
+                        <option value="21:9">21:9 (Cinema)</option>
+                      </select>
+                    </div>
+                    <div className="settings-section">
+                      <label>Brilho: {brightness}%</label>
+                      <input
+                        type="range"
+                        min="50"
+                        max="150"
+                        value={brightness}
+                        onChange={(e) => setBrightness(parseInt(e.target.value))}
+                        className="settings-slider"
+                      />
+                    </div>
+                    <hr />
+                    <div className="settings-shortcuts">
+                      <h4>Atalhos de Teclado</h4>
+                      <ul>
+                        <li><kbd>Espaço</kbd> / <kbd>K</kbd> - Play/Pause</li>
+                        <li><kbd>←</kbd> / <kbd>→</kbd> - Pular {skipTime}s</li>
+                        <li><kbd>J</kbd> / <kbd>L</kbd> - Pular 10s</li>
+                        <li><kbd>↑</kbd> / <kbd>↓</kbd> - Volume</li>
+                        <li><kbd>M</kbd> - Mudo</li>
+                        <li><kbd>F</kbd> - Tela cheia</li>
+                        <li><kbd>P</kbd> - Picture-in-Picture</li>
+                        <li><kbd>S</kbd> - Pular intro</li>
+                        <li><kbd>0-9</kbd> - Pular para %</li>
+                        <li><kbd>&lt;</kbd> / <kbd>&gt;</kbd> - Velocidade</li>
+                        <li><kbd>,</kbd> / <kbd>.</kbd> - Frame a frame</li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Picture-in-Picture */}
+              {document.pictureInPictureEnabled && (
+                <button className="control-btn" onClick={togglePiP} title="Picture-in-Picture (P)">
+                  {isPiP ? (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="2" y="4" width="20" height="14" rx="2"/>
+                      <rect x="10" y="9" width="10" height="7" rx="1" fill="currentColor"/>
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="2" y="4" width="20" height="14" rx="2"/>
+                      <rect x="11" y="10" width="8" height="6" rx="1"/>
+                    </svg>
+                  )}
+                </button>
+              )}
+
+              {/* Playback speed indicator */}
+              {playbackRate !== 1 && (
+                <span className="speed-indicator">{playbackRate}x</span>
+              )}
 
               {/* Fullscreen */}
               <button className="control-btn" onClick={toggleFullscreen} title="Tela cheia (F)">

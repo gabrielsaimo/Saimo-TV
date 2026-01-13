@@ -699,6 +699,216 @@
   opacity: 1;
 }
 
+/* Skip Intro Button */
+.skip-intro-btn {
+  position: absolute;
+  bottom: 120px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 15;
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.skip-intro-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.02);
+}
+
+.skip-intro-btn:active {
+  transform: scale(0.98);
+}
+
+/* Settings Menu */
+.settings-menu-wrapper {
+  position: relative;
+}
+
+.settings-dropdown {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  min-width: 240px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 12px;
+  background: rgba(20, 20, 28, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 0.2s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.settings-section label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.settings-section select {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.settings-section select:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.settings-section select:focus {
+  border-color: #8b5cf6;
+}
+
+.settings-slider {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.settings-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #8b5cf6;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.settings-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.settings-dropdown hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 8px 0;
+}
+
+.settings-shortcuts {
+  padding: 8px 0;
+}
+
+.settings-shortcuts h4 {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.settings-shortcuts ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settings-shortcuts li {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.settings-shortcuts kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Speed Indicator */
+.speed-indicator {
+  padding: 4px 8px;
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Aspect Ratio Classes */
+.movie-video.aspect-auto {
+  object-fit: contain;
+}
+
+.movie-video.aspect-16\:9 {
+  object-fit: fill;
+  aspect-ratio: 16/9;
+}
+
+.movie-video.aspect-4\:3 {
+  object-fit: fill;
+  aspect-ratio: 4/3;
+}
+
+.movie-video.aspect-21\:9 {
+  object-fit: fill;
+  aspect-ratio: 21/9;
+}
+
 /* Mobile Adjustments for Next Episode */
 @media (max-width: 768px) {
   .next-episode-overlay {
@@ -727,5 +937,23 @@
   .next-episode-btn {
     padding: 10px 16px;
     font-size: 0.85rem;
+  }
+
+  .skip-intro-btn {
+    bottom: 140px;
+    right: 16px;
+    left: auto;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+
+  .settings-dropdown {
+    right: -60px;
+    min-width: 220px;
+    max-height: 300px;
+  }
+
+  .settings-shortcuts {
+    display: none;
   }
 }
