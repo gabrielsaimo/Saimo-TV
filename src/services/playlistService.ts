@@ -1,5 +1,5 @@
 import type { Movie } from '../types/movie';
-import { moviesData, movieCategories, searchMovies as localSearchMovies } from '../data/movies';
+import { moviesData, movieCategories } from '../data/movies';
 
 // Re-exporta os dados pré-processados para carregamento instantâneo
 export const fetchMovies = (): Promise<Movie[]> => {
@@ -21,7 +21,12 @@ export const getMoviesByCategory = (): Promise<Map<string, Movie[]>> => {
 };
 
 export const searchMovies = (query: string): Promise<Movie[]> => {
-  return Promise.resolve(localSearchMovies(query));
+  const normalizedQuery = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const results = moviesData.filter(movie => {
+    const name = movie.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return name.includes(normalizedQuery);
+  });
+  return Promise.resolve(results);
 };
 
 export const getCategories = (): string[] => movieCategories;

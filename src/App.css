@@ -1,84 +1,39 @@
-.app {
-  display: flex;
-  flex-direction: column;
+/* ========================================
+   APP STYLES - Global Layout
+   ======================================== */
+
+/* Page Container - Base para todas as páginas */
+.page-container {
   min-height: 100vh;
   min-height: 100dvh;
   background: #0a0a0a;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.app.theater-mode {
+/* ========================================
+   TV PAGE LAYOUT
+   ======================================== */
+.tv-page {
+  padding-top: 64px; /* Espaço para o header */
+}
+
+.tv-page.theater-mode {
+  padding-top: 0;
   background: #000;
 }
 
-/* Main Navigation - Sempre visível */
-.main-nav {
-  display: flex;
-  gap: 8px;
-  padding: 12px 16px;
-  background: rgba(15, 15, 15, 0.95);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  z-index: 200;
-  flex-shrink: 0;
-  position: sticky;
-  top: 0;
+.tv-page.theater-mode .tv-layout {
+  height: 100vh;
+  height: 100dvh;
 }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: #888;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.nav-item svg {
-  width: 20px;
-  height: 20px;
-}
-
-.nav-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-.nav-item.active {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
-  border-color: rgba(139, 92, 246, 0.5);
-  color: #fff;
-}
-
-.nav-item.active svg {
-  color: #8b5cf6;
-}
-
-/* Oculta navegação principal em teatro mode */
-.app.theater-mode .main-nav {
-  display: none;
-}
-
-/* Movies View */
-.movies-view {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 0;
-}
-
-/* TV View Container */
-.tv-view {
+.tv-layout {
   flex: 1;
   display: flex;
   min-height: 0;
-  overflow: hidden;
+  height: calc(100vh - 64px);
+  height: calc(100dvh - 64px);
 }
 
 .sidebar-wrapper {
@@ -92,9 +47,41 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  background: #0a0a0a;
 }
 
-/* Mobile Tabs Navigation */
+/* ========================================
+   MOVIES PAGE LAYOUT
+   ======================================== */
+.movies-page {
+  /* Não precisa de padding top pois o catálogo tem seu próprio header interno */
+}
+
+.movies-page .catalog-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.movies-page.playing {
+  padding-top: 64px;
+}
+
+.movies-page .movie-player-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+/* ========================================
+   MOBILE TABS - Bottom Navigation
+   ======================================== */
 .mobile-tabs {
   display: none;
   position: fixed;
@@ -103,6 +90,7 @@
   right: 0;
   background: rgba(15, 15, 15, 0.98);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 8px 16px;
   padding-bottom: max(8px, env(safe-area-inset-bottom));
@@ -162,12 +150,13 @@
   text-align: center;
 }
 
-/* Mobile Content Container */
+/* ========================================
+   MOBILE CONTENT
+   ======================================== */
 .mobile-content {
   display: none;
   flex: 1;
   position: relative;
-  overflow: visible;
   min-height: 0;
 }
 
@@ -179,7 +168,6 @@
   bottom: 0;
   display: none;
   flex-direction: column;
-  overflow: hidden;
   background: #0a0a0a;
 }
 
@@ -190,11 +178,6 @@
 /* Desktop only class */
 .desktop-only {
   display: flex;
-}
-
-/* Mobile menu button - removed, using tabs now */
-.mobile-menu-btn {
-  display: none;
 }
 
 /* Mobile overlay */
@@ -208,56 +191,37 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* Responsive - Tablet */
-@media (max-width: 1024px) {
-  .main-content {
-    padding-top: 0;
-  }
-}
-
-/* Responsive - Mobile */
+/* ========================================
+   RESPONSIVE - Mobile
+   ======================================== */
 @media (max-width: 768px) {
-  .app {
-    flex-direction: column;
+  .tv-page {
+    padding-top: 52px;
     padding-bottom: 76px;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
   }
 
-  .main-nav {
-    padding: 8px 12px;
-    gap: 6px;
-  }
-
-  .nav-item {
-    flex: 1;
-    justify-content: center;
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-
-  .nav-item svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .movies-view {
+  .tv-page.theater-mode {
+    padding-top: 0;
     padding-bottom: 0;
   }
 
-  .tv-view {
+  .tv-layout {
     flex-direction: column;
-    flex: 1;
-    min-height: 0;
+    height: calc(100vh - 52px - 76px);
+    height: calc(100dvh - 52px - 76px);
+  }
+
+  .tv-page.theater-mode .tv-layout {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .movies-page.playing {
+    padding-top: 52px;
   }
 
   .desktop-only {
@@ -269,14 +233,11 @@
   }
 
   .mobile-content {
-    display: block !important;
+    display: block;
     flex: 1;
-    min-height: 0;
     position: relative;
     width: 100%;
-    height: calc(100vh - 76px);
-    height: calc(100dvh - 76px);
-    overflow: hidden;
+    height: 100%;
   }
 
   .mobile-view {
@@ -288,7 +249,6 @@
     display: none !important;
     flex-direction: column;
     background: #0a0a0a;
-    overflow: hidden;
   }
 
   .mobile-view.active {
@@ -302,8 +262,8 @@
   .sidebar-wrapper {
     position: fixed;
     left: 0;
-    top: 0;
-    bottom: 0;
+    top: 52px;
+    bottom: 76px;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
   }
@@ -313,12 +273,14 @@
   }
 
   .main-content {
-    min-height: 100vh;
-    padding-top: 0;
+    flex: 1;
+    min-height: 0;
   }
 }
 
-/* Responsive - Small Mobile */
+/* ========================================
+   RESPONSIVE - Small Mobile
+   ======================================== */
 @media (max-width: 480px) {
   .mobile-tabs {
     padding: 6px 12px;
@@ -345,4 +307,11 @@
     top: 4px;
     right: 8px;
   }
+}
+
+/* ========================================
+   THEATER MODE OVERRIDES
+   ======================================== */
+.theater-mode .app-header {
+  display: none;
 }

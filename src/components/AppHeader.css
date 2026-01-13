@@ -1,0 +1,491 @@
+/* ========================================
+   APP HEADER - Global Navigation
+   ======================================== */
+
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(10, 10, 15, 0.95) 0%, rgba(10, 10, 15, 0.8) 70%, transparent 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+}
+
+.app-header.transparent {
+  background: linear-gradient(180deg, rgba(10, 10, 15, 0.6) 0%, transparent 100%);
+}
+
+.app-header.scrolled {
+  background: rgba(10, 10, 15, 0.98);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.app-header.hidden {
+  transform: translateY(-100%);
+}
+
+.app-header.visible {
+  transform: translateY(0);
+}
+
+.header-container {
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* ========================================
+   LEFT SECTION - Logo / Back
+   ======================================== */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.header-logo:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.logo-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.logo-text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.logo-text span {
+  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-back-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(-2px);
+}
+
+.header-back-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.header-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* ========================================
+   CENTER SECTION - Navigation
+   ======================================== */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-link.active {
+  color: #fff;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+/* ========================================
+   RIGHT SECTION - Actions
+   ======================================== */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.header-home-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-home-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.header-home-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========================================
+   RESPONSIVE - Tablet
+   ======================================== */
+@media (max-width: 900px) {
+  .app-header {
+    padding: 0 16px;
+    height: 56px;
+  }
+
+  .header-nav {
+    padding: 3px;
+  }
+
+  .nav-link {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .nav-link svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .header-title {
+    max-width: 150px;
+  }
+}
+
+/* ========================================
+   RESPONSIVE - Mobile
+   ======================================== */
+@media (max-width: 640px) {
+  .app-header {
+    height: 52px;
+    padding: 0 12px;
+  }
+
+  .header-container {
+    gap: 12px;
+  }
+
+  .header-nav {
+    flex: 1;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    gap: 4px;
+  }
+
+  .nav-link {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.75rem;
+  }
+
+  .nav-link span {
+    display: none;
+  }
+
+  .nav-link svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .header-back-btn,
+  .header-home-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .header-back-btn svg,
+  .header-home-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .header-title {
+    font-size: 1rem;
+    max-width: 120px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* ========================================
+   ADULT BADGE
+   ======================================== */
+.adult-badge {
+  background: linear-gradient(135deg, #ef4444, #ec4899);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-left: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* ========================================
+   PIN MODAL
+   ======================================== */
+.pin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.pin-modal {
+  background: linear-gradient(180deg, #1a1a24 0%, #12121a 100%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 380px;
+  overflow: hidden;
+  animation: modalSlide 0.3s ease;
+}
+
+@keyframes modalSlide {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.pin-modal-header {
+  padding: 32px 24px 20px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%);
+}
+
+.pin-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.pin-icon svg {
+  width: 32px;
+  height: 32px;
+  color: #8b5cf6;
+}
+
+.pin-modal-header h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.pin-modal-header p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.pin-modal-content {
+  padding: 24px;
+}
+
+.pin-modal .pin-input {
+  width: 100%;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 12px;
+  transition: all 0.2s ease;
+}
+
+.pin-modal .pin-input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.1);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+.pin-modal .pin-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 8px;
+}
+
+.pin-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+}
+
+.pin-hint svg {
+  color: #8b5cf6;
+}
+
+.pin-modal-actions {
+  display: flex;
+  gap: 12px;
+  padding: 0 24px 24px;
+}
+
+.pin-modal-actions button {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pin-modal-actions .cancel-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.pin-modal-actions .cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.pin-modal-actions .unlock-btn {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.pin-modal-actions .unlock-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.pin-modal-actions .unlock-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

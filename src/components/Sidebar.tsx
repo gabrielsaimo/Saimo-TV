@@ -13,14 +13,10 @@ interface SidebarProps {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
   isMobileView?: boolean;
-  onUnlockAdultMode?: () => void;
-  onLockAdultMode?: () => void;
   isAdultModeUnlocked?: boolean;
 }
 
 type FilterType = 'all' | 'favorites';
-
-const SECRET_CLICK_COUNT = 15;
 
 export const Sidebar = memo(function Sidebar({
   channels,
@@ -31,49 +27,12 @@ export const Sidebar = memo(function Sidebar({
   isCollapsed,
   onToggleCollapse,
   isMobileView = false,
-  onUnlockAdultMode,
-  onLockAdultMode,
   isAdultModeUnlocked = false,
 }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<FilterType>('all');
   const channelsListRef = useRef<HTMLDivElement>(null);
   const activeChannelRef = useRef<HTMLDivElement>(null);
-  const [secretClickCount, setSecretClickCount] = useState(0);
-  const secretClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Handler para cliques secretos no logo
-  const handleLogoClick = () => {
-    if (isAdultModeUnlocked) return; // Já desbloqueado
-
-    // Reset timeout para resetar contagem após 3 segundos de inatividade
-    if (secretClickTimeoutRef.current) {
-      clearTimeout(secretClickTimeoutRef.current);
-    }
-    secretClickTimeoutRef.current = setTimeout(() => {
-      setSecretClickCount(0);
-    }, 3000);
-
-    const newCount = secretClickCount + 1;
-    setSecretClickCount(newCount);
-
-    if (newCount >= SECRET_CLICK_COUNT && onUnlockAdultMode) {
-      onUnlockAdultMode();
-      setSecretClickCount(0);
-      if (secretClickTimeoutRef.current) {
-        clearTimeout(secretClickTimeoutRef.current);
-      }
-    }
-  };
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (secretClickTimeoutRef.current) {
-        clearTimeout(secretClickTimeoutRef.current);
-      }
-    };
-  }, []);
 
   // Scroll para o canal ativo quando ele mudar
   useEffect(() => {
@@ -140,21 +99,10 @@ export const Sidebar = memo(function Sidebar({
             <path d="M10 9l5 3-5 3V9z" fill="currentColor" />
           </svg>
           {!isCollapsed && (
-            <span 
-              className={`logo-text ${!isAdultModeUnlocked ? 'clickable' : ''}`}
-              onClick={handleLogoClick}
-              style={{ cursor: !isAdultModeUnlocked ? 'pointer' : 'default', userSelect: 'none' }}
-            >
+            <span className="logo-text">
               Saimo TV
               {isAdultModeUnlocked && (
-                <span 
-                  className="adult-badge" 
-                  onClick={(e) => { e.stopPropagation(); onLockAdultMode?.(); }}
-                  style={{ cursor: 'pointer' }}
-                  title="Clique para esconder canais adultos"
-                >
-                  🔓
-                </span>
+                <span className="adult-badge">+18</span>
               )}
             </span>
           )}

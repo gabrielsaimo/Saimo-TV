@@ -1,8 +1,12 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, createContext, useContext } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { VideoPlayer } from './components/VideoPlayer';
+import { MoviePlayer } from './components/MoviePlayer';
 import { ProgramGuide } from './components/ProgramGuide';
 import { MovieCatalog } from './components/MovieCatalog';
+import { HomeSelector } from './components/HomeSelector';
+import { AppHeader } from './components/AppHeader';
 import { Toast } from './components/Toast';
 import { getAllChannels } from './data/channels';
 import type { Channel } from './types/channel';
@@ -18,15 +22,41 @@ interface ToastState {
 }
 
 type MobileTab = 'player' | 'channels';
-type AppView = 'tv' | 'movies';
 
-function App() {
+// Contexto para estado adulto global
+interface AdultModeContextType {
+  isAdultUnlocked: boolean;
+  unlockAdult: () => void;
+  lockAdult: () => void;
+}
+
+const AdultModeContext = createContext<AdultModeContextType>({
+  isAdultUnlocked: false,
+  unlockAdult: () => {},
+  lockAdult: () => {},
+});
+
+export const useAdultMode = () => useContext(AdultModeContext);
+
+// Componente Home
+function HomePage() {
+  const navigate = useNavigate();
+  
+  const handleSelect = (mode: 'tv' | 'movies') => {
+    navigate(`/${mode}`);
+  };
+
+  return <HomeSelector onSelect={handleSelect} />;
+}
+
+// Componente de TV
+function TVPage() {
+  const navigate = useNavigate();
+  const { isAdultUnlocked, unlockAdult } = useAdultMode();
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
   const [lastChannelId, setLastChannelId] = useLocalStorage<string | null>('tv-last-channel', null);
-  const [adultModeUnlocked, setAdultModeUnlocked] = useLocalStorage<boolean>('tv-adult-mode', false);
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const [currentView, setCurrentView] = useState<AppView>('tv');
   const [isTheaterMode, setIsTheaterMode] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -35,25 +65,18 @@ function App() {
   const [mobileTab, setMobileTab] = useState<MobileTab>('player');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // Lista de canais baseada no modo adulto
-  const channels = getAllChannels(adultModeUnlocked);
+  const channels = getAllChannels(isAdultUnlocked);
 
-  // Detectar se é mobile
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Load last channel on mount
   useEffect(() => {
     if (lastChannelId) {
       const channel = channels.find((ch) => ch.id === lastChannelId);
-      if (channel) {
-        setSelectedChannel(channel);
-      }
+      if (channel) setSelectedChannel(channel);
     }
   }, [lastChannelId]);
 
@@ -62,45 +85,24 @@ function App() {
     setTimeout(() => setToast(null), 3000);
   }, []);
 
-  // Handler para desbloquear modo adulto
-  const handleUnlockAdultMode = useCallback(() => {
-    setAdultModeUnlocked(true);
-    showToast('🔓 Modo secreto desbloqueado!', 'success');
-  }, [setAdultModeUnlocked, showToast]);
-
-  // Handler para bloquear modo adulto
-  const handleLockAdultMode = useCallback(() => {
-    setAdultModeUnlocked(false);
-    showToast('🔒 Canais adultos ocultados', 'info');
-  }, [setAdultModeUnlocked, showToast]);
-
   const handleSelectChannel = useCallback((channel: Channel) => {
     setSelectedChannel(channel);
-    setSelectedMovie(null); // Limpa filme ao selecionar canal
+    setSelectedMovie(null);
     setLastChannelId(channel.id);
     setIsMobileMenuOpen(false);
-    setMobileTab('player'); // Volta para o player ao selecionar canal
+    setMobileTab('player');
     showToast(`Assistindo: ${channel.name}`, 'info');
   }, [setLastChannelId, showToast]);
 
-  // Handler para selecionar filme/série
-  const handleSelectMovie = useCallback((movie: Movie) => {
-    setSelectedMovie(movie);
-    setSelectedChannel(null); // Limpa canal ao selecionar filme
-    setCurrentView('tv'); // Volta para a view de TV (player)
-    showToast(`Assistindo: ${movie.name}`, 'info');
-  }, [showToast]);
-
-  // Handler para voltar do catálogo de filmes
-  const handleBackFromMovies = useCallback(() => {
-    setCurrentView('tv');
-  }, []);
+  const handleBackFromMovie = useCallback(() => {
+    setSelectedMovie(null);
+    navigate('/movies');
+  }, [navigate]);
 
   const handleToggleFavorite = useCallback((channelId: string) => {
     setFavorites((prev) => {
       const isFav = prev.includes(channelId);
       const channel = channels.find((ch) => ch.id === channelId);
-      
       if (isFav) {
         showToast(`${channel?.name} removido dos favoritos`, 'info');
         return prev.filter((id) => id !== channelId);
@@ -109,7 +111,7 @@ function App() {
         return [...prev, channelId];
       }
     });
-  }, [setFavorites, showToast]);
+  }, [setFavorites, showToast, channels]);
 
   const handleToggleTheater = useCallback(() => {
     setIsTheaterMode((prev) => !prev);
@@ -124,15 +126,14 @@ function App() {
     const currentIndex = channels.findIndex((ch) => ch.id === selectedChannel?.id);
     const nextIndex = (currentIndex + 1) % channels.length;
     handleSelectChannel(channels[nextIndex]);
-  }, [selectedChannel, handleSelectChannel]);
+  }, [selectedChannel, handleSelectChannel, channels]);
 
   const handlePrevChannel = useCallback(() => {
     const currentIndex = channels.findIndex((ch) => ch.id === selectedChannel?.id);
     const prevIndex = currentIndex <= 0 ? channels.length - 1 : currentIndex - 1;
     handleSelectChannel(channels[prevIndex]);
-  }, [selectedChannel, handleSelectChannel]);
+  }, [selectedChannel, handleSelectChannel, channels]);
 
-  // Handler para trocar de canal por número
   const handleChannelNumber = useCallback((channelNumber: number) => {
     const channel = channels.find((ch) => ch.channelNumber === channelNumber);
     if (channel) {
@@ -142,7 +143,6 @@ function App() {
     }
   }, [channels, handleSelectChannel, showToast]);
 
-  // Keyboard shortcuts
   useKeyboardShortcuts({
     onTheater: handleToggleTheater,
     onNextChannel: handleNextChannel,
@@ -150,7 +150,6 @@ function App() {
     onChannelNumber: handleChannelNumber,
   });
 
-  // Atalho G para abrir guia
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'g' || e.key === 'G') {
@@ -162,165 +161,227 @@ function App() {
   }, []);
 
   return (
-    <div className={`app ${isTheaterMode ? 'theater-mode' : ''}`}>
-      {/* Navigation Bar Principal */}
-      <nav className="main-nav">
-        <button
-          className={`nav-item ${currentView === 'tv' ? 'active' : ''}`}
-          onClick={() => setCurrentView('tv')}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="2" y="3" width="20" height="14" rx="2" />
-            <path d="M8 21h8M12 17v4" />
-          </svg>
-          <span>TV ao Vivo</span>
-        </button>
-        <button
-          className={`nav-item ${currentView === 'movies' ? 'active' : ''}`}
-          onClick={() => setCurrentView('movies')}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-          <span>Filmes e Séries</span>
-        </button>
-      </nav>
+    <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''}`}>
+      {/* Header Global */}
+      {!isTheaterMode && <AppHeader transparent isAdultUnlocked={isAdultUnlocked} onUnlockAdult={unlockAdult} />}
 
-      {/* View de Filmes/Séries */}
-      {currentView === 'movies' && (
-        <div className="movies-view">
-          <MovieCatalog
-            onSelectMovie={handleSelectMovie}
-            activeMovieId={selectedMovie?.id}
-            onBack={handleBackFromMovies}
+      <div className="tv-layout">
+        {/* Mobile Tab Navigation */}
+        <nav className="mobile-tabs">
+          <button
+            className={`mobile-tab ${mobileTab === 'player' ? 'active' : ''}`}
+            onClick={() => setMobileTab('player')}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <path d="M8 21h8M12 17v4" />
+            </svg>
+            <span>Player</span>
+          </button>
+          <button
+            className={`mobile-tab ${mobileTab === 'channels' ? 'active' : ''}`}
+            onClick={() => setMobileTab('channels')}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <span>Canais</span>
+            <span className="tab-badge">{channels.length}</span>
+          </button>
+        </nav>
+
+        {/* Desktop Sidebar */}
+        <div className={`sidebar-wrapper desktop-only ${isMobileMenuOpen ? 'open' : ''}`}>
+          <Sidebar
+            channels={channels}
+            activeChannelId={selectedChannel?.id || null}
+            favorites={favorites}
+            onSelectChannel={handleSelectChannel}
+            onToggleFavorite={handleToggleFavorite}
+            isCollapsed={isSidebarCollapsed}
+            onToggleCollapse={handleToggleSidebar}
+            isAdultModeUnlocked={isAdultUnlocked}
           />
         </div>
-      )}
 
-      {/* View de TV */}
-      {currentView === 'tv' && (
-        <div className="tv-view">
-          {/* Mobile Tab Navigation */}
-          <nav className="mobile-tabs">
-            <button
-              className={`mobile-tab ${mobileTab === 'player' ? 'active' : ''}`}
-              onClick={() => setMobileTab('player')}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="2" y="3" width="20" height="14" rx="2" />
-                <path d="M8 21h8M12 17v4" />
-              </svg>
-              <span>Player</span>
-            </button>
-            <button
-              className={`mobile-tab ${mobileTab === 'channels' ? 'active' : ''}`}
-              onClick={() => setMobileTab('channels')}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-              <span>Canais</span>
-              <span className="tab-badge">{channels.length}</span>
-            </button>
-          </nav>
+        {isMobileMenuOpen && (
+          <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />
+        )}
 
-          {/* Desktop Sidebar */}
-          <div className={`sidebar-wrapper desktop-only ${isMobileMenuOpen ? 'open' : ''}`}>
-            <Sidebar
-              channels={channels}
-              activeChannelId={selectedChannel?.id || null}
-              favorites={favorites}
-              onSelectChannel={handleSelectChannel}
-              onToggleFavorite={handleToggleFavorite}
-              isCollapsed={isSidebarCollapsed}
-              onToggleCollapse={handleToggleSidebar}
-              onUnlockAdultMode={handleUnlockAdultMode}
-              onLockAdultMode={handleLockAdultMode}
-              isAdultModeUnlocked={adultModeUnlocked}
-            />
-          </div>
-
-          {/* Mobile overlay */}
-          {isMobileMenuOpen && (
-            <div
-              className="mobile-overlay"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-          )}
-
-          {/* Mobile Content - Só renderiza no mobile */}
-          {isMobile && (
-            <div className="mobile-content">
-              <div className={`mobile-view ${mobileTab === 'player' ? 'active' : ''}`}>
+        {/* Mobile Content */}
+        {isMobile && (
+          <div className="mobile-content">
+            <div className={`mobile-view ${mobileTab === 'player' ? 'active' : ''}`}>
+              {selectedMovie ? (
+                <MoviePlayer movie={selectedMovie} onBack={handleBackFromMovie} />
+              ) : (
                 <VideoPlayer
-                  channel={selectedMovie ? { 
-                    id: selectedMovie.id, 
-                    name: selectedMovie.name, 
-                    url: selectedMovie.url, 
-                    logo: selectedMovie.logo,
-                    category: selectedMovie.category 
-                  } : selectedChannel}
+                  channel={selectedChannel}
                   isTheaterMode={isTheaterMode}
                   onToggleTheater={handleToggleTheater}
                   onOpenGuide={() => setIsGuideOpen(true)}
                 />
-              </div>
-              <div className={`mobile-view ${mobileTab === 'channels' ? 'active' : ''}`}>
-                <Sidebar
-                  channels={channels}
-                  activeChannelId={selectedChannel?.id || null}
-                  favorites={favorites}
-                  onSelectChannel={handleSelectChannel}
-                  onToggleFavorite={handleToggleFavorite}
-                  isCollapsed={false}
-                  onToggleCollapse={() => {}}
-                  isMobileView={true}
-                  onUnlockAdultMode={handleUnlockAdultMode}
-                  onLockAdultMode={handleLockAdultMode}
-                  isAdultModeUnlocked={adultModeUnlocked}
-                />
-              </div>
+              )}
             </div>
-          )}
+            <div className={`mobile-view ${mobileTab === 'channels' ? 'active' : ''}`}>
+              <Sidebar
+                channels={channels}
+                activeChannelId={selectedChannel?.id || null}
+                favorites={favorites}
+                onSelectChannel={handleSelectChannel}
+                onToggleFavorite={handleToggleFavorite}
+                isCollapsed={false}
+                onToggleCollapse={() => {}}
+                isMobileView={true}
+                isAdultModeUnlocked={isAdultUnlocked}
+              />
+            </div>
+          </div>
+        )}
 
-          {/* Desktop Main Content - Só renderiza no desktop */}
-          {!isMobile && (
-            <main className="main-content">
+        {/* Desktop Main Content */}
+        {!isMobile && (
+          <main className="main-content">
+            {selectedMovie ? (
+              <MoviePlayer movie={selectedMovie} onBack={handleBackFromMovie} />
+            ) : (
               <VideoPlayer
-                channel={selectedMovie ? { 
-                  id: selectedMovie.id, 
-                  name: selectedMovie.name, 
-                  url: selectedMovie.url, 
-                  logo: selectedMovie.logo,
-                  category: selectedMovie.category 
-                } : selectedChannel}
+                channel={selectedChannel}
                 isTheaterMode={isTheaterMode}
                 onToggleTheater={handleToggleTheater}
                 onOpenGuide={() => setIsGuideOpen(true)}
               />
-            </main>
-          )}
+            )}
+          </main>
+        )}
 
-          {/* Guia de Programação */}
-          <ProgramGuide
-            channels={channels}
-            currentChannel={selectedChannel}
-            onSelectChannel={handleSelectChannel}
-            onClose={() => setIsGuideOpen(false)}
-            isOpen={isGuideOpen}
-          />
-        </div>
-      )}
+        {/* Guia de Programação */}
+        <ProgramGuide
+          channels={channels}
+          currentChannel={selectedChannel}
+          onSelectChannel={handleSelectChannel}
+          onClose={() => setIsGuideOpen(false)}
+          isOpen={isGuideOpen}
+        />
+      </div>
 
       {toast && (
-        <Toast
-          key={toast.id}
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
+        <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => setToast(null)} />
       )}
     </div>
+  );
+}
+
+// Componente de Filmes
+function MoviesPage() {
+  const navigate = useNavigate();
+  const { isAdultUnlocked, unlockAdult } = useAdultMode();
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [toast, setToast] = useState<ToastState | null>(null);
+
+  const showToast = useCallback((message: string, type: ToastState['type'] = 'info') => {
+    setToast({ message, type, id: Date.now() });
+    setTimeout(() => setToast(null), 3000);
+  }, []);
+
+  const handleSelectMovie = useCallback((movie: Movie) => {
+    setSelectedMovie(movie);
+    showToast(`Assistindo: ${movie.name}`, 'info');
+  }, [showToast]);
+
+  const handleBackFromMovie = useCallback(() => {
+    setSelectedMovie(null);
+  }, []);
+
+  const handleBackFromCatalog = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
+  // Se tem filme selecionado, mostra o player
+  if (selectedMovie) {
+    return (
+      <div className="page-container movies-page playing">
+        <AppHeader showBackButton onBack={handleBackFromMovie} title={selectedMovie.name} isAdultUnlocked={isAdultUnlocked} onUnlockAdult={unlockAdult} />
+        <div className="movie-player-container">
+          <MoviePlayer movie={selectedMovie} onBack={handleBackFromMovie} />
+        </div>
+        {toast && (
+          <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="page-container movies-page">
+      <AppHeader isAdultUnlocked={isAdultUnlocked} onUnlockAdult={unlockAdult} />
+      <div className="catalog-container">
+        <MovieCatalog
+          onSelectMovie={handleSelectMovie}
+          activeMovieId={null}
+          onBack={handleBackFromCatalog}
+          isAdultUnlocked={isAdultUnlocked}
+        />
+      </div>
+      {toast && (
+        <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+      )}
+    </div>
+  );
+}
+
+// Layout principal que gerencia scroll
+function AppLayout() {
+  const location = useLocation();
+  
+  // Reset scroll on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/tv" element={<TVPage />} />
+      <Route path="/movies" element={<MoviesPage />} />
+    </Routes>
+  );
+}
+
+// Provedor de contexto adulto
+function AdultModeProvider({ children }: { children: React.ReactNode }) {
+  const [isAdultUnlocked, setIsAdultUnlocked] = useLocalStorage<boolean>('adult-mode-global', false);
+  const [toast, setToast] = useState<ToastState | null>(null);
+
+  const unlockAdult = useCallback(() => {
+    setIsAdultUnlocked(true);
+    setToast({ message: '🔓 Modo adulto desbloqueado!', type: 'success', id: Date.now() });
+    setTimeout(() => setToast(null), 3000);
+  }, [setIsAdultUnlocked]);
+
+  const lockAdult = useCallback(() => {
+    setIsAdultUnlocked(false);
+    setToast({ message: '🔒 Modo adulto bloqueado', type: 'info', id: Date.now() });
+    setTimeout(() => setToast(null), 3000);
+  }, [setIsAdultUnlocked]);
+
+  return (
+    <AdultModeContext.Provider value={{ isAdultUnlocked, unlockAdult, lockAdult }}>
+      {children}
+      {toast && (
+        <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+      )}
+    </AdultModeContext.Provider>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AdultModeProvider>
+        <AppLayout />
+      </AdultModeProvider>
+    </BrowserRouter>
   );
 }
 
