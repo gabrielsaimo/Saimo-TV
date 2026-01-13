@@ -570,3 +570,162 @@
     opacity: 1;
   }
 }
+
+/* ==========================================
+   NEXT EPISODE OVERLAY
+   ========================================== */
+.next-episode-overlay {
+  position: absolute;
+  bottom: 100px;
+  right: 24px;
+  z-index: 15;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.next-episode-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(20, 20, 20, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.next-episode-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.next-label {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.next-episode-info h4 {
+  font-size: 1rem;
+  color: #fff;
+  margin: 0;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.next-episode-number {
+  font-size: 0.8rem;
+  color: #8b5cf6;
+}
+
+.next-episode-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #8b5cf6;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.next-episode-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.next-episode-btn:hover {
+  background: #7c3aed;
+  transform: scale(1.05);
+}
+
+.next-dismiss-btn {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  color: #666;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.next-dismiss-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.next-dismiss-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Next Episode Button in Controls */
+.next-ep-btn {
+  position: relative;
+}
+
+.next-ep-btn::after {
+  content: 'Próx';
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  color: #8b5cf6;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.next-ep-btn:hover::after {
+  opacity: 1;
+}
+
+/* Mobile Adjustments for Next Episode */
+@media (max-width: 768px) {
+  .next-episode-overlay {
+    bottom: 120px;
+    right: 16px;
+    left: 16px;
+  }
+
+  .next-episode-card {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .next-episode-info {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .next-episode-info h4 {
+    max-width: 150px;
+    font-size: 0.9rem;
+  }
+
+  .next-episode-btn {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+}

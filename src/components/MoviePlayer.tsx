@@ -1,19 +1,31 @@
-import { useRef, useEffect, useState, useCallback, memo } from 'react';
+import { useRef, useEffect, useState, useCallback, memo, useMemo } from 'react';
 import type { Movie } from '../types/movie';
 import { getProxiedUrl } from '../utils/proxyUrl';
 import './MoviePlayer.css';
 
+// Interface para informações de série
+export interface SeriesEpisodeInfo {
+  currentEpisode: number;
+  currentSeason: number;
+  totalEpisodes: number;
+  episodes: Movie[]; // Lista de episódios da temporada atual
+  seriesName: string;
+}
+
 interface MoviePlayerProps {
   movie: Movie | null;
   onBack: () => void;
+  seriesInfo?: SeriesEpisodeInfo | null;
+  onNextEpisode?: (episode: Movie) => void;
 }
 
-export const MoviePlayer = memo(function MoviePlayer({ movie, onBack }: MoviePlayerProps) {
+export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo, onNextEpisode }: MoviePlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showNextEpisodeButton, setShowNextEpisodeButton] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(() => {
     const saved = localStorage.getItem('movie-volume');
@@ -177,6 +189,10 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack }: MoviePla
       if (movie) {
         localStorage.removeItem(`movie-progress-${movie.id}`);
       }
+      // Mostra botão de próximo episódio quando o vídeo termina
+      if (nextEpisode) {
+        setShowNextEpisodeButton(true);
+      }
     };
 
     video.addEventListener('timeupdate', handleTimeUpdate);
@@ -192,7 +208,35 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack }: MoviePla
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('ended', handleEnded);
     };
-  }, [movie]);
+  }, [movie, nextEpisode]);
+
+  // Calcula próximo episódio
+  const nextEpisode = useMemo(() => {
+    if (!seriesInfo || !movie) return null;
+    
+    const currentIndex = seriesInfo.episodes.findIndex(ep => ep.id === movie.id);
+    if (currentIndex === -1 || currentIndex >= seriesInfo.episodes.length - 1) return null;
+    
+    return seriesInfo.episodes[currentIndex + 1];
+  }, [seriesInfo, movie]);
+
+  // Mostra botão de próximo episódio quando faltam 30 segundos
+  useEffect(() => {
+    if (!nextEpisode || !duration) return;
+    
+    const timeRemaining = duration - currentTime;
+    if (timeRemaining <= 30 && timeRemaining > 0) {
+      setShowNextEpisodeButton(true);
+    } else if (currentTime < duration - 35) {
+      setShowNextEpisodeButton(false);
+    }
+  }, [currentTime, duration, nextEpisode]);
+
+  const handleNextEpisode = useCallback(() => {
+    if (nextEpisode && onNextEpisode) {
+      onNextEpisode(nextEpisode);
+    }
+  }, [nextEpisode, onNextEpisode]);
 
   // Volume
   useEffect(() => {
@@ -446,6 +490,34 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack }: MoviePla
         </div>
       )}
 
+      {/* Next Episode Overlay - Aparece nos últimos 30 segundos ou quando o vídeo termina */}
+      {showNextEpisodeButton && nextEpisode && (
+        <div className="next-episode-overlay" onClick={(e) => e.stopPropagation()}>
+          <div className="next-episode-card">
+            <div className="next-episode-info">
+              <span className="next-label">Próximo episódio</span>
+              <h4>{nextEpisode.name}</h4>
+              {seriesInfo && (
+                <span className="next-episode-number">
+                  T{seriesInfo.currentSeason} E{seriesInfo.currentEpisode + 1}
+                </span>
+              )}
+            </div>
+            <button className="next-episode-btn" onClick={handleNextEpisode}>
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+              </svg>
+              <span>Reproduzir</span>
+            </button>
+            <button className="next-dismiss-btn" onClick={() => setShowNextEpisodeButton(false)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Controls */}
       <div className={`player-controls ${showControls ? 'visible' : ''}`} onClick={(e) => e.stopPropagation()}>
         {/* Top bar */}
@@ -586,6 +658,15 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack }: MoviePla
             </div>
 
             <div className="controls-right">
+              {/* Next Episode Button */}
+              {nextEpisode && (
+                <button className="control-btn next-ep-btn" onClick={handleNextEpisode} title="Próximo episódio">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                  </svg>
+                </button>
+              )}
+
               {/* Playback speed */}
               <select 
                 className="speed-select"

@@ -7,17 +7,28 @@ import {
   type MovieWithAdult,
   type CategoryIndex
 } from '../data/movies';
+import type { SeriesEpisodeInfo } from './MoviePlayer';
 import './MovieCatalog.css';
 
+// Interface para informações de seleção de filme/episódio
+export interface MovieSelection {
+  movie: Movie;
+  seriesInfo?: SeriesEpisodeInfo | null;
+  seriesData?: GroupedSeries | null;
+}
+
 interface MovieCatalogProps {
-  onSelectMovie: (movie: Movie) => void;
+  onSelectMovie: (selection: MovieSelection) => void;
   activeMovieId?: string | null;
   onBack: () => void;
   isAdultUnlocked?: boolean;
+  // Para restaurar estado quando voltar do player
+  initialSeriesModal?: GroupedSeries | null;
+  onSeriesModalChange?: (series: GroupedSeries | null) => void;
 }
 
-// Interface para série agrupada
-interface GroupedSeries {
+// Interface para série agrupada - exportada
+export interface GroupedSeries {
   id: string;
   name: string;
   logo?: string;
@@ -386,7 +397,7 @@ const SeriesModal = memo(function SeriesModal({
 }: {
   series: GroupedSeries;
   onClose: () => void;
-  onSelectEpisode: (episode: Movie) => void;
+  onSelectEpisode: (episode: Movie, series: GroupedSeries) => void;
 }) {
   const [selectedSeason, setSelectedSeason] = useState<number>(
     Math.min(...Array.from(series.seasons.keys()))
@@ -478,7 +489,7 @@ const SeriesModal = memo(function SeriesModal({
                 <button
                   key={episode.id}
                   className="episode-card"
-                  onClick={() => onSelectEpisode(episode)}
+                  onClick={() => onSelectEpisode(episode, series)}
                 >
                   <div className="episode-number">
                     <span>{info?.episode || index + 1}</span>
@@ -845,12 +856,17 @@ const PaginatedGrid = memo(function PaginatedGrid({
 });
 
 // =============== COMPONENTE PRINCIPAL ===============
-export function MovieCatalog({ onSelectMovie, isAdultUnlocked = false }: MovieCatalogProps) {
+export function MovieCatalog({ 
+  onSelectMovie, 
+  isAdultUnlocked = false,
+  initialSeriesModal = null,
+  onSeriesModalChange
+}: MovieCatalogProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [contentFilter, setContentFilter] = useState<'all' | 'movies' | 'series'>('all');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [selectedSeries, setSelectedSeries] = useState<GroupedSeries | null>(null);
+  const [selectedSeries, setSelectedSeries] = useState<GroupedSeries | null>(initialSeriesModal);
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [visibleCategories, setVisibleCategories] = useState(CATEGORIES_PER_LOAD);
   const [showAllCategoriesModal, setShowAllCategoriesModal] = useState(false);
@@ -864,6 +880,20 @@ export function MovieCatalog({ onSelectMovie, isAdultUnlocked = false }: MovieCa
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const lastScrollTop = useRef(0);
+
+  // Atualiza o estado da série no componente pai quando muda
+  useEffect(() => {
+    if (onSeriesModalChange) {
+      onSeriesModalChange(selectedSeries);
+    }
+  }, [selectedSeries, onSeriesModalChange]);
+
+  // Restaura o modal da série quando voltar do player
+  useEffect(() => {
+    if (initialSeriesModal && !selectedSeries) {
+      setSelectedSeries(initialSeriesModal);
+    }
+  }, [initialSeriesModal]);
   
   // Categorias disponíveis filtradas por modo adulto
   const availableCategoryIndex = useMemo(() => {
@@ -1184,16 +1214,40 @@ export function MovieCatalog({ onSelectMovie, isAdultUnlocked = false }: MovieCa
   }, []);
 
   const handleMovieSelect = useCallback((movie: Movie) => {
-    onSelectMovie(movie);
+    // Para filmes, não passa informações de série
+    onSelectMovie({ movie, seriesInfo: null, seriesData: null });
   }, [onSelectMovie]);
 
   const handleSeriesSelect = useCallback((series: GroupedSeries) => {
     setSelectedSeries(series);
   }, []);
 
-  const handleEpisodeSelect = useCallback((episode: Movie) => {
-    setSelectedSeries(null);
-    onSelectMovie(episode);
+  const handleEpisodeSelect = useCallback((episode: Movie, series: GroupedSeries) => {
+    // Mantém o modal da série aberto (não fecha mais)
+    // setSelectedSeries(null); -- removido para manter estado
+    
+    // Calcula informações do episódio para o player
+    const info = parseSeriesInfo(episode.name);
+    const currentSeason = info?.season || 1;
+    const currentEpisode = info?.episode || 1;
+    
+    // Pega todos os episódios da temporada atual, ordenados
+    const seasonEpisodes = series.seasons.get(currentSeason) || [];
+    const sortedEpisodes = [...seasonEpisodes].sort((a, b) => {
+      const infoA = parseSeriesInfo(a.name);
+      const infoB = parseSeriesInfo(b.name);
+      return (infoA?.episode || 0) - (infoB?.episode || 0);
+    });
+    
+    const seriesInfo: SeriesEpisodeInfo = {
+      currentEpisode,
+      currentSeason,
+      totalEpisodes: sortedEpisodes.length,
+      episodes: sortedEpisodes,
+      seriesName: series.name
+    };
+    
+    onSelectMovie({ movie: episode, seriesInfo, seriesData: series });
   }, [onSelectMovie]);
 
   useEffect(() => {
@@ -1341,33 +1395,35 @@ export function MovieCatalog({ onSelectMovie, isAdultUnlocked = false }: MovieCa
           </div>
         </div>
 
-        {/* Categorias - Desktop (scroll horizontal) */}
-        <div className="categories-bar">
-          <div className="categories-scroll">
-            <button
-              className={`category-chip ${selectedCategory === null ? 'active' : ''}`}
-              onClick={() => handleCategoryClick(null)}
-            >
-              Todas
-            </button>
-            {filteredCategoryIndex.map(cat => {
-              const catType = getCategoryType(cat.name);
-              return (
-                <button
-                  key={cat.name}
-                  className={`category-chip ${selectedCategory === cat.name ? 'active' : ''} type-${catType}`}
-                  onClick={() => handleCategoryClick(cat.name)}
-                  title={catType === 'movies' ? 'Categoria de Filmes' : catType === 'series' ? 'Categoria de Séries' : catType === 'mixed' ? 'Filmes e Séries' : ''}
-                >
-                  {catType === 'movies' && <span className="type-icon">🎬</span>}
-                  {catType === 'series' && <span className="type-icon">📺</span>}
-                  {catType === 'mixed' && <span className="type-icon">🎭</span>}
-                  {cat.name}
-                </button>
-              );
-            })}
+        {/* Categorias - Desktop (scroll horizontal) - Só aparece quando uma categoria está selecionada */}
+        {selectedCategory && (
+          <div className="categories-bar">
+            <div className="categories-scroll">
+              <button
+                className={`category-chip ${selectedCategory === null ? 'active' : ''}`}
+                onClick={() => handleCategoryClick(null)}
+              >
+                Todas
+              </button>
+              {filteredCategoryIndex.map(cat => {
+                const catType = getCategoryType(cat.name);
+                return (
+                  <button
+                    key={cat.name}
+                    className={`category-chip ${selectedCategory === cat.name ? 'active' : ''} type-${catType}`}
+                    onClick={() => handleCategoryClick(cat.name)}
+                    title={catType === 'movies' ? 'Categoria de Filmes' : catType === 'series' ? 'Categoria de Séries' : catType === 'mixed' ? 'Filmes e Séries' : ''}
+                  >
+                    {catType === 'movies' && <span className="type-icon">🎬</span>}
+                    {catType === 'series' && <span className="type-icon">📺</span>}
+                    {catType === 'mixed' && <span className="type-icon">🎭</span>}
+                    {cat.name}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </header>
 
       {/* Conteúdo Principal */}

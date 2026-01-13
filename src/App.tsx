@@ -302,6 +302,8 @@ function MoviesPage() {
   const navigate = useNavigate();
   const { isAdultUnlocked, unlockAdult } = useAdultMode();
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [seriesInfo, setSeriesInfo] = useState<import('./components/MoviePlayer').SeriesEpisodeInfo | null>(null);
+  const [currentSeriesData, setCurrentSeriesData] = useState<import('./components/MovieCatalog').GroupedSeries | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
 
   const showToast = useCallback((message: string, type: ToastState['type'] = 'info') => {
@@ -309,49 +311,90 @@ function MoviesPage() {
     setTimeout(() => setToast(null), 3000);
   }, []);
 
-  const handleSelectMovie = useCallback((movie: Movie) => {
-    setSelectedMovie(movie);
-    showToast(`Assistindo: ${movie.name}`, 'info');
+  const handleSelectMovie = useCallback((selection: import('./components/MovieCatalog').MovieSelection) => {
+    setSelectedMovie(selection.movie);
+    setSeriesInfo(selection.seriesInfo || null);
+    setCurrentSeriesData(selection.seriesData || null);
+    showToast(`Assistindo: ${selection.movie.name}`, 'info');
   }, [showToast]);
 
   const handleBackFromMovie = useCallback(() => {
     setSelectedMovie(null);
+    setSeriesInfo(null);
+    // NÃO limpa currentSeriesData para manter o modal aberto
   }, []);
 
   const handleBackFromCatalog = useCallback(() => {
     navigate('/');
   }, [navigate]);
 
-  // Se tem filme selecionado, mostra o player
-  if (selectedMovie) {
-    return (
-      <div className="page-container movies-page playing">
-        <AppHeader showBackButton onBack={handleBackFromMovie} title={selectedMovie.name} isAdultUnlocked={isAdultUnlocked} onUnlockAdult={unlockAdult} />
-        <Suspense fallback={<LoadingFallback />}>
-          <div className="movie-player-container">
-            <MoviePlayer movie={selectedMovie} onBack={handleBackFromMovie} />
-          </div>
-        </Suspense>
-        {toast && (
-          <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => setToast(null)} />
-        )}
-      </div>
-    );
-  }
+  // Callback para próximo episódio
+  const handleNextEpisode = useCallback((episode: Movie) => {
+    if (seriesInfo && currentSeriesData) {
+      // Encontra o índice do episódio atual
+      const currentIndex = seriesInfo.episodes.findIndex(ep => ep.id === selectedMovie?.id);
+      const nextIndex = currentIndex + 1;
+      
+      // Atualiza as informações do episódio
+      const newSeriesInfo: import('./components/MoviePlayer').SeriesEpisodeInfo = {
+        ...seriesInfo,
+        currentEpisode: nextIndex + 1, // episódio é 1-based
+      };
+      
+      setSelectedMovie(episode);
+      setSeriesInfo(newSeriesInfo);
+      showToast(`Próximo: ${episode.name}`, 'info');
+    }
+  }, [seriesInfo, currentSeriesData, selectedMovie, showToast]);
+
+  // Handler para quando o modal da série muda no catálogo
+  const handleSeriesModalChange = useCallback((series: import('./components/MovieCatalog').GroupedSeries | null) => {
+    if (!selectedMovie) {
+      // Só atualiza quando não está assistindo nada
+      setCurrentSeriesData(series);
+    }
+  }, [selectedMovie]);
 
   return (
     <div className="page-container movies-page">
-      <AppHeader isAdultUnlocked={isAdultUnlocked} onUnlockAdult={unlockAdult} />
+      <AppHeader 
+        isAdultUnlocked={isAdultUnlocked} 
+        onUnlockAdult={unlockAdult}
+        showBackButton={!!selectedMovie}
+        onBack={handleBackFromMovie}
+        title={selectedMovie?.name}
+      />
+      
+      {/* Catálogo sempre renderizado para manter estado */}
       <Suspense fallback={<LoadingFallback />}>
-        <div className="catalog-container">
+        <div className={`catalog-container ${selectedMovie ? 'hidden-catalog' : ''}`}>
           <MovieCatalog
             onSelectMovie={handleSelectMovie}
-            activeMovieId={null}
+            activeMovieId={selectedMovie?.id || null}
             onBack={handleBackFromCatalog}
             isAdultUnlocked={isAdultUnlocked}
+            initialSeriesModal={selectedMovie ? currentSeriesData : null}
+            onSeriesModalChange={handleSeriesModalChange}
           />
         </div>
       </Suspense>
+
+      {/* Player como overlay quando tem filme selecionado */}
+      {selectedMovie && (
+        <div className="movie-player-overlay">
+          <Suspense fallback={<LoadingFallback />}>
+            <div className="movie-player-container">
+              <MoviePlayer 
+                movie={selectedMovie} 
+                onBack={handleBackFromMovie}
+                seriesInfo={seriesInfo}
+                onNextEpisode={handleNextEpisode}
+              />
+            </div>
+          </Suspense>
+        </div>
+      )}
+
       {toast && (
         <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => setToast(null)} />
       )}

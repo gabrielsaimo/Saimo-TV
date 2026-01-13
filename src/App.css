@@ -315,3 +315,53 @@
 .theater-mode .app-header {
   display: none;
 }
+
+/* ========================================
+   MOVIE PLAYER OVERLAY SYSTEM
+   ======================================== */
+
+/* Catálogo escondido quando player está ativo */
+.movies-page .catalog-container.hidden-catalog {
+  position: fixed;
+  visibility: hidden;
+  pointer-events: none;
+  /* Mantém no DOM para preservar estado mas invisível */
+}
+
+/* Player como overlay */
+.movie-player-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-player-overlay .movie-player-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  background: #000;
+  overflow: hidden;
+  padding-top: 64px; /* Espaço para o header */
+}
+
+/* Ajuste para quando tem header */
+.movies-page .app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .movie-player-overlay .movie-player-container {
+    padding-top: 52px;
+  }
+}
