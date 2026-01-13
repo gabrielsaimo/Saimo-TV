@@ -7,7 +7,7 @@ import type { Channel } from './types/channel';
 import type { Movie } from './types/movie';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
-import { DpadNavigationProvider, useDpad } from './contexts/DpadContext';
+import { DpadNavigationProvider } from './contexts/DpadContext';
 import './App.css';
 
 // Lazy loading dos componentes pesados
