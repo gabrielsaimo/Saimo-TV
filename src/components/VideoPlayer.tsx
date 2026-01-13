@@ -549,6 +549,20 @@ export const VideoPlayer = memo(function VideoPlayer({
     }
   }, [channel, resetControlsTimeout]);
 
+  // Listener para mostrar controles quando D-pad navegar para o player
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleDpadEnter = () => {
+      // Mostra controles quando D-pad entrar no player
+      resetControlsTimeout();
+    };
+
+    container.addEventListener('dpad-enter', handleDpadEnter);
+    return () => container.removeEventListener('dpad-enter', handleDpadEnter);
+  }, [resetControlsTimeout]);
+
   // Handle video click - apenas toggle controles (não pausa mais)
   const handleVideoClick = useCallback(() => {
     if (showControls) {
@@ -602,6 +616,28 @@ export const VideoPlayer = memo(function VideoPlayer({
             onClick={handleVideoClick}
             onDoubleClick={handleVideoDoubleClick}
           />
+
+          {/* Botão central de play/pause focável via D-pad */}
+          {showControls && !isLoading && !error && (
+            <button
+              className="center-play-btn"
+              onClick={() => { resetControlsTimeout(); togglePlay(); }}
+              data-focusable="true"
+              data-focus-key="btn-play-center"
+              aria-label={isPlaying ? 'Pausar vídeo' : 'Reproduzir vídeo'}
+            >
+              {isPlaying ? (
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16" rx="1" />
+                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </button>
+          )}
 
           {isLoading && (
             <div className="loading-overlay">

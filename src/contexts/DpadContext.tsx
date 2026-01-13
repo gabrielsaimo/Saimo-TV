@@ -30,6 +30,42 @@ const DpadContext = createContext<DpadContextValue | null>(null);
 // Seletor para elementos focáveis
 const FOCUSABLE_SELECTOR = '[data-focusable="true"]:not([disabled]):not([data-disabled="true"]):not([aria-hidden="true"])';
 
+// Zonas de navegação - define como navegação entre áreas funciona
+interface NavigationZone {
+  selector: string;
+  name: string;
+  // Define para qual zona ir quando navegar em uma direção
+  neighbors: {
+    up?: string;
+    down?: string;
+    left?: string;
+    right?: string;
+  };
+}
+
+// Definição das zonas de navegação para TV page
+const NAVIGATION_ZONES: NavigationZone[] = [
+  {
+    selector: '.sidebar, .sidebar-wrapper',
+    name: 'sidebar',
+    neighbors: {
+      right: '.main-content, .video-player-container',
+    }
+  },
+  {
+    selector: '.main-content, .video-player-container',
+    name: 'player',
+    neighbors: {
+      left: '.sidebar, .sidebar-wrapper',
+    }
+  },
+  {
+    selector: '.mobile-content',
+    name: 'mobile',
+    neighbors: {}
+  }
+];
+
 // Componente de navegação hint
 const NavigationHint = React.memo(function NavigationHint({ show }: { show: boolean }) {
   if (!show) return null;
@@ -235,6 +271,55 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
     }
   }, []);
 
+  // Encontra a zona de navegação atual do elemento
+  const getCurrentZone = useCallback((element: HTMLElement): NavigationZone | null => {
+    for (const zone of NAVIGATION_ZONES) {
+      const selectors = zone.selector.split(', ');
+      for (const sel of selectors) {
+        if (element.closest(sel)) {
+          return zone;
+        }
+      }
+    }
+    return null;
+  }, []);
+
+  // Encontra o primeiro elemento focável em uma zona vizinha
+  const getNeighborZoneElement = useCallback((currentElement: HTMLElement, direction: Direction): HTMLElement | null => {
+    const currentZone = getCurrentZone(currentElement);
+    if (!currentZone) return null;
+
+    const neighborSelector = currentZone.neighbors[direction];
+    if (!neighborSelector) return null;
+
+    // Encontra os containers da zona vizinha
+    const selectors = neighborSelector.split(', ');
+    for (const sel of selectors) {
+      const container = document.querySelector<HTMLElement>(sel);
+      if (container && isElementVisible(container)) {
+        // Obtém elementos focáveis dentro do container vizinho
+        const elements = getFocusableElements(container);
+        if (elements.length > 0) {
+          // Para direita/esquerda, tenta encontrar elemento na mesma altura
+          const currentRect = currentElement.getBoundingClientRect();
+          const currentCenterY = currentRect.top + currentRect.height / 2;
+
+          // Ordena elementos por proximidade vertical
+          const sorted = elements.sort((a, b) => {
+            const rectA = a.getBoundingClientRect();
+            const rectB = b.getBoundingClientRect();
+            const distA = Math.abs((rectA.top + rectA.height / 2) - currentCenterY);
+            const distB = Math.abs((rectB.top + rectB.height / 2) - currentCenterY);
+            return distA - distB;
+          });
+
+          return sorted[0];
+        }
+      }
+    }
+    return null;
+  }, [getCurrentZone, getFocusableElements, isElementVisible]);
+
   // Move foco na direção
   const moveFocus = useCallback((direction: Direction): boolean => {
     // Se não tem elemento focado, foca no primeiro
@@ -247,16 +332,66 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
       return false;
     }
 
+    // Primeiro, tenta navegar dentro da mesma zona
     const nextElement = findNextElement(currentFocusRef.current, direction);
     
     if (nextElement) {
+      // Verifica se o próximo elemento está na mesma zona
+      const currentZone = getCurrentZone(currentFocusRef.current);
+      const nextZone = getCurrentZone(nextElement);
+      
+      // Se está na mesma zona, navega normalmente
+      if (currentZone && nextZone && currentZone.name === nextZone.name) {
+        setFocus(nextElement);
+        return true;
+      }
+      
+      // Se está mudando de zona, verifica se é uma transição válida
+      if (currentZone) {
+        const neighborSelector = currentZone.neighbors[direction];
+        if (neighborSelector) {
+          // Tem vizinho definido nessa direção, usa a navegação de zona
+          const neighborElement = getNeighborZoneElement(currentFocusRef.current, direction);
+          if (neighborElement) {
+            setFocus(neighborElement);
+            
+            // Se está indo para o player, dispara evento para mostrar controles
+            if (neighborElement.closest('.video-player-container, .main-content')) {
+              const playerContainer = document.querySelector('.video-player-container');
+              if (playerContainer) {
+                playerContainer.dispatchEvent(new CustomEvent('dpad-enter'));
+              }
+            }
+            
+            return true;
+          }
+        }
+      }
+      
+      // Se não tem vizinho definido, usa navegação normal
       setFocus(nextElement);
+      return true;
+    }
+    
+    // Não encontrou elemento na zona atual, tenta navegar para zona vizinha
+    const neighborElement = getNeighborZoneElement(currentFocusRef.current, direction);
+    if (neighborElement) {
+      setFocus(neighborElement);
+      
+      // Se está indo para o player, dispara evento para mostrar controles
+      if (neighborElement.closest('.video-player-container, .main-content')) {
+        const playerContainer = document.querySelector('.video-player-container');
+        if (playerContainer) {
+          playerContainer.dispatchEvent(new CustomEvent('dpad-enter'));
+        }
+      }
+      
       return true;
     }
     
     // Se não encontrou na direção, mantém o foco atual (não perde)
     return false;
-  }, [findNextElement, setFocus, getFocusableElements, isElementVisible]);
+  }, [findNextElement, setFocus, getFocusableElements, isElementVisible, getCurrentZone, getNeighborZoneElement]);
 
   // Foca no primeiro elemento
   const focusFirst = useCallback((containerId?: string) => {

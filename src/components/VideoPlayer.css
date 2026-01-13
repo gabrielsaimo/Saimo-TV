@@ -80,6 +80,53 @@
   z-index: 10;
 }
 
+/* Center play/pause button for D-pad navigation */
+.center-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  opacity: 0.8;
+}
+
+.center-play-btn svg {
+  width: 36px;
+  height: 36px;
+}
+
+.center-play-btn:hover {
+  background: rgba(139, 92, 246, 0.6);
+  border-color: #a855f7;
+  transform: translate(-50%, -50%) scale(1.1);
+  opacity: 1;
+}
+
+.center-play-btn:focus,
+.center-play-btn.dpad-focused,
+.center-play-btn[data-focused="true"] {
+  background: rgba(139, 92, 246, 0.8);
+  border-color: #a855f7;
+  box-shadow: 
+    0 0 0 4px rgba(168, 85, 247, 0.4),
+    0 0 40px rgba(168, 85, 247, 0.6);
+  transform: translate(-50%, -50%) scale(1.15);
+  opacity: 1;
+  outline: none;
+}
+
 .loader {
   position: relative;
   width: 80px;
@@ -225,11 +272,24 @@
   justify-content: center;
   color: #fff;
   transition: all 0.2s ease;
+  outline: none;
 }
 
 .control-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.05);
+}
+
+/* D-pad focus styles for control buttons */
+.control-btn:focus,
+.control-btn.dpad-focused,
+.control-btn[data-focused="true"] {
+  background: rgba(168, 85, 247, 0.4);
+  border-color: #a855f7;
+  box-shadow: 
+    0 0 0 3px rgba(168, 85, 247, 0.4),
+    0 0 20px rgba(168, 85, 247, 0.6);
+  transform: scale(1.1);
 }
 
 .control-btn.active {
@@ -277,10 +337,24 @@
   cursor: pointer;
 }
 
-.volume-control:hover .volume-slider {
+.volume-control:hover .volume-slider,
+.volume-slider:focus,
+.volume-slider.dpad-focused,
+.volume-slider[data-focused="true"] {
   width: 80px;
   opacity: 1;
   margin-left: 4px;
+}
+
+/* D-pad focus for volume slider */
+.volume-slider:focus,
+.volume-slider.dpad-focused,
+.volume-slider[data-focused="true"] {
+  background: linear-gradient(to right, #a855f7, rgba(255, 255, 255, 0.2));
+  box-shadow: 
+    0 0 0 2px rgba(168, 85, 247, 0.4),
+    0 0 15px rgba(168, 85, 247, 0.6);
+  outline: none;
 }
 
 .volume-slider::-webkit-slider-thumb {
