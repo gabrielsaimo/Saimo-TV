@@ -17,6 +17,7 @@ const MoviePlayer = lazy(() => import('./components/MoviePlayer').then(m => ({ d
 const ProgramGuide = lazy(() => import('./components/ProgramGuide').then(m => ({ default: m.ProgramGuide })));
 const MovieCatalog = lazy(() => import('./components/MovieCatalog').then(m => ({ default: m.MovieCatalog })));
 const HomeSelector = lazy(() => import('./components/HomeSelector').then(m => ({ default: m.HomeSelector })));
+const StreamTester = lazy(() => import('./components/StreamTester').then(m => ({ default: m.StreamTester })));
 
 // Loading fallback
 const LoadingFallback = () => (
@@ -417,6 +418,11 @@ function AppLayout() {
       <Route path="/" element={<HomePage />} />
       <Route path="/tv" element={<TVPage />} />
       <Route path="/movies" element={<MoviesPage />} />
+      <Route path="/teste" element={
+        <Suspense fallback={<LoadingFallback />}>
+          <StreamTester />
+        </Suspense>
+      } />
     </Routes>
   );
 }

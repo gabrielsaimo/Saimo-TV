@@ -14,9 +14,6 @@ const getFallbackLogo = (name: string) => {
 
 const rawChannels = [
   // === FILMES ===
-  { id: 'telecine-action', name: 'Telecine Action', url: 'https://canais.fazoeli.co.za/fontes/smart/telecineaction.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-action-br.png` },
-  { id: 'telecine-premium', name: 'Telecine Premium', url: 'https://canais.fazoeli.co.za/fontes/smart/telecinepremium.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-premium-br.png` },
-  { id: 'telecine-pipoca', name: 'Telecine Pipoca', url: 'https://canais.fazoeli.co.za/fontes/smart/telecinepipoca.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-pipoca-br.png` },
   { id: 'hbo', name: 'HBO', url: 'https://canais.fazoeli.co.za/fontes/smart/hbo.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/hbo-br.png` },
   { id: 'hbo2', name: 'HBO 2', url: 'https://canais.fazoeli.co.za/fontes/smart/hbo2.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/hbo-2-br.png` },
   { id: 'hbo-family', name: 'HBO Family', url: 'https://canais.fazoeli.co.za/fontes/smart/hbofamily.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/hbo-family-br.png` },
@@ -33,7 +30,14 @@ const rawChannels = [
   { id: 'telecine-fun', name: 'Telecine Fun', url: 'https://canais.fazoeli.co.za/fontes/smart/telecinefun.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-fun-br.png` },
   { id: 'telecine-touch', name: 'Telecine Touch', url: 'https://canais.fazoeli.co.za/fontes/smart/telecinetouch.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-touch-br.png` },
   { id: 'telecine-cult', name: 'Telecine Cult', url: 'https://canais.fazoeli.co.za/fontes/smart/telecinecult.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-cult-br.png` },
-
+  { id: 'telecine-action', name: 'Telecine Action', url: 'https://canais.fazoeli.co.za/fontes/smart/telecineaction.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-action-br.png` },
+  { id: 'telecine-premium', name: 'Telecine Premium', url: 'https://canais.fazoeli.co.za/fontes/smart/telecinepremium.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-premium-br.png` },
+  { id: 'telecine-pipoca', name: 'Telecine Pipoca', url: 'https://canais.fazoeli.co.za/fontes/smart/telecinepipoca.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-pipoca-br.png` },
+  { id: 'novo-tempo', name: 'TV Novo Tempo', url: 'https://stream.live.novotempo.com/tv/smil:tvnovotempo.smil/playlist.m3u8', category: 'Filmes', logo: 'https://i.postimg.cc/mgpGyqRg/novotempo.png' },
+  { id: 'rede-gospel', name: 'Rede Gospel', url: 'https://redegospel-aovivo.nuvemplay.live/hls/stream.m3u8', category: 'Filmes', logo: 'https://i.imgur.com/mttSwgO.png' },
+  { id: 'angel-tv', name: 'Angel TV', url: 'https://janya-digimix.akamaized.net/vglive-sk-382409/portuese/ngrp:angelportuguese_all/playlist.m3u8', category: 'Filmes', logo: 'https://i.imgur.com/qKLEGU7.png' },
+  { id: 'despertar-tv', name: 'Despertar TV', url: 'https://cdn.live.br1.jmvstream.com/webtv/pejexypz/playlist/playlist.m3u8', category: 'Filmes', logo: getFallbackLogo('Despertar') },
+  
   // === SERIES ===
   { id: 'warner', name: 'Warner Channel', url: 'https://canais.fazoeli.co.za/fontes/smart/warnerchannel.m3u8', category: 'Series', logo: `${LOGO_BASE}/warner-channel-br.png` },
   { id: 'tnt', name: 'TNT', url: 'https://canais.fazoeli.co.za/fontes/smart/tnt.m3u8', category: 'Series', logo: `${LOGO_BASE}/tnt-br.png` },
@@ -47,7 +51,6 @@ const rawChannels = [
  
   // === INFANTIL ===
   { id: 'gloob', name: 'Gloob', url: 'https://canais.fazoeli.co.za/fontes/smart/gloob.m3u8', category: 'Infantil', logo: `${LOGO_BASE}/gloob-br.png` },
-  { id: 'gloobinho', name: 'Gloobinho', url: 'https://canais.fazoeli.co.za/fontes/smart/gloobinho.m3u8', category: 'Infantil', logo: `${LOGO_BASE}/gloobinho-br.png` },
   { id: 'cartoon-network', name: 'Cartoon Network', url: 'https://canais.fazoeli.co.za/fontes/smart/cartoonnetwork.m3u8', category: 'Infantil', logo: `${LOGO_BASE}/cartoon-network-br.png` },
   { id: 'cartoonito', name: 'Cartoonito', url: 'https://canais.fazoeli.co.za/fontes/smart/cartoonito.m3u8', category: 'Infantil', logo: `${LOGO_BASE}/cartoonito-br.png` },
   { id: 'discovery-kids', name: 'Discovery Kids', url: 'https://canais.fazoeli.co.za/fontes/smart/discoverykids.m3u8', category: 'Infantil', logo: `${LOGO_BASE}/discovery-kids-br.png` },
@@ -56,20 +59,23 @@ const rawChannels = [
   { id: '24h-odeia-chris', name: '24h Todo Mundo Odeia o Chris', url: 'https://canais.fazoeli.co.za/fontes/smart/24h_odeiachris.m3u8', category: 'Infantil', logo: getFallbackLogo('Chris') },
   { id: 'adult-swim', name: 'Adult Swim', url: 'https://canais.fazoeli.co.za/fontes/smart/adultswim.m3u8', category: 'Infantil', logo: `${LOGO_US}/adult-swim-us.png` },
   { id: 'nickelodeon', name: 'Nickelodeon', url: 'https://canais.fazoeli.co.za/fontes/smart/nickelodeon.m3u8', category: 'Infantil', logo: `${LOGO_LAM}/nickelodeon-lam.png` },
+  { id: 'kuriakos-kids', name: 'Kuriakos Kids', url: 'https://w2.manasat.com/kkids/smil:kkids.smil/playlist.m3u8', category: 'Infantil', logo: 'https://i.imgur.com/SRX6EPY.png' },
+  { id: 'gospel-cartoon', name: 'Gospel Cartoon', url: 'https://stmv1.srvif.com/gospelcartoon/gospelcartoon/playlist.m3u8', category: 'Infantil', logo: 'https://i.imgur.com/yxjPno5.png' },
+  { id: 'geekdot', name: 'Geekdot', url: 'https://stream.ichibantv.com:3764/hybrid/play.m3u8', category: 'Infantil', logo: 'https://i.imgur.com/jML1u4O.png' },
  
   // === DOCUMENTARIOS ===
   { id: 'discovery', name: 'Discovery Channel', url: 'https://canais.fazoeli.co.za/fontes/smart/discoverychannel.m3u8', category: 'Documentarios', logo: `${LOGO_US}/discovery-channel-us.png` },
-  { id: 'discovery-turbo', name: 'Discovery Turbo', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryturbo.m3u8', category: 'Documentarios', logo: `${LOGO_BASE}/discovery-turbo-br.png` },
   { id: 'animal-planet', name: 'Animal Planet', url: 'https://canais.fazoeli.co.za/fontes/smart/animalplanet.m3u8', category: 'Documentarios', logo: `${LOGO_INTL}/animal-planet-int.png` },
   { id: 'history', name: 'History', url: 'https://canais.fazoeli.co.za/fontes/smart/history.m3u8', category: 'Documentarios', logo: `${LOGO_LAM}/history-channel-lam.png` },
   { id: 'history2', name: 'History 2', url: 'https://canais.fazoeli.co.za/fontes/smart/history2.m3u8', category: 'Documentarios', logo: `${LOGO_LAM}/history-channel-2-lam.png` },
-  { id: 'discovery-world', name: 'Discovery World', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryworld.m3u8', category: 'Documentarios', logo: `${LOGO_US}/discovery-history-us.png` },
   { id: 'food-network', name: 'Food Network', url: 'https://canais.fazoeli.co.za/fontes/smart/foodnetwork.m3u8', category: 'Documentarios', logo: `${LOGO_US}/food-network-us.png` },
   { id: 'tlc', name: 'TLC', url: 'https://canais.fazoeli.co.za/fontes/smart/tlc.m3u8', category: 'Documentarios', logo: `${LOGO_INTL}/tlc-int.png` },
-  { id: 'discovery-science', name: 'Discovery Science', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryscience.m3u8', category: 'Documentarios', logo: `${LOGO_US}/discovery-science-us.png` },
   { id: 'hgtv', name: 'HGTV', url: 'https://canais.fazoeli.co.za/fontes/smart/hgtv.m3u8', category: 'Documentarios', logo: `${LOGO_US}/hgtv-us.png` },
   { id: 'discovery-hh', name: 'Discovery H&H', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryhh.m3u8', category: 'Documentarios', logo: `${LOGO_LAM}/discovery-home-and-health-lam.png` },
   { id: 'discovery-id', name: 'Investigation Discovery', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryid.m3u8', category: 'Documentarios', logo: `${LOGO_INTL}/investigation-discovery-int.png` },
+  { id: 'discovery-science', name: 'Discovery Science', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryscience.m3u8', category: 'Documentarios', logo: `${LOGO_US}/discovery-science-us.png` },
+  { id: 'discovery-world', name: 'Discovery World', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryworld.m3u8', category: 'Documentarios', logo: `${LOGO_US}/discovery-history-us.png` },
+  { id: 'discovery-turbo', name: 'Discovery Turbo', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryturbo.m3u8', category: 'Documentarios', logo: `${LOGO_BASE}/discovery-turbo-br.png` },
 
   // === ENTRETENIMENTO ===
   { id: 'multishow', name: 'Multishow', url: 'https://canais.fazoeli.co.za/fontes/smart/multishow.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/multishow-br.png` },
@@ -79,11 +85,18 @@ const rawChannels = [
   { id: 'gnt', name: 'GNT', url: 'https://canais.fazoeli.co.za/fontes/smart/gnt.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/gnt-br.png` },
   { id: 'arte1', name: 'Arte 1', url: 'https://canais.fazoeli.co.za/fontes/smart/arte1.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/arte1-br.png` },
   { id: 'cultura', name: 'TV Cultura', url: 'https://canais.fazoeli.co.za/fontes/smart/cultura.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/tv-cultura-br.png` },
+  { id: 'loading-tv', name: 'Loading', url: 'https://stmv1.srvif.com/loadingtv/loadingtv/playlist.m3u8', category: 'Entretenimento', logo: 'https://i.imgur.com/R0aflu1.png' },
+  { id: 'revry-brasil', name: 'Revry Brasil', url: 'https://linear-181.frequency.stream/dist/24i/181/hls/master/playlist.m3u8', category: 'Entretenimento', logo: getFallbackLogo('Revry') },
+  { id: 'mytime-movie', name: 'MyTime Movie', url: 'https://appletree-mytime-samsungbrazil.amagi.tv/playlist.m3u8', category: 'Entretenimento', logo: 'https://i.imgur.com/aiGQtzI.png' },
+  { id: 'classique-tv', name: 'Classique TV', url: 'https://stmv1.srvif.com/classique/classique/playlist.m3u8', category: 'Entretenimento', logo: 'https://i.imgur.com/rHxcraT.png' },
+  { id: 'gospel-movie-tv', name: 'Gospel Movie TV', url: 'https://stmv1.srvif.com/gospelf/gospelf/playlist.m3u8', category: 'Entretenimento', logo: 'https://i.imgur.com/cQN3nWt.png' },
   // === NOTICIAS ===
   { id: 'globo-news', name: 'Globo News', url: 'https://canais.fazoeli.co.za/fontes/smart/globonews.m3u8', category: 'Noticias', logo: `${LOGO_BASE}/globo-news-br.png` },
   { id: 'cnn-brasil', name: 'CNN Brasil', url: 'https://canais.fazoeli.co.za/fontes/smart/cnnbrasil.m3u8', category: 'Noticias', logo: `${LOGO_BASE}/cnn-brasil-br.png` },
   { id: 'band-news', name: 'Band News', url: 'https://canais.fazoeli.co.za/fontes/smart/bandnews.m3u8', category: 'Noticias', logo: `${LOGO_BASE}/band-news-br.png` },
   { id: 'record-news', name: 'Record News', url: 'https://canais.fazoeli.co.za/fontes/smart/recordnews.m3u8', category: 'Noticias', logo: `${LOGO_BASE}/record-news-br.png` },
+  { id: 'jovem-pan-news', name: 'Jovem Pan News', url: 'https://d6yfbj4xxtrod.cloudfront.net/out/v1/7836eb391ec24452b149f3dc6df15bbd/index.m3u8', category: 'Noticias', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Jovem_Pan_logo_2018.svg/512px-Jovem_Pan_logo_2018.svg.png' },
+  { id: 'stz-tv', name: 'STZ TV', url: 'https://cdn.live.br1.jmvstream.com/webtv/AVJ-12952/playlist/playlist.m3u8', category: 'Noticias', logo: 'https://i.imgur.com/SeF2I7q.png' },
 
   // === TV ABERTA ===
   { id: 'globo-sp', name: 'Globo SP', url: 'https://canais.fazoeli.co.za/fontes/smart/globosp.m3u8', category: 'TV Aberta', logo: `${LOGO_BASE}/globo-br.png` },
@@ -100,6 +113,11 @@ const rawChannels = [
   { id: 'tv-gazeta', name: 'TV Gazeta', url: 'https://canais.fazoeli.co.za/fontes/smart/tvgazeta.m3u8', category: 'TV Aberta', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/TV_Gazeta.svg/500px-TV_Gazeta.svg.png' },
   { id: 'globo-am', name: 'Globo AM', url: 'https://canais.fazoeli.co.za/fontes/smart/globoam.m3u8', category: 'TV Aberta', logo: `${LOGO_BASE}/globo-br.png` },
   { id: 'impd', name: 'IMPD', url: 'https://68882bdaf156a.streamlock.net/impd/ngrp:impd_all/chunklist_w1366598577_b3715072.m3u8', category: 'TV Aberta', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Logotipo_da_Rede_Mundial.jpg' },
+  { id: 'amazon-sat', name: 'Amazon Sat', url: 'https://amazonsat.brasilstream.com.br/hls/amazonsat/index.m3u8', category: 'TV Aberta', logo: 'https://i.imgur.com/7rjCS5i.png' },
+  { id: 'sbt-interior', name: 'SBT Interior', url: 'https://cdn.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8', category: 'TV Aberta', logo: 'https://i.imgur.com/IkZfa4j.png' },
+  { id: 'sertao-tv', name: 'Sertão TV', url: 'http://wz4.dnip.com.br/sertaotv/sertaotv.sdp/playlist.m3u8', category: 'TV Aberta', logo: 'https://i.imgur.com/b5xOCsC.png' },
+  { id: 'cwb-tv', name: 'CWB TV', url: 'https://59d39900ebfb8.streamlock.net/cwbtv/cwbtv/playlist.m3u8', category: 'TV Aberta', logo: 'https://i.imgur.com/S0ISpmU.png' },
+  { id: 'record-internacional', name: 'Record Internacional', url: 'https://viamotionhsi.netplus.ch/live/eds/rederecordinternacional/browser-HLS8/rederecordinternacional.m3u8', category: 'TV Aberta', logo: 'https://i.imgur.com/sz9gTTr.png' },
   
   // === ESPORTES ===
   { id: 'sportv', name: 'SporTV', url: 'https://canais.fazoeli.co.za/fontes/smart/sportv.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/sportv-br.png` },
@@ -109,18 +127,54 @@ const rawChannels = [
   { id: 'espn2', name: 'ESPN 2', url: 'https://canais.fazoeli.co.za/fontes/smart/espn2.m3u8', category: 'Esportes', logo: `${LOGO_LAM}/espn-2-lam.png` },
   { id: 'espn3', name: 'ESPN 3', url: 'https://canais.fazoeli.co.za/fontes/smart/espn3.m3u8', category: 'Esportes', logo: `${LOGO_LAM}/espn-3-lam.png` },
   { id: 'espn4', name: 'ESPN 4', url: 'https://canais.fazoeli.co.za/fontes/smart/espn4.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/espn-4-br.png` },
+  { id: 'espn5', name: 'ESPN 5', url: 'https://canais.fazoeli.co.za/fontes/smart/espn5.m3u8', category: 'Esportes', logo: `${LOGO_INTL}/espn-int.png` },
   { id: 'premiere', name: 'Premiere', url: 'https://canais.fazoeli.co.za/fontes/smart/premiere.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/premiere-br.png` },
-  { id: 'combate', name: 'Combate', url: 'https://canais.fazoeli.co.za/fontes/smart/combate.m3u8', category: 'Esportes', logo: `${LOGO_US}/ufc-us.png` },
-  { id: 'band-sports', name: 'Band Sports', url: 'https://canais.fazoeli.co.za/fontes/smart/bandsports.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/band-sports-br.png` },
-  { id: 'sportv4', name: 'SporTV 4', url: 'https://canais.fazoeli.co.za/fontes/smart/sportv4.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/sportv4-br.png` },
   { id: 'premiere2', name: 'Premiere 2', url: 'https://canais.fazoeli.co.za/fontes/smart/premiere2.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/premiere-br.png` },
   { id: 'premiere3', name: 'Premiere 3', url: 'https://canais.fazoeli.co.za/fontes/smart/premiere3.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/premiere-br.png` },
   { id: 'premiere4', name: 'Premiere 4', url: 'https://canais.fazoeli.co.za/fontes/smart/premiere4.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/premiere-br.png` },
-  { id: 'espn5', name: 'ESPN 5', url: 'https://canais.fazoeli.co.za/fontes/smart/espn5.m3u8', category: 'Esportes', logo: `${LOGO_INTL}/espn-int.png` },
-  
+  { id: 'combate', name: 'Combate', url: 'https://canais.fazoeli.co.za/fontes/smart/combate.m3u8', category: 'Esportes', logo: `${LOGO_US}/ufc-us.png` },
+  { id: 'band-sports', name: 'Band Sports', url: 'https://canais.fazoeli.co.za/fontes/smart/bandsports.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/band-sports-br.png` },
+  { id: 'fifa-plus', name: 'FIFA+ Português', url: 'https://e3be9ac5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYnJfRklGQVBsdXNQb3J0dWd1ZXNlX0hMUw/playlist.m3u8', category: 'Esportes', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/FIFA%2B_(2025).svg/700px-FIFA%2B_(2025).svg.png' },
+  { id: 'canal-do-inter', name: 'Canal do Inter', url: 'https://video01.soultv.com.br/internacional/internacional/playlist.m3u8', category: 'Esportes', logo: 'https://i.imgur.com/TQFWEIS.png' },
+  // === INTERNACIONAIS ===
+  { id: 'al-jazeera', name: 'Al Jazeera English', url: 'https://live-hls-apps-aje-fa.getaj.net/AJE/index.m3u8', category: 'Internacionais', logo: 'https://i.imgur.com/7bRVpnu.png' },
+  { id: 'dw-english', name: 'DW English', url: 'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/DW_-_English.svg/512px-DW_-_English.svg.png' },
+  { id: 'rt-documentary', name: 'RT Documentary', url: 'https://rt-rtd.rttv.com/dvr/rtdoc/playlist.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/RT_logo.svg' },
+  { id: 'euronews', name: 'Euronews English', url: 'https://a-cdn.klowdtv.com/live3/euronews_720p/playlist.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Euronews_2022.svg/512px-Euronews_2022.svg.png' },
+  { id: 'cgtn', name: 'CGTN', url: 'https://mn-nl.mncdn.com/dogusdyg_drone/cgtn/playlist.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/CGTN.svg/512px-CGTN.svg.png' },
+  { id: 'abc-news', name: 'ABC News', url: 'https://abc-news-dmd-streams-1.akamaized.net/out/v1/701126012d044971b3fa89406a440133/index.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/ABC_News_Live_logo_2021.svg/512px-ABC_News_Live_logo_2021.svg.png' },
+  { id: 'cbs-news', name: 'CBS News New York', url: 'https://cbsn-ny.cbsnstream.cbsnews.com/out/v1/ec3897d58a9b45129a77d67aa247d136/master.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/CBS_News.svg/512px-CBS_News.svg.png' },
+  { id: 'bloomberg', name: 'Bloomberg', url: 'https://www.bloomberg.com/media-manifest/streams/originals-global.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/New_Bloomberg_Logo.svg/512px-New_Bloomberg_Logo.svg.png' },
+  { id: 'accuweather', name: 'AccuWeather', url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg00684-accuweather-accuweather-plex/playlist.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/AccuWeather_Logo.svg/512px-AccuWeather_Logo.svg.png' },
+  { id: 'red-bull-tv', name: 'Red Bull TV', url: 'https://769a97d9.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X1JlZEJ1bGxUVl9ITFM/playlist.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/RedBullTV_logo.svg/512px-RedBullTV_logo.svg.png' },
+  { id: 'nat-geo-int', name: 'National Geographic', url: 'https://fl1.moveonjoy.com/National_Geographic/index.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Natgeo.svg/512px-Natgeo.svg.png' },
+  { id: 'nat-geo-wild-int', name: 'Nat Geo Wild', url: 'https://fl1.moveonjoy.com/Nat_Geo_Wild/index.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Nat_Geo_Wild_logo.svg/512px-Nat_Geo_Wild_logo.svg.png' },
+  { id: 'dazn-combat', name: 'DAZN Combat', url: 'https://dazn-combat-rakuten.amagi.tv/hls/amagi_hls_data_rakutenAA-dazn-combat-rakuten/CDN/master.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/DAZN_logo.svg/512px-DAZN_logo.svg.png' },
+  { id: 'fox-sports-int', name: 'Fox Sports', url: 'https://fl1.moveonjoy.com/FOX_Sports_1/index.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Fox_Sports_logo.svg/512px-Fox_Sports_logo.svg.png' },
+  { id: 'amc-int', name: 'AMC', url: 'https://fl1.moveonjoy.com/AMC_NETWORK/index.m3u8', category: 'Internacionais', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/AMC_logo_2019.svg/512px-AMC_logo_2019.svg.png' },
+  { id: 'lifetime-movies', name: 'Lifetime Movies', url: 'https://fl1.moveonjoy.com/LIFETIME_MOVIE_NETWORK/index.m3u8', category: 'Internacionais', logo: getFallbackLogo('Lifetime') },
+  { id: 'epix', name: 'Epix', url: 'https://fl1.moveonjoy.com/EPIX/index.m3u8', category: 'Internacionais', logo: getFallbackLogo('Epix') },
+  { id: '4k-travel', name: '4K Travel TV', url: 'https://streams2.sofast.tv/sofastplayout/33c31ac4-51fa-46ae-afd0-0d1fe5e60a80_0_HLS/master.m3u8', category: 'Internacionais', logo: getFallbackLogo('4K Travel') },
+  { id: 'destination-tv', name: 'Destination TV', url: 'http://media4.tripsmarter.com:1935/LiveTV/DTVHD/playlist.m3u8', category: 'Internacionais', logo: getFallbackLogo('Destination') },
+  { id: 'movie-channel', name: 'The Movie Channel', url: 'https://streams2.sofast.tv/sofastplayout/32eb332e-f644-46e5-ad91-e55ad80d14f7_0_HLS/master.m3u8', category: 'Internacionais', logo: getFallbackLogo('Movie') },
+
   // === ADULTO (SECRETO) ===
   { id: 'playboy', name: 'Playboy TV', url: 'https://canais.fazoeli.co.za/fontes/smart/playboy.m3u8', category: 'Adulto', logo: getFallbackLogo('Playboy') },
   { id: 'sexy-hot', name: 'Sexy Hot', url: 'https://canais.fazoeli.co.za/fontes/smart/sexyhot.m3u8', category: 'Adulto', logo: getFallbackLogo('Sexy Hot') },
+  { id: 'adult-all', name: 'Adult IPTV All', url: 'http://cdn.adultiptv.net/lists/all.m3u8', category: 'Adulto', logo: getFallbackLogo('Adult') },
+  { id: 'adult-pornstar', name: 'Adult Pornstar', url: 'http://cdn.adultiptv.net/lists/pornstar.m3u8', category: 'Adulto', logo: getFallbackLogo('Pornstar') },
+  { id: 'adult-amateur', name: 'Adult Amateur', url: 'http://cdn.adultiptv.net/lists/amateur.m3u8', category: 'Adulto', logo: getFallbackLogo('Amateur') },
+  { id: 'adult-milf', name: 'Adult MILF', url: 'http://cdn.adultiptv.net/lists/milf.m3u8', category: 'Adulto', logo: getFallbackLogo('MILF') },
+  { id: 'adult-teen', name: 'Adult Teen', url: 'http://cdn.adultiptv.net/lists/teen.m3u8', category: 'Adulto', logo: getFallbackLogo('Teen') },
+  { id: 'adult-latina', name: 'Adult Latina', url: 'http://cdn.adultiptv.net/lists/latina.m3u8', category: 'Adulto', logo: getFallbackLogo('Latina') },
+  { id: 'adult-asian', name: 'Adult Asian', url: 'http://cdn.adultiptv.net/lists/asian.m3u8', category: 'Adulto', logo: getFallbackLogo('Asian') },
+  { id: 'adult-ebony', name: 'Adult Ebony', url: 'http://cdn.adultiptv.net/lists/ebony.m3u8', category: 'Adulto', logo: getFallbackLogo('Ebony') },
+  { id: 'adult-lesbian', name: 'Adult Lesbian', url: 'http://cdn.adultiptv.net/lists/lesbian.m3u8', category: 'Adulto', logo: getFallbackLogo('Lesbian') },
+  { id: 'adult-anal', name: 'Adult Anal', url: 'http://cdn.adultiptv.net/lists/anal.m3u8', category: 'Adulto', logo: getFallbackLogo('Anal') },
+  { id: 'adult-blonde', name: 'Adult Blonde', url: 'http://cdn.adultiptv.net/lists/blonde.m3u8', category: 'Adulto', logo: getFallbackLogo('Blonde') },
+  { id: 'adult-brunette', name: 'Adult Brunette', url: 'http://cdn.adultiptv.net/lists/brunette.m3u8', category: 'Adulto', logo: getFallbackLogo('Brunette') },
+  { id: 'adult-bbw', name: 'Adult BBW', url: 'http://cdn.adultiptv.net/lists/bbw.m3u8', category: 'Adulto', logo: getFallbackLogo('BBW') },
+  { id: 'adult-trans', name: 'Adult Trans', url: 'http://cdn.adultiptv.net/lists/trans.m3u8', category: 'Adulto', logo: getFallbackLogo('Trans') },
 ];
 
 // Ordem das categorias para exibição
@@ -133,6 +187,7 @@ export const categoryOrder = [
   'Infantil',
   'Documentarios',
   'Entretenimento',
+  'Internacionais',
   'Adulto',
 ];
 
