@@ -16,6 +16,8 @@ export interface CategoryIndex {
   file: string;
   count: number;
   isAdult: boolean;
+  hasMovies: boolean;
+  hasSeries: boolean;
 }
 
 // Categorias adultas para filtragem
@@ -27,445 +29,593 @@ export const categoryIndex: CategoryIndex[] = [
     "name": "🎬 Lançamentos",
     "file": "lancamentos.json",
     "count": 996,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "⭐ Sugestão da Semana",
     "file": "sugestao-da-semana.json",
     "count": 119,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "🎬 Cinema",
     "file": "cinema.json",
     "count": 8,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "📺 Netflix",
     "file": "netflix.json",
     "count": 58757,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Prime Video",
     "file": "prime-video.json",
     "count": 37227,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Disney+",
     "file": "disney.json",
     "count": 28203,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Max",
     "file": "max.json",
     "count": 30762,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Globoplay",
     "file": "globoplay.json",
     "count": 34467,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "🎬 4K UHD",
     "file": "4k-uhd.json",
     "count": 1140,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Animação",
     "file": "animacao.json",
     "count": 1794,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Aventura",
     "file": "aventura.json",
     "count": 136,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção ALIEN",
     "file": "colecao-alien.json",
     "count": 3,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção AMERICAN PIE",
     "file": "colecao-american-pie.json",
     "count": 9,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção CREPÚSCULO",
     "file": "colecao-crepusculo.json",
     "count": 5,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção DENZEL WASHIGNTON",
     "file": "colecao-denzel-washignton.json",
     "count": 16,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção EXTERMINADOR DO FUTURO",
     "file": "colecao-exterminador-do-futuro.json",
     "count": 5,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção HARRY POTTER",
     "file": "colecao-harry-potter.json",
     "count": 7,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção HOMEM ARANHA",
     "file": "colecao-homem-aranha.json",
     "count": 5,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção JHON WICK",
     "file": "colecao-jhon-wick.json",
     "count": 5,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção JOGOS MORTAIS",
     "file": "colecao-jogos-mortais.json",
     "count": 8,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção JOGOS VORAZES",
     "file": "colecao-jogos-vorazes.json",
     "count": 6,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção MAD MAX",
     "file": "colecao-mad-max.json",
     "count": 5,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção MIB HOMENS DE PRETO",
     "file": "colecao-mib-homens-de-preto.json",
     "count": 4,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção O SENHOR DOS ANÉIS",
     "file": "colecao-o-senhor-dos-aneis.json",
     "count": 3,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção SHREK",
     "file": "colecao-shrek.json",
     "count": 4,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção TODO MUNDO EM PÂNICO",
     "file": "colecao-todo-mundo-em-panico.json",
     "count": 5,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Coleção TOY STORY",
     "file": "colecao-toy-story.json",
     "count": 4,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Comédia",
     "file": "comedia.json",
     "count": 4115,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Crime",
     "file": "crime.json",
     "count": 430,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Documentário",
     "file": "documentario.json",
     "count": 675,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": true
   },
   {
     "name": "🎬 Drama",
     "file": "drama.json",
     "count": 5098,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": true
   },
   {
     "name": "🎬 Dublagem Não Oficial",
     "file": "dublagem-nao-oficial.json",
     "count": 48,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Esportes",
     "file": "esportes.json",
     "count": 126,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Família",
     "file": "familia.json",
     "count": 167,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Fantasia",
     "file": "fantasia.json",
     "count": 681,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Faroeste",
     "file": "faroeste.json",
     "count": 246,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Ficção Científica",
     "file": "ficcao-cientifica.json",
     "count": 301,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Guerra",
     "file": "guerra.json",
     "count": 197,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Infantil",
     "file": "infantil.json",
     "count": 54,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Marvel  Ucm",
     "file": "marvel-ucm.json",
     "count": 34,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Nacionais",
     "file": "nacionais.json",
     "count": 842,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Oscar 2025",
     "file": "oscar-2025.json",
     "count": 9,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Outras Produtoras",
     "file": "outras-produtoras.json",
     "count": 47754,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "🎬 Religiosos",
     "file": "religiosos.json",
     "count": 197,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Suspense",
     "file": "suspense.json",
     "count": 1319,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": true
   },
   {
     "name": "📺 AMC Plus",
     "file": "amc-plus.json",
     "count": 164,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Apple TV+",
     "file": "apple-tv.json",
     "count": 12454,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Brasil Paralelo",
     "file": "brasil-paralelo.json",
     "count": 370,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Claro Video",
     "file": "claro-video.json",
     "count": 444,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Crunchyroll",
     "file": "crunchyroll.json",
     "count": 11266,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 DirecTV",
     "file": "directv.json",
     "count": 6346,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Discovery+",
     "file": "discovery.json",
     "count": 15009,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Doramas",
     "file": "doramas.json",
     "count": 23706,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Funimation",
     "file": "funimation.json",
     "count": 1930,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Lionsgate",
     "file": "lionsgate.json",
     "count": 200,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Novelas",
     "file": "novelas.json",
     "count": 90265,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Novelas Turcas",
     "file": "novelas-turcas.json",
     "count": 12818,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Paramount+",
     "file": "paramount.json",
     "count": 18272,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Play Plus",
     "file": "play-plus.json",
     "count": 38,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 PlutoTV",
     "file": "plutotv.json",
     "count": 152,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Programas de TV",
     "file": "programas-de-tv.json",
     "count": 640,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 SBT",
     "file": "sbt.json",
     "count": 1540,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Shows",
     "file": "shows.json",
     "count": 71,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "📺 Stand Up Comedy",
     "file": "stand-up-comedy.json",
     "count": 25,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Star+",
     "file": "star.json",
     "count": 8138,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "📺 Univer",
     "file": "univer.json",
     "count": 359,
-    "isAdult": false
+    "isAdult": false,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "🎬 Ação",
     "file": "acao.json",
     "count": 3496,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Legendados",
     "file": "legendados.json",
     "count": 7422,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Romance",
     "file": "romance.json",
     "count": 1155,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🎬 Terror",
     "file": "terror.json",
     "count": 2671,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "📺 Legendadas",
     "file": "legendadas.json",
     "count": 56220,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": false,
+    "hasSeries": true
   },
   {
     "name": "🔞 Adultos",
     "file": "adultos.json",
     "count": 9122,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": true,
+    "hasSeries": true
   },
   {
     "name": "🔞 Adultos - Bella da Semana",
     "file": "adultos-bella-da-semana.json",
     "count": 155,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": true,
+    "hasSeries": false
   },
   {
     "name": "🔞 Adultos - Legendado",
     "file": "adultos-legendado.json",
     "count": 1080,
-    "isAdult": true
+    "isAdult": true,
+    "hasMovies": true,
+    "hasSeries": false
   }
 ];
 

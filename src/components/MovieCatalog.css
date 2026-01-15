@@ -1898,6 +1898,78 @@
   inset: 0;
 }
 
+/* Styled Placeholder para filmes sem imagem */
+.styled-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.styled-placeholder .placeholder-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    #1a1a2e 0%,
+    #16213e 25%,
+    #0f3460 50%,
+    #1a1a2e 75%,
+    #16213e 100%
+  );
+  background-size: 400% 400%;
+  animation: placeholderGradient 8s ease infinite;
+}
+
+@keyframes placeholderGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.styled-placeholder .placeholder-icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.styled-placeholder .placeholder-icon svg {
+  width: 40px;
+  height: 40px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.styled-placeholder .placeholder-icon span {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.2;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* Loading spinner pequeno */
+.loading-spinner-small {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: spinSmall 0.8s linear infinite;
+}
+
+@keyframes spinSmall {
+  to { transform: rotate(360deg); }
+}
+
 /* Image Placeholder */
 .image-placeholder {
   position: absolute;

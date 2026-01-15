@@ -6,10 +6,9 @@ const LOGO_INTL = 'https://raw.githubusercontent.com/tv-logo/tv-logos/main/count
 const LOGO_US = 'https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states';
 const LOGO_LAM = 'https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/world-latin-america';
 
-// Fallback para logos não encontradas - gera avatar com iniciais
-const getFallbackLogo = (name: string) => {
-  const initials = name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-  return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=8b5cf6&color=fff&size=128&bold=true&format=png`;
+// Fallback para logos não encontradas - retorna string vazia para usar placeholder visual
+const getFallbackLogo = (_name: string) => {
+  return ''; // Retorna vazio para usar o placeholder estilizado do componente
 };
 
 const rawChannels = [

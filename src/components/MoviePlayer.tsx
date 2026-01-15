@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, useCallback, memo, useMemo } from 'react';
 import type { Movie } from '../types/movie';
 import { getProxiedUrl } from '../utils/proxyUrl';
+import castService, { type CastMethod, type CastState } from '../services/castService';
 import './MoviePlayer.css';
 
 // Interface para informações de série
@@ -49,6 +50,13 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [brightness, setBrightness] = useState(100);
   const [showSkipIntro, setShowSkipIntro] = useState(false);
   const [aspectRatio, setAspectRatio] = useState<'auto' | '16:9' | '4:3' | '21:9'>('auto');
+  const [videoResolution, setVideoResolution] = useState<string | null>(null);
+  
+  // Cast states
+  const [castState, setCastState] = useState<CastState>({ isConnected: false, deviceName: null, method: null });
+  const [showCastModal, setShowCastModal] = useState(false);
+  const [castMessage, setCastMessage] = useState<string | null>(null);
+  const [showExternalCastPlayers, setShowExternalCastPlayers] = useState(false);
   
   const controlsTimeoutRef = useRef<number | null>(null);
 
@@ -339,6 +347,57 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     localStorage.setItem('movie-skip-time', skipTime.toString());
   }, [skipTime]);
 
+  // Video resolution detection
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const updateResolution = () => {
+      if (video.videoWidth && video.videoHeight) {
+        const height = video.videoHeight;
+        let label = '';
+        if (height >= 2160) label = '4K';
+        else if (height >= 1440) label = '2K';
+        else if (height >= 1080) label = '1080p';
+        else if (height >= 720) label = '720p';
+        else if (height >= 480) label = '480p';
+        else if (height >= 360) label = '360p';
+        else label = `${height}p`;
+        setVideoResolution(label);
+      } else {
+        setVideoResolution(null);
+      }
+    };
+
+    // Update on loadedmetadata and resize events
+    video.addEventListener('loadedmetadata', updateResolution);
+    video.addEventListener('resize', updateResolution);
+    
+    // Also update periodically in case resolution changes during stream
+    const interval = setInterval(updateResolution, 2000);
+    
+    // Initial check
+    updateResolution();
+
+    return () => {
+      video.removeEventListener('loadedmetadata', updateResolution);
+      video.removeEventListener('resize', updateResolution);
+      clearInterval(interval);
+    };
+  }, [movie]);
+
+  // Cast state listener
+  useEffect(() => {
+    const unsubscribe = castService.onStateChange((state) => {
+      setCastState(state);
+    });
+
+    // Load initial state
+    setCastState(castService.getState());
+
+    return unsubscribe;
+  }, []);
+
   // Callback functions - defined before keyboard shortcuts useEffect
   const togglePlay = useCallback(() => {
     const video = videoRef.current;
@@ -383,6 +442,52 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     } catch (err) {
       console.error('PiP error:', err);
     }
+  }, []);
+
+  // Cast toggle
+  const toggleCast = useCallback(async () => {
+    // Se já está transmitindo, oferece parar
+    if (castState.isConnected) {
+      castService.stopCasting();
+      setCastMessage('Transmissão encerrada');
+      setTimeout(() => setCastMessage(null), 3000);
+      return;
+    }
+
+    // Sempre mostra o modal com todas as opções
+    setShowCastModal(true);
+  }, [castState.isConnected]);
+
+  const handleCastOption = useCallback(async (method: CastMethod) => {
+    if (!movie) return;
+
+    if (method === 'openExternal') {
+      setShowExternalCastPlayers(true);
+      return;
+    }
+
+    const result = await castService.cast(
+      method,
+      movie.url,
+      movie.name,
+      videoRef.current || undefined,
+      undefined // movie image
+    );
+
+    setCastMessage(result.message);
+    setTimeout(() => setCastMessage(null), 4000);
+    
+    if (result.success || method === 'copyLink' || method === 'share') {
+      setShowCastModal(false);
+    }
+  }, [movie]);
+
+  const handleCastExternalPlayer = useCallback((playerUrl: string) => {
+    castService.openInExternalPlayer(playerUrl);
+    setCastMessage('Abrindo player externo...');
+    setTimeout(() => setCastMessage(null), 3000);
+    setShowExternalCastPlayers(false);
+    setShowCastModal(false);
   }, []);
 
   // Skip intro (30 seconds forward)
@@ -431,6 +536,10 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
         case 'p':
           e.preventDefault();
           togglePiP();
+          break;
+        case 'c':
+          e.preventDefault();
+          toggleCast();
           break;
         case 'j':
           e.preventDefault();
@@ -496,7 +605,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isFullscreen, onBack, skipTime, togglePiP, skipIntro, togglePlay, seek, toggleFullscreen]);
+  }, [isFullscreen, onBack, skipTime, togglePiP, toggleCast, skipIntro, togglePlay, seek, toggleFullscreen]);
 
   const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const video = videoRef.current;
@@ -1049,13 +1158,38 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                 />
               </div>
 
-              {/* Time */}
-              <span className="time-display">
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </span>
+              {/* Time and Resolution */}
+              <div className="time-resolution-display">
+                <span className="time-display">
+                  {formatTime(currentTime)} / {formatTime(duration)}
+                </span>
+                {videoResolution && (
+                  <span className="video-resolution">{videoResolution}</span>
+                )}
+              </div>
             </div>
 
             <div className="controls-right">
+              {/* Cast Button */}
+              <button
+                className={`control-btn cast-btn ${castState.isConnected ? 'active casting' : ''}`}
+                onClick={toggleCast}
+                title={castState.isConnected ? `Transmitindo para ${castState.deviceName}` : 'Transmitir (C)'}
+                data-focusable="true"
+                data-nav-group="player-controls"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleCast();
+                  }
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+                  <circle cx="2" cy="20" r="2" fill="currentColor" />
+                </svg>
+              </button>
+
               {/* Next Episode Button */}
               {nextEpisode && (
                 <button 
@@ -1247,6 +1381,137 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
           </div>
         </div>
       </div>
+
+      {/* Mensagem de cast */}
+      {castMessage && (
+        <div className="cast-message">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+            <circle cx="2" cy="20" r="2" fill="currentColor" />
+          </svg>
+          <span>{castMessage}</span>
+        </div>
+      )}
+
+      {/* Indicador de transmissão ativa */}
+      {castState.isConnected && (
+        <div className="cast-active-indicator">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+            <circle cx="2" cy="20" r="2" fill="currentColor" />
+          </svg>
+          <span>Transmitindo para {castState.deviceName}</span>
+          <button onClick={() => castService.stopCasting()}>Parar</button>
+        </div>
+      )}
+
+      {/* Modal de Cast */}
+      {showCastModal && (
+        <div className="cast-modal-overlay" onClick={() => { setShowCastModal(false); setShowExternalCastPlayers(false); }}>
+          <div className="cast-modal" onClick={(e) => e.stopPropagation()}>
+            {!showExternalCastPlayers ? (
+              <>
+                <h3>Transmitir para dispositivo</h3>
+                <p>Escolha como deseja transmitir "{movie?.name}"</p>
+                
+                <div className="cast-options">
+                  {castService.getAvailableMethods().map((method) => (
+                    <button 
+                      key={method.method}
+                      className="cast-option" 
+                      onClick={() => handleCastOption(method.method)}
+                    >
+                      {method.icon === 'chromecast' && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+                          <circle cx="2" cy="20" r="2" fill="currentColor" />
+                        </svg>
+                      )}
+                      {method.icon === 'airplay' && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
+                          <polygon points="12 15 17 21 7 21 12 15" />
+                        </svg>
+                      )}
+                      {method.icon === 'tv' && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="2" y="3" width="20" height="14" rx="2" />
+                          <path d="M8 21h8M12 17v4" />
+                        </svg>
+                      )}
+                      {method.icon === 'share' && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <circle cx="18" cy="5" r="3" />
+                          <circle cx="6" cy="12" r="3" />
+                          <circle cx="18" cy="19" r="3" />
+                          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                        </svg>
+                      )}
+                      {method.icon === 'copy' && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </svg>
+                      )}
+                      {method.icon === 'external' && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                      )}
+                      <span>{method.name}</span>
+                      <small>{method.description}</small>
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <h3>Abrir em player externo</h3>
+                <p>Escolha um player para abrir o vídeo</p>
+                
+                <div className="cast-options external-players">
+                  {movie && castService.getExternalPlayerLinks(movie.url).map((player) => (
+                    <button 
+                      key={player.name}
+                      className="cast-option" 
+                      onClick={() => handleCastExternalPlayer(player.url)}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                      </svg>
+                      <span>{player.name}</span>
+                      <small>{player.platforms.join(', ')}</small>
+                    </button>
+                  ))}
+                  
+                  <button 
+                    className="cast-option copy-url"
+                    onClick={() => handleCastOption('copyLink')}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                    </svg>
+                    <span>Copiar URL do stream</span>
+                    <small>Para colar manualmente no player</small>
+                  </button>
+                </div>
+
+                <button className="cast-modal-back" onClick={() => setShowExternalCastPlayers(false)}>
+                  ← Voltar
+                </button>
+              </>
+            )}
+
+            <button className="cast-modal-close" onClick={() => { setShowCastModal(false); setShowExternalCastPlayers(false); }}>
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 });

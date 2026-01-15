@@ -7,6 +7,7 @@ import {
   type MovieWithAdult,
   type CategoryIndex
 } from '../data/movies';
+import { searchImage } from '../services/imageService';
 import type { SeriesEpisodeInfo } from './MoviePlayer';
 import './MovieCatalog.css';
 
@@ -210,19 +211,21 @@ const LazyImage = memo(function LazyImage({
   src, 
   alt, 
   fallbackText,
-  className = ''
+  className = '',
+  type
 }: { 
   src?: string; 
   alt: string; 
   fallbackText: string;
   className?: string;
+  type?: 'movie' | 'series';
 }) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
+  const [fallbackImage, setFallbackImage] = useState<string | null>(null);
+  const [loadingFallback, setLoadingFallback] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-
-  const fallbackUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(fallbackText)}&background=8b5cf6&color=fff&size=400&bold=true`;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -242,22 +245,74 @@ const LazyImage = memo(function LazyImage({
     return () => observer.disconnect();
   }, []);
 
+  // Busca imagem quando dá erro
+  useEffect(() => {
+    if (error && !fallbackImage && !loadingFallback && fallbackText) {
+      setLoadingFallback(true);
+      searchImage(fallbackText, type)
+        .then(url => {
+          setFallbackImage(url);
+          setLoadingFallback(false);
+        })
+        .catch(() => setLoadingFallback(false));
+    }
+  }, [error, fallbackText, type, fallbackImage, loadingFallback]);
+
+  // Se conseguiu fallback
+  if (fallbackImage) {
+    return (
+      <div className={`lazy-image-container ${className}`} ref={imgRef as any}>
+        <img 
+          src={fallbackImage}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          style={{ opacity: loaded ? 1 : 0 }}
+        />
+      </div>
+    );
+  }
+
+  // Se não tem imagem ou deu erro e está buscando
+  if ((!src || error) && !fallbackImage) {
+    return (
+      <div className={`lazy-image-container ${className}`} ref={imgRef as any}>
+        <div className="styled-placeholder">
+          <div className="placeholder-bg" />
+          <div className="placeholder-icon">
+            {loadingFallback ? (
+              <div className="loading-spinner-small" />
+            ) : (
+              <>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <span>{fallbackText.substring(0, 15)}{fallbackText.length > 15 ? '...' : ''}</span>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`lazy-image-container ${className}`} ref={imgRef as any}>
-      {!loaded && !error && (
+      {!loaded && (
         <div className="image-placeholder">
           <div className="placeholder-shimmer" />
         </div>
       )}
       {isVisible && (
         <img 
-          src={error ? fallbackUrl : (src || fallbackUrl)}
+          src={src}
           alt={alt}
           loading="lazy"
           decoding="async"
           onLoad={() => setLoaded(true)}
           onError={() => setError(true)}
-          style={{ opacity: loaded || error ? 1 : 0 }}
+          style={{ opacity: loaded ? 1 : 0 }}
         />
       )}
     </div>
@@ -1058,7 +1113,6 @@ export function MovieCatalog({
   const [loadedCategoryData, setLoadedCategoryData] = useState<Map<string, MovieWithAdult[]>>(new Map());
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<{ series: GroupedSeries[]; standalone: Movie[] } | null>(null);
-  const [categoryTypeInfo, setCategoryTypeInfo] = useState<Map<string, { hasMovies: boolean; hasSeries: boolean }>>(new Map());
   const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -1088,18 +1142,17 @@ export function MovieCatalog({
   }, [isAdultUnlocked]);
 
   // Categorias filtradas por tipo de conteúdo selecionado
+  // Agora usa as propriedades hasMovies/hasSeries diretamente do categoryIndex
   const filteredCategoryIndex = useMemo(() => {
     if (contentFilter === 'all') return availableCategoryIndex;
     
     return availableCategoryIndex.filter(cat => {
-      const typeInfo = categoryTypeInfo.get(cat.name);
-      if (!typeInfo) return true; // Mostra se ainda não carregou info
-      
-      if (contentFilter === 'movies') return typeInfo.hasMovies;
-      if (contentFilter === 'series') return typeInfo.hasSeries;
+      // Usa as propriedades diretamente do índice (pré-calculadas)
+      if (contentFilter === 'movies') return cat.hasMovies;
+      if (contentFilter === 'series') return cat.hasSeries;
       return true;
     });
-  }, [availableCategoryIndex, contentFilter, categoryTypeInfo]);
+  }, [availableCategoryIndex, contentFilter]);
 
   // Separar categorias principais (streamings) das outras
   const { featuredCategories, otherCategories } = useMemo(() => {
@@ -1176,14 +1229,15 @@ export function MovieCatalog({
   }, [otherCategories]);
 
   // Obter tipo predominante de uma categoria para colorir
+  // Agora usa diretamente as propriedades do categoryIndex
   const getCategoryType = useCallback((catName: string): 'movies' | 'series' | 'mixed' | 'unknown' => {
-    const typeInfo = categoryTypeInfo.get(catName);
-    if (!typeInfo) return 'unknown';
-    if (typeInfo.hasMovies && typeInfo.hasSeries) return 'mixed';
-    if (typeInfo.hasMovies) return 'movies';
-    if (typeInfo.hasSeries) return 'series';
+    const catInfo = availableCategoryIndex.find(c => c.name === catName);
+    if (!catInfo) return 'unknown';
+    if (catInfo.hasMovies && catInfo.hasSeries) return 'mixed';
+    if (catInfo.hasMovies) return 'movies';
+    if (catInfo.hasSeries) return 'series';
     return 'unknown';
-  }, [categoryTypeInfo]);
+  }, [availableCategoryIndex]);
 
   // Dados iniciais filtrados
   const availableInitialMovies = useMemo(() => {
@@ -1215,37 +1269,12 @@ export function MovieCatalog({
           newMap.set(selectedCategory, movies);
           return newMap;
         });
-        // Analisa tipos de conteúdo na categoria
-        const hasMovies = movies.some(m => m.type === 'movie');
-        const hasSeries = movies.some(m => m.type === 'series');
-        setCategoryTypeInfo(prev => {
-          const newMap = new Map(prev);
-          newMap.set(selectedCategory, { hasMovies, hasSeries });
-          return newMap;
-        });
+        
       });
     }
   }, [selectedCategory, loadedCategoryData]);
 
-  // Pré-carrega informações de tipo para categorias visíveis
-  useEffect(() => {
-    const loadCategoryTypes = async () => {
-      const categoriesToCheck = availableCategoryIndex.slice(0, Math.min(visibleCategories + 5, availableCategoryIndex.length));
-      for (const cat of categoriesToCheck) {
-        if (!categoryTypeInfo.has(cat.name)) {
-          const movies = await loadCategory(cat.name);
-          const hasMovies = movies.some(m => m.type === 'movie');
-          const hasSeries = movies.some(m => m.type === 'series');
-          setCategoryTypeInfo(prev => {
-            const newMap = new Map(prev);
-            newMap.set(cat.name, { hasMovies, hasSeries });
-            return newMap;
-          });
-        }
-      }
-    };
-    loadCategoryTypes();
-  }, [availableCategoryIndex, visibleCategories, categoryTypeInfo]);
+  
 
   // Busca quando há query
   useEffect(() => {
