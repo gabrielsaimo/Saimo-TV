@@ -189,7 +189,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
                 <h3>Filmes e Séries</h3>
                 <p>Catálogo completo sob demanda</p>
                 <ul className="card-features">
-                  <li>🎬 +10.000 títulos</li>
+                  <li>🎬 +500.000 títulos</li>
                   <li>🌟 Lançamentos</li>
                   <li>📚 Todas as categorias</li>
                 </ul>

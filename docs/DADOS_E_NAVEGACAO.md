@@ -257,7 +257,7 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
         <h3>Filmes & Séries</h3>
         <p>Catálogo completo on-demand</p>
         <ul>
-          <li>🎬 +10.000 títulos</li>
+          <li>🎬 +500.000 títulos</li>
           <li>📺 Séries completas</li>
           <li>🆕 Lançamentos</li>
         </ul>
