@@ -214,39 +214,6 @@ function findBestMatchWithContext(
 }
 
 /**
- * Encontra o melhor resultado baseado apenas no título (para funções que não precisam de categoria)
- */
-function findBestMatch(results: TMDBResult[], searchTitle: string): TMDBResult | null {
-  if (!results || results.length === 0) return null;
-  
-  const normalizedSearch = normalizeForComparison(searchTitle);
-  
-  // Primeiro: busca correspondência exata
-  for (const result of results) {
-    const title = result.title || result.name || '';
-    const originalTitle = result.original_title || result.original_name || '';
-    
-    if (normalizeForComparison(title) === normalizedSearch || 
-        normalizeForComparison(originalTitle) === normalizedSearch) {
-      return result;
-    }
-  }
-  
-  // Segundo: busca título que começa com a busca
-  for (const result of results) {
-    const title = result.title || result.name || '';
-    const normalizedTitle = normalizeForComparison(title);
-    
-    if (normalizedTitle.startsWith(normalizedSearch) && normalizedTitle.length <= normalizedSearch.length + 5) {
-      return result;
-    }
-  }
-  
-  // Terceiro: retorna o primeiro resultado
-  return results[0];
-}
-
-/**
  * Busca imagem usando a API multi-search (filme + série)
  * NOVA VERSÃO: Usa ano e categoria para ser mais assertivo
  */
