@@ -1,0 +1,1056 @@
+[
+  {
+    "id": "crepusculo-2008-87gzhd-1121458",
+    "name": "Crepúsculo (2008)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1121458.mp4",
+    "category": "🎬 Coleção CREPÚSCULO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 8966,
+      "imdbId": "tt1099212",
+      "title": "Crepúsculo",
+      "originalTitle": "Twilight",
+      "tagline": "Edward é um vampiro. Ele está morto de sede pelo meu sangue. E eu estou perdidamente apaixonada por ele.",
+      "overview": "Isabella Swan é uma adolescente que vai morar com seu pai em uma nova cidade depois que sua mãe decide casar-se novamente. No colégio, ela fica fascinada por Edward Cullen, um garoto que esconde um segredo obscuro. Eles se apaixonam, mas Edward sabe que quanto mais avançam no relacionamento, mais ele está colocando Bella e aqueles à sua volta em perigo.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2008-11-20",
+      "year": "2008",
+      "runtime": 122,
+      "rating": 6.3,
+      "voteCount": 14165,
+      "popularity": 13,
+      "certification": "12",
+      "genres": [
+        "Fantasia",
+        "Drama",
+        "Romance"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/o4ki1gYHkP6IWNdwjHvI9vzfpuC.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/o4ki1gYHkP6IWNdwjHvI9vzfpuC.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/weAYfu6FfrNxEDJ3xH1XpgQcqUv.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/weAYfu6FfrNxEDJ3xH1XpgQcqUv.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/mliFBzGs6RY8IVR2j9m4ZF5CVTh.png",
+      "cast": [
+        {
+          "id": 37917,
+          "name": "Kristen Stewart",
+          "character": "Bella Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/ryhCjTGqS6G6OprbR0qUEH355lA.jpg"
+        },
+        {
+          "id": 11288,
+          "name": "Robert Pattinson",
+          "character": "Edward Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/8A4PS5iG7GWEAVFftyqMZKl3qcr.jpg"
+        },
+        {
+          "id": 21029,
+          "name": "Billy Burke",
+          "character": "Charlie Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/AoyN5a1TNRa4OCeylcXusQM1bD4.jpg"
+        },
+        {
+          "id": 56857,
+          "name": "Peter Facinelli",
+          "character": "Dr. Carlisle Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/mmha3A5INmromiCsN8FBSLScVpZ.jpg"
+        },
+        {
+          "id": 45827,
+          "name": "Ashley Greene",
+          "character": "Alice Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/d7UyEB3cm4doT5JgkZb68PmG4sT.jpg"
+        },
+        {
+          "id": 84215,
+          "name": "Jackson Rathbone",
+          "character": "Jasper",
+          "photo": "https://image.tmdb.org/t/p/w185/qgjLFneFtjidc4Flx8dAOWECnRw.jpg"
+        },
+        {
+          "id": 59252,
+          "name": "Nikki Reed",
+          "character": "Rosalie",
+          "photo": "https://image.tmdb.org/t/p/w185/xNIXLZ9giqTdvjkBUGq1bJqPe5D.jpg"
+        },
+        {
+          "id": 34502,
+          "name": "Kellan Lutz",
+          "character": "Emmet Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/pLzdFABlU6oS2BvlHlAN990woY1.jpg"
+        },
+        {
+          "id": 53755,
+          "name": "Elizabeth Reaser",
+          "character": "Esme Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/tx2shpuofbAmmIoUXpXxqQ9exZM.jpg"
+        },
+        {
+          "id": 84214,
+          "name": "Taylor Lautner",
+          "character": "Jacob Black",
+          "photo": "https://image.tmdb.org/t/p/w185/fpaxCUZEpBHtg6HuXjjJPf0tep9.jpg"
+        },
+        {
+          "id": 84225,
+          "name": "Gil Birmingham",
+          "character": "Billy Black",
+          "photo": "https://image.tmdb.org/t/p/w185/bWYOwtq0zUgpbEhTyiJHo2TmVju.jpg"
+        },
+        {
+          "id": 55086,
+          "name": "Cam Gigandet",
+          "character": "James",
+          "photo": "https://image.tmdb.org/t/p/w185/kdSVRqCR0p8KZTvVkRccBLoim7L.jpg"
+        },
+        {
+          "id": 58168,
+          "name": "Rachelle Lefevre",
+          "character": "Victoria",
+          "photo": "https://image.tmdb.org/t/p/w185/5ETzDBwbCZ9xYLMmD5c39snVsoQ.jpg"
+        },
+        {
+          "id": 39391,
+          "name": "Edi Gathegi",
+          "character": "Laurent",
+          "photo": "https://image.tmdb.org/t/p/w185/dt8yMyycDlzxkjhmuuJJ4tXDbp4.jpg"
+        },
+        {
+          "id": 84223,
+          "name": "Anna Kendrick",
+          "character": "Jessica",
+          "photo": "https://image.tmdb.org/t/p/w185/i2HIJQcBsUQ3o9HwEeDwou45D60.jpg"
+        }
+      ],
+      "directors": [
+        "Catherine Hardwicke"
+      ],
+      "writers": [
+        "Melissa Rosenberg"
+      ],
+      "keywords": [
+        "high school",
+        "soulmates",
+        "based on novel or book",
+        "immortality",
+        "vampire",
+        "forbidden love",
+        "teen movie",
+        "trust",
+        "desire",
+        "washington state"
+      ],
+      "companies": [
+        "Summit Entertainment",
+        "Temple Hill Entertainment",
+        "Maverick Films",
+        "Imprint Entertainment",
+        "Goldcrest"
+      ],
+      "countries": [
+        "GB",
+        "US"
+      ],
+      "budget": 37000000,
+      "revenue": 393616788,
+      "collection": {
+        "id": 33514,
+        "name": "Crepúsculo: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/zj8uKOYL6q7wZ2TqT162hDot7ef.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 18239,
+          "title": "A Saga Crepúsculo: Lua Nova",
+          "poster": "https://image.tmdb.org/t/p/w185/z39dbVwa1iIihdUDHGiRy4tc2Ov.jpg",
+          "rating": 6
+        },
+        {
+          "id": 24021,
+          "title": "A Saga Crepúsculo: Eclipse",
+          "poster": "https://image.tmdb.org/t/p/w185/a8qPjwfKA1MwjEoVPhTf1ptVzdE.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 50619,
+          "title": "A Saga Crepúsculo: Amanhecer - Parte 1",
+          "poster": "https://image.tmdb.org/t/p/w185/a6PexAo0jJRLlPNBfdiXXr0HYyz.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 50620,
+          "title": "A Saga Crepúsculo: Amanhecer - Parte 2",
+          "poster": "https://image.tmdb.org/t/p/w185/1clnx7FymVEo1NC3Yikf1GrEfq7.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 812,
+          "title": "Aladdin",
+          "poster": "https://image.tmdb.org/t/p/w185/qYB8MwE6AgLFe5ruBUmPA0RWRPY.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 605,
+          "title": "Matrix Revolutions",
+          "poster": "https://image.tmdb.org/t/p/w185/92oJ810bYqijBQ8tqYL74mSpPtV.jpg",
+          "rating": 6.8
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Amazon Prime Video",
+        "Globoplay",
+        "Netflix Standard with Ads",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt1099212",
+      "facebook": null,
+      "instagram": "twilight",
+      "twitter": null
+    }
+  },
+  {
+    "id": "a-saga-crepusculo-lua-nova-2009-87gzhd-1121459",
+    "name": "A Saga Crepúsculo: Lua Nova (2009)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1121459.mp4",
+    "category": "🎬 Coleção CREPÚSCULO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 18239,
+      "imdbId": "tt1259571",
+      "title": "A Saga Crepúsculo: Lua Nova",
+      "originalTitle": "The Twilight Saga: New Moon",
+      "tagline": "O próximo capítulo começa.",
+      "overview": "Logo após Bella Swan completar 18 anos, Edward Cullen decide deixá-la para trás em um esforço para protegê-la após um ataque que quase tirou sua vida. Com uma tristeza inconsolável, Bella descobre que ela pode chamar a imagem de Edward sempre que se coloca em perigo e seu desejo em estar com ele a leva a assumir riscos cada vez maiores. Com a ajuda de Jacob Black, seu amigo de infância e um membro da misteriosa tripo Quileute, o coração de Bella vai gradualmente descongelando, enquanto Jacob esconde seu próprio segredo sobrenatural. Ao receber a notícia de que seu amado decide acabar com a própria vida, Bella parte para impedi-lo, sem imaginar que um perigo ainda maior a aguarda.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2009-11-18",
+      "year": "2009",
+      "runtime": 131,
+      "rating": 6,
+      "voteCount": 9598,
+      "popularity": 7,
+      "certification": "12",
+      "genres": [
+        "Aventura",
+        "Fantasia",
+        "Drama",
+        "Romance"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/z39dbVwa1iIihdUDHGiRy4tc2Ov.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/z39dbVwa1iIihdUDHGiRy4tc2Ov.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/dF2c20sRDgySZLaLS2OUerL07sz.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/dF2c20sRDgySZLaLS2OUerL07sz.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/yCgWi65cgE2jABlPBYDw7jOBqsx.png",
+      "cast": [
+        {
+          "id": 37917,
+          "name": "Kristen Stewart",
+          "character": "Bella Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/ryhCjTGqS6G6OprbR0qUEH355lA.jpg"
+        },
+        {
+          "id": 11288,
+          "name": "Robert Pattinson",
+          "character": "Edward Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/8A4PS5iG7GWEAVFftyqMZKl3qcr.jpg"
+        },
+        {
+          "id": 84214,
+          "name": "Taylor Lautner",
+          "character": "Jacob Black",
+          "photo": "https://image.tmdb.org/t/p/w185/fpaxCUZEpBHtg6HuXjjJPf0tep9.jpg"
+        },
+        {
+          "id": 501,
+          "name": "Dakota Fanning",
+          "character": "Jane",
+          "photo": "https://image.tmdb.org/t/p/w185/hwcO08SVWkelfvgfIa5HsTMxsK8.jpg"
+        },
+        {
+          "id": 3968,
+          "name": "Michael Sheen",
+          "character": "Aro",
+          "photo": "https://image.tmdb.org/t/p/w185/nGxIcIcfJjdPN3k8zFabtA1gRqL.jpg"
+        },
+        {
+          "id": 45827,
+          "name": "Ashley Greene",
+          "character": "Alice Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/d7UyEB3cm4doT5JgkZb68PmG4sT.jpg"
+        },
+        {
+          "id": 58168,
+          "name": "Rachelle Lefevre",
+          "character": "Victoria",
+          "photo": "https://image.tmdb.org/t/p/w185/5ETzDBwbCZ9xYLMmD5c39snVsoQ.jpg"
+        },
+        {
+          "id": 21029,
+          "name": "Billy Burke",
+          "character": "Charlie Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/AoyN5a1TNRa4OCeylcXusQM1bD4.jpg"
+        },
+        {
+          "id": 56857,
+          "name": "Peter Facinelli",
+          "character": "Dr. Carlisle Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/mmha3A5INmromiCsN8FBSLScVpZ.jpg"
+        },
+        {
+          "id": 53755,
+          "name": "Elizabeth Reaser",
+          "character": "Esme Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/tx2shpuofbAmmIoUXpXxqQ9exZM.jpg"
+        },
+        {
+          "id": 84215,
+          "name": "Jackson Rathbone",
+          "character": "Jasper Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/qgjLFneFtjidc4Flx8dAOWECnRw.jpg"
+        },
+        {
+          "id": 34502,
+          "name": "Kellan Lutz",
+          "character": "Emmett Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/pLzdFABlU6oS2BvlHlAN990woY1.jpg"
+        },
+        {
+          "id": 59252,
+          "name": "Nikki Reed",
+          "character": "Rosalie Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/xNIXLZ9giqTdvjkBUGq1bJqPe5D.jpg"
+        },
+        {
+          "id": 39391,
+          "name": "Edi Gathegi",
+          "character": "Laurent",
+          "photo": "https://image.tmdb.org/t/p/w185/dt8yMyycDlzxkjhmuuJJ4tXDbp4.jpg"
+        },
+        {
+          "id": 6804,
+          "name": "Graham Greene",
+          "character": "Harry Clearwater",
+          "photo": "https://image.tmdb.org/t/p/w185/ubX9pwrzQqnR41gAGyY1GoSZr1G.jpg"
+        }
+      ],
+      "directors": [
+        "Chris Weitz"
+      ],
+      "writers": [
+        "Melissa Rosenberg"
+      ],
+      "keywords": [
+        "moon",
+        "based on novel or book",
+        "vampire",
+        "teen movie",
+        "werewolf",
+        "interspecies romance",
+        "based on young adult novel",
+        "supernatural power",
+        "good versus evil",
+        "vampire human love"
+      ],
+      "companies": [
+        "Summit Entertainment",
+        "Temple Hill Entertainment",
+        "Maverick Films",
+        "Imprint Entertainment",
+        "Sunswept Entertainment"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 50000000,
+      "revenue": 709827462,
+      "collection": {
+        "id": 33514,
+        "name": "Crepúsculo: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/zj8uKOYL6q7wZ2TqT162hDot7ef.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 24021,
+          "title": "A Saga Crepúsculo: Eclipse",
+          "poster": "https://image.tmdb.org/t/p/w185/a8qPjwfKA1MwjEoVPhTf1ptVzdE.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 50619,
+          "title": "A Saga Crepúsculo: Amanhecer - Parte 1",
+          "poster": "https://image.tmdb.org/t/p/w185/a6PexAo0jJRLlPNBfdiXXr0HYyz.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 50620,
+          "title": "A Saga Crepúsculo: Amanhecer - Parte 2",
+          "poster": "https://image.tmdb.org/t/p/w185/1clnx7FymVEo1NC3Yikf1GrEfq7.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 8966,
+          "title": "Crepúsculo",
+          "poster": "https://image.tmdb.org/t/p/w185/o4ki1gYHkP6IWNdwjHvI9vzfpuC.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 37735,
+          "title": "A Mentira",
+          "poster": "https://image.tmdb.org/t/p/w185/5ThseiB0z6fz1hyw2Ofv9o8frmD.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 834,
+          "title": "Anjos da Noite: A Evolução",
+          "poster": "https://image.tmdb.org/t/p/w185/psVdP3DDfDzNg0nl25UwBG4rWdw.jpg",
+          "rating": 6.6
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Amazon Prime Video",
+        "Globoplay",
+        "Netflix Standard with Ads",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt1259571",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "a-saga-crepusculo-eclipse-2010-87gzhd-1121460",
+    "name": "A Saga Crepúsculo: Eclipse (2010)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1121460.mp4",
+    "category": "🎬 Coleção CREPÚSCULO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 24021,
+      "imdbId": "tt1325004",
+      "title": "A Saga Crepúsculo: Eclipse",
+      "originalTitle": "The Twilight Saga: Eclipse",
+      "tagline": "Tudo começa... com uma escolha.",
+      "overview": "Bella mais uma vez encontra-se rodeada pelo perigo, já que Seattle está sendo devastada por uma sequência de misteriosos assassinatos e um malicioso vampiro continua em sua busca por vingança. Em meio a tudo isso, ela é forçada a escolher entre Edward e Jacob, sabendo que sua decisão tem o poder de incendiar a luta entre os vampiros e os lobisomens. Prestes a concluir a graduação, Bella tem que enfrentar a decisão mais importante da sua vida.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2010-06-23",
+      "year": "2010",
+      "runtime": 123,
+      "rating": 6.2,
+      "voteCount": 9115,
+      "popularity": 7,
+      "certification": "12",
+      "genres": [
+        "Aventura",
+        "Fantasia",
+        "Drama",
+        "Romance"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/a8qPjwfKA1MwjEoVPhTf1ptVzdE.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/a8qPjwfKA1MwjEoVPhTf1ptVzdE.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/oguoQWtQJcqIkmmUNbe3CmLx6AP.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/oguoQWtQJcqIkmmUNbe3CmLx6AP.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/qLwrVGcaIgiO902tGpCQydUbLnN.png",
+      "cast": [
+        {
+          "id": 37917,
+          "name": "Kristen Stewart",
+          "character": "Bella Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/ryhCjTGqS6G6OprbR0qUEH355lA.jpg"
+        },
+        {
+          "id": 11288,
+          "name": "Robert Pattinson",
+          "character": "Edward Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/8A4PS5iG7GWEAVFftyqMZKl3qcr.jpg"
+        },
+        {
+          "id": 84214,
+          "name": "Taylor Lautner",
+          "character": "Jacob Black",
+          "photo": "https://image.tmdb.org/t/p/w185/fpaxCUZEpBHtg6HuXjjJPf0tep9.jpg"
+        },
+        {
+          "id": 18997,
+          "name": "Bryce Dallas Howard",
+          "character": "Victoria",
+          "photo": "https://image.tmdb.org/t/p/w185/qQX1rhQaJ1G8eMG2RknFKiXfNRc.jpg"
+        },
+        {
+          "id": 501,
+          "name": "Dakota Fanning",
+          "character": "Jane",
+          "photo": "https://image.tmdb.org/t/p/w185/hwcO08SVWkelfvgfIa5HsTMxsK8.jpg"
+        },
+        {
+          "id": 21029,
+          "name": "Billy Burke",
+          "character": "Charlie Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/AoyN5a1TNRa4OCeylcXusQM1bD4.jpg"
+        },
+        {
+          "id": 56857,
+          "name": "Peter Facinelli",
+          "character": "Dr. Carlisle Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/mmha3A5INmromiCsN8FBSLScVpZ.jpg"
+        },
+        {
+          "id": 53755,
+          "name": "Elizabeth Reaser",
+          "character": "Esme Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/tx2shpuofbAmmIoUXpXxqQ9exZM.jpg"
+        },
+        {
+          "id": 84215,
+          "name": "Jackson Rathbone",
+          "character": "Jasper Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/qgjLFneFtjidc4Flx8dAOWECnRw.jpg"
+        },
+        {
+          "id": 34502,
+          "name": "Kellan Lutz",
+          "character": "Emmett Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/pLzdFABlU6oS2BvlHlAN990woY1.jpg"
+        },
+        {
+          "id": 45827,
+          "name": "Ashley Greene",
+          "character": "Alice Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/d7UyEB3cm4doT5JgkZb68PmG4sT.jpg"
+        },
+        {
+          "id": 59252,
+          "name": "Nikki Reed",
+          "character": "Rosalie Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/xNIXLZ9giqTdvjkBUGq1bJqPe5D.jpg"
+        },
+        {
+          "id": 84223,
+          "name": "Anna Kendrick",
+          "character": "Jessica",
+          "photo": "https://image.tmdb.org/t/p/w185/i2HIJQcBsUQ3o9HwEeDwou45D60.jpg"
+        },
+        {
+          "id": 56676,
+          "name": "Michael Welch",
+          "character": "Mike",
+          "photo": "https://image.tmdb.org/t/p/w185/nG38Sl8dems5i1xpJxsLIrYiIkn.jpg"
+        },
+        {
+          "id": 65225,
+          "name": "Justin Chon",
+          "character": "Eric",
+          "photo": "https://image.tmdb.org/t/p/w185/fGgdkJO7SAPHNo3siSyaYUpguyj.jpg"
+        }
+      ],
+      "directors": [
+        "David Slade"
+      ],
+      "writers": [
+        "Melissa Rosenberg"
+      ],
+      "keywords": [
+        "based on novel or book",
+        "immortality",
+        "vampire",
+        "bite",
+        "graduation",
+        "teen movie",
+        "werewolf",
+        "based on young adult novel",
+        "supernatural power",
+        "vampire human love"
+      ],
+      "companies": [
+        "Summit Entertainment",
+        "Temple Hill Entertainment",
+        "Imprint Entertainment",
+        "Maverick Films",
+        "Sunswept Entertainment"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 68000000,
+      "revenue": 698491347,
+      "collection": {
+        "id": 33514,
+        "name": "Crepúsculo: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/zj8uKOYL6q7wZ2TqT162hDot7ef.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 18239,
+          "title": "A Saga Crepúsculo: Lua Nova",
+          "poster": "https://image.tmdb.org/t/p/w185/z39dbVwa1iIihdUDHGiRy4tc2Ov.jpg",
+          "rating": 6
+        },
+        {
+          "id": 50619,
+          "title": "A Saga Crepúsculo: Amanhecer - Parte 1",
+          "poster": "https://image.tmdb.org/t/p/w185/a6PexAo0jJRLlPNBfdiXXr0HYyz.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 50620,
+          "title": "A Saga Crepúsculo: Amanhecer - Parte 2",
+          "poster": "https://image.tmdb.org/t/p/w185/1clnx7FymVEo1NC3Yikf1GrEfq7.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 8966,
+          "title": "Crepúsculo",
+          "poster": "https://image.tmdb.org/t/p/w185/o4ki1gYHkP6IWNdwjHvI9vzfpuC.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 23169,
+          "title": "Lembranças",
+          "poster": "https://image.tmdb.org/t/p/w185/pnmG02dRGXKeHSbzeCZxSGzaIBX.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 863,
+          "title": "Toy Story 2",
+          "poster": "https://image.tmdb.org/t/p/w185/2MFIhZAW0CVlEQrFyqwa4U6zqJP.jpg",
+          "rating": 7.6
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Globoplay",
+        "Netflix Standard with Ads"
+      ],
+      "imdb": "tt1325004",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "a-saga-crepusculo-amanhecer-parte-1-2011-87gzhd-1121461",
+    "name": "A Saga Crepúsculo: Amanhecer - Parte 1 (2011)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1121461.mp4",
+    "category": "🎬 Coleção CREPÚSCULO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 50619,
+      "imdbId": "tt1324999",
+      "title": "A Saga Crepúsculo: Amanhecer - Parte 1",
+      "originalTitle": "The Twilight Saga: Breaking Dawn - Part 1",
+      "tagline": "Para sempre é apenas o começo.",
+      "overview": "Um casamento, uma lua de mel e o nascimento de uma criança trazem imprevistas e chocantes consequências para Bella e Edward e para aqueles a quem amam, incluindo novas complicações com o lobisomem Jacob Black.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2011-11-16",
+      "year": "2011",
+      "runtime": 117,
+      "rating": 6.2,
+      "voteCount": 9137,
+      "popularity": 8,
+      "certification": "12",
+      "genres": [
+        "Aventura",
+        "Fantasia",
+        "Romance"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/a6PexAo0jJRLlPNBfdiXXr0HYyz.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/a6PexAo0jJRLlPNBfdiXXr0HYyz.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/hBwDYiOPwXHuwiYGP82ekFNSeBr.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/hBwDYiOPwXHuwiYGP82ekFNSeBr.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/9ojzTXbikTjy12ofDTw0CW0Ad2K.png",
+      "cast": [
+        {
+          "id": 37917,
+          "name": "Kristen Stewart",
+          "character": "Bella Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/ryhCjTGqS6G6OprbR0qUEH355lA.jpg"
+        },
+        {
+          "id": 11288,
+          "name": "Robert Pattinson",
+          "character": "Edward Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/8A4PS5iG7GWEAVFftyqMZKl3qcr.jpg"
+        },
+        {
+          "id": 84214,
+          "name": "Taylor Lautner",
+          "character": "Jacob Black",
+          "photo": "https://image.tmdb.org/t/p/w185/fpaxCUZEpBHtg6HuXjjJPf0tep9.jpg"
+        },
+        {
+          "id": 21029,
+          "name": "Billy Burke",
+          "character": "Charlie Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/AoyN5a1TNRa4OCeylcXusQM1bD4.jpg"
+        },
+        {
+          "id": 56857,
+          "name": "Peter Facinelli",
+          "character": "Dr. Carlisle Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/mmha3A5INmromiCsN8FBSLScVpZ.jpg"
+        },
+        {
+          "id": 3968,
+          "name": "Michael Sheen",
+          "character": "Aro",
+          "photo": "https://image.tmdb.org/t/p/w185/nGxIcIcfJjdPN3k8zFabtA1gRqL.jpg"
+        },
+        {
+          "id": 53755,
+          "name": "Elizabeth Reaser",
+          "character": "Esme Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/tx2shpuofbAmmIoUXpXxqQ9exZM.jpg"
+        },
+        {
+          "id": 34502,
+          "name": "Kellan Lutz",
+          "character": "Emmett Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/pLzdFABlU6oS2BvlHlAN990woY1.jpg"
+        },
+        {
+          "id": 59252,
+          "name": "Nikki Reed",
+          "character": "Rosalie Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/xNIXLZ9giqTdvjkBUGq1bJqPe5D.jpg"
+        },
+        {
+          "id": 84215,
+          "name": "Jackson Rathbone",
+          "character": "Jasper Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/qgjLFneFtjidc4Flx8dAOWECnRw.jpg"
+        },
+        {
+          "id": 45827,
+          "name": "Ashley Greene",
+          "character": "Alice Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/d7UyEB3cm4doT5JgkZb68PmG4sT.jpg"
+        },
+        {
+          "id": 84223,
+          "name": "Anna Kendrick",
+          "character": "Jessica",
+          "photo": "https://image.tmdb.org/t/p/w185/i2HIJQcBsUQ3o9HwEeDwou45D60.jpg"
+        },
+        {
+          "id": 25836,
+          "name": "Sarah Clarke",
+          "character": "Renée",
+          "photo": "https://image.tmdb.org/t/p/w185/bClQYkwMBVnXrVRs52TFbqX3oVE.jpg"
+        },
+        {
+          "id": 122029,
+          "name": "Christian Camargo",
+          "character": "Eleazar Denali",
+          "photo": "https://image.tmdb.org/t/p/w185/7smKRlZUxTJqt1smgarwzzks684.jpg"
+        },
+        {
+          "id": 84225,
+          "name": "Gil Birmingham",
+          "character": "Billy",
+          "photo": "https://image.tmdb.org/t/p/w185/bWYOwtq0zUgpbEhTyiJHo2TmVju.jpg"
+        }
+      ],
+      "directors": [
+        "Bill Condon"
+      ],
+      "writers": [
+        "Melissa Rosenberg"
+      ],
+      "keywords": [
+        "based on novel or book",
+        "vampire",
+        "hybrid",
+        "teen movie",
+        "werewolf",
+        "supernatural creature",
+        "dead",
+        "duringcreditsstinger",
+        "based on young adult novel"
+      ],
+      "companies": [
+        "Summit Entertainment",
+        "Sunswept Entertainment",
+        "TSBD Canada Productions",
+        "TSBD Louisiana",
+        "TSBD Productions"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 110000000,
+      "revenue": 712171856,
+      "collection": {
+        "id": 33514,
+        "name": "Crepúsculo: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/zj8uKOYL6q7wZ2TqT162hDot7ef.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 50620,
+          "title": "A Saga Crepúsculo: Amanhecer - Parte 2",
+          "poster": "https://image.tmdb.org/t/p/w185/1clnx7FymVEo1NC3Yikf1GrEfq7.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 24021,
+          "title": "A Saga Crepúsculo: Eclipse",
+          "poster": "https://image.tmdb.org/t/p/w185/a8qPjwfKA1MwjEoVPhTf1ptVzdE.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 18239,
+          "title": "A Saga Crepúsculo: Lua Nova",
+          "poster": "https://image.tmdb.org/t/p/w185/z39dbVwa1iIihdUDHGiRy4tc2Ov.jpg",
+          "rating": 6
+        },
+        {
+          "id": 8966,
+          "title": "Crepúsculo",
+          "poster": "https://image.tmdb.org/t/p/w185/o4ki1gYHkP6IWNdwjHvI9vzfpuC.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 49013,
+          "title": "Carros 2",
+          "poster": "https://image.tmdb.org/t/p/w185/fIKaabvE40T39nOIngcZPcPJeYe.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 2503,
+          "title": "O Ultimato Bourne",
+          "poster": "https://image.tmdb.org/t/p/w185/27XjtVdi6zbNni68wtmGdlCODCR.jpg",
+          "rating": 7.4
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Amazon Prime Video",
+        "Globoplay",
+        "Netflix Standard with Ads",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt1324999",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "a-saga-crepusculo-amanhecer-parte-2-2012-87gzhd-1121462",
+    "name": "A Saga Crepúsculo: Amanhecer - Parte 2 (2012)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1121462.mp4",
+    "category": "🎬 Coleção CREPÚSCULO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 50620,
+      "imdbId": "tt1673434",
+      "title": "A Saga Crepúsculo: Amanhecer - Parte 2",
+      "originalTitle": "The Twilight Saga: Breaking Dawn - Part 2",
+      "tagline": "O final épico que viverá para sempre.",
+      "overview": "Após dar a luz a Renesmee, quase morrer e ser transformada em vampira, Bella agora tem que proteger sua filha da ameaça dos Volturi, juntamente com a ajuda de seu grande amor Edward e seu melhor amigo Jacob.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2012-11-13",
+      "year": "2012",
+      "runtime": 115,
+      "rating": 6.5,
+      "voteCount": 9249,
+      "popularity": 9,
+      "certification": "12",
+      "genres": [
+        "Aventura",
+        "Fantasia",
+        "Drama",
+        "Romance"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/1clnx7FymVEo1NC3Yikf1GrEfq7.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/1clnx7FymVEo1NC3Yikf1GrEfq7.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/qkl57wzSFrpi2sRpoc2mZJbMuLP.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/qkl57wzSFrpi2sRpoc2mZJbMuLP.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/qoUphLOTPt5eB2uTiw8dIo43XnZ.png",
+      "cast": [
+        {
+          "id": 37917,
+          "name": "Kristen Stewart",
+          "character": "Bella Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/ryhCjTGqS6G6OprbR0qUEH355lA.jpg"
+        },
+        {
+          "id": 11288,
+          "name": "Robert Pattinson",
+          "character": "Edward Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/8A4PS5iG7GWEAVFftyqMZKl3qcr.jpg"
+        },
+        {
+          "id": 84214,
+          "name": "Taylor Lautner",
+          "character": "Jacob Black",
+          "photo": "https://image.tmdb.org/t/p/w185/fpaxCUZEpBHtg6HuXjjJPf0tep9.jpg"
+        },
+        {
+          "id": 56857,
+          "name": "Peter Facinelli",
+          "character": "Dr. Carlisle Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/mmha3A5INmromiCsN8FBSLScVpZ.jpg"
+        },
+        {
+          "id": 53755,
+          "name": "Elizabeth Reaser",
+          "character": "Esme Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/tx2shpuofbAmmIoUXpXxqQ9exZM.jpg"
+        },
+        {
+          "id": 45827,
+          "name": "Ashley Greene",
+          "character": "Alice Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/d7UyEB3cm4doT5JgkZb68PmG4sT.jpg"
+        },
+        {
+          "id": 84215,
+          "name": "Jackson Rathbone",
+          "character": "Jasper Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/qgjLFneFtjidc4Flx8dAOWECnRw.jpg"
+        },
+        {
+          "id": 34502,
+          "name": "Kellan Lutz",
+          "character": "Emmett Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/pLzdFABlU6oS2BvlHlAN990woY1.jpg"
+        },
+        {
+          "id": 59252,
+          "name": "Nikki Reed",
+          "character": "Rosalie Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/xNIXLZ9giqTdvjkBUGq1bJqPe5D.jpg"
+        },
+        {
+          "id": 21029,
+          "name": "Billy Burke",
+          "character": "Charlie Swan",
+          "photo": "https://image.tmdb.org/t/p/w185/AoyN5a1TNRa4OCeylcXusQM1bD4.jpg"
+        },
+        {
+          "id": 501,
+          "name": "Dakota Fanning",
+          "character": "Jane",
+          "photo": "https://image.tmdb.org/t/p/w185/hwcO08SVWkelfvgfIa5HsTMxsK8.jpg"
+        },
+        {
+          "id": 83356,
+          "name": "Jamie Campbell Bower",
+          "character": "Caius",
+          "photo": "https://image.tmdb.org/t/p/w185/jVAkrPb3lNHZLerfzVxTzh170L7.jpg"
+        },
+        {
+          "id": 11825,
+          "name": "Maggie Grace",
+          "character": "Irina",
+          "photo": "https://image.tmdb.org/t/p/w185/fEZSGno4ooPgFjuGzE7ogsWEHsh.jpg"
+        },
+        {
+          "id": 851784,
+          "name": "Mackenzie Foy",
+          "character": "Renesmee",
+          "photo": "https://image.tmdb.org/t/p/w185/wzH60SrqWp2XMkBfLgdBhx5EJ82.jpg"
+        },
+        {
+          "id": 3968,
+          "name": "Michael Sheen",
+          "character": "Aro",
+          "photo": "https://image.tmdb.org/t/p/w185/nGxIcIcfJjdPN3k8zFabtA1gRqL.jpg"
+        }
+      ],
+      "directors": [
+        "Bill Condon"
+      ],
+      "writers": [
+        "Melissa Rosenberg"
+      ],
+      "keywords": [
+        "based on novel or book",
+        "vampire",
+        "villainess",
+        "affectation",
+        "romance",
+        "teen movie",
+        "werewolf",
+        "supernatural creature",
+        "super strength",
+        "imprinting"
+      ],
+      "companies": [
+        "Summit Entertainment",
+        "Temple Hill Entertainment",
+        "Sunswept Entertainment"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 120000000,
+      "revenue": 829747654,
+      "collection": {
+        "id": 33514,
+        "name": "Crepúsculo: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/zj8uKOYL6q7wZ2TqT162hDot7ef.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 50619,
+          "title": "A Saga Crepúsculo: Amanhecer - Parte 1",
+          "poster": "https://image.tmdb.org/t/p/w185/a6PexAo0jJRLlPNBfdiXXr0HYyz.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 24021,
+          "title": "A Saga Crepúsculo: Eclipse",
+          "poster": "https://image.tmdb.org/t/p/w185/a8qPjwfKA1MwjEoVPhTf1ptVzdE.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 18239,
+          "title": "A Saga Crepúsculo: Lua Nova",
+          "poster": "https://image.tmdb.org/t/p/w185/z39dbVwa1iIihdUDHGiRy4tc2Ov.jpg",
+          "rating": 6
+        },
+        {
+          "id": 8966,
+          "title": "Crepúsculo",
+          "poster": "https://image.tmdb.org/t/p/w185/o4ki1gYHkP6IWNdwjHvI9vzfpuC.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 277,
+          "title": "Anjos da Noite",
+          "poster": "https://image.tmdb.org/t/p/w185/4DraJB84CY1UX6IKEjdQbWEJcUQ.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 72105,
+          "title": "Ted",
+          "poster": "https://image.tmdb.org/t/p/w185/patvtN6QlClCRZlswIPxDSYJRzW.jpg",
+          "rating": 6.4
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Amazon Prime Video",
+        "Globoplay",
+        "Claro tv+",
+        "Netflix Standard with Ads"
+      ],
+      "imdb": "tt1673434",
+      "facebook": null,
+      "instagram": "twilight",
+      "twitter": null
+    }
+  }
+]

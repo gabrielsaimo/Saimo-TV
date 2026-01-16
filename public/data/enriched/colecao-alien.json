@@ -1,0 +1,582 @@
+[
+  {
+    "id": "alien-covenant-2017-87gzhd-622618",
+    "name": "Alien: Covenant (2017)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/622618.mp4",
+    "category": "🎬 Coleção ALIEN",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 126889,
+      "imdbId": "tt2316204",
+      "title": "Alien: Covenant",
+      "originalTitle": "Alien: Covenant",
+      "tagline": "O caminho para o paraíso começa no inferno.",
+      "overview": "Viajando pela galáxia, os tripulantes da nave colonizadora Covenant encontram um planeta remoto com ares de paraíso inexplorado. Encantados, eles acreditam na sorte e ignoram a realidade do local: uma terra sombria que guarda terríveis segredos e tem o sobrevivente David como habitante solitário.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2017-05-09",
+      "year": "2017",
+      "runtime": 122,
+      "rating": 6.2,
+      "voteCount": 9190,
+      "popularity": 7,
+      "certification": "16",
+      "genres": [
+        "Terror",
+        "Ficção científica",
+        "Thriller"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/wm8L1D3YMT0auLQiPXY3H1CUDg8.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/wm8L1D3YMT0auLQiPXY3H1CUDg8.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/iXXPaQPfQowpQ5UvhsHLj9BgFhe.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/iXXPaQPfQowpQ5UvhsHLj9BgFhe.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/9Qvc7SOOapNEIzuVyy0ZVL2jIGf.png",
+      "cast": [
+        {
+          "id": 17288,
+          "name": "Michael Fassbender",
+          "character": "David / Walter",
+          "photo": "https://image.tmdb.org/t/p/w185/xvbnUiB2ZBR3QIt595OzNy657Vw.jpg"
+        },
+        {
+          "id": 77795,
+          "name": "Katherine Waterston",
+          "character": "Daniels",
+          "photo": "https://image.tmdb.org/t/p/w185/5fIEhBldLuIkFK0R3USTzngyE3c.jpg"
+        },
+        {
+          "id": 8289,
+          "name": "Billy Crudup",
+          "character": "Oram",
+          "photo": "https://image.tmdb.org/t/p/w185/4kHvUUVFMW8GJTHJtoAiskqhcyO.jpg"
+        },
+        {
+          "id": 62862,
+          "name": "Danny McBride",
+          "character": "Tennessee",
+          "photo": "https://image.tmdb.org/t/p/w185/sVFPzl2t5QlGudQKWAszIWZCXZv.jpg"
+        },
+        {
+          "id": 76961,
+          "name": "Demián Bichir",
+          "character": "Lope",
+          "photo": "https://image.tmdb.org/t/p/w185/dur9tX8tbDDJE5mSOZkuW2VDGz4.jpg"
+        },
+        {
+          "id": 37158,
+          "name": "Carmen Ejogo",
+          "character": "Karine",
+          "photo": "https://image.tmdb.org/t/p/w185/b2qi5NxOwoxK67LPz0MjVwjRcFp.jpg"
+        },
+        {
+          "id": 181081,
+          "name": "Jussie Smollett",
+          "character": "Ricks",
+          "photo": "https://image.tmdb.org/t/p/w185/Mhecg0ylH55rTdC48SyX5IxjGM.jpg"
+        },
+        {
+          "id": 1486488,
+          "name": "Callie Hernandez",
+          "character": "Upworth",
+          "photo": "https://image.tmdb.org/t/p/w185/doMXlhTAYCy8gH43yYA6m9ymxhd.jpg"
+        },
+        {
+          "id": 139150,
+          "name": "Amy Seimetz",
+          "character": "Faris",
+          "photo": "https://image.tmdb.org/t/p/w185/qa7vCi7TViddGjuYEszLdi8DRqN.jpg"
+        },
+        {
+          "id": 37290,
+          "name": "Nathaniel Dean",
+          "character": "Hallett",
+          "photo": "https://image.tmdb.org/t/p/w185/akebwx7M4HJc3q2UnC6mKymKlkO.jpg"
+        },
+        {
+          "id": 1527210,
+          "name": "Alexander England",
+          "character": "Ankor",
+          "photo": "https://image.tmdb.org/t/p/w185/rgJQnVdTG9ruE0kSj1QdzxKOyVI.jpg"
+        },
+        {
+          "id": 1371541,
+          "name": "Benjamin Rigby",
+          "character": "Ledward",
+          "photo": "https://image.tmdb.org/t/p/w185/le5qTKDolOJBZ5mWjnx5QwNbCPA.jpg"
+        },
+        {
+          "id": 1384511,
+          "name": "Uli Latukefu",
+          "character": "Cole",
+          "photo": "https://image.tmdb.org/t/p/w185/m0wqEqbNrWkZ5vh6EZKliu86wgY.jpg"
+        },
+        {
+          "id": 1057485,
+          "name": "Tess Haubrich",
+          "character": "Rosenthal",
+          "photo": "https://image.tmdb.org/t/p/w185/pNvjKa3Rl2q681EM6kQrwbEfJeg.jpg"
+        },
+        {
+          "id": 7032,
+          "name": "Lorelei King",
+          "character": "'Mother' (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/yCli8FtnvC50bmg5NGYEGO5n5yS.jpg"
+        }
+      ],
+      "directors": [
+        "Ridley Scott"
+      ],
+      "writers": [
+        "Dante Harper",
+        "John Logan"
+      ],
+      "keywords": [
+        "android",
+        "spacecraft",
+        "experiment",
+        "space travel",
+        "infection",
+        "engineer",
+        "alien life-form",
+        "sequel",
+        "alien",
+        "space"
+      ],
+      "companies": [
+        "20th Century Fox",
+        "Brandywine Productions",
+        "Scott Free Productions"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 97000000,
+      "revenue": 240891763,
+      "collection": {
+        "id": 135416,
+        "name": "Prometheus: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/x1zMRnToleUxYWhTf17b1RpK6uM.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 70981,
+          "title": "Prometheus",
+          "poster": "https://image.tmdb.org/t/p/w185/k1GZVllOORTiN0XTPdumt9CSAcc.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 8078,
+          "title": "Alien: A Ressurreição",
+          "poster": "https://image.tmdb.org/t/p/w185/lBQihuqaiRFZEzQh3M5uKXfmW15.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 274857,
+          "title": "Rei Arthur: A Lenda da Espada",
+          "poster": "https://image.tmdb.org/t/p/w185/vVvc4XRnUMGBMAhtWVzHdySIJzm.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 8077,
+          "title": "Alien³",
+          "poster": "https://image.tmdb.org/t/p/w185/iGWvvcOt1OGeO2cio6W81RKGHne.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 395992,
+          "title": "Vida",
+          "poster": "https://image.tmdb.org/t/p/w185/bKacW7BlSPHYvklyhSHvJrNl1CO.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 348,
+          "title": "Alien: O Oitavo Passageiro",
+          "poster": "https://image.tmdb.org/t/p/w185/rFHzJrkO1kNIezb6rFog5oCJUEn.jpg",
+          "rating": 8.2
+        }
+      ],
+      "streaming": [
+        "Disney Plus"
+      ],
+      "imdb": "tt2316204",
+      "facebook": "alienanthology",
+      "instagram": "alienanthology",
+      "twitter": "AlienAnthology"
+    }
+  },
+  {
+    "id": "alien-o-oitavo-passageiro-1979-87gzhd-623402",
+    "name": "Alien: O Oitavo Passageiro (1979)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/623402.mp4",
+    "category": "🎬 Coleção ALIEN",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 348,
+      "imdbId": "tt0078748",
+      "title": "Alien: O Oitavo Passageiro",
+      "originalTitle": "Alien",
+      "tagline": "No espaço, ninguém pode ouvir você gritar.",
+      "overview": "Quando a tripulação da sonda espacial Nostromo responde a um pedido de socorro vindo de um planeta inóspito, eles descobrem uma forma de vida mortal que se reproduz dentro de humanos. Agora, a tripulação deve lutar para permanecer viva e impedir que a criatura chegue até a Terra.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1979-05-25",
+      "year": "1979",
+      "runtime": 117,
+      "rating": 8.2,
+      "voteCount": 15908,
+      "popularity": 18,
+      "certification": "14",
+      "genres": [
+        "Terror",
+        "Ficção científica"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/rFHzJrkO1kNIezb6rFog5oCJUEn.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/rFHzJrkO1kNIezb6rFog5oCJUEn.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/cEobq5QrnOJjO6giDs8q4RxmMKh.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/cEobq5QrnOJjO6giDs8q4RxmMKh.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/1Ghh8XEZuuwR0pjExA3rznK02td.png",
+      "cast": [
+        {
+          "id": 4139,
+          "name": "Tom Skerritt",
+          "character": "Dallas",
+          "photo": "https://image.tmdb.org/t/p/w185/oWFCyBLm1lsbsbT5Nmx3SPMaqFZ.jpg"
+        },
+        {
+          "id": 10205,
+          "name": "Sigourney Weaver",
+          "character": "Ripley",
+          "photo": "https://image.tmdb.org/t/p/w185/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg"
+        },
+        {
+          "id": 5047,
+          "name": "Veronica Cartwright",
+          "character": "Lambert",
+          "photo": "https://image.tmdb.org/t/p/w185/8s31kdotRrghkH4DkxpRZCmELYd.jpg"
+        },
+        {
+          "id": 5048,
+          "name": "Harry Dean Stanton",
+          "character": "Brett",
+          "photo": "https://image.tmdb.org/t/p/w185/avdEF6khhn45OL0riAspiX82StH.jpg"
+        },
+        {
+          "id": 5049,
+          "name": "John Hurt",
+          "character": "Kane",
+          "photo": "https://image.tmdb.org/t/p/w185/bjNSzt1d7uK3q5PbtFXUJrRt4qg.jpg"
+        },
+        {
+          "id": 65,
+          "name": "Ian Holm",
+          "character": "Ash",
+          "photo": "https://image.tmdb.org/t/p/w185/cOJDgvgj4nMec6Inzj1H5nugTO5.jpg"
+        },
+        {
+          "id": 5050,
+          "name": "Yaphet Kotto",
+          "character": "Parker",
+          "photo": "https://image.tmdb.org/t/p/w185/f0jquWLj22hvYf6PTIggdolhiDx.jpg"
+        },
+        {
+          "id": 5051,
+          "name": "Bolaji Badejo",
+          "character": "Alien",
+          "photo": "https://image.tmdb.org/t/p/w185/7ddxWlDIOVKBK6TjP66vb9Qp3MW.jpg"
+        },
+        {
+          "id": 5052,
+          "name": "Helen Horton",
+          "character": "Mother (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/ghK0UV1cMPThtRmx5vn9dbDwRYb.jpg"
+        }
+      ],
+      "directors": [
+        "Ridley Scott"
+      ],
+      "writers": [
+        "Dan O'Bannon"
+      ],
+      "keywords": [
+        "android",
+        "spacecraft",
+        "space marine",
+        "biology",
+        "dystopia",
+        "countdown",
+        "space suit",
+        "beheading",
+        "space travel",
+        "cowardice"
+      ],
+      "companies": [
+        "Brandywine Productions",
+        "Twentieth Century-Fox Productions",
+        "Ronald Shusett Productions"
+      ],
+      "countries": [
+        "US",
+        "GB"
+      ],
+      "budget": 11000000,
+      "revenue": 104931801,
+      "collection": {
+        "id": 8091,
+        "name": "Alien: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/AgyQCf3kUqWgCZifYkFYeZN1ddC.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 679,
+          "title": "Aliens: O Resgate",
+          "poster": "https://image.tmdb.org/t/p/w185/cORjIMhNxSukd09E6MlvwU5Ev1V.jpg",
+          "rating": 8
+        },
+        {
+          "id": 8077,
+          "title": "Alien³",
+          "poster": "https://image.tmdb.org/t/p/w185/iGWvvcOt1OGeO2cio6W81RKGHne.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 8078,
+          "title": "Alien: A Ressurreição",
+          "poster": "https://image.tmdb.org/t/p/w185/lBQihuqaiRFZEzQh3M5uKXfmW15.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 126889,
+          "title": "Alien: Covenant",
+          "poster": "https://image.tmdb.org/t/p/w185/wm8L1D3YMT0auLQiPXY3H1CUDg8.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 578,
+          "title": "Tubarão",
+          "poster": "https://image.tmdb.org/t/p/w185/iD2XVowFgHngYGamCAdq2T44gMr.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 78,
+          "title": "Blade Runner: O Caçador de Andróides",
+          "poster": "https://image.tmdb.org/t/p/w185/y5ibL0vFnzsRiIHosw0WOfHtIj1.jpg",
+          "rating": 7.9
+        }
+      ],
+      "streaming": [
+        "Disney Plus"
+      ],
+      "imdb": "tt0078748",
+      "facebook": "alienanthology",
+      "instagram": "alienanthology",
+      "twitter": "alienanthology"
+    }
+  },
+  {
+    "id": "aliens-o-resgate-1986-87gzhd-1112281",
+    "name": "Aliens: O Resgate (1986)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1112281.mp4",
+    "category": "🎬 Coleção ALIEN",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 679,
+      "imdbId": "tt0090605",
+      "title": "Aliens: O Resgate",
+      "originalTitle": "Aliens",
+      "tagline": "Há lugares no universo que não se vai sozinho.",
+      "overview": "Cinquenta e quatro anos após escapar da \"Nostromo\", a tenente Ripley é encontrada a flutuar, perdida no espaço, ainda adormecida. De volta ao nosso planeta, ela conta tudo o que lhe aconteceu, mas ninguém acredita realmente nela, ou lhe parece dar crédito, até que uma colônia de humanos, criada no planeta onde ela encontrou o primeiro Alienígena, deixa de emitir comunicações subitamente. Ela então é convocada para auxiliar uma expedição militar ao local, sendo a única aparentemente consciente de que o pesadelo está longe do fim.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1986-07-18",
+      "year": "1986",
+      "runtime": 154,
+      "rating": 8,
+      "voteCount": 10527,
+      "popularity": 11,
+      "certification": "14",
+      "genres": [
+        "Ação",
+        "Thriller",
+        "Ficção científica"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/cORjIMhNxSukd09E6MlvwU5Ev1V.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/cORjIMhNxSukd09E6MlvwU5Ev1V.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/4kix6fAblJIH6eMs0Ku2loyZJXK.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/4kix6fAblJIH6eMs0Ku2loyZJXK.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/xPTTBBb4JhJqntRI0GtMS8dQkKb.png",
+      "cast": [
+        {
+          "id": 10205,
+          "name": "Sigourney Weaver",
+          "character": "Ripley",
+          "photo": "https://image.tmdb.org/t/p/w185/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg"
+        },
+        {
+          "id": 10206,
+          "name": "Carrie Henn",
+          "character": "Newt",
+          "photo": "https://image.tmdb.org/t/p/w185/iNaYp4liKvKsEZp5g5xjd94OFCz.jpg"
+        },
+        {
+          "id": 2712,
+          "name": "Michael Biehn",
+          "character": "Corporal Hicks",
+          "photo": "https://image.tmdb.org/t/p/w185/9oFLsADWQm2TvU8XzLIzBbjdMkU.jpg"
+        },
+        {
+          "id": 781,
+          "name": "Paul Reiser",
+          "character": "Burke",
+          "photo": "https://image.tmdb.org/t/p/w185/rGryzG00uSk8LsidacSBXVgo3iv.jpg"
+        },
+        {
+          "id": 2714,
+          "name": "Lance Henriksen",
+          "character": "Bishop",
+          "photo": "https://image.tmdb.org/t/p/w185/1PkFmD5HdjmRa2DumtwINnnAjTH.jpg"
+        },
+        {
+          "id": 2053,
+          "name": "Bill Paxton",
+          "character": "Private Hudson",
+          "photo": "https://image.tmdb.org/t/p/w185/aLdNe6mt1cSi2zWlUYRregzfis5.jpg"
+        },
+        {
+          "id": 10207,
+          "name": "William Hope",
+          "character": "Lieutenant Gorman",
+          "photo": "https://image.tmdb.org/t/p/w185/blKMEeCftWVBPI2hqvzycmdE9nS.jpg"
+        },
+        {
+          "id": 3981,
+          "name": "Jenette Goldstein",
+          "character": "Private Vasquez",
+          "photo": "https://image.tmdb.org/t/p/w185/4YZVLLWEFtxPLaOAlndfzxH1WG1.jpg"
+        },
+        {
+          "id": 10208,
+          "name": "Al Matthews",
+          "character": "Sergeant Apone",
+          "photo": "https://image.tmdb.org/t/p/w185/ugW320vaF9XdIaowEDIwcF3CXyU.jpg"
+        },
+        {
+          "id": 6576,
+          "name": "Mark Rolston",
+          "character": "Private Drake",
+          "photo": "https://image.tmdb.org/t/p/w185/hcrNRIptYMRXgkJ9k76BlQu6DQp.jpg"
+        },
+        {
+          "id": 10212,
+          "name": "Ricco Ross",
+          "character": "Private Frost",
+          "photo": "https://image.tmdb.org/t/p/w185/uXnxQldNApoiTJMecHA5xbi222S.jpg"
+        },
+        {
+          "id": 10209,
+          "name": "Colette Hiller",
+          "character": "Corporal Ferro",
+          "photo": "https://image.tmdb.org/t/p/w185/oOF8jmi10ZuwkUDOobGmYGfjOIt.jpg"
+        },
+        {
+          "id": 10210,
+          "name": "Daniel Kash",
+          "character": "Private Spunkmeyer",
+          "photo": "https://image.tmdb.org/t/p/w185/v8xa3aFbdk0t7RXpXiLlXI7QepH.jpg"
+        },
+        {
+          "id": 10211,
+          "name": "Cynthia Dale Scott",
+          "character": "Corporal Dietrich",
+          "photo": "https://image.tmdb.org/t/p/w185/320o5vqAhKMt2U7SDNcU4pPiXJ3.jpg"
+        },
+        {
+          "id": 10213,
+          "name": "Tip Tipping",
+          "character": "Private Crowe",
+          "photo": null
+        }
+      ],
+      "directors": [
+        "James Cameron"
+      ],
+      "writers": [
+        "James Cameron"
+      ],
+      "keywords": [
+        "android",
+        "space marine",
+        "extraterrestrial technology",
+        "spaceman",
+        "space travel",
+        "settler",
+        "colony",
+        "cryogenics",
+        "vacuum",
+        "space colony"
+      ],
+      "companies": [
+        "SLM Production Group",
+        "20th Century Fox",
+        "Brandywine Productions"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 18500000,
+      "revenue": 183316455,
+      "collection": {
+        "id": 8091,
+        "name": "Alien: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/AgyQCf3kUqWgCZifYkFYeZN1ddC.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 8077,
+          "title": "Alien³",
+          "poster": "https://image.tmdb.org/t/p/w185/iGWvvcOt1OGeO2cio6W81RKGHne.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 9426,
+          "title": "A Mosca",
+          "poster": "https://image.tmdb.org/t/p/w185/dQWmNTzZBRuxDGiLsuKuPXJQES1.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 348,
+          "title": "Alien: O Oitavo Passageiro",
+          "poster": "https://image.tmdb.org/t/p/w185/rFHzJrkO1kNIezb6rFog5oCJUEn.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 8078,
+          "title": "Alien: A Ressurreição",
+          "poster": "https://image.tmdb.org/t/p/w185/lBQihuqaiRFZEzQh3M5uKXfmW15.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 1891,
+          "title": "Guerra nas Estrelas: O Império Contra-Ataca",
+          "poster": "https://image.tmdb.org/t/p/w185/dLGT8b4Ut10z44uYLaip4QiwKta.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 440,
+          "title": "Alien vs. Predador 2",
+          "poster": "https://image.tmdb.org/t/p/w185/i4L66GQxKEEEvvpOybMyPI7G9Lb.jpg",
+          "rating": 5.2
+        }
+      ],
+      "streaming": [
+        "Disney Plus"
+      ],
+      "imdb": "tt0090605",
+      "facebook": "alienanthology",
+      "instagram": "alienanthology",
+      "twitter": "alienanthology"
+    }
+  }
+]

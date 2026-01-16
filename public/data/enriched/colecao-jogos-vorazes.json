@@ -1,0 +1,212 @@
+[
+  {
+    "id": "jogos-vorazes-a-esperanca-o-final-2015-87gzhd-623722",
+    "name": "Jogos Vorazes: A Esperança - O Final (2015)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/623722.mp4",
+    "category": "🎬 Coleção JOGOS VORAZES",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 131634,
+      "imdbId": "tt1951266",
+      "title": "Jogos Vorazes: A Esperança - O Final",
+      "originalTitle": "The Hunger Games: Mockingjay - Part 2",
+      "tagline": "Ninguém está preparado para o final.",
+      "overview": "Katniss e seus amigos Peeta, Gale e Finnick embarcam em sua última missão: organizar uma resistência contra o presidente e libertar o povo de Panem. A coragem de Katniss faz renascer a esperança em um país disposto a se livrar da opressão.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2015-11-18",
+      "year": "2015",
+      "runtime": 136,
+      "rating": 6.9,
+      "voteCount": 13107,
+      "popularity": 9,
+      "certification": "14",
+      "genres": [
+        "Ação",
+        "Aventura",
+        "Ficção científica"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/5KSQkozSelQj6bq8NCKtINvsSSj.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/5KSQkozSelQj6bq8NCKtINvsSSj.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/qVgLMRVNB5bHU0inmRa0ueShacN.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/qVgLMRVNB5bHU0inmRa0ueShacN.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/t1O2QU03igaS2xYLkWgdq6pntl1.png",
+      "cast": [
+        {
+          "id": 72129,
+          "name": "Jennifer Lawrence",
+          "character": "Katniss Everdeen",
+          "photo": "https://image.tmdb.org/t/p/w185/mDKMsjOMytyBiy7MHNZTa7gp7wj.jpg"
+        },
+        {
+          "id": 27972,
+          "name": "Josh Hutcherson",
+          "character": "Peeta Mellark",
+          "photo": "https://image.tmdb.org/t/p/w185/f0eosZ1Fx0VBUyspq8K2f8sUSBn.jpg"
+        },
+        {
+          "id": 96066,
+          "name": "Liam Hemsworth",
+          "character": "Gale Hawthorne",
+          "photo": "https://image.tmdb.org/t/p/w185/7UIm9RoBnlqS1uLlbElAY8urdWD.jpg"
+        },
+        {
+          "id": 57755,
+          "name": "Woody Harrelson",
+          "character": "Haymitch Abernathy",
+          "photo": "https://image.tmdb.org/t/p/w185/igxYDQBbTEdAqaJxaW6ffqswmUU.jpg"
+        },
+        {
+          "id": 9281,
+          "name": "Elizabeth Banks",
+          "character": "Effie Trinket",
+          "photo": "https://image.tmdb.org/t/p/w185/zrkI1dYucpTM8Qydtrtro9MgQPb.jpg"
+        },
+        {
+          "id": 1231,
+          "name": "Julianne Moore",
+          "character": "President Alma Coin",
+          "photo": "https://image.tmdb.org/t/p/w185/3YF19rWusxWfEI59ZM33dFhasRq.jpg"
+        },
+        {
+          "id": 1233,
+          "name": "Philip Seymour Hoffman",
+          "character": "Plutarch Heavensbee",
+          "photo": "https://image.tmdb.org/t/p/w185/50rqDkmvXwjwVhFH7q6ph2Rkw7S.jpg"
+        },
+        {
+          "id": 2954,
+          "name": "Jeffrey Wright",
+          "character": "Beetee Latier",
+          "photo": "https://image.tmdb.org/t/p/w185/yGcuHGW4glqRpOPxgiCvjcren7F.jpg"
+        },
+        {
+          "id": 2283,
+          "name": "Stanley Tucci",
+          "character": "Caesar Flickerman",
+          "photo": "https://image.tmdb.org/t/p/w185/q4TanMDI5Rgsvw4SfyNbPBh4URr.jpg"
+        },
+        {
+          "id": 55636,
+          "name": "Donald Sutherland",
+          "character": "President Coriolanus Snow",
+          "photo": "https://image.tmdb.org/t/p/w185/yM8WO2BYqFvgQXAvf4CIuCYnY4j.jpg"
+        },
+        {
+          "id": 530025,
+          "name": "Willow Shields",
+          "character": "Primrose Everdeen",
+          "photo": "https://image.tmdb.org/t/p/w185/fhxgetqRQ1u0GCpw4jUcf1uTAKy.jpg"
+        },
+        {
+          "id": 237455,
+          "name": "Sam Claflin",
+          "character": "Finnick Odair",
+          "photo": "https://image.tmdb.org/t/p/w185/e5CU4tjCNZFfm7ITmZfzjZse2Bb.jpg"
+        },
+        {
+          "id": 20089,
+          "name": "Jena Malone",
+          "character": "Johanna Mason",
+          "photo": "https://image.tmdb.org/t/p/w185/1qmkanVCFr3ZaXcxSXVDO8andb0.jpg"
+        },
+        {
+          "id": 932967,
+          "name": "Mahershala Ali",
+          "character": "Boggs",
+          "photo": "https://image.tmdb.org/t/p/w185/9ZmSejm5lnUVY5IJ1iNx2QEjnHb.jpg"
+        },
+        {
+          "id": 58502,
+          "name": "Natalie Dormer",
+          "character": "Cressida",
+          "photo": "https://image.tmdb.org/t/p/w185/3OlkHjDKDj9NKkFWXfLk7gcb2C.jpg"
+        }
+      ],
+      "directors": [
+        "Francis Lawrence"
+      ],
+      "writers": [
+        "Danny Strong",
+        "Peter Craig"
+      ],
+      "keywords": [
+        "strong woman",
+        "based on novel or book",
+        "revolution",
+        "dystopia",
+        "death match",
+        "aggressive",
+        "based on young adult novel",
+        "romantic",
+        "ambiguous",
+        "compassionate"
+      ],
+      "companies": [
+        "Lionsgate",
+        "Color Force",
+        "Studio Babelsberg"
+      ],
+      "countries": [
+        "DE",
+        "US"
+      ],
+      "budget": 160000000,
+      "revenue": 653428261,
+      "collection": {
+        "id": 131635,
+        "name": "Jogos Vorazes: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/6RwI26LxFHZO2y5BOU1mYQzLG2W.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 131631,
+          "title": "Jogos Vorazes: A Esperança - Parte 1",
+          "poster": "https://image.tmdb.org/t/p/w185/hekpVNWOROZm57RS4OLW0ySkxx9.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 101299,
+          "title": "Jogos Vorazes: Em Chamas",
+          "poster": "https://image.tmdb.org/t/p/w185/m1lky5ftnhLRpkoYWKssH8qvlRU.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 70160,
+          "title": "Jogos Vorazes",
+          "poster": "https://image.tmdb.org/t/p/w185/l6jn53LMu07uPt8A42JWIKi1Beb.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 206647,
+          "title": "007 Contra Spectre",
+          "poster": "https://image.tmdb.org/t/p/w185/7qUy7podv41jcj0tOvJNwh6700A.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 157350,
+          "title": "Divergente",
+          "poster": "https://image.tmdb.org/t/p/w185/3GhnqxWvlDtJAXAiZVsO5rjZNS6.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 294254,
+          "title": "Maze Runner: Prova de Fogo",
+          "poster": "https://image.tmdb.org/t/p/w185/zpdGT57Rn3mAZsNOkeDeINB6L9v.jpg",
+          "rating": 6.7
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Amazon Prime Video",
+        "Netflix Standard with Ads",
+        "Amazon Prime Video with Ads"
+      ],
+      "imdb": "tt1951266",
+      "facebook": "TheHungerGamesMovie",
+      "instagram": "thehungergames",
+      "twitter": "TheHungerGames"
+    }
+  }
+]

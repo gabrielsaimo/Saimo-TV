@@ -1,0 +1,1448 @@
+[
+  {
+    "id": "jogos-mortais-2004-87gzhd-622900",
+    "name": "Jogos Mortais (2004)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/622900.mp4",
+    "category": "🎬 Coleção JOGOS MORTAIS",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 176,
+      "imdbId": "tt0387564",
+      "title": "Jogos Mortais",
+      "originalTitle": "Saw",
+      "tagline": "Que os jogos comecem...",
+      "overview": "Dois homens acordam acorrentados em um banheiro como prisioneiros de um assassino em série que leva suas vítimas a situações limítrofes em um jogo macabro. Para sobreviver, eles terão de desvendar juntos as peças desse quebra-cabeças doentio.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2004-10-01",
+      "year": "2004",
+      "runtime": 103,
+      "rating": 7.4,
+      "voteCount": 9806,
+      "popularity": 8,
+      "certification": "16",
+      "genres": [
+        "Terror",
+        "Mistério",
+        "Crime"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/lwTKflT7UbQCTyImbuq6eamUKwb.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/lwTKflT7UbQCTyImbuq6eamUKwb.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/ok4ot3YbfDYZcINXf91JUfq3maB.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/ok4ot3YbfDYZcINXf91JUfq3maB.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/2lyXq7TZRZQ1ScEodSsTmW1ONuo.png",
+      "cast": [
+        {
+          "id": 2144,
+          "name": "Tobin Bell",
+          "character": "John Kramer / Jigsaw",
+          "photo": "https://image.tmdb.org/t/p/w185/q21uuCtTioIVcGc3a1Q0DpdcNMO.jpg"
+        },
+        {
+          "id": 2130,
+          "name": "Cary Elwes",
+          "character": "Dr. Lawrence Gordon",
+          "photo": "https://image.tmdb.org/t/p/w185/5PAcQuB2fFzGq5fjyugNlOpndk4.jpg"
+        },
+        {
+          "id": 2128,
+          "name": "Leigh Whannell",
+          "character": "Adam Faulkner-Stanheight",
+          "photo": "https://image.tmdb.org/t/p/w185/wvoTbsROOHfCqJ3Voe9zpal429L.jpg"
+        },
+        {
+          "id": 2047,
+          "name": "Danny Glover",
+          "character": "David Tapp",
+          "photo": "https://image.tmdb.org/t/p/w185/2PJbpI9AyuhG4SWUIDxZwuBnuMb.jpg"
+        },
+        {
+          "id": 2140,
+          "name": "Monica Potter",
+          "character": "Alison Gordon",
+          "photo": "https://image.tmdb.org/t/p/w185/jCFOlFAjNPMkX9pJF2Au0cquZ6v.jpg"
+        },
+        {
+          "id": 2131,
+          "name": "Ken Leung",
+          "character": "Detective Steven Sing",
+          "photo": "https://image.tmdb.org/t/p/w185/hpatUP6u74gkpDRmn9voNY9V43O.jpg"
+        },
+        {
+          "id": 2139,
+          "name": "Makenzie Vega",
+          "character": "Diana Gordon",
+          "photo": "https://image.tmdb.org/t/p/w185/h5yGkSvNjYDspoF4otFKp7I2ajL.jpg"
+        },
+        {
+          "id": 2136,
+          "name": "Michael Emerson",
+          "character": "Zep Hindle",
+          "photo": "https://image.tmdb.org/t/p/w185/tsxOSMqlVBxhCk9Rgy3WDnfciTN.jpg"
+        },
+        {
+          "id": 2138,
+          "name": "Shawnee Smith",
+          "character": "Amanda Young",
+          "photo": "https://image.tmdb.org/t/p/w185/s2Ouz4b7xqDH72aU48TSW5zS40v.jpg"
+        },
+        {
+          "id": 2133,
+          "name": "Dina Meyer",
+          "character": "Allison Kerry",
+          "photo": "https://image.tmdb.org/t/p/w185/bKte4cIXI1aQat8JLVNONZE4Y2.jpg"
+        },
+        {
+          "id": 2142,
+          "name": "Alexandra Bokyun Chun",
+          "character": "Carla",
+          "photo": "https://image.tmdb.org/t/p/w185/eNgfe3wBJpj5ZFW42J9cCohruPx.jpg"
+        },
+        {
+          "id": 2134,
+          "name": "Mike Butters",
+          "character": "Paul",
+          "photo": "https://image.tmdb.org/t/p/w185/fwrOsNREtHO6kYuYdCRsZf2GFG7.jpg"
+        },
+        {
+          "id": 2135,
+          "name": "Paul Gutrecht",
+          "character": "Mark",
+          "photo": null
+        },
+        {
+          "id": 2137,
+          "name": "Benito Martinez",
+          "character": "Brett",
+          "photo": "https://image.tmdb.org/t/p/w185/3lPxnrPCs31lnliBNEssgxw7Qxg.jpg"
+        },
+        {
+          "id": 2141,
+          "name": "Ned Bellamy",
+          "character": "Jeff Ridenhour",
+          "photo": "https://image.tmdb.org/t/p/w185/9qj6thu0g6iUc2hvfoEYlO4GSbY.jpg"
+        }
+      ],
+      "directors": [
+        "James Wan"
+      ],
+      "writers": [
+        "Leigh Whannell"
+      ],
+      "keywords": [
+        "sadism",
+        "shotgun",
+        "detective",
+        "flashback",
+        "hospital",
+        "doctor",
+        "torture",
+        "sadist",
+        "survival horror",
+        "chained"
+      ],
+      "companies": [
+        "Twisted Pictures",
+        "Evolution Entertainment",
+        "Saw Productions Inc."
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 1200000,
+      "revenue": 104045735,
+      "collection": {
+        "id": 656,
+        "name": "Jogos Mortais: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/9ADSHtuBTRL3P0pUmZJGnQtwmSH.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 215,
+          "title": "Jogos Mortais II",
+          "poster": "https://image.tmdb.org/t/p/w185/ojWbOjvfeFNrf8keesvyerryyVo.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 214,
+          "title": "Jogos Mortais III",
+          "poster": "https://image.tmdb.org/t/p/w185/8LOtN2XDwAOB6xsjOhE1gi62XWg.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 41439,
+          "title": "Jogos Mortais: O Final",
+          "poster": "https://image.tmdb.org/t/p/w185/4Nqg7M6LXFxY51GK0dup1BB8g49.jpg",
+          "rating": 6
+        },
+        {
+          "id": 246355,
+          "title": "Jogos Mortais 0.5",
+          "poster": "https://image.tmdb.org/t/p/w185/2dfaedyVvHli1pmm9HHcoVTDOCH.jpg",
+          "rating": 7
+        },
+        {
+          "id": 663,
+          "title": "Jogos Mortais IV",
+          "poster": "https://image.tmdb.org/t/p/w185/6NAPeqZTgeTDW1CaDac7CDisMMt.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 298250,
+          "title": "Jogos Mortais: Jigsaw",
+          "poster": "https://image.tmdb.org/t/p/w185/18vXrQmVWoLuAQEltcfIS2aHvej.jpg",
+          "rating": 6.2
+        }
+      ],
+      "streaming": [
+        "Claro tv+",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt0387564",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "jogos-mortais-ii-2005-87gzhd-623062",
+    "name": "Jogos Mortais II (2005)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/623062.mp4",
+    "category": "🎬 Coleção JOGOS MORTAIS",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 215,
+      "imdbId": "tt0432348",
+      "title": "Jogos Mortais II",
+      "originalTitle": "Saw II",
+      "tagline": "O jogo continua...",
+      "overview": "O detetive Eric Matthews consegue prender Jigsaw, o qual está morrendo. O que ele desconhece é que isso faz parte de um plano ainda maior do assassino sádico, que agora mantém o filho do policial como refém e pretende torná-lo uma de suas vítimas.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2005-10-28",
+      "year": "2005",
+      "runtime": 93,
+      "rating": 6.6,
+      "voteCount": 5721,
+      "popularity": 5,
+      "certification": "16",
+      "genres": [
+        "Terror"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/ojWbOjvfeFNrf8keesvyerryyVo.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/ojWbOjvfeFNrf8keesvyerryyVo.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/bAzpfmgq2Lo32kebVfikrDv1Vpf.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/bAzpfmgq2Lo32kebVfikrDv1Vpf.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/uFMkxjjnVuGCQQ35Fzw5II4qVIw.png",
+      "cast": [
+        {
+          "id": 2144,
+          "name": "Tobin Bell",
+          "character": "John Kramer / Jigsaw",
+          "photo": "https://image.tmdb.org/t/p/w185/q21uuCtTioIVcGc3a1Q0DpdcNMO.jpg"
+        },
+        {
+          "id": 2680,
+          "name": "Donnie Wahlberg",
+          "character": "Eric Matthews",
+          "photo": "https://image.tmdb.org/t/p/w185/8OQTlgl7eGAFlKTF2o8rZZT0MoF.jpg"
+        },
+        {
+          "id": 2138,
+          "name": "Shawnee Smith",
+          "character": "Amanda Young",
+          "photo": "https://image.tmdb.org/t/p/w185/s2Ouz4b7xqDH72aU48TSW5zS40v.jpg"
+        },
+        {
+          "id": 2681,
+          "name": "Erik Knudsen",
+          "character": "Daniel Matthews",
+          "photo": "https://image.tmdb.org/t/p/w185/ynaFGOTCwVz0vSjE5kKoG0alZYP.jpg"
+        },
+        {
+          "id": 2682,
+          "name": "Franky G",
+          "character": "Xavier Chavez",
+          "photo": "https://image.tmdb.org/t/p/w185/ulMOiDn6ToCEKiHbrelXV8RpJt.jpg"
+        },
+        {
+          "id": 2683,
+          "name": "Glenn Plummer",
+          "character": "Jonas Singer",
+          "photo": "https://image.tmdb.org/t/p/w185/lNfRFcxD7bhqKLZwOqdpumA83TL.jpg"
+        },
+        {
+          "id": 2684,
+          "name": "Emmanuelle Vaugier",
+          "character": "Addison Corday",
+          "photo": "https://image.tmdb.org/t/p/w185/3wGefsb5WrQPPXVM6egqIKOwfIq.jpg"
+        },
+        {
+          "id": 2685,
+          "name": "Beverley Mitchell",
+          "character": "Laura Hunter",
+          "photo": "https://image.tmdb.org/t/p/w185/w9SmrZtYeddyDT4BRojqInqaPYZ.jpg"
+        },
+        {
+          "id": 33668,
+          "name": "Noam Jenkins",
+          "character": "Michael Marks",
+          "photo": "https://image.tmdb.org/t/p/w185/6cGnnTzHgvl4aEpD98gtcQ9DDU7.jpg"
+        },
+        {
+          "id": 2686,
+          "name": "Timothy Burd",
+          "character": "Obi Tate",
+          "photo": "https://image.tmdb.org/t/p/w185/tPjW7zY1rethWKlK4pRe2Tqj1n5.jpg"
+        },
+        {
+          "id": 2133,
+          "name": "Dina Meyer",
+          "character": "Allison Kerry",
+          "photo": "https://image.tmdb.org/t/p/w185/bKte4cIXI1aQat8JLVNONZE4Y2.jpg"
+        },
+        {
+          "id": 2687,
+          "name": "Lyriq Bent",
+          "character": "Daniel Rigg",
+          "photo": "https://image.tmdb.org/t/p/w185/xDkgdYtIzQcRTVnIjlIyEe1UAYp.jpg"
+        },
+        {
+          "id": 76528,
+          "name": "Tony Nappo",
+          "character": "Gus Colyard",
+          "photo": "https://image.tmdb.org/t/p/w185/eRcYYtMvLmypURncfQqVA43BZYD.jpg"
+        },
+        {
+          "id": 76529,
+          "name": "Kelly Jones",
+          "character": "SWAT Member Pete",
+          "photo": "https://image.tmdb.org/t/p/w185/c5QjFWMqgIsdrqGp2tuHgwi3jAM.jpg"
+        },
+        {
+          "id": 76530,
+          "name": "Vincent Rother",
+          "character": "SWAT Member Joe",
+          "photo": "https://image.tmdb.org/t/p/w185/xKyHJOCdSFCZDG3UP1FYyofGYiU.jpg"
+        }
+      ],
+      "directors": [
+        "Darren Lynn Bousman"
+      ],
+      "writers": [
+        "Darren Lynn Bousman",
+        "Leigh Whannell"
+      ],
+      "keywords": [
+        "sadism",
+        "riddle",
+        "serial killer",
+        "torture",
+        "survival horror",
+        "death match",
+        "mind game",
+        "death game"
+      ],
+      "companies": [
+        "Got Films",
+        "Twisted Pictures",
+        "Evolution Entertainment",
+        "Saw 2 Productions",
+        "Lionsgate"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 4000000,
+      "revenue": 152925093,
+      "collection": {
+        "id": 656,
+        "name": "Jogos Mortais: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/9ADSHtuBTRL3P0pUmZJGnQtwmSH.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 214,
+          "title": "Jogos Mortais III",
+          "poster": "https://image.tmdb.org/t/p/w185/8LOtN2XDwAOB6xsjOhE1gi62XWg.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 663,
+          "title": "Jogos Mortais IV",
+          "poster": "https://image.tmdb.org/t/p/w185/6NAPeqZTgeTDW1CaDac7CDisMMt.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 176,
+          "title": "Jogos Mortais",
+          "poster": "https://image.tmdb.org/t/p/w185/lwTKflT7UbQCTyImbuq6eamUKwb.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 41439,
+          "title": "Jogos Mortais: O Final",
+          "poster": "https://image.tmdb.org/t/p/w185/4Nqg7M6LXFxY51GK0dup1BB8g49.jpg",
+          "rating": 6
+        },
+        {
+          "id": 22804,
+          "title": "Jogos Mortais VI",
+          "poster": "https://image.tmdb.org/t/p/w185/5Yz4P9DCQS1Jb8XtvMDsSykc8Ta.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 11917,
+          "title": "Jogos Mortais V",
+          "poster": "https://image.tmdb.org/t/p/w185/wi9pLhftcB3SMx0R2BrfVpt80Iu.jpg",
+          "rating": 6.2
+        }
+      ],
+      "streaming": [
+        "Globoplay",
+        "Claro tv+",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt0432348",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "jogos-mortais-iii-2006-87gzhd-622433",
+    "name": "Jogos Mortais III (2006)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/622433.mp4",
+    "category": "🎬 Coleção JOGOS MORTAIS",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 214,
+      "imdbId": "tt0489270",
+      "title": "Jogos Mortais III",
+      "originalTitle": "Saw III",
+      "tagline": "Que os jogos recomecem...",
+      "overview": "Dr. Lynn Denlon se torna uma peça no último jogo sangrento do assassino Jigsaw. Raptada e levada para um armazém abandonado, ela encontra Jigsaw acamado e morrendo. Sua tarefa é manter o maníaco vivo, dando o tempo suficiente para Jeff, uma vítima, completar uma tarefa. Eles não sabem que Jigsaw, na verdade, tem um plano muito maior e mortal.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2006-10-26",
+      "year": "2006",
+      "runtime": 108,
+      "rating": 6.4,
+      "voteCount": 4822,
+      "popularity": 4,
+      "certification": "18",
+      "genres": [
+        "Terror",
+        "Thriller",
+        "Crime"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/8LOtN2XDwAOB6xsjOhE1gi62XWg.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/8LOtN2XDwAOB6xsjOhE1gi62XWg.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/qx8Pb3nVnHLBizI9792pbRN5nnm.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/qx8Pb3nVnHLBizI9792pbRN5nnm.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/j9rYkUvd5Vq5NqaWaqxGicIlps8.png",
+      "cast": [
+        {
+          "id": 2144,
+          "name": "Tobin Bell",
+          "character": "John Kramer / Jigsaw",
+          "photo": "https://image.tmdb.org/t/p/w185/q21uuCtTioIVcGc3a1Q0DpdcNMO.jpg"
+        },
+        {
+          "id": 2138,
+          "name": "Shawnee Smith",
+          "character": "Amanda Young",
+          "photo": "https://image.tmdb.org/t/p/w185/s2Ouz4b7xqDH72aU48TSW5zS40v.jpg"
+        },
+        {
+          "id": 2464,
+          "name": "Angus Macfadyen",
+          "character": "Jeff Reinhart",
+          "photo": "https://image.tmdb.org/t/p/w185/yUuA7U3lw6yM0Eb6mD83qYeevH2.jpg"
+        },
+        {
+          "id": 2677,
+          "name": "Bahar Soomekh",
+          "character": "Lynn Denlon",
+          "photo": "https://image.tmdb.org/t/p/w185/pexK8WSgJFunUFizBlvGEz8ez9U.jpg"
+        },
+        {
+          "id": 2680,
+          "name": "Donnie Wahlberg",
+          "character": "Eric Matthews",
+          "photo": "https://image.tmdb.org/t/p/w185/8OQTlgl7eGAFlKTF2o8rZZT0MoF.jpg"
+        },
+        {
+          "id": 2133,
+          "name": "Dina Meyer",
+          "character": "Kerry",
+          "photo": "https://image.tmdb.org/t/p/w185/bKte4cIXI1aQat8JLVNONZE4Y2.jpg"
+        },
+        {
+          "id": 2128,
+          "name": "Leigh Whannell",
+          "character": "Adam Stanheight",
+          "photo": "https://image.tmdb.org/t/p/w185/wvoTbsROOHfCqJ3Voe9zpal429L.jpg"
+        },
+        {
+          "id": 59713,
+          "name": "Mpho Koaho",
+          "character": "Timothy Young",
+          "photo": "https://image.tmdb.org/t/p/w185/9KkpcpPwA4pcaRf9272LH2b7sDe.jpg"
+        },
+        {
+          "id": 43429,
+          "name": "Barry Flatman",
+          "character": "Judge Halden",
+          "photo": "https://image.tmdb.org/t/p/w185/jFilSZK7Th9qTQFQ3ZToU53ieAY.jpg"
+        },
+        {
+          "id": 2687,
+          "name": "Lyriq Bent",
+          "character": "Rigg",
+          "photo": "https://image.tmdb.org/t/p/w185/xDkgdYtIzQcRTVnIjlIyEe1UAYp.jpg"
+        },
+        {
+          "id": 139631,
+          "name": "J. LaRose",
+          "character": "Troy",
+          "photo": "https://image.tmdb.org/t/p/w185/eZHglMF2O4KtXZAQtlQ4Vf2taTW.jpg"
+        },
+        {
+          "id": 197341,
+          "name": "Debra McCabe",
+          "character": "Danica",
+          "photo": "https://image.tmdb.org/t/p/w185/7prAVPYLrp2t4dUIX04VoJnCNHC.jpg"
+        },
+        {
+          "id": 36055,
+          "name": "Costas Mandylor",
+          "character": "Mark Hoffman",
+          "photo": "https://image.tmdb.org/t/p/w185/yPkQdbhCj2EJM0cjDtkuJTlFp86.jpg"
+        },
+        {
+          "id": 22434,
+          "name": "Betsy Russell",
+          "character": "Jill Tuck",
+          "photo": "https://image.tmdb.org/t/p/w185/kXXYUAwC1HGTzIyyHEdw7WeXnuL.jpg"
+        },
+        {
+          "id": 1238088,
+          "name": "Jane Luk",
+          "character": "Nurse - Emergency Room",
+          "photo": "https://image.tmdb.org/t/p/w185/rVPph2hvZBtbS8hsFa6QLBFpHB8.jpg"
+        }
+      ],
+      "directors": [
+        "Darren Lynn Bousman"
+      ],
+      "writers": [
+        "Leigh Whannell"
+      ],
+      "keywords": [
+        "sadism",
+        "brain tumor",
+        "suffocation",
+        "torture",
+        "survival horror",
+        "death match",
+        "mutilation",
+        "mind game",
+        "brain surgery",
+        "death game"
+      ],
+      "companies": [
+        "Twisted Pictures",
+        "Evolution Entertainment",
+        "Lionsgate"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 10000000,
+      "revenue": 164874275,
+      "collection": {
+        "id": 656,
+        "name": "Jogos Mortais: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/9ADSHtuBTRL3P0pUmZJGnQtwmSH.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 663,
+          "title": "Jogos Mortais IV",
+          "poster": "https://image.tmdb.org/t/p/w185/6NAPeqZTgeTDW1CaDac7CDisMMt.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 215,
+          "title": "Jogos Mortais II",
+          "poster": "https://image.tmdb.org/t/p/w185/ojWbOjvfeFNrf8keesvyerryyVo.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 11917,
+          "title": "Jogos Mortais V",
+          "poster": "https://image.tmdb.org/t/p/w185/wi9pLhftcB3SMx0R2BrfVpt80Iu.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 22804,
+          "title": "Jogos Mortais VI",
+          "poster": "https://image.tmdb.org/t/p/w185/5Yz4P9DCQS1Jb8XtvMDsSykc8Ta.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 41439,
+          "title": "Jogos Mortais: O Final",
+          "poster": "https://image.tmdb.org/t/p/w185/4Nqg7M6LXFxY51GK0dup1BB8g49.jpg",
+          "rating": 6
+        },
+        {
+          "id": 298250,
+          "title": "Jogos Mortais: Jigsaw",
+          "poster": "https://image.tmdb.org/t/p/w185/18vXrQmVWoLuAQEltcfIS2aHvej.jpg",
+          "rating": 6.2
+        }
+      ],
+      "streaming": [
+        "Claro tv+",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt0489270",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "jogos-mortais-iv-2007-87gzhd-622558",
+    "name": "Jogos Mortais IV (2007)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/622558.mp4",
+    "category": "🎬 Coleção JOGOS MORTAIS",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 663,
+      "imdbId": "tt0890870",
+      "title": "Jogos Mortais IV",
+      "originalTitle": "Saw IV",
+      "tagline": "Você pensou que tinha acabado... mas os jogos apenas começaram.",
+      "overview": "Um oficial tem apenas noventa minutos para salvar seu amigo, um comandante da SWAT, de uma série de armadilhas mortais.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2007-10-25",
+      "year": "2007",
+      "runtime": 93,
+      "rating": 6.2,
+      "voteCount": 4007,
+      "popularity": 3,
+      "certification": "18",
+      "genres": [
+        "Terror",
+        "Thriller",
+        "Crime"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/6NAPeqZTgeTDW1CaDac7CDisMMt.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/6NAPeqZTgeTDW1CaDac7CDisMMt.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/3lrNJ5jNqKq9UpQrXo8FNFzyoE4.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/3lrNJ5jNqKq9UpQrXo8FNFzyoE4.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/eZylXQ1FqjCzqiL3Yg5D8HZbnau.png",
+      "cast": [
+        {
+          "id": 2144,
+          "name": "Tobin Bell",
+          "character": "John Kramer / Jigsaw",
+          "photo": "https://image.tmdb.org/t/p/w185/q21uuCtTioIVcGc3a1Q0DpdcNMO.jpg"
+        },
+        {
+          "id": 36055,
+          "name": "Costas Mandylor",
+          "character": "Mark Hoffman",
+          "photo": "https://image.tmdb.org/t/p/w185/yPkQdbhCj2EJM0cjDtkuJTlFp86.jpg"
+        },
+        {
+          "id": 50020,
+          "name": "Scott Patterson",
+          "character": "Agent Strahm",
+          "photo": "https://image.tmdb.org/t/p/w185/qTm0LFuV8DktunzKa5T3UZoq1tC.jpg"
+        },
+        {
+          "id": 22434,
+          "name": "Betsy Russell",
+          "character": "Jill Tuck",
+          "photo": "https://image.tmdb.org/t/p/w185/kXXYUAwC1HGTzIyyHEdw7WeXnuL.jpg"
+        },
+        {
+          "id": 2687,
+          "name": "Lyriq Bent",
+          "character": "Rigg",
+          "photo": "https://image.tmdb.org/t/p/w185/xDkgdYtIzQcRTVnIjlIyEe1UAYp.jpg"
+        },
+        {
+          "id": 51037,
+          "name": "Athena Karkanis",
+          "character": "Agent Perez",
+          "photo": "https://image.tmdb.org/t/p/w185/bxKJJWXfnTfWVpsD5Y5H8g4vFUq.jpg"
+        },
+        {
+          "id": 51036,
+          "name": "Louis Ferreira",
+          "character": "Art",
+          "photo": "https://image.tmdb.org/t/p/w185/7xUTd7N6XbB3uWvob12qpmGzPzA.jpg"
+        },
+        {
+          "id": 51038,
+          "name": "Simon Reynolds",
+          "character": "Lamanna",
+          "photo": "https://image.tmdb.org/t/p/w185/copSBlAEnHxjQGjRZuMeUIBV1eH.jpg"
+        },
+        {
+          "id": 2680,
+          "name": "Donnie Wahlberg",
+          "character": "Eric Matthews",
+          "photo": "https://image.tmdb.org/t/p/w185/8OQTlgl7eGAFlKTF2o8rZZT0MoF.jpg"
+        },
+        {
+          "id": 2464,
+          "name": "Angus Macfadyen",
+          "character": "Jeff Denlon",
+          "photo": "https://image.tmdb.org/t/p/w185/yUuA7U3lw6yM0Eb6mD83qYeevH2.jpg"
+        },
+        {
+          "id": 2138,
+          "name": "Shawnee Smith",
+          "character": "Amanda Young",
+          "photo": "https://image.tmdb.org/t/p/w185/s2Ouz4b7xqDH72aU48TSW5zS40v.jpg"
+        },
+        {
+          "id": 2677,
+          "name": "Bahar Soomekh",
+          "character": "Lynn Denlon",
+          "photo": "https://image.tmdb.org/t/p/w185/pexK8WSgJFunUFizBlvGEz8ez9U.jpg"
+        },
+        {
+          "id": 2133,
+          "name": "Dina Meyer",
+          "character": "Detective Allison Kerry",
+          "photo": "https://image.tmdb.org/t/p/w185/bKte4cIXI1aQat8JLVNONZE4Y2.jpg"
+        },
+        {
+          "id": 28869,
+          "name": "Mike Realba",
+          "character": "Fisk",
+          "photo": "https://image.tmdb.org/t/p/w185/5k4dPXlzV7upPOPCucrOgmS5FwX.jpg"
+        },
+        {
+          "id": 51039,
+          "name": "Marty Adams",
+          "character": "Ivan",
+          "photo": "https://image.tmdb.org/t/p/w185/3XVjryMHu24PFQuVcl6WLVCzFB3.jpg"
+        }
+      ],
+      "directors": [
+        "Darren Lynn Bousman"
+      ],
+      "writers": [
+        "Marcus Dunstan",
+        "Patrick Melton"
+      ],
+      "keywords": [
+        "pain",
+        "sadism",
+        "psychopath",
+        "fbi",
+        "victim",
+        "electric chair",
+        "doctor",
+        "torture",
+        "police officer",
+        "miscarriage"
+      ],
+      "companies": [
+        "Twisted Pictures",
+        "Lionsgate"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 10000000,
+      "revenue": 139352653,
+      "collection": {
+        "id": 656,
+        "name": "Jogos Mortais: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/9ADSHtuBTRL3P0pUmZJGnQtwmSH.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 11917,
+          "title": "Jogos Mortais V",
+          "poster": "https://image.tmdb.org/t/p/w185/wi9pLhftcB3SMx0R2BrfVpt80Iu.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 22804,
+          "title": "Jogos Mortais VI",
+          "poster": "https://image.tmdb.org/t/p/w185/5Yz4P9DCQS1Jb8XtvMDsSykc8Ta.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 214,
+          "title": "Jogos Mortais III",
+          "poster": "https://image.tmdb.org/t/p/w185/8LOtN2XDwAOB6xsjOhE1gi62XWg.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 41439,
+          "title": "Jogos Mortais: O Final",
+          "poster": "https://image.tmdb.org/t/p/w185/4Nqg7M6LXFxY51GK0dup1BB8g49.jpg",
+          "rating": 6
+        },
+        {
+          "id": 215,
+          "title": "Jogos Mortais II",
+          "poster": "https://image.tmdb.org/t/p/w185/ojWbOjvfeFNrf8keesvyerryyVo.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 168891,
+          "title": "Jogos Mortais: O Renascimento",
+          "poster": "https://image.tmdb.org/t/p/w185/bpB9rcOcyOQZUsiuIOCQfb90zxM.jpg",
+          "rating": 5.4
+        }
+      ],
+      "streaming": [
+        "Globoplay",
+        "Claro tv+",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt0890870",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "jogos-mortais-v-2008-87gzhd-622373",
+    "name": "Jogos Mortais V (2008)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/622373.mp4",
+    "category": "🎬 Coleção JOGOS MORTAIS",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 11917,
+      "imdbId": "tt1132626",
+      "title": "Jogos Mortais V",
+      "originalTitle": "Saw V",
+      "tagline": "Você não vai acreditar como isso termina.",
+      "overview": "Mark Hoffman é, aparentemente, a última pessoa viva disposta a seguir o legado deixado por Jigsaw. Porém, quando seu segredo é ameaçado, usando uma série de armadilhas, cada vez mais bizarras e terríveis, ele precisa iniciar uma caçada para eliminar todos os envolvidos.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2008-10-23",
+      "year": "2008",
+      "runtime": 95,
+      "rating": 6.2,
+      "voteCount": 3722,
+      "popularity": 4,
+      "certification": "18",
+      "genres": [
+        "Terror",
+        "Thriller",
+        "Crime"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/wi9pLhftcB3SMx0R2BrfVpt80Iu.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/wi9pLhftcB3SMx0R2BrfVpt80Iu.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/9rlenYH6E1kOWuQW3wl4XjjFKTJ.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/9rlenYH6E1kOWuQW3wl4XjjFKTJ.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/lxZf6901lZ7DaS4qp9gNhHQ9ylw.png",
+      "cast": [
+        {
+          "id": 2144,
+          "name": "Tobin Bell",
+          "character": "John Kramer / Jigsaw",
+          "photo": "https://image.tmdb.org/t/p/w185/q21uuCtTioIVcGc3a1Q0DpdcNMO.jpg"
+        },
+        {
+          "id": 36055,
+          "name": "Costas Mandylor",
+          "character": "Mark Hoffman",
+          "photo": "https://image.tmdb.org/t/p/w185/yPkQdbhCj2EJM0cjDtkuJTlFp86.jpg"
+        },
+        {
+          "id": 50020,
+          "name": "Scott Patterson",
+          "character": "Agent Strahm",
+          "photo": "https://image.tmdb.org/t/p/w185/qTm0LFuV8DktunzKa5T3UZoq1tC.jpg"
+        },
+        {
+          "id": 22434,
+          "name": "Betsy Russell",
+          "character": "Jill Tuck",
+          "photo": "https://image.tmdb.org/t/p/w185/kXXYUAwC1HGTzIyyHEdw7WeXnuL.jpg"
+        },
+        {
+          "id": 35551,
+          "name": "Julie Benz",
+          "character": "Brit",
+          "photo": "https://image.tmdb.org/t/p/w185/avcCYkQjRM7qgE0MZ5VXcK3XcKz.jpg"
+        },
+        {
+          "id": 22122,
+          "name": "Meagan Good",
+          "character": "Luba",
+          "photo": "https://image.tmdb.org/t/p/w185/iwSNBQKKDhEbtNe8I4ROYoYmWqE.jpg"
+        },
+        {
+          "id": 6576,
+          "name": "Mark Rolston",
+          "character": "Dan Erickson",
+          "photo": "https://image.tmdb.org/t/p/w185/hcrNRIptYMRXgkJ9k76BlQu6DQp.jpg"
+        },
+        {
+          "id": 54793,
+          "name": "Carlo Rota",
+          "character": "Charles",
+          "photo": "https://image.tmdb.org/t/p/w185/bsT3XaB8YqsZijYdOsG1pKH24JJ.jpg"
+        },
+        {
+          "id": 231,
+          "name": "Greg Bryk",
+          "character": "Mallick",
+          "photo": "https://image.tmdb.org/t/p/w185/1I3SxKFvQSam6KOMT4j5f0nFxRg.jpg"
+        },
+        {
+          "id": 187400,
+          "name": "Laura Gordon",
+          "character": "Ashley",
+          "photo": "https://image.tmdb.org/t/p/w185/7Gro37r1iqm4Wiyf2QlvMPgSeza.jpg"
+        },
+        {
+          "id": 76973,
+          "name": "Joris Jarsky",
+          "character": "Seth",
+          "photo": "https://image.tmdb.org/t/p/w185/snXBT36DDvxDhRyym44Zs55eKUf.jpg"
+        },
+        {
+          "id": 2134,
+          "name": "Mike Butters",
+          "character": "Paul",
+          "photo": "https://image.tmdb.org/t/p/w185/fwrOsNREtHO6kYuYdCRsZf2GFG7.jpg"
+        },
+        {
+          "id": 154917,
+          "name": "Al Sapienza",
+          "character": "Chief of Police",
+          "photo": "https://image.tmdb.org/t/p/w185/tqgr67aRg1OuuRhQFd8I3JduSRD.jpg"
+        },
+        {
+          "id": 28869,
+          "name": "Mike Realba",
+          "character": "Detective Fisk",
+          "photo": "https://image.tmdb.org/t/p/w185/5k4dPXlzV7upPOPCucrOgmS5FwX.jpg"
+        },
+        {
+          "id": 101801,
+          "name": "Jeff Pustil",
+          "character": "Bernie",
+          "photo": null
+        }
+      ],
+      "directors": [
+        "David Hackl"
+      ],
+      "writers": [
+        "Marcus Dunstan",
+        "Patrick Melton"
+      ],
+      "keywords": [
+        "nazi",
+        "sadism",
+        "serial killer",
+        "police corruption",
+        "torture",
+        "pig mask",
+        "survival horror",
+        "death of sister",
+        "death match",
+        "mind game"
+      ],
+      "companies": [
+        "Twisted Pictures",
+        "Mandate Pictures"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 10800000,
+      "revenue": 118209778,
+      "collection": {
+        "id": 656,
+        "name": "Jogos Mortais: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/9ADSHtuBTRL3P0pUmZJGnQtwmSH.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 22804,
+          "title": "Jogos Mortais VI",
+          "poster": "https://image.tmdb.org/t/p/w185/5Yz4P9DCQS1Jb8XtvMDsSykc8Ta.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 663,
+          "title": "Jogos Mortais IV",
+          "poster": "https://image.tmdb.org/t/p/w185/6NAPeqZTgeTDW1CaDac7CDisMMt.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 41439,
+          "title": "Jogos Mortais: O Final",
+          "poster": "https://image.tmdb.org/t/p/w185/4Nqg7M6LXFxY51GK0dup1BB8g49.jpg",
+          "rating": 6
+        },
+        {
+          "id": 214,
+          "title": "Jogos Mortais III",
+          "poster": "https://image.tmdb.org/t/p/w185/8LOtN2XDwAOB6xsjOhE1gi62XWg.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 215,
+          "title": "Jogos Mortais II",
+          "poster": "https://image.tmdb.org/t/p/w185/ojWbOjvfeFNrf8keesvyerryyVo.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 168891,
+          "title": "Jogos Mortais: O Renascimento",
+          "poster": "https://image.tmdb.org/t/p/w185/bpB9rcOcyOQZUsiuIOCQfb90zxM.jpg",
+          "rating": 5.4
+        }
+      ],
+      "streaming": [
+        "Globoplay",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt1132626",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "jogos-mortais-vi-2009-87gzhd-622742",
+    "name": "Jogos Mortais VI (2009)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/622742.mp4",
+    "category": "🎬 Coleção JOGOS MORTAIS",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 22804,
+      "imdbId": "tt1233227",
+      "title": "Jogos Mortais VI",
+      "originalTitle": "Saw VI",
+      "tagline": "E você pensou que já havia visto tudo.",
+      "overview": "O agente especial Strahm está morto, e o detetive Hoffman é o único que conhece o verdadeiro legado de Jigsaw. Porém, quando o FBI se aproxima de Hoffman, ele é forçado a colocar o jogo em ação.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2009-10-22",
+      "year": "2009",
+      "runtime": 90,
+      "rating": 6.3,
+      "voteCount": 3425,
+      "popularity": 3,
+      "certification": "18",
+      "genres": [
+        "Terror",
+        "Thriller"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/5Yz4P9DCQS1Jb8XtvMDsSykc8Ta.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/5Yz4P9DCQS1Jb8XtvMDsSykc8Ta.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/gqR59DjJGr6i8mxRD1VfOzCueTI.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/gqR59DjJGr6i8mxRD1VfOzCueTI.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/xk8YbF1OlvWcTkrOx6Ci5FhUiOj.png",
+      "cast": [
+        {
+          "id": 2144,
+          "name": "Tobin Bell",
+          "character": "John Kramer / Jigsaw",
+          "photo": "https://image.tmdb.org/t/p/w185/q21uuCtTioIVcGc3a1Q0DpdcNMO.jpg"
+        },
+        {
+          "id": 36055,
+          "name": "Costas Mandylor",
+          "character": "Mark Hoffman",
+          "photo": "https://image.tmdb.org/t/p/w185/yPkQdbhCj2EJM0cjDtkuJTlFp86.jpg"
+        },
+        {
+          "id": 6576,
+          "name": "Mark Rolston",
+          "character": "Dan Erickson",
+          "photo": "https://image.tmdb.org/t/p/w185/hcrNRIptYMRXgkJ9k76BlQu6DQp.jpg"
+        },
+        {
+          "id": 22434,
+          "name": "Betsy Russell",
+          "character": "Jill Tuck",
+          "photo": "https://image.tmdb.org/t/p/w185/kXXYUAwC1HGTzIyyHEdw7WeXnuL.jpg"
+        },
+        {
+          "id": 2138,
+          "name": "Shawnee Smith",
+          "character": "Amanda Young",
+          "photo": "https://image.tmdb.org/t/p/w185/s2Ouz4b7xqDH72aU48TSW5zS40v.jpg"
+        },
+        {
+          "id": 12978,
+          "name": "Peter Outerbridge",
+          "character": "William Easton",
+          "photo": "https://image.tmdb.org/t/p/w185/nYH7DMzfqw511KQCe4z3gUBLzf6.jpg"
+        },
+        {
+          "id": 51037,
+          "name": "Athena Karkanis",
+          "character": "Agent Perez",
+          "photo": "https://image.tmdb.org/t/p/w185/bxKJJWXfnTfWVpsD5Y5H8g4vFUq.jpg"
+        },
+        {
+          "id": 952336,
+          "name": "Samantha Lemole",
+          "character": "Pamela Jenkins",
+          "photo": "https://image.tmdb.org/t/p/w185/jGFrsJaAGrzG2Znc5njaZAnC3Cj.jpg"
+        },
+        {
+          "id": 1241157,
+          "name": "Tanedra Howard",
+          "character": "Simone",
+          "photo": "https://image.tmdb.org/t/p/w185/odkeU6oFJQemtpYrhikpRxLdR2O.jpg"
+        },
+        {
+          "id": 188600,
+          "name": "Marty Moreau",
+          "character": "Eddie",
+          "photo": "https://image.tmdb.org/t/p/w185/crlovyDCyOUCglFD08RUd7xyLnn.jpg"
+        },
+        {
+          "id": 1649211,
+          "name": "Shawn Ahmed",
+          "character": "Allen",
+          "photo": "https://image.tmdb.org/t/p/w185/gjLCf0RRpqznqzPHTEM7g3atPFm.jpg"
+        },
+        {
+          "id": 1649240,
+          "name": "Janelle Hutchison",
+          "character": "Addy",
+          "photo": "https://image.tmdb.org/t/p/w185/jgB7r2lTHlmpfp6Nxn516gkN4Z4.jpg"
+        },
+        {
+          "id": 54650,
+          "name": "Gerry Mendicino",
+          "character": "Janitor",
+          "photo": "https://image.tmdb.org/t/p/w185/oyszl8pSOzsnIL2EWCPU2Taub0z.jpg"
+        },
+        {
+          "id": 284032,
+          "name": "Caroline Cave",
+          "character": "Debbie",
+          "photo": "https://image.tmdb.org/t/p/w185/lBiqZZL8HzSwjZ8150U7826mm1z.jpg"
+        },
+        {
+          "id": 59222,
+          "name": "George Newbern",
+          "character": "Harold",
+          "photo": "https://image.tmdb.org/t/p/w185/1Xx0K3KGqxyIpL6o2eVQKui86jS.jpg"
+        }
+      ],
+      "directors": [
+        "Kevin Greutert"
+      ],
+      "writers": [
+        "Marcus Dunstan",
+        "Patrick Melton"
+      ],
+      "keywords": [
+        "sacrifice",
+        "sadism",
+        "fbi",
+        "apprentice",
+        "murder",
+        "torture",
+        "killer",
+        "agent",
+        "death",
+        "survival horror"
+      ],
+      "companies": [
+        "Lionsgate",
+        "Twisted Pictures",
+        "Mandate Pictures"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 11000000,
+      "revenue": 69752402,
+      "collection": {
+        "id": 656,
+        "name": "Jogos Mortais: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/9ADSHtuBTRL3P0pUmZJGnQtwmSH.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 41439,
+          "title": "Jogos Mortais: O Final",
+          "poster": "https://image.tmdb.org/t/p/w185/4Nqg7M6LXFxY51GK0dup1BB8g49.jpg",
+          "rating": 6
+        },
+        {
+          "id": 11917,
+          "title": "Jogos Mortais V",
+          "poster": "https://image.tmdb.org/t/p/w185/wi9pLhftcB3SMx0R2BrfVpt80Iu.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 663,
+          "title": "Jogos Mortais IV",
+          "poster": "https://image.tmdb.org/t/p/w185/6NAPeqZTgeTDW1CaDac7CDisMMt.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 298250,
+          "title": "Jogos Mortais: Jigsaw",
+          "poster": "https://image.tmdb.org/t/p/w185/18vXrQmVWoLuAQEltcfIS2aHvej.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 215,
+          "title": "Jogos Mortais II",
+          "poster": "https://image.tmdb.org/t/p/w185/ojWbOjvfeFNrf8keesvyerryyVo.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 214,
+          "title": "Jogos Mortais III",
+          "poster": "https://image.tmdb.org/t/p/w185/8LOtN2XDwAOB6xsjOhE1gi62XWg.jpg",
+          "rating": 6.4
+        }
+      ],
+      "streaming": [
+        "Globoplay",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt1233227",
+      "facebook": "Saw",
+      "instagram": "saw",
+      "twitter": "Saw"
+    }
+  },
+  {
+    "id": "jogos-mortais-jigsaw-2017-87gzhd-622732",
+    "name": "Jogos Mortais: Jigsaw (2017)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/622732.mp4",
+    "category": "🎬 Coleção JOGOS MORTAIS",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 298250,
+      "imdbId": "tt3348730",
+      "title": "Jogos Mortais: Jigsaw",
+      "originalTitle": "Jigsaw",
+      "tagline": "Você está Pronto para um Novo Jogo?",
+      "overview": "Após uma série de assassinatos, todas as pistas levam a John Kramer, assassino mais conhecido como Jigsaw. À medida que a investigação avança, os policiais percebem que estão perseguindo o fantasma de um homem morto há mais de uma década.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2017-10-25",
+      "year": "2017",
+      "runtime": 92,
+      "rating": 6.2,
+      "voteCount": 3873,
+      "popularity": 4,
+      "certification": "18",
+      "genres": [
+        "Terror",
+        "Mistério"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/18vXrQmVWoLuAQEltcfIS2aHvej.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/18vXrQmVWoLuAQEltcfIS2aHvej.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/ucLGZ3zBRFDhdlRNhvXdkjXkNyd.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/ucLGZ3zBRFDhdlRNhvXdkjXkNyd.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/bewuOXGuhdQrkwds9gYHKEylVls.png",
+      "cast": [
+        {
+          "id": 2144,
+          "name": "Tobin Bell",
+          "character": "John Kramer / Jigsaw",
+          "photo": "https://image.tmdb.org/t/p/w185/q21uuCtTioIVcGc3a1Q0DpdcNMO.jpg"
+        },
+        {
+          "id": 1228915,
+          "name": "Matt Passmore",
+          "character": "Logan Nelson",
+          "photo": "https://image.tmdb.org/t/p/w185/wpEuBfFMvL6dAOFFQsZW2JtcYTj.jpg"
+        },
+        {
+          "id": 540,
+          "name": "Callum Keith Rennie",
+          "character": "Detective Halloran",
+          "photo": "https://image.tmdb.org/t/p/w185/zOeA4IR4xYde2VlDsHZy2SoPZkc.jpg"
+        },
+        {
+          "id": 1685904,
+          "name": "Hannah Emily Anderson",
+          "character": "Eleanor Bonneville",
+          "photo": "https://image.tmdb.org/t/p/w185/fSyNGF4pZQj9Ne9IKv9kfimECzk.jpg"
+        },
+        {
+          "id": 957076,
+          "name": "Clé Bennett",
+          "character": "Keith Hunt",
+          "photo": "https://image.tmdb.org/t/p/w185/1q3tnlfS56wuzjBDf9ahhG169aP.jpg"
+        },
+        {
+          "id": 43286,
+          "name": "Laura Vandervoort",
+          "character": "Anna",
+          "photo": "https://image.tmdb.org/t/p/w185/y3geQGnFG8Sbr7smthUTa84fv9v.jpg"
+        },
+        {
+          "id": 948533,
+          "name": "Paul Braunstein",
+          "character": "Ryan",
+          "photo": "https://image.tmdb.org/t/p/w185/5WFAZe2AGttbi0LPg2MmmswL7Gn.jpg"
+        },
+        {
+          "id": 1001736,
+          "name": "Mandela Van Peebles",
+          "character": "Mitch",
+          "photo": "https://image.tmdb.org/t/p/w185/uwf0seONzZ3lRkj9mBAtEvSrEVZ.jpg"
+        },
+        {
+          "id": 943913,
+          "name": "Brittany Allen",
+          "character": "Carly",
+          "photo": "https://image.tmdb.org/t/p/w185/kGLQeglfbdEbD5IursaYRutmRx0.jpg"
+        },
+        {
+          "id": 1495933,
+          "name": "Josiah Black",
+          "character": "Edgar Munsen",
+          "photo": "https://image.tmdb.org/t/p/w185/b2y456tEkICjbNqbvfhiGOLbv4A.jpg"
+        },
+        {
+          "id": 1274964,
+          "name": "Edward Ruttle",
+          "character": "Matt",
+          "photo": "https://image.tmdb.org/t/p/w185/hoR2honm6hZec1cr0hI5GnUjP7A.jpg"
+        },
+        {
+          "id": 168625,
+          "name": "Michael Boisvert",
+          "character": "Lee James",
+          "photo": "https://image.tmdb.org/t/p/w185/8PWH7M3fUf5TbFuhtFjkB6FUMHM.jpg"
+        },
+        {
+          "id": 1854762,
+          "name": "Sam Koules",
+          "character": "Melissa",
+          "photo": null
+        },
+        {
+          "id": 2090383,
+          "name": "Troy Feldman",
+          "character": "Officer Palermo",
+          "photo": "https://image.tmdb.org/t/p/w185/u9T0KlxFlUFnkuGHJCiq3a9wp5w.jpg"
+        },
+        {
+          "id": 1776258,
+          "name": "Shaquan Lewis",
+          "character": "Officer Solomon",
+          "photo": "https://image.tmdb.org/t/p/w185/m8KWkdaAJt7UNv6bKUF2GhPhBv.jpg"
+        }
+      ],
+      "directors": [
+        "Michael Spierig",
+        "Peter Spierig"
+      ],
+      "writers": [
+        "Josh Stolberg",
+        "Pete Goldfinger"
+      ],
+      "keywords": [
+        "sadism",
+        "gore",
+        "sequel",
+        "flashback",
+        "torture",
+        "death",
+        "survival horror",
+        "death match",
+        "suicide by hanging",
+        "mind game"
+      ],
+      "companies": [
+        "Twisted Pictures",
+        "A Bigger Boat",
+        "Serendipity Productions",
+        "Lionsgate"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 10000000,
+      "revenue": 104223315,
+      "collection": {
+        "id": 656,
+        "name": "Jogos Mortais: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/9ADSHtuBTRL3P0pUmZJGnQtwmSH.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 602734,
+          "title": "Espiral: O Legado de Jogos Mortais",
+          "poster": "https://image.tmdb.org/t/p/w185/jJ7eIqsVLtRwLCX6KeJNeQYjPar.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 41439,
+          "title": "Jogos Mortais: O Final",
+          "poster": "https://image.tmdb.org/t/p/w185/4Nqg7M6LXFxY51GK0dup1BB8g49.jpg",
+          "rating": 6
+        },
+        {
+          "id": 176,
+          "title": "Jogos Mortais",
+          "poster": "https://image.tmdb.org/t/p/w185/lwTKflT7UbQCTyImbuq6eamUKwb.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 440021,
+          "title": "A Morte Te Dá Parabéns",
+          "poster": "https://image.tmdb.org/t/p/w185/9MMff1YtsR8ynuB5KXZYKLZA3Xo.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 951491,
+          "title": "Jogos Mortais X",
+          "poster": "https://image.tmdb.org/t/p/w185/ch1BGjadaiPU59zYbb6zPUTZtyO.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 22804,
+          "title": "Jogos Mortais VI",
+          "poster": "https://image.tmdb.org/t/p/w185/5Yz4P9DCQS1Jb8XtvMDsSykc8Ta.jpg",
+          "rating": 6.3
+        }
+      ],
+      "streaming": [
+        "Globoplay",
+        "Claro tv+",
+        "Telecine Amazon Channel"
+      ],
+      "imdb": "tt3348730",
+      "facebook": "Saw",
+      "instagram": "saw",
+      "twitter": "SawMovie"
+    }
+  }
+]

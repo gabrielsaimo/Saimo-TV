@@ -1,0 +1,213 @@
+[
+  {
+    "id": "o-exterminador-do-futuro-genesis-2015-87gzhd-624854",
+    "name": "O Exterminador do Futuro: Gênesis (2015)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/624854.mp4",
+    "category": "🎬 Coleção EXTERMINADOR DO FUTURO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 87101,
+      "imdbId": "tt1340138",
+      "title": "O Exterminador do Futuro: Gênesis",
+      "originalTitle": "Terminator Genisys",
+      "tagline": "Nova missão. Novo destino.",
+      "overview": "John Connor, líder da resistência humana contra Skynet, envia Kyle Reese de volta a 1984 para proteger sua mãe, Sarah. Porém, Reese se surpreende ao encontrá-la com um exterminador que age como seu protetor, e descobre que o passado foi alterado.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2015-06-23",
+      "year": "2015",
+      "runtime": 126,
+      "rating": 5.9,
+      "voteCount": 8797,
+      "popularity": 10,
+      "certification": "12",
+      "genres": [
+        "Ficção científica",
+        "Ação",
+        "Thriller",
+        "Aventura"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/xmFGm5Earx8OOYEbgE3iuiNmQpu.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/xmFGm5Earx8OOYEbgE3iuiNmQpu.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/wvlIoof1FnKPLv9jAYanuP31V0C.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/wvlIoof1FnKPLv9jAYanuP31V0C.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/iXjVDBtFeVVEoQLIM1Of9toSWVq.png",
+      "cast": [
+        {
+          "id": 1223786,
+          "name": "Emilia Clarke",
+          "character": "Sarah Connor",
+          "photo": "https://image.tmdb.org/t/p/w185/iFY6t7Ux9r70WB7Sp0TTVz6eGtm.jpg"
+        },
+        {
+          "id": 224181,
+          "name": "Jai Courtney",
+          "character": "Kyle Reese",
+          "photo": "https://image.tmdb.org/t/p/w185/6vEaNwbOKov6yzQx15CdtrqfK3L.jpg"
+        },
+        {
+          "id": 1100,
+          "name": "Arnold Schwarzenegger",
+          "character": "Guardian / The Terminator",
+          "photo": "https://image.tmdb.org/t/p/w185/2marNcjIfCUE5Z2HyrcEiJHPbsA.jpg"
+        },
+        {
+          "id": 76512,
+          "name": "Jason Clarke",
+          "character": "John Connor",
+          "photo": "https://image.tmdb.org/t/p/w185/ma1BPr7pjzgxmYkHFlkMJLQDPC5.jpg"
+        },
+        {
+          "id": 136532,
+          "name": "Matt Smith",
+          "character": "Alex / Skynet",
+          "photo": "https://image.tmdb.org/t/p/w185/xr2GSp8Pm6fT5VGm0I9tsWVcZ8q.jpg"
+        },
+        {
+          "id": 18999,
+          "name": "J.K. Simmons",
+          "character": "O'Brien",
+          "photo": "https://image.tmdb.org/t/p/w185/ScmKoJ9eiSUOthAt1PDNLi8Fkw.jpg"
+        },
+        {
+          "id": 25002,
+          "name": "이병헌",
+          "character": "Cop / T-1000",
+          "photo": "https://image.tmdb.org/t/p/w185/j7SUd9Qi8iOxgrQGb3nQyEYcXur.jpg"
+        },
+        {
+          "id": 1030512,
+          "name": "Dayo Okeniyi",
+          "character": "Danny Dyson",
+          "photo": "https://image.tmdb.org/t/p/w185/8m4ZIuzVBDjFbJFLXebc4iwv27o.jpg"
+        },
+        {
+          "id": 24047,
+          "name": "Courtney B. Vance",
+          "character": "Miles Dyson",
+          "photo": "https://image.tmdb.org/t/p/w185/6ci3wf6oecjz875QRwryOsapW0Y.jpg"
+        },
+        {
+          "id": 55596,
+          "name": "Michael Gladis",
+          "character": "Lieutenant Matias",
+          "photo": "https://image.tmdb.org/t/p/w185/4vCeN0HQ4UoSGhFxu7qpN9vtx7z.jpg"
+        },
+        {
+          "id": 65345,
+          "name": "Sandrine Holt",
+          "character": "Detective Cheung",
+          "photo": "https://image.tmdb.org/t/p/w185/qvuH2mRmfG2yIchpsHefprcKYLK.jpg"
+        },
+        {
+          "id": 1023458,
+          "name": "Wayne Bastrup",
+          "character": "Young O'Brien",
+          "photo": "https://image.tmdb.org/t/p/w185/rFHuxgeU67BxPy5MkvWhR7POX0u.jpg"
+        },
+        {
+          "id": 37937,
+          "name": "Gregory Alan Williams",
+          "character": "Detective Harding",
+          "photo": "https://image.tmdb.org/t/p/w185/3IM9qtI4c4zgraPNtRI3kCPivAo.jpg"
+        },
+        {
+          "id": 59739,
+          "name": "Otto Sanchez",
+          "character": "Detective Timmons",
+          "photo": "https://image.tmdb.org/t/p/w185/jnW64yR3TUQk9o3EBLeIR6bZ01r.jpg"
+        },
+        {
+          "id": 1451160,
+          "name": "Matty Ferraro",
+          "character": "Agent Janssen",
+          "photo": "https://image.tmdb.org/t/p/w185/s7f2eL5i8WKz9CSGJTHQBJNzsjt.jpg"
+        }
+      ],
+      "directors": [
+        "Alan Taylor"
+      ],
+      "writers": [
+        "Patrick Lussier",
+        "Laeta Kalogridis"
+      ],
+      "keywords": [
+        "future",
+        "artificial intelligence (a.i.)",
+        "saving the world",
+        "cyborg",
+        "killer robot",
+        "dystopia",
+        "time travel",
+        "sequel",
+        "robot",
+        "duringcreditsstinger"
+      ],
+      "companies": [
+        "Paramount Pictures",
+        "Skydance Media",
+        "Annapurna Pictures"
+      ],
+      "countries": [
+        "US",
+        "CA"
+      ],
+      "budget": 155000000,
+      "revenue": 440603537,
+      "collection": {
+        "id": 528,
+        "name": "O Exterminador do Futuro: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/dsG8knF5VSeIsO8cPJtBZgABOBF.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 290859,
+          "title": "O Exterminador do Futuro: Destino Sombrio",
+          "poster": "https://image.tmdb.org/t/p/w185/3HsG5V6ZpKYgfwbFqXEYONbqtTt.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 534,
+          "title": "O Exterminador do Futuro: A Salvação",
+          "poster": "https://image.tmdb.org/t/p/w185/khMIfRCgsMMqjxuGtJ2dUfJ551R.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 135397,
+          "title": "Jurassic World: O Mundo dos Dinossauros",
+          "poster": "https://image.tmdb.org/t/p/w185/mTRLIP4J4iJrVbJplKiaGnc3G93.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 211672,
+          "title": "Minions",
+          "poster": "https://image.tmdb.org/t/p/w185/caq9Xi6b1sZNREfzFBO2tRIBzWn.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 296,
+          "title": "O Exterminador do Futuro 3: A Rebelião das Máquinas",
+          "poster": "https://image.tmdb.org/t/p/w185/lzzuKhx8Ly6SZa8LxkT5Fvouc5z.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 218,
+          "title": "O Exterminador do Futuro",
+          "poster": "https://image.tmdb.org/t/p/w185/fo4SSoNT1ASI4JP7dOLrosWNWKa.jpg",
+          "rating": 7.7
+        }
+      ],
+      "streaming": [
+        "Paramount Plus",
+        "Claro tv+",
+        "Paramount+ Amazon Channel",
+        "Paramount Plus Premium"
+      ],
+      "imdb": "tt1340138",
+      "facebook": "TerminatorGenisys",
+      "instagram": null,
+      "twitter": ""
+    }
+  }
+]

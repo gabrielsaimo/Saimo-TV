@@ -1,0 +1,1034 @@
+[
+  {
+    "id": "todo-mundo-em-panico-2000-87gzhd-626101",
+    "name": "Todo Mundo em Pânico (2000)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/626101.mp4",
+    "category": "🎬 Coleção TODO MUNDO EM PÂNICO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 4247,
+      "imdbId": "tt0175142",
+      "title": "Todo Mundo em Pânico",
+      "originalTitle": "Scary Movie",
+      "tagline": "Você vai morrer... de tanto rir!",
+      "overview": "Depois do assassinato de uma bela colega de classe, um grupo de adolescentes desorientados descobre que há um assassino entre eles. A heroína Cindy Campbell e a sua turma de amigos mauricinhos e patricinhas, tentam se proteger do perigo... Mas uma reporter irritante, Gail Hailstorm, simplesmente não os deixa em paz! Parece familiar? Talvez sim, mas essa história repleta de reviravoltas e surpresas horripilantes e humor ultrajante extrapola no gênero de horror e ação.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2000-07-07",
+      "year": "2000",
+      "runtime": 91,
+      "rating": 6.4,
+      "voteCount": 7462,
+      "popularity": 10,
+      "certification": "16",
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/daorfyZdHkI44vuf3DVDbmJkYQI.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/daorfyZdHkI44vuf3DVDbmJkYQI.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/uHZRTGMFb1RLmgWcqlIOZsGbDCT.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/uHZRTGMFb1RLmgWcqlIOZsGbDCT.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/ashfJUIvWyypy2YxaKA4k0ahMY4.png",
+      "cast": [
+        {
+          "id": 1772,
+          "name": "Anna Faris",
+          "character": "Cindy Campbell",
+          "photo": "https://image.tmdb.org/t/p/w185/y3YKNr4qPPJZ9w4lR2a3yySKotd.jpg"
+        },
+        {
+          "id": 17866,
+          "name": "Jon Abrahams",
+          "character": "Bobby Prinze",
+          "photo": "https://image.tmdb.org/t/p/w185/1gQkeDCmoJ3gjq7VbwvlYKKTKTz.jpg"
+        },
+        {
+          "id": 58058,
+          "name": "Lochlyn Munro",
+          "character": "Greg Phillippe",
+          "photo": "https://image.tmdb.org/t/p/w185/iyEKTi04DSYLAGLLBGuqCQD5wKe.jpg"
+        },
+        {
+          "id": 9562,
+          "name": "Marlon Wayans",
+          "character": "Shorty Meeks",
+          "photo": "https://image.tmdb.org/t/p/w185/7LYnX3vluHFBs1WCRKUjSIEDEkn.jpg"
+        },
+        {
+          "id": 35690,
+          "name": "Shawn Wayans",
+          "character": "Ray Wilkins",
+          "photo": "https://image.tmdb.org/t/p/w185/Cat25uXhB680QLmvg9Tu16W563.jpg"
+        },
+        {
+          "id": 35705,
+          "name": "Regina Hall",
+          "character": "Brenda Meeks",
+          "photo": "https://image.tmdb.org/t/p/w185/jiFZ4xNrvUUZLBHnJu71CvdN4kj.jpg"
+        },
+        {
+          "id": 21596,
+          "name": "Shannon Elizabeth",
+          "character": "Buffy Gilmore",
+          "photo": "https://image.tmdb.org/t/p/w185/1H99EVPLMQx3C0DKrVCiFKPpDB5.jpg"
+        },
+        {
+          "id": 60252,
+          "name": "Cheri Oteri",
+          "character": "Gail Hailstorm",
+          "photo": "https://image.tmdb.org/t/p/w185/A56szuLpt2yttvnHB49KNUZmD4b.jpg"
+        },
+        {
+          "id": 28639,
+          "name": "Carmen Electra",
+          "character": "Drew Decker",
+          "photo": "https://image.tmdb.org/t/p/w185/wpSCUNmxRMxHOhXJDZGCMxyMidb.jpg"
+        },
+        {
+          "id": 68634,
+          "name": "Tanja Reichert",
+          "character": "Miss Congeniality",
+          "photo": "https://image.tmdb.org/t/p/w185/umFRFg5mhiLuDvvqhVxfMlOWrkm.jpg"
+        },
+        {
+          "id": 35701,
+          "name": "Dave Sheridan",
+          "character": "Doofy Gilmore",
+          "photo": "https://image.tmdb.org/t/p/w185/pNP7NGCjfSn6nHpoLbCOf7RsexL.jpg"
+        },
+        {
+          "id": 29685,
+          "name": "Kurt Fuller",
+          "character": "The Sheriff",
+          "photo": "https://image.tmdb.org/t/p/w185/kV02XLACLFd1YYQdSOgqy6lFmQ3.jpg"
+        },
+        {
+          "id": 1538,
+          "name": "Rick Ducommun",
+          "character": "Cindy's Dad",
+          "photo": "https://image.tmdb.org/t/p/w185/tGhmgsOL6urwVeNyCsU0FlkAFV8.jpg"
+        },
+        {
+          "id": 35689,
+          "name": "Keenen Ivory Wayans",
+          "character": "Slave",
+          "photo": "https://image.tmdb.org/t/p/w185/e9XRdXolDV8RjGPHPXH6IISDTSP.jpg"
+        },
+        {
+          "id": 76742,
+          "name": "Marissa Jaret Winokur",
+          "character": "Garage Victim",
+          "photo": "https://image.tmdb.org/t/p/w185/9a8Phgwhrjw4e2Fng1ItNDL7QS0.jpg"
+        }
+      ],
+      "directors": [
+        "Keenen Ivory Wayans"
+      ],
+      "writers": [
+        "Marlon Wayans",
+        "Buddy Johnson",
+        "Shawn Wayans"
+      ],
+      "keywords": [
+        "high school",
+        "psychopath",
+        "garage",
+        "satire",
+        "parody",
+        "crude humor",
+        "spoof",
+        "horror spoof",
+        "drugs",
+        "aftercreditsstinger"
+      ],
+      "companies": [
+        "Brad Grey Pictures",
+        "Gold/Miller Productions",
+        "Wayans Bros. Entertainment",
+        "Dimension Films"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 19000000,
+      "revenue": 278022760,
+      "collection": {
+        "id": 4246,
+        "name": "Todo Mundo em Pânico: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/945zp0V1CMmgMOqy0GNEBdDjokg.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 4248,
+          "title": "Todo Mundo em Pânico 2",
+          "poster": "https://image.tmdb.org/t/p/w185/549UoU38uoikbqgXG09rkkfIEWf.jpg",
+          "rating": 5.8
+        },
+        {
+          "id": 4256,
+          "title": "Todo Mundo em Pânico 3",
+          "poster": "https://image.tmdb.org/t/p/w185/y14q7jWS0vH8ZuWPS1v8t8qCmBO.jpg",
+          "rating": 6
+        },
+        {
+          "id": 4258,
+          "title": "Todo Mundo em Pânico 5",
+          "poster": "https://image.tmdb.org/t/p/w185/yXpzv5u2VvP8lxkG1QEkvpT4LwX.jpg",
+          "rating": 4.8
+        },
+        {
+          "id": 4257,
+          "title": "Todo Mundo em Pânico 4",
+          "poster": "https://image.tmdb.org/t/p/w185/xcpPBUJe0Mq1V3ehrGyYNDERl97.jpg",
+          "rating": 5.5
+        },
+        {
+          "id": 2105,
+          "title": "American Pie: A Primeira Vez é Inesquecível",
+          "poster": "https://image.tmdb.org/t/p/w185/4GxuPJxUcArRpfBGJL6BG3B4Cb9.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 10073,
+          "title": "Uma Comédia Nada Romântica",
+          "poster": "https://image.tmdb.org/t/p/w185/jrvJo2OquBYOguftz3ZFmhaA9jG.jpg",
+          "rating": 4.3
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Paramount Plus",
+        "Paramount+ Amazon Channel",
+        "Netflix Standard with Ads",
+        "Paramount Plus Premium"
+      ],
+      "imdb": "tt0175142",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "todo-mundo-em-panico-2-2001-87gzhd-627267",
+    "name": "Todo Mundo em Pânico 2 (2001)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/627267.mp4",
+    "category": "🎬 Coleção TODO MUNDO EM PÂNICO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 4248,
+      "imdbId": "tt0257106",
+      "title": "Todo Mundo em Pânico 2",
+      "originalTitle": "Scary Movie 2",
+      "tagline": "Mais impiedoso. Mais sem-vergonha.",
+      "overview": "Brincando com o terror, o professor Oldman e Dwight seu assistente, preparam um final de semana hilariante e super especial. Um experiência sobre exorcismo, onde Cindy e \"aquele\" grupo de jovens malucos e assustados deverão ficar sem dormir. A incrível arapuca terá lugar na \"Casa do Inferno\", um casarão mal-assombrado afastado da cidade, e onde não falta nem o repulsivo mordono sempre presente nas melhores histórias de terror. Como alvos desta comédia escrachada, encontramos \"O Exorcista\", \"Poltergeist\", \"A Casa da Colina\", \"Revelação\" e até mesmo \"As Panteras\" e \"Missão Impossível 2\". Agora muito mais engraçado. Imperdível!",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2001-07-04",
+      "year": "2001",
+      "runtime": 82,
+      "rating": 5.8,
+      "voteCount": 4955,
+      "popularity": 7,
+      "certification": "16",
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/549UoU38uoikbqgXG09rkkfIEWf.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/549UoU38uoikbqgXG09rkkfIEWf.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/cjSB3ZjaMpaa9oHFyeYha3KG0mp.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/cjSB3ZjaMpaa9oHFyeYha3KG0mp.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/t7PLVxbbxPinUjOV7Dz0OsLhUOZ.png",
+      "cast": [
+        {
+          "id": 1772,
+          "name": "Anna Faris",
+          "character": "Cindy Campbell",
+          "photo": "https://image.tmdb.org/t/p/w185/y3YKNr4qPPJZ9w4lR2a3yySKotd.jpg"
+        },
+        {
+          "id": 35769,
+          "name": "Christopher Masterson",
+          "character": "Buddy Wilkerson",
+          "photo": "https://image.tmdb.org/t/p/w185/hOq2XG7QNtYphFcokFpJNPv4k4q.jpg"
+        },
+        {
+          "id": 35705,
+          "name": "Regina Hall",
+          "character": "Brenda Meeks",
+          "photo": "https://image.tmdb.org/t/p/w185/jiFZ4xNrvUUZLBHnJu71CvdN4kj.jpg"
+        },
+        {
+          "id": 35690,
+          "name": "Shawn Wayans",
+          "character": "Ray Wilkins",
+          "photo": "https://image.tmdb.org/t/p/w185/Cat25uXhB680QLmvg9Tu16W563.jpg"
+        },
+        {
+          "id": 9562,
+          "name": "Marlon Wayans",
+          "character": "Shorty Meeks",
+          "photo": "https://image.tmdb.org/t/p/w185/7LYnX3vluHFBs1WCRKUjSIEDEkn.jpg"
+        },
+        {
+          "id": 212,
+          "name": "David Cross",
+          "character": "Dwight Hartman",
+          "photo": "https://image.tmdb.org/t/p/w185/dZyQ61KLra7JpkkoSeWIUvgEA1K.jpg"
+        },
+        {
+          "id": 33676,
+          "name": "Kathleen Robertson",
+          "character": "Theo",
+          "photo": "https://image.tmdb.org/t/p/w185/vtY0dPOu7gsxN2gVcTK0j0v76qc.jpg"
+        },
+        {
+          "id": 19149,
+          "name": "Tori Spelling",
+          "character": "Alex Monday",
+          "photo": "https://image.tmdb.org/t/p/w185/xUPnjmmMcOdAHVhZL5b88MrJi7R.jpg"
+        },
+        {
+          "id": 13472,
+          "name": "Tim Curry",
+          "character": "Prof. Oldman",
+          "photo": "https://image.tmdb.org/t/p/w185/8ZsGg3N3OZgxshqLOtA2kl5ckOP.jpg"
+        },
+        {
+          "id": 1534,
+          "name": "Chris Elliott",
+          "character": "Henson",
+          "photo": "https://image.tmdb.org/t/p/w185/oZFGgyDCZaanGfco1UdfxM4rHAJ.jpg"
+        },
+        {
+          "id": 4512,
+          "name": "James Woods",
+          "character": "Father McFeely",
+          "photo": "https://image.tmdb.org/t/p/w185/UAvunLhXXFMD83wXOUvRWhNBmO.jpg"
+        },
+        {
+          "id": 28637,
+          "name": "Andy Richter",
+          "character": "Father Harris",
+          "photo": "https://image.tmdb.org/t/p/w185/qazhLkyKOsPmdOQSaUWWbbUjs9q.jpg"
+        },
+        {
+          "id": 5047,
+          "name": "Veronica Cartwright",
+          "character": "Mother",
+          "photo": "https://image.tmdb.org/t/p/w185/8s31kdotRrghkH4DkxpRZCmELYd.jpg"
+        },
+        {
+          "id": 10871,
+          "name": "Natasha Lyonne",
+          "character": "Megan",
+          "photo": "https://image.tmdb.org/t/p/w185/2QJoTBEIeYyjGSDot9qxv2ayPH3.jpg"
+        },
+        {
+          "id": 13591,
+          "name": "Richard Moll",
+          "character": "Hell House Ghost",
+          "photo": "https://image.tmdb.org/t/p/w185/p51OMBLWgsmf3qeprxszXHLmxKt.jpg"
+        }
+      ],
+      "directors": [
+        "Keenen Ivory Wayans"
+      ],
+      "writers": [
+        "Marlon Wayans",
+        "Alyson Fouse",
+        "Michael Anthony Snowden"
+      ],
+      "keywords": [
+        "exorcism",
+        "haunted house",
+        "parody",
+        "spoof",
+        "horror spoof",
+        "secret door",
+        "college student",
+        "school project",
+        "haunted mansion",
+        "horror parody"
+      ],
+      "companies": [
+        "Brad Grey Pictures",
+        "Gold/Miller Productions",
+        "Wayans Bros. Entertainment",
+        "Dimension Films"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 45000000,
+      "revenue": 141220678,
+      "collection": {
+        "id": 4246,
+        "name": "Todo Mundo em Pânico: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/945zp0V1CMmgMOqy0GNEBdDjokg.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 4256,
+          "title": "Todo Mundo em Pânico 3",
+          "poster": "https://image.tmdb.org/t/p/w185/y14q7jWS0vH8ZuWPS1v8t8qCmBO.jpg",
+          "rating": 6
+        },
+        {
+          "id": 4257,
+          "title": "Todo Mundo em Pânico 4",
+          "poster": "https://image.tmdb.org/t/p/w185/xcpPBUJe0Mq1V3ehrGyYNDERl97.jpg",
+          "rating": 5.5
+        },
+        {
+          "id": 4247,
+          "title": "Todo Mundo em Pânico",
+          "poster": "https://image.tmdb.org/t/p/w185/daorfyZdHkI44vuf3DVDbmJkYQI.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 4258,
+          "title": "Todo Mundo em Pânico 5",
+          "poster": "https://image.tmdb.org/t/p/w185/yXpzv5u2VvP8lxkG1QEkvpT4LwX.jpg",
+          "rating": 4.8
+        },
+        {
+          "id": 10874,
+          "title": "Os Muppets na Ilha do Tesouro",
+          "poster": "https://image.tmdb.org/t/p/w185/p5SS99cIFwX4Xubg8yJ9svNqquX.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 10992,
+          "title": "Como Cães e Gatos",
+          "poster": "https://image.tmdb.org/t/p/w185/86YaF3sR3oFaIMhjjPQsTlkhLUq.jpg",
+          "rating": 5.4
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Paramount Plus",
+        "Paramount+ Amazon Channel",
+        "Netflix Standard with Ads",
+        "Paramount Plus Premium"
+      ],
+      "imdb": "tt0257106",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "todo-mundo-em-panico-3-2003-87gzhd-627298",
+    "name": "Todo Mundo em Pânico 3 (2003)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/627298.mp4",
+    "category": "🎬 Coleção TODO MUNDO EM PÂNICO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 4256,
+      "imdbId": "tt0306047",
+      "title": "Todo Mundo em Pânico 3",
+      "originalTitle": "Scary Movie 3",
+      "tagline": "Grandes trilogias vêm sempre em três!",
+      "overview": "Tudo começa quando a apresentadora de telejornal Cindy Campbell descobre uma série de terríveis acontecimentos que ameaçam o planeta, envolvendo invasores extraterrestres, vídeos assassinos, assustadores círculos de plantações, profecias sobre o Escolhido, crianças com olhares sinistros, rappers brancos ambiciosos e até mesmo uma discussão com Michael Jackson.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2003-10-24",
+      "year": "2003",
+      "runtime": 84,
+      "rating": 6,
+      "voteCount": 4331,
+      "popularity": 5,
+      "certification": "16",
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/y14q7jWS0vH8ZuWPS1v8t8qCmBO.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/y14q7jWS0vH8ZuWPS1v8t8qCmBO.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/rIT2cyffDzXaFw3PU6fV8lp0FY2.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/rIT2cyffDzXaFw3PU6fV8lp0FY2.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/qmcXiVy9TvRZVLu8Zdh26VR6cVT.png",
+      "cast": [
+        {
+          "id": 1772,
+          "name": "Anna Faris",
+          "character": "Cindy Campbell",
+          "photo": "https://image.tmdb.org/t/p/w185/y3YKNr4qPPJZ9w4lR2a3yySKotd.jpg"
+        },
+        {
+          "id": 35548,
+          "name": "Simon Rex",
+          "character": "George",
+          "photo": "https://image.tmdb.org/t/p/w185/hpFwRpxrJt7k4ccWEwc37xRZ8pT.jpg"
+        },
+        {
+          "id": 18471,
+          "name": "Anthony Anderson",
+          "character": "Mahalik",
+          "photo": "https://image.tmdb.org/t/p/w185/reO1OjwFdtXmiO4LMDaBj6eatzK.jpg"
+        },
+        {
+          "id": 6952,
+          "name": "Charlie Sheen",
+          "character": "Tom",
+          "photo": "https://image.tmdb.org/t/p/w185/npEqnIw321opMKuu3lsFNKNKQdX.jpg"
+        },
+        {
+          "id": 35705,
+          "name": "Regina Hall",
+          "character": "Brenda Meeks",
+          "photo": "https://image.tmdb.org/t/p/w185/jiFZ4xNrvUUZLBHnJu71CvdN4kj.jpg"
+        },
+        {
+          "id": 7633,
+          "name": "Leslie Nielsen",
+          "character": "President Baxter Harris",
+          "photo": "https://image.tmdb.org/t/p/w185/u5vWl5dw69Nf89f905Qb5JqEVL3.jpg"
+        },
+        {
+          "id": 55638,
+          "name": "Kevin Hart",
+          "character": "CJ",
+          "photo": "https://image.tmdb.org/t/p/w185/byiNydUlM6oP8diA7WMvYbNM7a1.jpg"
+        },
+        {
+          "id": 12799,
+          "name": "Jeremy Piven",
+          "character": "Ross Giggins",
+          "photo": "https://image.tmdb.org/t/p/w185/pBD1jcAZiDrHWcFpJtBtqLRD4gR.jpg"
+        },
+        {
+          "id": 6736,
+          "name": "Pamela Anderson",
+          "character": "Becca",
+          "photo": "https://image.tmdb.org/t/p/w185/sk15ch2IQ6k6vWu07Jr77yw4oj5.jpg"
+        },
+        {
+          "id": 35597,
+          "name": "Jenny McCarthy",
+          "character": "Kate",
+          "photo": "https://image.tmdb.org/t/p/w185/6D27Xx43SocxLPh3PrYu2M8BcLa.jpg"
+        },
+        {
+          "id": 9205,
+          "name": "Denise Richards",
+          "character": "Annie",
+          "photo": "https://image.tmdb.org/t/p/w185/i1MDAhdjiqXWwEhr7ujnlk8ksdl.jpg"
+        },
+        {
+          "id": 1213128,
+          "name": "Elaine Klimaszewski",
+          "character": "Elaine",
+          "photo": "https://image.tmdb.org/t/p/w185/kXhxKvJml9548nguvW3T2m8Bewj.jpg"
+        },
+        {
+          "id": 1213127,
+          "name": "Diane Klimaszewski",
+          "character": "Diane",
+          "photo": "https://image.tmdb.org/t/p/w185/A0fPJSfihT4kIxgvfk3jnPKysGc.jpg"
+        },
+        {
+          "id": 2104785,
+          "name": "Drew Mikuska",
+          "character": "Cody",
+          "photo": "https://image.tmdb.org/t/p/w185/CMWVPQUiRAICu2qI0LUu3BsQxV.jpg"
+        },
+        {
+          "id": 35800,
+          "name": "Jianna Ballard",
+          "character": "Sue",
+          "photo": "https://image.tmdb.org/t/p/w185/2tXSf7dMbIE7RcMqytasEVyWhUu.jpg"
+        }
+      ],
+      "directors": [
+        "David Zucker"
+      ],
+      "writers": [
+        "Craig Mazin",
+        "Pat Proft"
+      ],
+      "keywords": [
+        "halloween",
+        "parody",
+        "spoof",
+        "vhs",
+        "horror spoof",
+        "alien invasion",
+        "crop circle",
+        "tv news anchor",
+        "mysterious death",
+        "horror parody"
+      ],
+      "companies": [
+        "Brad Grey Pictures",
+        "Dimension Films"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 45000000,
+      "revenue": 220673217,
+      "collection": {
+        "id": 4246,
+        "name": "Todo Mundo em Pânico: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/945zp0V1CMmgMOqy0GNEBdDjokg.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 4257,
+          "title": "Todo Mundo em Pânico 4",
+          "poster": "https://image.tmdb.org/t/p/w185/xcpPBUJe0Mq1V3ehrGyYNDERl97.jpg",
+          "rating": 5.5
+        },
+        {
+          "id": 4248,
+          "title": "Todo Mundo em Pânico 2",
+          "poster": "https://image.tmdb.org/t/p/w185/549UoU38uoikbqgXG09rkkfIEWf.jpg",
+          "rating": 5.8
+        },
+        {
+          "id": 4258,
+          "title": "Todo Mundo em Pânico 5",
+          "poster": "https://image.tmdb.org/t/p/w185/yXpzv5u2VvP8lxkG1QEkvpT4LwX.jpg",
+          "rating": 4.8
+        },
+        {
+          "id": 4247,
+          "title": "Todo Mundo em Pânico",
+          "poster": "https://image.tmdb.org/t/p/w185/daorfyZdHkI44vuf3DVDbmJkYQI.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 11918,
+          "title": "Super-Herói: O Filme",
+          "poster": "https://image.tmdb.org/t/p/w185/slyJHnhfs2rP6KmCwm0EbKq3hoz.jpg",
+          "rating": 5.3
+        },
+        {
+          "id": 2665,
+          "title": "Apertem os Cintos, o Piloto Sumiu 2",
+          "poster": "https://image.tmdb.org/t/p/w185/oEdQu4eBfx0w4Ai5nwTna6ktOnD.jpg",
+          "rating": 6.1
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Paramount Plus",
+        "Globoplay",
+        "Paramount+ Amazon Channel",
+        "Netflix Standard with Ads"
+      ],
+      "imdb": "tt0306047",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "todo-mundo-em-panico-4-2006-87gzhd-625691",
+    "name": "Todo Mundo em Pânico 4 (2006)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/625691.mp4",
+    "category": "🎬 Coleção TODO MUNDO EM PÂNICO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 4257,
+      "imdbId": "tt0362120",
+      "title": "Todo Mundo em Pânico 4",
+      "originalTitle": "Scary Movie 4",
+      "tagline": "O quarto e último capítulo da trilogia.",
+      "overview": "Mais uma continuação da franquia de filmes que faz sátiras das produções mais recentes de terror, como \"Jogos Mortais\" e \"O Grito\". Desta vez, duas jovens tentam salvar o mundo de uma invasão alienígena.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2006-04-12",
+      "year": "2006",
+      "runtime": 83,
+      "rating": 5.5,
+      "voteCount": 3460,
+      "popularity": 5,
+      "certification": "16",
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/xcpPBUJe0Mq1V3ehrGyYNDERl97.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/xcpPBUJe0Mq1V3ehrGyYNDERl97.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/pSNwe7G9bESwlCBVurlwRs7fMZU.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/pSNwe7G9bESwlCBVurlwRs7fMZU.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/pDTisRJDDEFK3PjYaHYTOrNbuEK.png",
+      "cast": [
+        {
+          "id": 1772,
+          "name": "Anna Faris",
+          "character": "Cindy Campbell",
+          "photo": "https://image.tmdb.org/t/p/w185/y3YKNr4qPPJZ9w4lR2a3yySKotd.jpg"
+        },
+        {
+          "id": 35705,
+          "name": "Regina Hall",
+          "character": "Brenda Meeks",
+          "photo": "https://image.tmdb.org/t/p/w185/jiFZ4xNrvUUZLBHnJu71CvdN4kj.jpg"
+        },
+        {
+          "id": 14886,
+          "name": "Craig Bierko",
+          "character": "Tom Ryan",
+          "photo": "https://image.tmdb.org/t/p/w185/btsSJRxc0i7Xty1R0iCYOnbTuDE.jpg"
+        },
+        {
+          "id": 8984,
+          "name": "Bill Pullman",
+          "character": "Henry Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/AlLhgmcX5zh3frPT82OSPY9gqXO.jpg"
+        },
+        {
+          "id": 18471,
+          "name": "Anthony Anderson",
+          "character": "Mahalik",
+          "photo": "https://image.tmdb.org/t/p/w185/reO1OjwFdtXmiO4LMDaBj6eatzK.jpg"
+        },
+        {
+          "id": 7633,
+          "name": "Leslie Nielsen",
+          "character": "President Baxter Harris",
+          "photo": "https://image.tmdb.org/t/p/w185/u5vWl5dw69Nf89f905Qb5JqEVL3.jpg"
+        },
+        {
+          "id": 28640,
+          "name": "Molly Shannon",
+          "character": "Marilyn",
+          "photo": "https://image.tmdb.org/t/p/w185/5ZTbNpJtDRU4ZCH24nJvFRxaqAD.jpg"
+        },
+        {
+          "id": 147,
+          "name": "Michael Madsen",
+          "character": "Oliver",
+          "photo": "https://image.tmdb.org/t/p/w185/2pKJJKeCggtLOE4hzqgq07KYqFh.jpg"
+        },
+        {
+          "id": 1534,
+          "name": "Chris Elliott",
+          "character": "Ezekiel",
+          "photo": "https://image.tmdb.org/t/p/w185/oZFGgyDCZaanGfco1UdfxM4rHAJ.jpg"
+        },
+        {
+          "id": 28639,
+          "name": "Carmen Electra",
+          "character": "Holly",
+          "photo": "https://image.tmdb.org/t/p/w185/wpSCUNmxRMxHOhXJDZGCMxyMidb.jpg"
+        },
+        {
+          "id": 35806,
+          "name": "Shaquille O'Neal",
+          "character": "Shaq",
+          "photo": "https://image.tmdb.org/t/p/w185/dPpPU1y7JEOQHVGv6vNLcCDJhLP.jpg"
+        },
+        {
+          "id": 1217327,
+          "name": "Phil McGraw",
+          "character": "Dr. Phil",
+          "photo": "https://image.tmdb.org/t/p/w185/71Nqs57x1sIbWvy6SjYLAo5KcUQ.jpg"
+        },
+        {
+          "id": 9599,
+          "name": "Cloris Leachman",
+          "character": "Mrs. Norris",
+          "photo": "https://image.tmdb.org/t/p/w185/o8pnV9urjuHZDAR2u4UjPy2CR1u.jpg"
+        },
+        {
+          "id": 178860,
+          "name": "Conchita Campbell",
+          "character": "Rachel",
+          "photo": "https://image.tmdb.org/t/p/w185/1lDsBTc2JW6mA2En5QEut6DuA51.jpg"
+        },
+        {
+          "id": 117525,
+          "name": "Beau Mirchoff",
+          "character": "Robbie Ryan",
+          "photo": "https://image.tmdb.org/t/p/w185/8IYD2ECualPTzxaslhfnLPtPypZ.jpg"
+        }
+      ],
+      "directors": [
+        "David Zucker"
+      ],
+      "writers": [
+        "Craig Mazin",
+        "Jim Abrahams",
+        "Pat Proft"
+      ],
+      "keywords": [
+        "haunted house",
+        "haunting",
+        "parody",
+        "alien life-form",
+        "riesen-ipod",
+        "crude humor",
+        "spoof",
+        "conflict",
+        "horror spoof",
+        "alien invasion"
+      ],
+      "companies": [
+        "Dimension Films",
+        "415 Project",
+        "Brad Grey Pictures",
+        "Miramax"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 40000000,
+      "revenue": 178710620,
+      "collection": {
+        "id": 4246,
+        "name": "Todo Mundo em Pânico: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/945zp0V1CMmgMOqy0GNEBdDjokg.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 4258,
+          "title": "Todo Mundo em Pânico 5",
+          "poster": "https://image.tmdb.org/t/p/w185/yXpzv5u2VvP8lxkG1QEkvpT4LwX.jpg",
+          "rating": 4.8
+        },
+        {
+          "id": 4256,
+          "title": "Todo Mundo em Pânico 3",
+          "poster": "https://image.tmdb.org/t/p/w185/y14q7jWS0vH8ZuWPS1v8t8qCmBO.jpg",
+          "rating": 6
+        },
+        {
+          "id": 12309,
+          "title": "A Última Festa de Solteiro",
+          "poster": "https://image.tmdb.org/t/p/w185/1Q6C5GJMcOmzP9ACfZSxjM07SJU.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 4248,
+          "title": "Todo Mundo em Pânico 2",
+          "poster": "https://image.tmdb.org/t/p/w185/549UoU38uoikbqgXG09rkkfIEWf.jpg",
+          "rating": 5.8
+        },
+        {
+          "id": 4247,
+          "title": "Todo Mundo em Pânico",
+          "poster": "https://image.tmdb.org/t/p/w185/daorfyZdHkI44vuf3DVDbmJkYQI.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 11918,
+          "title": "Super-Herói: O Filme",
+          "poster": "https://image.tmdb.org/t/p/w185/slyJHnhfs2rP6KmCwm0EbKq3hoz.jpg",
+          "rating": 5.3
+        }
+      ],
+      "streaming": [],
+      "imdb": "tt0362120",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "todo-mundo-em-panico-5-2013-87gzhd-626533",
+    "name": "Todo Mundo em Pânico 5 (2013)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/626533.mp4",
+    "category": "🎬 Coleção TODO MUNDO EM PÂNICO",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 4258,
+      "imdbId": "tt0795461",
+      "title": "Todo Mundo em Pânico 5",
+      "originalTitle": "Scary Movie 5",
+      "tagline": "Muita inatividade para anormais",
+      "overview": "O novo filme da franquia mais politicamente incorreta do cinema inclui paródias dos filmes \"Atividade Paranormal\", \"Mama\", \"A Entidade\", \"A Morte do Demônio\", \"A Origem\", \"Cisne Negro\" e outras referências da cultura pop.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2013-04-11",
+      "year": "2013",
+      "runtime": 86,
+      "rating": 4.8,
+      "voteCount": 2936,
+      "popularity": 6,
+      "certification": "14",
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/yXpzv5u2VvP8lxkG1QEkvpT4LwX.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/yXpzv5u2VvP8lxkG1QEkvpT4LwX.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/8SBufKgWp2s15UYGQSMz8uDB3eU.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/8SBufKgWp2s15UYGQSMz8uDB3eU.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/g8nwqN6SQce6X0UrAgB8bwsHXCZ.png",
+      "cast": [
+        {
+          "id": 67600,
+          "name": "Ashley French",
+          "character": "Jody Sanders",
+          "photo": "https://image.tmdb.org/t/p/w185/ot6ib67jxvKVG1JCBl0ROPGtdeP.jpg"
+        },
+        {
+          "id": 35548,
+          "name": "Simon Rex",
+          "character": "Dan Sanders",
+          "photo": "https://image.tmdb.org/t/p/w185/hpFwRpxrJt7k4ccWEwc37xRZ8pT.jpg"
+        },
+        {
+          "id": 6952,
+          "name": "Charlie Sheen",
+          "character": "Charlie Sheen",
+          "photo": "https://image.tmdb.org/t/p/w185/npEqnIw321opMKuu3lsFNKNKQdX.jpg"
+        },
+        {
+          "id": 558903,
+          "name": "Gracie Whitton",
+          "character": "Kathy",
+          "photo": "https://image.tmdb.org/t/p/w185/cEgu8iE46cGQuCujUJX9tWl69f3.jpg"
+        },
+        {
+          "id": 1508532,
+          "name": "Ava Kolker",
+          "character": "Lily",
+          "photo": "https://image.tmdb.org/t/p/w185/oufIY57mlnekLP5XN0iJQX5Wvf6.jpg"
+        },
+        {
+          "id": 58691,
+          "name": "Heather Locklear",
+          "character": "Barbara",
+          "photo": "https://image.tmdb.org/t/p/w185/rIvuZwIMRkwSVGMza7Tm2yBXD5g.jpg"
+        },
+        {
+          "id": 28640,
+          "name": "Molly Shannon",
+          "character": "Heather Darcy",
+          "photo": "https://image.tmdb.org/t/p/w185/5ZTbNpJtDRU4ZCH24nJvFRxaqAD.jpg"
+        },
+        {
+          "id": 1852993,
+          "name": "Josh Robert Thompson",
+          "character": "Narrator (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/3zee6V6TzPvgZosq3MJFWoR1DLW.jpg"
+        },
+        {
+          "id": 58954,
+          "name": "Darrell Hammond",
+          "character": "Dr. Hall",
+          "photo": "https://image.tmdb.org/t/p/w185/6yzLojcNxWcb2AYFYo2D0aXm6Ks.jpg"
+        },
+        {
+          "id": 1875893,
+          "name": "Marisa Saks",
+          "character": "Amy",
+          "photo": "https://image.tmdb.org/t/p/w185/zRSDt9v8ZXQoau1WzyeMd82DYRs.jpg"
+        },
+        {
+          "id": 19767,
+          "name": "Snoop Dogg",
+          "character": "Marcus",
+          "photo": "https://image.tmdb.org/t/p/w185/rbxBK2m6fEq0oHeMoBUMVYkJEdJ.jpg"
+        },
+        {
+          "id": 53256,
+          "name": "Terry Crews",
+          "character": "Martin Jacobs",
+          "photo": "https://image.tmdb.org/t/p/w185/pxTY4SglLo5hFcMH00MxPeC5u55.jpg"
+        },
+        {
+          "id": 80757,
+          "name": "Mike Tyson",
+          "character": "Mike Tyson",
+          "photo": "https://image.tmdb.org/t/p/w185/w0Bp2fWbL9C7KtciF56Qey8iY00.jpg"
+        },
+        {
+          "id": 2570125,
+          "name": "Dylan Morris",
+          "character": "Aidan",
+          "photo": null
+        },
+        {
+          "id": 2570126,
+          "name": "Ryan Morris",
+          "character": "Aidan",
+          "photo": null
+        }
+      ],
+      "directors": [
+        "Malcolm D. Lee"
+      ],
+      "writers": [
+        "David Zucker",
+        "Pat Proft"
+      ],
+      "keywords": [
+        "ballet dancer",
+        "parody",
+        "sequel",
+        "spoof",
+        "horror spoof",
+        "demonic possession",
+        "paranormal activity",
+        "aftercreditsstinger",
+        "duringcreditsstinger",
+        "horror parody"
+      ],
+      "companies": [
+        "Dimension Films",
+        "Brad Grey Pictures"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 20000000,
+      "revenue": 78613981,
+      "collection": {
+        "id": 4246,
+        "name": "Todo Mundo em Pânico: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/945zp0V1CMmgMOqy0GNEBdDjokg.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 4257,
+          "title": "Todo Mundo em Pânico 4",
+          "poster": "https://image.tmdb.org/t/p/w185/xcpPBUJe0Mq1V3ehrGyYNDERl97.jpg",
+          "rating": 5.5
+        },
+        {
+          "id": 4256,
+          "title": "Todo Mundo em Pânico 3",
+          "poster": "https://image.tmdb.org/t/p/w185/y14q7jWS0vH8ZuWPS1v8t8qCmBO.jpg",
+          "rating": 6
+        },
+        {
+          "id": 4248,
+          "title": "Todo Mundo em Pânico 2",
+          "poster": "https://image.tmdb.org/t/p/w185/549UoU38uoikbqgXG09rkkfIEWf.jpg",
+          "rating": 5.8
+        },
+        {
+          "id": 139038,
+          "title": "Inatividade Paranormal",
+          "poster": "https://image.tmdb.org/t/p/w185/2Qi13G9tjRtCBeT6Lsw9jY45EES.jpg",
+          "rating": 6
+        },
+        {
+          "id": 4226,
+          "title": "Histeria",
+          "poster": "https://image.tmdb.org/t/p/w185/jZfB9twwZwt9LDxxnEZvUdEtPKk.jpg",
+          "rating": 4.7
+        },
+        {
+          "id": 4247,
+          "title": "Todo Mundo em Pânico",
+          "poster": "https://image.tmdb.org/t/p/w185/daorfyZdHkI44vuf3DVDbmJkYQI.jpg",
+          "rating": 6.4
+        }
+      ],
+      "streaming": [],
+      "imdb": "tt0795461",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  }
+]

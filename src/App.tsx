@@ -15,7 +15,7 @@ const Sidebar = lazy(() => import('./components/Sidebar').then(m => ({ default: 
 const VideoPlayer = lazy(() => import('./components/VideoPlayer').then(m => ({ default: m.VideoPlayer })));
 const MoviePlayer = lazy(() => import('./components/MoviePlayer').then(m => ({ default: m.MoviePlayer })));
 const ProgramGuide = lazy(() => import('./components/ProgramGuide').then(m => ({ default: m.ProgramGuide })));
-const MovieCatalog = lazy(() => import('./components/MovieCatalog').then(m => ({ default: m.MovieCatalog })));
+const MovieCatalogV2 = lazy(() => import('./components/MovieCatalogV2').then(m => ({ default: m.MovieCatalogV2 })));
 const HomeSelector = lazy(() => import('./components/HomeSelector').then(m => ({ default: m.HomeSelector })));
 const StreamTester = lazy(() => import('./components/StreamTester').then(m => ({ default: m.StreamTester })));
 const AppDownload = lazy(() => import('./components/AppDownload').then(m => ({ default: m.AppDownload })));
@@ -303,8 +303,6 @@ function MoviesPage() {
   const navigate = useNavigate();
   const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const [seriesInfo, setSeriesInfo] = useState<import('./components/MoviePlayer').SeriesEpisodeInfo | null>(null);
-  const [currentSeriesData, setCurrentSeriesData] = useState<import('./components/MovieCatalog').GroupedSeries | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
 
   const showToast = useCallback((message: string, type: ToastState['type'] = 'info') => {
@@ -312,71 +310,51 @@ function MoviesPage() {
     setTimeout(() => setToast(null), 3000);
   }, []);
 
-  const handleSelectMovie = useCallback((selection: import('./components/MovieCatalog').MovieSelection) => {
-    setSelectedMovie(selection.movie);
-    setSeriesInfo(selection.seriesInfo || null);
-    setCurrentSeriesData(selection.seriesData || null);
-    showToast(`Assistindo: ${selection.movie.name}`, 'info');
+  const handleSelectMovie = useCallback((movie: any, episodeUrl?: string) => {
+    // Converte EnrichedMovie para Movie para o player
+    const movieForPlayer: Movie = {
+      id: movie.id,
+      name: movie.tmdb?.title || movie.name,
+      url: episodeUrl || movie.url || '',
+      logo: movie.tmdb?.poster || undefined,
+      category: movie.category,
+      type: movie.type,
+      rating: movie.tmdb?.rating
+    };
+    
+    setSelectedMovie(movieForPlayer);
+    showToast(`Assistindo: ${movieForPlayer.name}`, 'info');
   }, [showToast]);
 
   const handleBackFromMovie = useCallback(() => {
     setSelectedMovie(null);
-    setSeriesInfo(null);
-    // NÃO limpa currentSeriesData para manter o modal aberto
   }, []);
 
   const handleBackFromCatalog = useCallback(() => {
     navigate('/');
   }, [navigate]);
 
-  // Callback para próximo episódio
-  const handleNextEpisode = useCallback((episode: Movie) => {
-    if (seriesInfo && currentSeriesData) {
-      // Encontra o índice do episódio atual
-      const currentIndex = seriesInfo.episodes.findIndex(ep => ep.id === selectedMovie?.id);
-      const nextIndex = currentIndex + 1;
-      
-      // Atualiza as informações do episódio
-      const newSeriesInfo: import('./components/MoviePlayer').SeriesEpisodeInfo = {
-        ...seriesInfo,
-        currentEpisode: nextIndex + 1, // episódio é 1-based
-      };
-      
-      setSelectedMovie(episode);
-      setSeriesInfo(newSeriesInfo);
-      showToast(`Próximo: ${episode.name}`, 'info');
-    }
-  }, [seriesInfo, currentSeriesData, selectedMovie, showToast]);
-
-  // Handler para quando o modal da série muda no catálogo
-  const handleSeriesModalChange = useCallback((series: import('./components/MovieCatalog').GroupedSeries | null) => {
-    if (!selectedMovie) {
-      // Só atualiza quando não está assistindo nada
-      setCurrentSeriesData(series);
-    }
-  }, [selectedMovie]);
-
   return (
     <div className="page-container movies-page">
-      <AppHeader 
-        isAdultUnlocked={isAdultUnlocked} 
-        onUnlockAdult={unlockAdult}
-        onLockAdult={lockAdult}
-        showBackButton={!!selectedMovie}
-        onBack={handleBackFromMovie}
-        title={selectedMovie?.name}
-      />
+      {/* AppHeader só aparece quando está reproduzindo um filme */}
+      {selectedMovie && (
+        <AppHeader 
+          isAdultUnlocked={isAdultUnlocked} 
+          onUnlockAdult={unlockAdult}
+          onLockAdult={lockAdult}
+          showBackButton={true}
+          onBack={handleBackFromMovie}
+          title={selectedMovie?.name}
+        />
+      )}
       
-      {/* Catálogo sempre renderizado para manter estado */}
+      {/* Novo Catálogo V2 */}
       <Suspense fallback={<LoadingFallback />}>
         <div className={`catalog-container ${selectedMovie ? 'hidden-catalog' : ''}`}>
-          <MovieCatalog
+          <MovieCatalogV2
             onSelectMovie={handleSelectMovie}
-            activeMovieId={selectedMovie?.id || null}
             onBack={handleBackFromCatalog}
             isAdultUnlocked={isAdultUnlocked}
-            initialSeriesModal={selectedMovie ? currentSeriesData : null}
-            onSeriesModalChange={handleSeriesModalChange}
           />
         </div>
       </Suspense>
@@ -389,8 +367,6 @@ function MoviesPage() {
               <MoviePlayer 
                 movie={selectedMovie} 
                 onBack={handleBackFromMovie}
-                seriesInfo={seriesInfo}
-                onNextEpisode={handleNextEpisode}
               />
             </div>
           </Suspense>

@@ -61,6 +61,8 @@
    ======================================== */
 .movies-page {
   /* Não precisa de padding top pois o catálogo tem seu próprio header interno */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .movies-page .catalog-container {

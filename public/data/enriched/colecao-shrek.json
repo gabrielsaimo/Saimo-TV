@@ -1,0 +1,418 @@
+[
+  {
+    "id": "shrek-3-87gzhd-1111787",
+    "name": "Shrek 3",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1111787.mp4",
+    "category": "🎬 Coleção SHREK",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 810,
+      "imdbId": "tt0413267",
+      "title": "Shrek Terceiro",
+      "originalTitle": "Shrek the Third",
+      "tagline": "Ele receberá tratamento real.",
+      "overview": "O rei Harold, pai de Fiona, morre repentinamente. Com isto Shrek precisa ser coroado rei, algo que ele jamais pensou em ser. Juntamente com o Burro e o Gato de Botas, ele precisa encontrar alguém que possa substituí-lo no cargo de soberano do Reino de Tão, Tão Distante. O principal candidato é Artie, um jovem desprezado por todos em sua escola, que é primo de Fiona.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2007-05-17",
+      "year": "2007",
+      "runtime": 92,
+      "rating": 6.3,
+      "voteCount": 9567,
+      "popularity": 14,
+      "certification": "L",
+      "genres": [
+        "Fantasia",
+        "Aventura",
+        "Animação",
+        "Comédia",
+        "Família"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/jtsu9H1mZ3ecRTXAB0WhrTUiut2.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/jtsu9H1mZ3ecRTXAB0WhrTUiut2.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/wvXxKpFGXvQJRB0nvvfURhRD3C0.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/wvXxKpFGXvQJRB0nvvfURhRD3C0.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/bFncQlOjLkTBFs44nBXrtOMj3fU.png",
+      "cast": [
+        {
+          "id": 12073,
+          "name": "Mike Myers",
+          "character": "Shrek (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/gjfDl52Kk02MPgUYFjs9bOy33OY.jpg"
+        },
+        {
+          "id": 776,
+          "name": "Eddie Murphy",
+          "character": "Donkey (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/qgjMfefsKwSYsyCaIX46uyOXIpy.jpg"
+        },
+        {
+          "id": 6941,
+          "name": "Cameron Diaz",
+          "character": "Princess Fiona (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/d4f4cQ9EiYuvNMjT1IB2h06KoRx.jpg"
+        },
+        {
+          "id": 3131,
+          "name": "Antonio Banderas",
+          "character": "Puss in Boots (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/fce7zl6elUzsv7wudHFc7RgFtjD.jpg"
+        },
+        {
+          "id": 5823,
+          "name": "Julie Andrews",
+          "character": "Queen Lillian (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/kTXM2KfsXh2vSav0s9vaDKfs4lR.jpg"
+        },
+        {
+          "id": 8930,
+          "name": "John Cleese",
+          "character": "King Harold (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/dhDw43v7EY52GG3Z4H8B9mr2s9p.jpg"
+        },
+        {
+          "id": 4757,
+          "name": "Rupert Everett",
+          "character": "Prince Charming (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/7t77pzlJnSLSXTzQLUey3YAzaxQ.jpg"
+        },
+        {
+          "id": 10713,
+          "name": "Eric Idle",
+          "character": "Merlin (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/1Vj7Lvrl8OHby7AeOK1Z07JyeMp.jpg"
+        },
+        {
+          "id": 12111,
+          "name": "Justin Timberlake",
+          "character": "Prince Artie (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/6Yk5t9RwkdkAT8Qv45934Eez2CA.jpg"
+        },
+        {
+          "id": 89042,
+          "name": "Susanne Blakeslee",
+          "character": "Evil Queen (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/5s4vquKADCS90iOiEwgCTZkaQjX.jpg"
+        },
+        {
+          "id": 12095,
+          "name": "Cody Cameron",
+          "character": "Pinocchio / Three Pigs (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/gmlav8ikKPojgvQOQ8vQSQt9hoj.jpg"
+        },
+        {
+          "id": 44127,
+          "name": "Larry King",
+          "character": "Doris (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/afNrrwBSbeFLrh0dVHvlMRRyont.jpg"
+        },
+        {
+          "id": 12097,
+          "name": "Christopher Knights",
+          "character": "Blind Mice / Heckler / Evil Tree #2 / Guard #2 (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/fsdaXx2ytNx2KEW438mlFfSSzkc.jpg"
+        },
+        {
+          "id": 17697,
+          "name": "John Krasinski",
+          "character": "Lancelot (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/pmVGDb6Yl6OyFcHVGbu1EYNfyFK.jpg"
+        },
+        {
+          "id": 6972,
+          "name": "Ian McShane",
+          "character": "Captain Hook (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/qh9RTLbnr128TZLdGuXwUH9mdBM.jpg"
+        }
+      ],
+      "directors": [
+        "Chris Miller"
+      ],
+      "writers": [
+        "Jeffrey Price",
+        "Peter S. Seaman",
+        "Chris Miller"
+      ],
+      "keywords": [
+        "ship",
+        "island",
+        "ambush",
+        "kingdom",
+        "boarding school",
+        "liberation of prisoners",
+        "pregnancy",
+        "traitor",
+        "shipwreck",
+        "stage"
+      ],
+      "companies": [
+        "DreamWorks Animation",
+        "Pacific Data Images"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 160000000,
+      "revenue": 813367380,
+      "collection": {
+        "id": 2150,
+        "name": "Shrek: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/FlCOvuibrkww69JUcXLy3pOCBw.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 10192,
+          "title": "Shrek Para Sempre",
+          "poster": "https://image.tmdb.org/t/p/w185/iFXVU0ni6YWgQNSPkoGO1Tk5L3g.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 809,
+          "title": "Shrek 2",
+          "poster": "https://image.tmdb.org/t/p/w185/2yYP0PQjG8zVqturh1BAqu2Tixl.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 13394,
+          "title": "Shrek Bate o Sino",
+          "poster": "https://image.tmdb.org/t/p/w185/bkIEMVAYQHUhkxyLA9dhozDCLAt.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 48466,
+          "title": "O Susto de Shrek",
+          "poster": "https://image.tmdb.org/t/p/w185/dYXfaQgt7EEM8b83exUnSCzcNrW.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 808,
+          "title": "Shrek",
+          "poster": "https://image.tmdb.org/t/p/w185/sjVYhhH3VSJwRQUnIvzCasfziSD.jpg",
+          "rating": 7.8
+        },
+        {
+          "id": 35,
+          "title": "Os Simpsons: O Filme",
+          "poster": "https://image.tmdb.org/t/p/w185/vTutCMTUTRw8PQAxn21X8hCxVnp.jpg",
+          "rating": 7
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Amazon Prime Video",
+        "Claro video",
+        "HBO Max",
+        "Globoplay"
+      ],
+      "imdb": "tt0413267",
+      "facebook": "Shrek",
+      "instagram": "Shrek",
+      "twitter": "Shrek"
+    }
+  },
+  {
+    "id": "shrek-4-87gzhd-1111786",
+    "name": "Shrek 4",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1111786.mp4",
+    "category": "🎬 Coleção SHREK",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 10192,
+      "imdbId": "tt0892791",
+      "title": "Shrek Para Sempre",
+      "originalTitle": "Shrek Forever After",
+      "tagline": "Não é ogro... até ser ogro.",
+      "overview": "Shrek faz um pacto com Rumpelstiltskin para sentir-se como um ogro de verdade novamente, mas ele é enganado e enviado para uma versão distorcida de Tão, Tão Distante - onde Rumpelstiltskin é rei, ogros são caçados, e ele e Fiona nunca se encontraram - ele decide restaurar o seu mundo e recuperar seu verdadeiro amor.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2010-05-20",
+      "year": "2010",
+      "runtime": 93,
+      "rating": 6.4,
+      "voteCount": 7779,
+      "popularity": 10,
+      "certification": "L",
+      "genres": [
+        "Comédia",
+        "Aventura",
+        "Fantasia",
+        "Animação",
+        "Família"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/iFXVU0ni6YWgQNSPkoGO1Tk5L3g.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/iFXVU0ni6YWgQNSPkoGO1Tk5L3g.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/uzzTystB8lL0mRDII5Sfs5HxgkI.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/uzzTystB8lL0mRDII5Sfs5HxgkI.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/qMAeXPi7Rh5gsnH4yuODAa7M795.png",
+      "cast": [
+        {
+          "id": 12073,
+          "name": "Mike Myers",
+          "character": "Shrek (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/gjfDl52Kk02MPgUYFjs9bOy33OY.jpg"
+        },
+        {
+          "id": 776,
+          "name": "Eddie Murphy",
+          "character": "Donkey (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/qgjMfefsKwSYsyCaIX46uyOXIpy.jpg"
+        },
+        {
+          "id": 6941,
+          "name": "Cameron Diaz",
+          "character": "Princess Fiona (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/d4f4cQ9EiYuvNMjT1IB2h06KoRx.jpg"
+        },
+        {
+          "id": 3131,
+          "name": "Antonio Banderas",
+          "character": "Puss in Boots (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/fce7zl6elUzsv7wudHFc7RgFtjD.jpg"
+        },
+        {
+          "id": 118489,
+          "name": "Walt Dohrn",
+          "character": "Rumpelstiltskin / Priest / Krekraw Ogre (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/tGWQRNz8T5VNPZgNU2LafpNt2Jn.jpg"
+        },
+        {
+          "id": 5823,
+          "name": "Julie Andrews",
+          "character": "Queen Lillian (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/kTXM2KfsXh2vSav0s9vaDKfs4lR.jpg"
+        },
+        {
+          "id": 8930,
+          "name": "John Cleese",
+          "character": "King Harold (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/dhDw43v7EY52GG3Z4H8B9mr2s9p.jpg"
+        },
+        {
+          "id": 65717,
+          "name": "Jon Hamm",
+          "character": "Brogan (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/mrXE5fZbEDPc7BEE5G21J6qrwzi.jpg"
+        },
+        {
+          "id": 43775,
+          "name": "Jane Lynch",
+          "character": "Gretched (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/nye6D17ZfCHQzr9faYZYyz1CPsZ.jpg"
+        },
+        {
+          "id": 64342,
+          "name": "Craig Robinson",
+          "character": "Cookie (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/mTyTrOWUSOBJMOlDpnd4OYx7FlJ.jpg"
+        },
+        {
+          "id": 25703,
+          "name": "Lake Bell",
+          "character": "Patrol Witch / Wagon Witch #2 (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/sITVdq39jtR1l3VohWYDyxorx1v.jpg"
+        },
+        {
+          "id": 3138,
+          "name": "Kathy Griffin",
+          "character": "Dancing Witch / Wagon Witch #1 (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/yGWgGBhJgE1tnggQ8X319OQMPGv.jpg"
+        },
+        {
+          "id": 5960,
+          "name": "Mary Kay Place",
+          "character": "Guard Witch (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/7DOLMcJRkU44c9K2DZZQqxjLtmo.jpg"
+        },
+        {
+          "id": 109869,
+          "name": "Kristen Schaal",
+          "character": "Pumpkin Witch / Palace Witch (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/s3LSHVTx8gxHP2twYsXEGa8JbLl.jpg"
+        },
+        {
+          "id": 118490,
+          "name": "Meredith Vieira",
+          "character": "Broomsy Witch (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/9n7XtZ8Ek57Ix33bNwRxD8h1OE6.jpg"
+        }
+      ],
+      "directors": [
+        "Mike Mitchell"
+      ],
+      "writers": [
+        "Josh Klausner",
+        "Darren Lemke"
+      ],
+      "keywords": [
+        "witch",
+        "villain",
+        "sequel",
+        "ogre"
+      ],
+      "companies": [
+        "DreamWorks Animation"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": 165000000,
+      "revenue": 752600867,
+      "collection": {
+        "id": 2150,
+        "name": "Shrek: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/FlCOvuibrkww69JUcXLy3pOCBw.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 810,
+          "title": "Shrek Terceiro",
+          "poster": "https://image.tmdb.org/t/p/w185/jtsu9H1mZ3ecRTXAB0WhrTUiut2.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 13394,
+          "title": "Shrek Bate o Sino",
+          "poster": "https://image.tmdb.org/t/p/w185/bkIEMVAYQHUhkxyLA9dhozDCLAt.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 809,
+          "title": "Shrek 2",
+          "poster": "https://image.tmdb.org/t/p/w185/2yYP0PQjG8zVqturh1BAqu2Tixl.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 48466,
+          "title": "O Susto de Shrek",
+          "poster": "https://image.tmdb.org/t/p/w185/dYXfaQgt7EEM8b83exUnSCzcNrW.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 421892,
+          "title": "Shrek 5",
+          "poster": "https://image.tmdb.org/t/p/w185/aRntI6gNBMu4B6YozI7rxXRPyQo.jpg",
+          "rating": 0
+        },
+        {
+          "id": 8355,
+          "title": "A Era do Gelo 3",
+          "poster": "https://image.tmdb.org/t/p/w185/pffgkuNovOveWiKSKCOsCogWBPQ.jpg",
+          "rating": 6.8
+        }
+      ],
+      "streaming": [
+        "Netflix",
+        "Amazon Prime Video",
+        "Claro video",
+        "HBO Max",
+        "Claro tv+"
+      ],
+      "imdb": "tt0892791",
+      "facebook": "Shrek",
+      "instagram": "Shrek",
+      "twitter": "Shrek"
+    }
+  }
+]

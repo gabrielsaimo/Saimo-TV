@@ -1,0 +1,424 @@
+[
+  {
+    "id": "o-senhor-dos-aneis-a-sociedade-do-anel-2001-87gzhd-1118669",
+    "name": "O Senhor dos Anéis: A Sociedade do Anel (2001)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1118669.mp4",
+    "category": "🎬 Coleção O SENHOR DOS ANÉIS",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 120,
+      "imdbId": "tt0120737",
+      "title": "O Senhor dos Anéis: A Sociedade do Anel",
+      "originalTitle": "The Lord of the Rings: The Fellowship of the Ring",
+      "tagline": "A Terra-Média ganha vida.",
+      "overview": "O hobbit Frodo herda a missão de salvar a Terra-Média do perverso Sauron. Ele precisa conduzir o Um Anel até a Montanha da Perdição e destruí-lo para sempre e, para isso, conta com a aliança de oito bravos companheiros.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2001-12-18",
+      "year": "2001",
+      "runtime": 179,
+      "rating": 8.4,
+      "voteCount": 26828,
+      "popularity": 29,
+      "certification": "12",
+      "genres": [
+        "Aventura",
+        "Fantasia",
+        "Ação"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/tlvsNCwWEIgwAM23aNzTmMIcPEZ.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/tlvsNCwWEIgwAM23aNzTmMIcPEZ.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/a0lfia8tk8ifkrve0Tn8wkISUvs.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/a0lfia8tk8ifkrve0Tn8wkISUvs.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/9d3QoKCi45Du2Xr9051FqocHIeh.png",
+      "cast": [
+        {
+          "id": 109,
+          "name": "Elijah Wood",
+          "character": "Frodo",
+          "photo": "https://image.tmdb.org/t/p/w185/7UKRbJBNG7mxBl2QQc5XsAh6F8B.jpg"
+        },
+        {
+          "id": 1327,
+          "name": "Ian McKellen",
+          "character": "Gandalf",
+          "photo": "https://image.tmdb.org/t/p/w185/coWjgMEYJjk2OrNddlXCBm8EIr3.jpg"
+        },
+        {
+          "id": 110,
+          "name": "Viggo Mortensen",
+          "character": "Aragorn",
+          "photo": "https://image.tmdb.org/t/p/w185/vH5gVSpHAMhDaFWfh0Q7BG61O1y.jpg"
+        },
+        {
+          "id": 1328,
+          "name": "Sean Astin",
+          "character": "Sam",
+          "photo": "https://image.tmdb.org/t/p/w185/As3ctGUtBYmG4zj4Ifyrcqd71HP.jpg"
+        },
+        {
+          "id": 65,
+          "name": "Ian Holm",
+          "character": "Bilbo",
+          "photo": "https://image.tmdb.org/t/p/w185/cOJDgvgj4nMec6Inzj1H5nugTO5.jpg"
+        },
+        {
+          "id": 882,
+          "name": "Liv Tyler",
+          "character": "Arwen",
+          "photo": "https://image.tmdb.org/t/p/w185/eQnuADVICaY40nl2ZseYvfkGQCc.jpg"
+        },
+        {
+          "id": 113,
+          "name": "Christopher Lee",
+          "character": "Saruman",
+          "photo": "https://image.tmdb.org/t/p/w185/dA26fBr3t7mKqjn3OYW6kbD1LXM.jpg"
+        },
+        {
+          "id": 48,
+          "name": "Sean Bean",
+          "character": "Boromir",
+          "photo": "https://image.tmdb.org/t/p/w185/kTjiABk3TJ3yI0Cto5RsvyT6V3o.jpg"
+        },
+        {
+          "id": 1329,
+          "name": "Billy Boyd",
+          "character": "Pippin",
+          "photo": "https://image.tmdb.org/t/p/w185/uiWlsIOakNnUgda21PJF9wswzEJ.jpg"
+        },
+        {
+          "id": 1330,
+          "name": "Dominic Monaghan",
+          "character": "Merry",
+          "photo": "https://image.tmdb.org/t/p/w185/h3VEhi6cMaEdmmvoH3keWTv4vEb.jpg"
+        },
+        {
+          "id": 655,
+          "name": "John Rhys-Davies",
+          "character": "Gimli",
+          "photo": "https://image.tmdb.org/t/p/w185/qpXl1YnqQsUKYEDm3BB2zK5wbhe.jpg"
+        },
+        {
+          "id": 114,
+          "name": "Orlando Bloom",
+          "character": "Legolas",
+          "photo": "https://image.tmdb.org/t/p/w185/lwQoA0qJTCZ6l2FH6PjmhRQjiaB.jpg"
+        },
+        {
+          "id": 112,
+          "name": "Cate Blanchett",
+          "character": "Galadriel",
+          "photo": "https://image.tmdb.org/t/p/w185/vq4vuAVhYngfzVNn8SbnG0JEy15.jpg"
+        },
+        {
+          "id": 1331,
+          "name": "Hugo Weaving",
+          "character": "Elrond",
+          "photo": "https://image.tmdb.org/t/p/w185/t4ScpYIHlXVD41scEyiGdQDYflX.jpg"
+        },
+        {
+          "id": 1333,
+          "name": "Andy Serkis",
+          "character": "Gollum",
+          "photo": "https://image.tmdb.org/t/p/w185/eNGqhebQ4cDssjVeNFrKtUvweV5.jpg"
+        }
+      ],
+      "directors": [
+        "Peter Jackson"
+      ],
+      "writers": [
+        "Peter Jackson",
+        "Fran Walsh",
+        "Philippa Boyens"
+      ],
+      "keywords": [
+        "based on novel or book",
+        "elves",
+        "dwarf",
+        "magic",
+        "obsession",
+        "bravery",
+        "fireworks",
+        "mine",
+        "maze",
+        "mountain"
+      ],
+      "companies": [
+        "New Line Cinema",
+        "WingNut Films",
+        "The Saul Zaentz Company"
+      ],
+      "countries": [
+        "NZ",
+        "US"
+      ],
+      "budget": 93000000,
+      "revenue": 871368364,
+      "collection": {
+        "id": 119,
+        "name": "O Senhor dos Anéis: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/9x5456lykdCQTbwN6cVoU3gQsZp.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 121,
+          "title": "O Senhor dos Anéis: As Duas Torres",
+          "poster": "https://image.tmdb.org/t/p/w185/mCs8vxvScCqVM3YFMQIdbrdFEhu.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 122,
+          "title": "O Senhor dos Anéis: O Retorno do Rei",
+          "poster": "https://image.tmdb.org/t/p/w185/rU4oIKv5I4C59DpcXKmT7kNwGI0.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 27205,
+          "title": "A Origem",
+          "poster": "https://image.tmdb.org/t/p/w185/9e3Dz7aCANy5aRUQF745IlNloJ1.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 10195,
+          "title": "Thor",
+          "poster": "https://image.tmdb.org/t/p/w185/aEV9QmgBqjRTdjsvdCgdK89tavQ.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 68734,
+          "title": "Argo",
+          "poster": "https://image.tmdb.org/t/p/w185/dZqmn3vr80UeSSj4QbVEUI8D7yb.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 603,
+          "title": "Matrix",
+          "poster": "https://image.tmdb.org/t/p/w185/lDqMDI3xpbB9UQRyeXfei0MXhqb.jpg",
+          "rating": 8.2
+        }
+      ],
+      "streaming": [
+        "Amazon Prime Video",
+        "HBO Max",
+        "HBO Max Amazon Channel",
+        "Amazon Prime Video with Ads"
+      ],
+      "imdb": "tt0120737",
+      "facebook": "",
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "o-senhor-dos-aneis-as-duas-torres-2002-87gzhd-1118670",
+    "name": "O Senhor dos Anéis: As Duas Torres (2002)",
+    "url": "http://govfederal.org:80/movie/t1214c/87gzhd/1118670.mp4",
+    "category": "🎬 Coleção O SENHOR DOS ANÉIS",
+    "type": "movie",
+    "isAdult": false,
+    "tmdb": {
+      "id": 121,
+      "imdbId": "tt0167261",
+      "title": "O Senhor dos Anéis: As Duas Torres",
+      "originalTitle": "The Lord of the Rings: The Two Towers",
+      "tagline": "A Sociedade está quebrada. O poder das trevas cresce.",
+      "overview": "Após a captura de Merry e Pippy pelos orcs, a Sociedade do Anel é dissolvida. Frodo e Sam seguem sua jornada rumo à Montanha da Perdição para destruir o anel e descobrem que estão sendo perseguidos pelo misterioso Gollum. Enquanto isso, Aragorn, o elfo e arqueiro Legolas e o anão Gimli partem para resgatar os hobbits sequestrados e chegam ao reino de Rohan, onde o rei Theoden foi vítima de uma maldição mortal de Saruman.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2002-12-18",
+      "year": "2002",
+      "runtime": 180,
+      "rating": 8.4,
+      "voteCount": 23283,
+      "popularity": 21,
+      "certification": "12",
+      "genres": [
+        "Aventura",
+        "Fantasia",
+        "Ação"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/mCs8vxvScCqVM3YFMQIdbrdFEhu.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/mCs8vxvScCqVM3YFMQIdbrdFEhu.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/kWYfW2Re0rUDE6IHhy4CRuKWeFr.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/kWYfW2Re0rUDE6IHhy4CRuKWeFr.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/wSGtFMwtwbgVbMB7JY3P1sLkzH7.png",
+      "cast": [
+        {
+          "id": 109,
+          "name": "Elijah Wood",
+          "character": "Frodo",
+          "photo": "https://image.tmdb.org/t/p/w185/7UKRbJBNG7mxBl2QQc5XsAh6F8B.jpg"
+        },
+        {
+          "id": 1327,
+          "name": "Ian McKellen",
+          "character": "Gandalf",
+          "photo": "https://image.tmdb.org/t/p/w185/coWjgMEYJjk2OrNddlXCBm8EIr3.jpg"
+        },
+        {
+          "id": 110,
+          "name": "Viggo Mortensen",
+          "character": "Aragorn",
+          "photo": "https://image.tmdb.org/t/p/w185/vH5gVSpHAMhDaFWfh0Q7BG61O1y.jpg"
+        },
+        {
+          "id": 1328,
+          "name": "Sean Astin",
+          "character": "Sam",
+          "photo": "https://image.tmdb.org/t/p/w185/As3ctGUtBYmG4zj4Ifyrcqd71HP.jpg"
+        },
+        {
+          "id": 1333,
+          "name": "Andy Serkis",
+          "character": "Gollum",
+          "photo": "https://image.tmdb.org/t/p/w185/eNGqhebQ4cDssjVeNFrKtUvweV5.jpg"
+        },
+        {
+          "id": 655,
+          "name": "John Rhys-Davies",
+          "character": "Gimli / Treebeard (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/qpXl1YnqQsUKYEDm3BB2zK5wbhe.jpg"
+        },
+        {
+          "id": 114,
+          "name": "Orlando Bloom",
+          "character": "Legolas",
+          "photo": "https://image.tmdb.org/t/p/w185/lwQoA0qJTCZ6l2FH6PjmhRQjiaB.jpg"
+        },
+        {
+          "id": 1369,
+          "name": "Bernard Hill",
+          "character": "Théoden",
+          "photo": "https://image.tmdb.org/t/p/w185/5i8bj2nsTrFU2ddSynleOjapxor.jpg"
+        },
+        {
+          "id": 502,
+          "name": "Miranda Otto",
+          "character": "Éowyn",
+          "photo": "https://image.tmdb.org/t/p/w185/lVkzCNNGwesZjOmwrDjro6ZPar.jpg"
+        },
+        {
+          "id": 1330,
+          "name": "Dominic Monaghan",
+          "character": "Merry",
+          "photo": "https://image.tmdb.org/t/p/w185/h3VEhi6cMaEdmmvoH3keWTv4vEb.jpg"
+        },
+        {
+          "id": 1329,
+          "name": "Billy Boyd",
+          "character": "Pippin",
+          "photo": "https://image.tmdb.org/t/p/w185/uiWlsIOakNnUgda21PJF9wswzEJ.jpg"
+        },
+        {
+          "id": 113,
+          "name": "Christopher Lee",
+          "character": "Saruman",
+          "photo": "https://image.tmdb.org/t/p/w185/dA26fBr3t7mKqjn3OYW6kbD1LXM.jpg"
+        },
+        {
+          "id": 112,
+          "name": "Cate Blanchett",
+          "character": "Galadriel",
+          "photo": "https://image.tmdb.org/t/p/w185/vq4vuAVhYngfzVNn8SbnG0JEy15.jpg"
+        },
+        {
+          "id": 882,
+          "name": "Liv Tyler",
+          "character": "Arwen",
+          "photo": "https://image.tmdb.org/t/p/w185/eQnuADVICaY40nl2ZseYvfkGQCc.jpg"
+        },
+        {
+          "id": 1331,
+          "name": "Hugo Weaving",
+          "character": "Elrond",
+          "photo": "https://image.tmdb.org/t/p/w185/t4ScpYIHlXVD41scEyiGdQDYflX.jpg"
+        }
+      ],
+      "directors": [
+        "Peter Jackson"
+      ],
+      "writers": [
+        "Stephen Sinclair",
+        "Philippa Boyens",
+        "Peter Jackson"
+      ],
+      "keywords": [
+        "mission",
+        "army",
+        "based on novel or book",
+        "elves",
+        "dwarf",
+        "magic",
+        "obsession",
+        "bravery",
+        "castle",
+        "reincarnation"
+      ],
+      "companies": [
+        "New Line Cinema",
+        "WingNut Films",
+        "The Saul Zaentz Company"
+      ],
+      "countries": [
+        "NZ",
+        "US"
+      ],
+      "budget": 79000000,
+      "revenue": 926287400,
+      "collection": {
+        "id": 119,
+        "name": "O Senhor dos Anéis: Coleção",
+        "poster": "https://image.tmdb.org/t/p/w185/9x5456lykdCQTbwN6cVoU3gQsZp.jpg"
+      },
+      "recommendations": [
+        {
+          "id": 122,
+          "title": "O Senhor dos Anéis: O Retorno do Rei",
+          "poster": "https://image.tmdb.org/t/p/w185/rU4oIKv5I4C59DpcXKmT7kNwGI0.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 120,
+          "title": "O Senhor dos Anéis: A Sociedade do Anel",
+          "poster": "https://image.tmdb.org/t/p/w185/tlvsNCwWEIgwAM23aNzTmMIcPEZ.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 672,
+          "title": "Harry Potter e a Câmara Secreta",
+          "poster": "https://image.tmdb.org/t/p/w185/811j0Jf2D0mK1U6RxXJoZgOB29n.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 49051,
+          "title": "O Hobbit: Uma Jornada Inesperada",
+          "poster": "https://image.tmdb.org/t/p/w185/lZtmn2pLw1kgDYj4Ig4s3DYBQCD.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 807,
+          "title": "Seven - Os Sete Crimes Capitais",
+          "poster": "https://image.tmdb.org/t/p/w185/dZXYPSEaXCeigR2GEuZoukNmLTf.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 1891,
+          "title": "Guerra nas Estrelas: O Império Contra-Ataca",
+          "poster": "https://image.tmdb.org/t/p/w185/dLGT8b4Ut10z44uYLaip4QiwKta.jpg",
+          "rating": 8.4
+        }
+      ],
+      "streaming": [
+        "Amazon Prime Video",
+        "HBO Max",
+        "HBO Max Amazon Channel",
+        "Amazon Prime Video with Ads"
+      ],
+      "imdb": "tt0167261",
+      "facebook": "",
+      "instagram": null,
+      "twitter": null
+    }
+  }
+]

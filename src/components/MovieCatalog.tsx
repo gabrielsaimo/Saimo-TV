@@ -1076,9 +1076,11 @@ const SeriesModal = memo(function SeriesModal({
 // =============== HERO BANNER ===============
 const HeroBanner = memo(function HeroBanner({
   movie,
+  movies,
   onSelect
 }: {
-  movie: Movie;
+  movie: Movie | Movie[];
+  movies?: Movie[];
   onSelect: (movie: Movie) => void;
 }) {
   // Estado para carrossel de múltiplos filmes
@@ -1087,8 +1089,20 @@ const HeroBanner = memo(function HeroBanner({
   const [isPaused, setIsPaused] = useState(false);
   const [movieDetails, setMovieDetails] = useState<Map<string, MovieDetails>>(new Map());
 
-  // Carrega filmes de destaque de várias categorias
+  // Inicializa com filmes fornecidos ou carrega de categorias
   useEffect(() => {
+    // Se recebeu array de filmes via props, usa eles
+    if (Array.isArray(movie) && movie.length > 0) {
+      setFeaturedMovies(movie);
+      return;
+    }
+    
+    if (movies && movies.length > 0) {
+      setFeaturedMovies(movies);
+      return;
+    }
+
+    // Senão, carrega filmes de destaque de várias categorias
     const loadFeatured = async () => {
       const categories = ['🎬 Lançamentos', '📺 Netflix', '📺 Prime Video', '📺 Disney+', '📺 Max'];
       const allMovies: Movie[] = [];
@@ -1096,24 +1110,24 @@ const HeroBanner = memo(function HeroBanner({
       for (const cat of categories) {
         try {
           const data = await loadCategory(cat);
-          const movies = data.filter(m => m.type === 'movie').slice(0, 2);
-          allMovies.push(...movies);
+          const moviesFiltered = data.filter(m => m.type === 'movie').slice(0, 2);
+          allMovies.push(...moviesFiltered);
         } catch (e) {
           console.log('Erro ao carregar categoria:', cat);
         }
       }
       
-      // Pega 5 filmes aleatórios
-      const shuffled = allMovies.sort(() => Math.random() - 0.5).slice(0, 5);
+      // Pega 6 filmes aleatórios
+      const shuffled = allMovies.sort(() => Math.random() - 0.5).slice(0, 6);
       if (shuffled.length > 0) {
         setFeaturedMovies(shuffled);
       } else {
-        setFeaturedMovies([movie]);
+        setFeaturedMovies([Array.isArray(movie) ? movie[0] : movie]);
       }
     };
     
     loadFeatured();
-  }, [movie]);
+  }, [movie, movies]);
 
   // Carrega detalhes TMDB para cada filme
   useEffect(() => {
@@ -1142,8 +1156,8 @@ const HeroBanner = memo(function HeroBanner({
     return () => clearInterval(interval);
   }, [featuredMovies.length, isPaused]);
 
-  const currentMovie = featuredMovies[currentIndex] || movie;
-  const details = movieDetails.get(currentMovie.id);
+  const currentMovie = featuredMovies[currentIndex] || (Array.isArray(movie) ? movie[0] : movie);
+  const details = currentMovie ? movieDetails.get(currentMovie.id) : undefined;
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -1830,13 +1844,24 @@ export function MovieCatalog({
         }
       };
       
-      // Função auxiliar para filtrar por query
+      // Função auxiliar para filtrar por query - MELHORADA para busca mais flexível
       const filterByQuery = (movies: MovieWithAdult[], query: string) => {
+        // Separa a query em palavras para busca mais flexível
+        const queryWords = query.split(/\s+/).filter(w => w.length > 0);
+        
         return movies.filter(m => {
           const name = m.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
           const info = parseSeriesInfo(m.name);
           const baseName = info ? info.baseName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
-          return name.includes(query) || baseName.includes(query);
+          
+          // Verifica se o nome contém a query completa
+          if (name.includes(query) || baseName.includes(query)) {
+            return true;
+          }
+          
+          // Verifica se todas as palavras da query estão no nome
+          const searchText = name + ' ' + baseName;
+          return queryWords.every(word => searchText.includes(word));
         });
       };
       
@@ -1863,7 +1888,7 @@ export function MovieCatalog({
           });
         }
       } else if (debouncedSearch.trim()) {
-        // Busca global - carrega categorias progressivamente
+        // Busca global - estratégia inteligente: carrega categorias até encontrar resultados
         const query = debouncedSearch.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         
         // Primeiro busca nos dados iniciais
@@ -1876,36 +1901,62 @@ export function MovieCatalog({
           addWithoutDuplicates(filtered);
         });
         
-        // Aplica filtro de tipo ANTES de decidir se carrega mais
-        const filteredByType = filterByType(moviesToSearch);
+        // Busca em TODAS as categorias para garantir resultados completos
+        // Usa categoryIndex completo (não filtrado) para busca global
+        const allCategories = isAdultUnlocked ? categoryIndex : categoryIndex.filter(c => !c.isAdult);
+        const categoriesToLoad = allCategories
+          .filter(cat => !loadedCategoryData.has(cat.name));
         
-        // Se não achou resultados SUFICIENTES DO TIPO DESEJADO, carrega mais categorias
-        // Usa filteredCategoryIndex para carregar categorias do tipo correto primeiro
-        if (filteredByType.length < 50) {
-          // Prioriza categorias que têm o tipo de conteúdo desejado
-          const categoriesToLoad = filteredCategoryIndex
-            .filter(cat => !loadedCategoryData.has(cat.name))
-            .slice(0, 50); // Aumenta para 50 categorias
+        // Carrega categorias em paralelo (em grupos de 12 para melhor performance)
+        const chunkSize = 12;
+        const maxChunks = Math.ceil(categoriesToLoad.length / chunkSize);
+        
+        for (let i = 0; i < maxChunks; i++) {
+          const chunk = categoriesToLoad.slice(i * chunkSize, (i + 1) * chunkSize);
           
-          for (const cat of categoriesToLoad) {
-            try {
-              const movies = await loadCategory(cat.name);
-              setLoadedCategoryData(prev => {
-                const newMap = new Map(prev);
-                newMap.set(cat.name, movies);
-                return newMap;
-              });
-              
+          try {
+            const chunkResults = await Promise.all(
+              chunk.map(async (cat) => {
+                try {
+                  const movies = await loadCategory(cat.name);
+                  return { catName: cat.name, movies };
+                } catch (e) {
+                  console.log(`Erro ao carregar categoria ${cat.name}:`, e);
+                  return { catName: cat.name, movies: [] };
+                }
+              })
+            );
+            
+            // Atualiza o cache
+            setLoadedCategoryData(prev => {
+              const newMap = new Map(prev);
+              for (const { catName, movies } of chunkResults) {
+                if (movies.length > 0) {
+                  newMap.set(catName, movies);
+                }
+              }
+              return newMap;
+            });
+            
+            // Filtra e adiciona resultados
+            for (const { movies } of chunkResults) {
               const filtered = filterByQuery(movies, query);
               addWithoutDuplicates(filtered);
-              
-              // Verifica se já tem resultados suficientes DO TIPO DESEJADO
-              const currentFilteredByType = filterByType(moviesToSearch);
-              if (currentFilteredByType.length >= 100) break;
-            } catch (e) {
-              // Ignora erros de carregamento de categoria
-              console.log(`Erro ao carregar categoria ${cat.name}:`, e);
             }
+            
+            // Verifica se já tem resultados suficientes (filtrando por tipo)
+            const currentFilteredByType = filterByType(moviesToSearch);
+            
+            // Para quando tiver pelo menos 100 resultados OU tiver buscado 50% das categorias
+            if (currentFilteredByType.length >= 100 || i >= Math.ceil(maxChunks * 0.5)) {
+              // Se ainda não tem resultados, continua buscando
+              if (currentFilteredByType.length === 0 && i < maxChunks - 1) {
+                continue;
+              }
+              break;
+            }
+          } catch (e) {
+            console.log('Erro ao carregar chunk de categorias:', e);
           }
         }
       }
@@ -1925,19 +1976,22 @@ export function MovieCatalog({
     };
 
     performSearch();
-  }, [debouncedSearch, selectedCategory, contentFilter, filteredCategoryIndex, availableInitialMovies, loadedCategoryData]);
+  }, [debouncedSearch, selectedCategory, contentFilter, isAdultUnlocked, availableInitialMovies, loadedCategoryData]);
 
-  // Filme em destaque
+  // Filmes em destaque - retorna array de 6 filmes para o banner hero
   const featuredContent = useMemo(() => {
     const featured = availableInitialMovies.filter(m => 
       m.category.toLowerCase().includes('lançamento') || 
       m.category.toLowerCase().includes('lancamento') ||
       m.category.toLowerCase().includes('cinema') ||
-      m.category.toLowerCase().includes('netflix')
-    ).slice(0, 10);
-    return featured.length > 0 
-      ? featured[Math.floor(Math.random() * featured.length)] 
-      : availableInitialMovies[0];
+      m.category.toLowerCase().includes('4k') ||
+      m.category.toLowerCase().includes('netflix') ||
+      m.category.toLowerCase().includes('disney')
+    );
+    
+    // Embaralha e pega 6 filmes aleatórios
+    const shuffled = [...featured].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 6);
   }, [availableInitialMovies]);
 
   // Load more categories on scroll
