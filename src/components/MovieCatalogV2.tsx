@@ -1319,7 +1319,7 @@ const CategoryGrid = memo(function CategoryGrid({
 // COMPONENTE PRINCIPAL
 // ============================================================
 
-export function MovieCatalogV2({ onSelectMovie, onBack }: MovieCatalogV2Props) {
+export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false }: MovieCatalogV2Props) {
   // Estados
   const [isInitialized, setIsInitialized] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
