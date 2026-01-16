@@ -64,6 +64,7 @@ export interface EnrichedTMDBData {
   budget?: number;
   revenue?: number;
   recommendations: EnrichedRecommendation[];
+  streaming?: string[];
 }
 
 export interface EnrichedMovie {
@@ -102,6 +103,7 @@ export interface FilterOptions {
   years: string[];
   ratings: string[];
   certifications: string[];
+  streaming: string[];
   type: 'all' | 'movie' | 'series';
   sortBy: 'name' | 'rating' | 'year' | 'popularity';
   sortOrder: 'asc' | 'desc';

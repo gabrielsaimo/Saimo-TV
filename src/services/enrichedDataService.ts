@@ -21,6 +21,7 @@ const actorIndex = new Map<number, { name: string; photo: string | null; items: 
 const genreSet = new Set<string>();
 const yearSet = new Set<string>();
 const certificationSet = new Set<string>();
+const streamingSet = new Set<string>();
 const keywordIndex = new Map<string, Set<string>>();
 
 // Flag de inicialização
@@ -178,6 +179,9 @@ function indexData(movies: EnrichedMovie[]): void {
       certificationSet.add(movie.tmdb.certification);
     }
     
+    // Indexa streaming/plataformas
+    movie.tmdb.streaming?.forEach(s => streamingSet.add(s));
+    
     // Indexa keywords
     movie.tmdb.keywords?.forEach(kw => {
       const kwLower = kw.toLowerCase();
@@ -275,6 +279,28 @@ export function getAvailableCertifications(): string[] {
   return Array.from(certificationSet).sort((a, b) => {
     const aIdx = order.indexOf(a);
     const bIdx = order.indexOf(b);
+    if (aIdx === -1 && bIdx === -1) return a.localeCompare(b);
+    if (aIdx === -1) return 1;
+    if (bIdx === -1) return -1;
+    return aIdx - bIdx;
+  });
+}
+
+/**
+ * Obtém todas as plataformas de streaming disponíveis
+ */
+export function getAvailableStreaming(): string[] {
+  // Ordenação preferencial para streaming populares primeiro
+  const priority = [
+    'Netflix', 'Prime Video', 'Amazon Prime Video', 'Disney Plus', 'Disney+',
+    'Max', 'HBO Max', 'Globoplay', 'Apple TV Plus', 'Apple TV+', 
+    'Paramount Plus', 'Paramount+', 'Star Plus', 'Star+', 
+    'Crunchyroll', 'Telecine', 'NOW', 'Claro video'
+  ];
+  
+  return Array.from(streamingSet).sort((a, b) => {
+    const aIdx = priority.findIndex(p => a.toLowerCase().includes(p.toLowerCase()));
+    const bIdx = priority.findIndex(p => b.toLowerCase().includes(p.toLowerCase()));
     if (aIdx === -1 && bIdx === -1) return a.localeCompare(b);
     if (aIdx === -1) return 1;
     if (bIdx === -1) return -1;
@@ -391,6 +417,13 @@ export function filterContent(
       }
     }
     
+    // Filtro por streaming/plataforma
+    if (filters.streaming?.length) {
+      if (!movie.tmdb?.streaming?.some(s => filters.streaming!.includes(s))) {
+        return false;
+      }
+    }
+    
     return true;
   });
   
@@ -471,6 +504,13 @@ export function filterAllContent(filters: Partial<FilterOptions>): EnrichedMovie
       if (filters.ratings?.length) {
         const minRating = Math.min(...filters.ratings.map(r => parseFloat(r)));
         if ((movie.tmdb?.rating || 0) < minRating) {
+          continue;
+        }
+      }
+      
+      // Filtro por streaming/plataforma
+      if (filters.streaming?.length) {
+        if (!movie.tmdb?.streaming?.some(s => filters.streaming!.includes(s))) {
           continue;
         }
       }

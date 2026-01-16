@@ -23,6 +23,7 @@ import {
   getAvailableGenres,
   getAvailableYears,
   getAvailableCertifications,
+  getAvailableStreaming,
   searchContent,
   filterContent,
   filterAllContent,
@@ -287,6 +288,7 @@ const AdvancedFilters = memo(function AdvancedFilters({
   availableGenres,
   availableYears,
   availableCertifications,
+  availableStreaming,
   onClear
 }: {
   filters: Partial<FilterOptions>;
@@ -294,6 +296,7 @@ const AdvancedFilters = memo(function AdvancedFilters({
   availableGenres: string[];
   availableYears: string[];
   availableCertifications: string[];
+  availableStreaming: string[];
   onClear: () => void;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -302,6 +305,7 @@ const AdvancedFilters = memo(function AdvancedFilters({
     filters.genres?.length || 
     filters.years?.length || 
     filters.certifications?.length ||
+    filters.streaming?.length ||
     filters.type !== 'all' ||
     filters.sortBy !== 'popularity'
   );
@@ -330,6 +334,32 @@ const AdvancedFilters = memo(function AdvancedFilters({
     onChange({ ...filters, certifications: updated });
   };
 
+  const toggleStreaming = (streaming: string) => {
+    const current = filters.streaming || [];
+    const updated = current.includes(streaming)
+      ? current.filter(s => s !== streaming)
+      : [...current, streaming];
+    onChange({ ...filters, streaming: updated });
+  };
+
+  // Função para obter o ícone do streaming
+  const getStreamingIcon = (name: string): string => {
+    const nameLower = name.toLowerCase();
+    if (nameLower.includes('netflix')) return '🔴';
+    if (nameLower.includes('prime') || nameLower.includes('amazon')) return '📦';
+    if (nameLower.includes('disney')) return '🏰';
+    if (nameLower.includes('max') || nameLower.includes('hbo')) return '💜';
+    if (nameLower.includes('globoplay')) return '🟢';
+    if (nameLower.includes('apple')) return '🍎';
+    if (nameLower.includes('paramount')) return '⛰️';
+    if (nameLower.includes('star+') || nameLower.includes('star plus')) return '⭐';
+    if (nameLower.includes('crunchyroll')) return '🍥';
+    if (nameLower.includes('telecine')) return '🎬';
+    if (nameLower.includes('claro')) return '📺';
+    if (nameLower.includes('now')) return '▶️';
+    return '📡';
+  };
+
   return (
     <div className={`advanced-filters ${isExpanded ? 'expanded' : ''}`}>
       <div className="filters-header">
@@ -344,7 +374,8 @@ const AdvancedFilters = memo(function AdvancedFilters({
           {hasActiveFilters && <span className="filter-count">{
             (filters.genres?.length || 0) + 
             (filters.years?.length || 0) + 
-            (filters.certifications?.length || 0)
+            (filters.certifications?.length || 0) +
+            (filters.streaming?.length || 0)
           }</span>}
           <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M6 9l6 6 6-6"/>
@@ -428,6 +459,28 @@ const AdvancedFilters = memo(function AdvancedFilters({
               ))}
             </div>
           </div>
+          
+          {/* Streaming/Plataformas */}
+          {availableStreaming.length > 0 && (
+            <div className="filter-group">
+              <h4>Onde Assistir</h4>
+              <div className="filter-options streaming-options">
+                {availableStreaming.slice(0, 15).map(streaming => (
+                  <button
+                    key={streaming}
+                    className={`filter-chip streaming-chip ${
+                      filters.streaming?.includes(streaming) ? 'active' : ''
+                    }`}
+                    onClick={() => toggleStreaming(streaming)}
+                    title={streaming}
+                  >
+                    <span className="streaming-icon">{getStreamingIcon(streaming)}</span>
+                    <span className="streaming-name">{streaming}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           
           {/* Ordenação */}
           <div className="filter-group">
@@ -1338,6 +1391,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
   const [availableGenres, setAvailableGenres] = useState<string[]>([]);
   const [availableYears, setAvailableYears] = useState<string[]>([]);
   const [availableCertifications, setAvailableCertifications] = useState<string[]>([]);
+  const [availableStreaming, setAvailableStreaming] = useState<string[]>([]);
 
   // Inicialização
   useEffect(() => {
@@ -1349,6 +1403,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
       setAvailableGenres(getAvailableGenres());
       setAvailableYears(getAvailableYears());
       setAvailableCertifications(getAvailableCertifications());
+      setAvailableStreaming(getAvailableStreaming());
       
       // Carrega categorias principais
       STREAMING_CATEGORIES.slice(0, 5).forEach(cat => {
@@ -1365,6 +1420,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
       filters.genres?.length || 
       filters.years?.length || 
       filters.certifications?.length ||
+      filters.streaming?.length ||
       (filters.type && filters.type !== 'all')
     );
   }, [filters]);
@@ -1489,6 +1545,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
           availableGenres={availableGenres}
           availableYears={availableYears}
           availableCertifications={availableCertifications}
+          availableStreaming={availableStreaming}
           onClear={handleClearFilters}
         />
       </header>

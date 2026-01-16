@@ -423,6 +423,49 @@
 .filter-chip.cert-chip.cert-18 { border-color: #666; }
 .filter-chip.cert-chip.cert-18.active { background: #333; }
 
+/* Streaming options */
+.streaming-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-chip.streaming-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.filter-chip.streaming-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.filter-chip.streaming-chip.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.streaming-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.streaming-name {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Sort options */
 .sort-options {
   display: flex;
