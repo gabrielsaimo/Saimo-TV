@@ -922,7 +922,7 @@ const SeriesModal = memo(function SeriesModal({
 
   return (
     <div className="series-modal-backdrop" ref={modalRef} onClick={handleBackdropClick}>
-      <div className="series-modal" role="dialog" aria-modal="true">
+      <div className="series-modal modern" role="dialog" aria-modal="true">
         {/* Backdrop da série */}
         {details?.backdropPath && (
           <div className="series-modal-backdrop-image">
@@ -931,23 +931,35 @@ const SeriesModal = memo(function SeriesModal({
           </div>
         )}
         
-        <div className="modal-header">
-          <div className="modal-poster">
+        <button 
+          ref={closeButtonRef}
+          className="modal-close series-close" 
+          onClick={onClose}
+          data-focusable="true"
+          data-focus-key="modal-close"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+
+        <div className="series-modal-header">
+          <div className="series-header-poster">
             <LazyImage 
               src={details?.posterPath || series.logo} 
               alt={series.name}
               fallbackText={series.name.substring(0, 2)}
             />
           </div>
-          <div className="modal-info">
-            <h2>{details?.title || series.name}</h2>
+          <div className="series-header-info">
+            <h2 className="series-title">{details?.title || series.name}</h2>
             {details?.tagline && <p className="series-tagline">{details.tagline}</p>}
             
-            <div className="modal-meta">
+            <div className="series-meta-row">
               {/* Rating */}
               {details?.rating && details.rating > 0 && (
-                <span className={`meta-rating ${details.rating >= 7 ? 'high' : details.rating >= 5 ? 'medium' : 'low'}`}>
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <span className={`series-rating ${details.rating >= 7 ? 'high' : details.rating >= 5 ? 'medium' : 'low'}`}>
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                   </svg>
                   {details.rating.toFixed(1)}
@@ -956,17 +968,19 @@ const SeriesModal = memo(function SeriesModal({
               
               {/* Classificação Indicativa */}
               {details?.certification && (
-                <span className={`meta-certification ${getCertClass(details.certification)}`}>
+                <span className={`series-certification ${getCertClass(details.certification)}`}>
                   {details.certification}
                 </span>
               )}
               
               {/* Ano */}
-              {details?.year && <span className="meta-year">{details.year}</span>}
+              {details?.year && <span className="series-year">{details.year}</span>}
               
-              <span className="meta-badge">{series.seasonCount} Temporada{series.seasonCount > 1 ? 's' : ''}</span>
-              <span className="meta-badge">{series.episodeCount} Episódios</span>
-              <span className="meta-category">{series.category}</span>
+              <span className="series-stats">
+                {series.seasonCount} Temporada{series.seasonCount > 1 ? 's' : ''}
+                <span className="separator">•</span>
+                {series.episodeCount} Episódios
+              </span>
             </div>
             
             {/* Gêneros */}
@@ -988,30 +1002,16 @@ const SeriesModal = memo(function SeriesModal({
               <p className="series-synopsis">{details.overview}</p>
             ) : null}
             
-            {/* Elenco e Diretor */}
-            {details?.director && (
-              <p className="series-crew"><strong>Criador:</strong> {details.director}</p>
-            )}
+            {/* Elenco */}
             {details?.cast && details.cast.length > 0 && (
               <p className="series-cast"><strong>Elenco:</strong> {details.cast.slice(0, 5).join(', ')}</p>
             )}
           </div>
-          <button 
-            ref={closeButtonRef}
-            className="modal-close" 
-            onClick={onClose}
-            data-focusable="true"
-            data-focus-key="modal-close"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 6L6 18M6 6l12 12"/>
-            </svg>
-          </button>
         </div>
 
-        <div className="season-selector">
+        <div className="series-seasons-selector">
           <h3>Temporadas</h3>
-          <div className="season-tabs">
+          <div className="seasons-tabs">
             {sortedSeasons.map(season => (
               <button
                 key={season}
@@ -1020,34 +1020,39 @@ const SeriesModal = memo(function SeriesModal({
                 data-focusable="true"
                 data-focus-key={`season-${season}`}
               >
-                <span className="season-number">T{season}</span>
-                <span className="episode-count">{series.seasons.get(season)?.length} eps</span>
+                <div className="season-info">
+                  <span className="season-number">Temporada {season}</span>
+                  <span className="season-count">{series.seasons.get(season)?.length} episódios</span>
+                </div>
               </button>
             ))}
           </div>
         </div>
 
-        <div className="episodes-container" ref={episodesRef} onScroll={handleEpisodesScroll}>
-          <h3>Temporada {selectedSeason} ({allEpisodes.length} episódios)</h3>
-          <div className="episodes-grid">
+        <div className="series-episodes-container" ref={episodesRef} onScroll={handleEpisodesScroll}>
+          <div className="episodes-header">
+            <h3>Temporada {selectedSeason}</h3>
+            <span className="episodes-total">{allEpisodes.length} episódios</span>
+          </div>
+          <div className="episodes-list">
             {displayedEpisodes.map((episode, index) => {
               const info = parseSeriesInfo(episode.name);
               return (
                 <button
                   key={episode.id}
-                  className="episode-card"
+                  className="episode-item"
                   onClick={() => onSelectEpisode(episode, series)}
                   data-focusable="true"
                   data-focus-key={`episode-${episode.id}`}
                 >
-                  <div className="episode-number">
+                  <div className="episode-number-badge">
                     <span>{info?.episode || index + 1}</span>
                   </div>
-                  <div className="episode-info">
+                  <div className="episode-details">
                     <span className="episode-title">Episódio {info?.episode || index + 1}</span>
-                    <span className="episode-full-name">{episode.name}</span>
+                    <span className="episode-name">{episode.name}</span>
                   </div>
-                  <div className="episode-play">
+                  <div className="episode-play-icon">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M8 5v14l11-7z"/>
                     </svg>
