@@ -1,0 +1,474 @@
+[
+  {
+    "id": "inferno-sobre-rodas-s01e01-87gzhd-936254",
+    "name": "Inferno Sobre Rodas S01E01",
+    "url": "http://govfederal.org:80/series/t1214c/87gzhd/936254.mp4",
+    "category": "📺 AMC Plus",
+    "type": "series",
+    "isAdult": false,
+    "tmdb": {
+      "id": 1401,
+      "imdbId": "tt1699748",
+      "title": "Inferno Sobre Rodas",
+      "originalTitle": "Hell on Wheels",
+      "tagline": null,
+      "overview": "A Guerra Civil está no passado, mas o ex-soldado Cullen Bohannon não pode colocá-la para atrás. Lembranças terríveis da morte de sua esposa definem Bohannon em um curso de vingança",
+      "status": "Ended",
+      "language": "en",
+      "releaseDate": "2011-11-06",
+      "year": "2011",
+      "runtime": null,
+      "rating": 7.6,
+      "voteCount": 452,
+      "popularity": 15,
+      "certification": "16",
+      "genres": [
+        "Action & Adventure",
+        "Drama",
+        "Faroeste"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/xu1LmA6fwFQDeQxJEHpIvziAZgA.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/xu1LmA6fwFQDeQxJEHpIvziAZgA.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/pXwEO7OYA7LhVPYyGIIqa58wwcF.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/pXwEO7OYA7LhVPYyGIIqa58wwcF.jpg",
+      "logo": null,
+      "cast": [
+        {
+          "id": 56675,
+          "name": "Anson Mount",
+          "character": "Cullen Bohannan",
+          "photo": "https://image.tmdb.org/t/p/w185/A4YBdwnzJKRcZXfodjT4UalHOK9.jpg"
+        },
+        {
+          "id": 17782,
+          "name": "Colm Meaney",
+          "character": "Thomas 'Doc' Durant",
+          "photo": "https://image.tmdb.org/t/p/w185/guL6RJdlRMtOJN3LoaY3G8hG4Rd.jpg"
+        },
+        {
+          "id": 136348,
+          "name": "Robin McLeavy",
+          "character": "Eva",
+          "photo": "https://image.tmdb.org/t/p/w185/zxQobyUi4iLFymzusm0lYwxLWnq.jpg"
+        },
+        {
+          "id": 32887,
+          "name": "Christopher Heyerdahl",
+          "character": "The Swede",
+          "photo": "https://image.tmdb.org/t/p/w185/pTPZa3TFIkxRbqM5adXYE51a99s.jpg"
+        },
+        {
+          "id": 109512,
+          "name": "Phil Burke",
+          "character": "Mickey McGinnes",
+          "photo": "https://image.tmdb.org/t/p/w185/i6UWfIJdQlGNR5Jis1MpHf6G9SP.jpg"
+        },
+        {
+          "id": 40275,
+          "name": "Tim Guinee",
+          "character": "Collis Huntington",
+          "photo": "https://image.tmdb.org/t/p/w185/bl2kh12pzVORh6oavx0zYeuefl1.jpg"
+        },
+        {
+          "id": 1859430,
+          "name": "Angela Zhou",
+          "character": "Mei",
+          "photo": "https://image.tmdb.org/t/p/w185/61cgW0xyglN3s01TBwfAb50PalB.jpg"
+        },
+        {
+          "id": 57748,
+          "name": "Byron Mann",
+          "character": "Chang",
+          "photo": "https://image.tmdb.org/t/p/w185/lJXes5cQU2a3x5V4auFV4CFyrYB.jpg"
+        }
+      ],
+      "directors": [
+        "Tony Gayton",
+        "Joe Gayton"
+      ],
+      "writers": [],
+      "keywords": [
+        "gunslinger",
+        "frontier",
+        "train",
+        "period drama",
+        "historical",
+        "railroad",
+        "wild west",
+        "historical drama",
+        "19th century",
+        "reconstruction era"
+      ],
+      "companies": [
+        "Endemol USA",
+        "Entertainment One",
+        "Nomadic Pictures",
+        "Wirthwhile TV"
+      ],
+      "countries": [
+        "CA",
+        "US"
+      ],
+      "budget": null,
+      "revenue": null,
+      "collection": null,
+      "seasons": 5,
+      "episodes": 57,
+      "inProduction": false,
+      "networks": [
+        "AMC"
+      ],
+      "recommendations": [
+        {
+          "id": 43901,
+          "title": "Longmire: O Xerife",
+          "poster": "https://image.tmdb.org/t/p/w185/ba2nuLDLejuAcFnqJYfmztUqym4.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 57857,
+          "title": "What Remains",
+          "poster": "https://image.tmdb.org/t/p/w185/bzrZ4X7KX0IntJko33JkxfdVoKd.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 7060,
+          "title": "My Big Redneck Wedding",
+          "poster": "https://image.tmdb.org/t/p/w185/6tIRjFEeHxUPbMpxpOwgt9GYAG9.jpg",
+          "rating": 8.8
+        },
+        {
+          "id": 273247,
+          "title": "Verdade Oculta",
+          "poster": "https://image.tmdb.org/t/p/w185/mM3vPLFMzE1J4Yc8WJPkDgNiyuX.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 44220,
+          "title": "The Booth at the End",
+          "poster": "https://image.tmdb.org/t/p/w185/dG15J9859DiWjiv4Luov4C4SULe.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 116944,
+          "title": "Thin Blue Line",
+          "poster": "https://image.tmdb.org/t/p/w185/quDsL13MvDoGI9aX2xddQ3wwFTW.jpg",
+          "rating": 7.2
+        }
+      ],
+      "streaming": [
+        "Lionsgate+ Amazon Channels"
+      ],
+      "imdb": "tt1699748",
+      "facebook": "HellonWheelsAMC",
+      "instagram": null,
+      "twitter": "HellOnWheelsAMC"
+    }
+  },
+  {
+    "id": "channel-zero-s01e01-87gzhd-936311",
+    "name": "Channel Zero S01E01",
+    "url": "http://govfederal.org:80/series/t1214c/87gzhd/936311.mp4",
+    "category": "📺 AMC Plus",
+    "type": "series",
+    "isAdult": false,
+    "tmdb": {
+      "id": 67752,
+      "imdbId": "tt4820370",
+      "title": "Channel Zero",
+      "originalTitle": "Channel Zero",
+      "tagline": null,
+      "overview": "Uma série de antologia baseada nas Creepypastas populares na internet.",
+      "status": "Canceled",
+      "language": "en",
+      "releaseDate": "2016-10-11",
+      "year": "2016",
+      "runtime": 42,
+      "rating": 7.1,
+      "voteCount": 293,
+      "popularity": 4,
+      "certification": "16",
+      "genres": [
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/oCutmhFznao1Pzy6wM1C32kxAEu.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/oCutmhFznao1Pzy6wM1C32kxAEu.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/iXxiiIuK5KGcleWRq5bTXXoYK11.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/iXxiiIuK5KGcleWRq5bTXXoYK11.jpg",
+      "logo": null,
+      "cast": [
+        {
+          "id": 55364,
+          "name": "Steven Robertson",
+          "character": "Ian",
+          "photo": "https://image.tmdb.org/t/p/w185/aJFkWzmeJ8SgIiNCpgvgo5LDXDp.jpg"
+        },
+        {
+          "id": 6106,
+          "name": "Steven Weber",
+          "character": "Abel Carnacki",
+          "photo": "https://image.tmdb.org/t/p/w185/8FtkapenCOpe39eE1sQus5WLWAq.jpg"
+        },
+        {
+          "id": 2123496,
+          "name": "Maria Sten",
+          "character": "Jillian Hope Hodgson",
+          "photo": "https://image.tmdb.org/t/p/w185/7QlPWbZRH2ORMmAHKAj0rq54t4A.jpg"
+        },
+        {
+          "id": 1232689,
+          "name": "Brandon Scott",
+          "character": "Tom Hodgson",
+          "photo": "https://image.tmdb.org/t/p/w185/a2c8lAKDLT8j5jVVjpAM66BMNkT.jpg"
+        },
+        {
+          "id": 27995,
+          "name": "Barbara Crampton",
+          "character": "Vanessa Moss",
+          "photo": "https://image.tmdb.org/t/p/w185/AaLIWSrUgHIESuJEh6w7UD5RzV4.jpg"
+        }
+      ],
+      "directors": [
+        "Nick Antosca"
+      ],
+      "writers": [],
+      "keywords": [
+        "loss of loved one",
+        "monster",
+        "supernatural",
+        "anthology",
+        "mysterious events",
+        "creepypasta",
+        "horror anthology",
+        "horror"
+      ],
+      "companies": [
+        "UCP",
+        "Eat the Cat"
+      ],
+      "countries": [
+        "CA",
+        "US"
+      ],
+      "budget": null,
+      "revenue": null,
+      "collection": null,
+      "seasons": 4,
+      "episodes": 24,
+      "inProduction": false,
+      "networks": [
+        "Syfy"
+      ],
+      "recommendations": [
+        {
+          "id": 62810,
+          "title": "Odd Mom Out",
+          "poster": "https://image.tmdb.org/t/p/w185/k2mh5mjEhr5LpWHA39WB1jpignp.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 90877,
+          "title": "A Black Lady Sketch Show",
+          "poster": "https://image.tmdb.org/t/p/w185/sf1BjG7dZGqJCSwEt25v2lzjqVr.jpg",
+          "rating": 7
+        },
+        {
+          "id": 65368,
+          "title": "Real Detective",
+          "poster": "https://image.tmdb.org/t/p/w185/4f7CCoRbrETYNvkShUFwoma3bEZ.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 64073,
+          "title": "Class",
+          "poster": "https://image.tmdb.org/t/p/w185/qC6c8Bx5LiWuZ5t9v3Iyn0818FL.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 4251,
+          "title": "A Vida com Louie",
+          "poster": "https://image.tmdb.org/t/p/w185/nmhCEBQLoixS0QLojKyCLl5Dyrl.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 70830,
+          "title": "Dave Chappelle",
+          "poster": "https://image.tmdb.org/t/p/w185/pdvfW9xWAqLFd0wdzdAogjmM9Pc.jpg",
+          "rating": 7.2
+        }
+      ],
+      "streaming": [],
+      "imdb": "tt4820370",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "this-is-going-to-hurt-s01e01-87gzhd-936329",
+    "name": "This Is Going to Hurt S01E01",
+    "url": "http://govfederal.org:80/series/t1214c/87gzhd/936329.mp4",
+    "category": "📺 AMC Plus",
+    "type": "series",
+    "isAdult": false,
+    "tmdb": {
+      "id": 154359,
+      "imdbId": "tt8681148",
+      "title": "Isso Vai Doer",
+      "originalTitle": "This Is Going to Hurt",
+      "tagline": "Em sua profissão, a vida pode ser tão estressante quanto hilariante.",
+      "overview": "Aclamada comédia dramática baseada nas memórias reais do médico Adam Kay. A série acompanha Adam, um médico júnior exausto e cínico que trabalha na ala de obstetrícia. Com humor ácido, ela expõe o lado caótico e subfinanciado do hospital, mostrando o preço emocional das decisões de vida ou morte e dos plantões intermináveis",
+      "status": "Ended",
+      "language": "en",
+      "releaseDate": "2022-02-08",
+      "year": "2022",
+      "runtime": 45,
+      "rating": 7.7,
+      "voteCount": 150,
+      "popularity": 4,
+      "certification": "14",
+      "genres": [
+        "Comédia",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/bUTv4ZJ8GLjCne0ajTlFMpwJ0fS.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/bUTv4ZJ8GLjCne0ajTlFMpwJ0fS.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/icgOrvpT7ANec2rBdzZQPwB7Ykj.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/icgOrvpT7ANec2rBdzZQPwB7Ykj.jpg",
+      "logo": "https://image.tmdb.org/t/p/w500/hggcenOCYlTxe1erVp5YSd9mFGW.png",
+      "cast": [
+        {
+          "id": 17064,
+          "name": "Ben Whishaw",
+          "character": "Adam Kay",
+          "photo": "https://image.tmdb.org/t/p/w185/2GBtQ6scGeSHkX1urOP1EJbmksx.jpg"
+        },
+        {
+          "id": 3411764,
+          "name": "Ambika Mod",
+          "character": "Shruti Acharya",
+          "photo": "https://image.tmdb.org/t/p/w185/jN9HhFYPNMYIupFt6GzGnHAW88c.jpg"
+        },
+        {
+          "id": 1267122,
+          "name": "Rory Fleck-Byrne",
+          "character": "Harry",
+          "photo": "https://image.tmdb.org/t/p/w185/iwPrSa41IxD5jy3Fb7IVF0O5DQ2.jpg"
+        },
+        {
+          "id": 145694,
+          "name": "Michele Austin",
+          "character": "Tracy",
+          "photo": "https://image.tmdb.org/t/p/w185/xwUikOrP51Y3FnKysZ4dr3saGFZ.jpg"
+        },
+        {
+          "id": 15739,
+          "name": "Alex Jennings",
+          "character": "Lockhart",
+          "photo": "https://image.tmdb.org/t/p/w185/4nbbUmAwoOCarkR5FHJjzw2STPE.jpg"
+        },
+        {
+          "id": 1499268,
+          "name": "Tom Durant-Pritchard",
+          "character": "Greg",
+          "photo": "https://image.tmdb.org/t/p/w185/a2UD7YldEqbxY9oajaLKwWGMvTH.jpg"
+        },
+        {
+          "id": 69476,
+          "name": "Ashley McGuire",
+          "character": "Houghton",
+          "photo": "https://image.tmdb.org/t/p/w185/zVF8Jgcp19Qk5AMQOnpvEts5kQn.jpg"
+        },
+        {
+          "id": 17477,
+          "name": "Harriet Walter",
+          "character": "Veronique",
+          "photo": "https://image.tmdb.org/t/p/w185/vH8JrqdHaoFeGos44XeKTNuQMKE.jpg"
+        },
+        {
+          "id": 1411379,
+          "name": "Kadiff Kirwan",
+          "character": "Julian",
+          "photo": "https://image.tmdb.org/t/p/w185/pyDKDSVtDTdmnzhOVW1tkQDHKOi.jpg"
+        }
+      ],
+      "directors": [
+        "Adam Kay"
+      ],
+      "writers": [],
+      "keywords": [
+        "coming out",
+        "hospital",
+        "based on memoir or autobiography",
+        "lgbt",
+        "maternity ward",
+        "gynaecology",
+        "obstetrics",
+        "nhs",
+        "gay theme"
+      ],
+      "companies": [
+        "SISTER",
+        "Terrible Productions",
+        "AMC Studios",
+        "BBC"
+      ],
+      "countries": [
+        "GB",
+        "US"
+      ],
+      "budget": null,
+      "revenue": null,
+      "collection": null,
+      "seasons": 1,
+      "episodes": 7,
+      "inProduction": false,
+      "networks": [
+        "BBC One"
+      ],
+      "recommendations": [
+        {
+          "id": 87340,
+          "title": "A Grande Corrida: Volta ao Mundo",
+          "poster": "https://image.tmdb.org/t/p/w185/zK4WoFaXM1mBnlnIedQCSyQo2jH.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 256693,
+          "title": "Eu",
+          "poster": "https://image.tmdb.org/t/p/w185/r49QPeDgk1pqE9EKvalGiipdxEN.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 87984,
+          "title": "Estado de União",
+          "poster": "https://image.tmdb.org/t/p/w185/qnmj4XMt5z3EMfeb1tPMFXQuS9d.jpg",
+          "rating": 7
+        },
+        {
+          "id": 112321,
+          "title": "Um Assunto Privado",
+          "poster": "https://image.tmdb.org/t/p/w185/mkG3TJP3wEoQyenU43kFZJEJ0iO.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 54,
+          "title": "Tudo em Família",
+          "poster": "https://image.tmdb.org/t/p/w185/dhzttMAkFTFAax2CTBAql1CaaXB.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 124067,
+          "title": "Lakers: Hora de Vencer",
+          "poster": "https://image.tmdb.org/t/p/w185/eo1C79iZR10hGas9pRtRPaXSmvq.jpg",
+          "rating": 7.6
+        }
+      ],
+      "streaming": [],
+      "imdb": "tt8681148",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  }
+]
