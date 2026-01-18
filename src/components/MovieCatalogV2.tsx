@@ -1377,6 +1377,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
   const [isInitialized, setIsInitialized] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<EnrichedMovie[]>([]);
+  const [searchPage, setSearchPage] = useState(1);
   const [filters, setFilters] = useState<Partial<FilterOptions>>({
     type: 'all',
     sortBy: 'popularity',
@@ -1427,6 +1428,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
 
   // Busca e filtragem
   useEffect(() => {
+    setSearchPage(1); // Reset page ao mudar busca/filtros
     if (searchQuery.length >= 2) {
       // Busca por texto com filtros
       const results = searchContent(searchQuery, filters);
@@ -1477,6 +1479,38 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
   const handleBackFromCategory = useCallback(() => {
     setSelectedCategory(null);
   }, []);
+
+  const handleLoadMoreResults = useCallback(() => {
+    setSearchPage(p => p + 1);
+  }, []);
+
+  // Calcular itens de busca exibidos com paginação
+  const SEARCH_ITEMS_PER_PAGE = 60;
+  const displayedSearchResults = useMemo(() => {
+    return searchResults.slice(0, searchPage * SEARCH_ITEMS_PER_PAGE);
+  }, [searchResults, searchPage]);
+  
+  const hasMoreSearchResults = displayedSearchResults.length < searchResults.length;
+
+  // Infinite scroll observer
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (!hasMoreSearchResults || !loadMoreRef.current) return;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          handleLoadMoreResults();
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
+    
+    observer.observe(loadMoreRef.current);
+    
+    return () => observer.disconnect();
+  }, [hasMoreSearchResults, handleLoadMoreResults]);
 
   // Loading state
   if (!isInitialized) {
@@ -1572,7 +1606,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
               )}
             </p>
             <div className="content-grid">
-              {searchResults.slice(0, 60).map(item => (
+              {displayedSearchResults.map(item => (
                 <ContentCard
                   key={item.id}
                   item={item}
@@ -1580,8 +1614,18 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
                 />
               ))}
             </div>
-            {searchResults.length > 60 && (
-              <p className="more-results">Mostrando 60 de {searchResults.length} resultados</p>
+            {hasMoreSearchResults && (
+              <>
+                <div ref={loadMoreRef} style={{ height: '1px', margin: '20px 0' }} />
+                <div className="load-more">
+                  <button onClick={handleLoadMoreResults}>
+                    Carregar mais ({searchResults.length - displayedSearchResults.length} restantes)
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </button>
+                </div>
+              </>
             )}
           </section>
         ) : (searchQuery.length > 0 || hasActiveFilters) ? (
