@@ -37,6 +37,8 @@ import {
   GENRE_CATEGORIES,
   ADULT_CATEGORIES
 } from '../services/enrichedDataService';
+import { getTrendingToday, getTrendingWeek } from '../services/trendingService';
+import { isFavorite, toggleFavorite, getFavorites } from '../services/favoritesService';
 import './MovieCatalogV2.css';
 
 // ============================================================
@@ -877,16 +879,19 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
   onClose,
   onPlay,
   onActorClick,
-  onRecommendationClick
+  onRecommendationClick,
+  onFavoriteChange
 }: {
   item: EnrichedMovie;
   onClose: () => void;
   onPlay: (item: EnrichedMovie, episodeUrl?: string) => void;
   onActorClick: (actor: EnrichedCastMember) => void;
   onRecommendationClick: (item: EnrichedMovie) => void;
+  onFavoriteChange?: () => void;
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [selectedSeason, setSelectedSeason] = useState<string | null>(null);
+  const [isFav, setIsFav] = useState(() => isFavorite(item.id));
   
   const tmdb = item.tmdb;
   const isSeries = item.type === 'series' && 'episodes' in item;
@@ -938,6 +943,12 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
     onPlay(item, episode.url);
   };
 
+  const handleToggleFavorite = () => {
+    const newState = toggleFavorite(item.id);
+    setIsFav(newState);
+    onFavoriteChange?.();
+  };
+
   return (
     <div className="movie-modal-backdrop" ref={modalRef} onClick={handleBackdropClick}>
       <div className="movie-modal">
@@ -949,12 +960,26 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
           </div>
         )}
         
-        {/* Close button */}
-        <button className="modal-close" onClick={onClose}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6L6 18M6 6l12 12"/>
-          </svg>
-        </button>
+        {/* Modal top buttons */}
+        <div className="modal-top-buttons">
+          {/* Favorite button */}
+          <button 
+            className={`modal-favorite ${isFav ? 'active' : ''}`} 
+            onClick={handleToggleFavorite}
+            title={isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+          >
+            <svg viewBox="0 0 24 24" fill={isFav ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+          
+          {/* Close button */}
+          <button className="modal-close" onClick={onClose}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
         
         <div className="modal-content">
           {/* Header com poster e info */}
@@ -1394,6 +1419,19 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
   const [availableYears, setAvailableYears] = useState<string[]>([]);
   const [availableCertifications, setAvailableCertifications] = useState<string[]>([]);
   const [availableStreaming, setAvailableStreaming] = useState<string[]>([]);
+  
+  // Tendências TMDB
+  const [trendingToday, setTrendingToday] = useState<EnrichedMovie[]>([]);
+  const [trendingWeek, setTrendingWeek] = useState<EnrichedMovie[]>([]);
+  const [trendingLoading, setTrendingLoading] = useState(true);
+  
+  // Favoritos
+  const [favorites, setFavorites] = useState<EnrichedMovie[]>([]);
+
+  // Função para atualizar favoritos
+  const refreshFavorites = useCallback(() => {
+    setFavorites(getFavorites());
+  }, []);
 
   // Inicialização
   useEffect(() => {
@@ -1413,8 +1451,35 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
           setCategoryData(prev => new Map(prev).set(cat, data));
         });
       });
+      
+      // Carrega tendências do TMDB
+      setTrendingLoading(true);
+      Promise.all([getTrendingToday(), getTrendingWeek()])
+        .then(([today, week]) => {
+          setTrendingToday(today);
+          setTrendingWeek(week);
+        })
+        .catch(err => {
+          console.error('Erro ao carregar tendências:', err);
+        })
+        .finally(() => {
+          setTrendingLoading(false);
+        });
+      
+      // Carrega favoritos
+      refreshFavorites();
     });
-  }, []);
+  }, [refreshFavorites]);
+
+  // Listener para mudanças nos favoritos (de outras abas ou componentes)
+  useEffect(() => {
+    const handleFavoritesChange = () => {
+      refreshFavorites();
+    };
+    
+    window.addEventListener('favorites-changed', handleFavoritesChange);
+    return () => window.removeEventListener('favorites-changed', handleFavoritesChange);
+  }, [refreshFavorites]);
 
   // Verifica se há filtros ativos (além dos padrões)
   const hasActiveFilters = useMemo(() => {
@@ -1545,6 +1610,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
             onPlay={handlePlay}
             onActorClick={handleActorClick}
             onRecommendationClick={handleRecommendationClick}
+            onFavoriteChange={refreshFavorites}
           />
         ) : modalState.type === 'actor' ? (
           <ActorModal
@@ -1657,6 +1723,35 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
               onSelect={handleSelectItem}
             />
             
+            {/* Favoritos - Aparece primeiro se houver */}
+            {favorites.length > 0 && (
+              <CategoryCarousel
+                title="❤️ Meus Favoritos"
+                items={favorites.slice(0, 20)}
+                onSelect={handleSelectItem}
+              />
+            )}
+            
+            {/* Tendências de Hoje */}
+            {(trendingLoading || trendingToday.length > 0) && (
+              <CategoryCarousel
+                title="🔥 Tendências de Hoje"
+                items={trendingToday.slice(0, 20)}
+                onSelect={handleSelectItem}
+                loading={trendingLoading}
+              />
+            )}
+            
+            {/* Tendências da Semana */}
+            {(trendingLoading || trendingWeek.length > 0) && (
+              <CategoryCarousel
+                title="📅 Tendências da Semana"
+                items={trendingWeek.slice(0, 20)}
+                onSelect={handleSelectItem}
+                loading={trendingLoading}
+              />
+            )}
+            
             {/* Categorias de Streaming */}
             {STREAMING_CATEGORIES.slice(0, 6).map(cat => {
               const data = categoryData.get(cat) || [];
@@ -1732,6 +1827,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
           onPlay={handlePlay}
           onActorClick={handleActorClick}
           onRecommendationClick={handleRecommendationClick}
+          onFavoriteChange={refreshFavorites}
         />
       ) : modalState.type === 'actor' ? (
         <ActorModal
