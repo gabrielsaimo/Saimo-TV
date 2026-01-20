@@ -104,36 +104,59 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
       addLog(`Carregando stream: ${streamUrl}`);
       destroyAllHls();
     }
+    
+    const isMp4 = streamUrl.endsWith('.mp4');
 
-    if (Hls.isSupported()) {
+    // Função para iniciar a reprodução
+    const playVideo = (videoEl: HTMLVideoElement) => {
+      videoEl.play()
+        .then(() => {
+          setIsPlaying(true);
+          addLog('▶️ Reprodução iniciada');
+        })
+        .catch(() => {
+          videoEl.muted = true;
+          videoEl.play()
+            .then(() => {
+              setIsPlaying(true);
+              addLog('▶️ Reprodução iniciada (muted)');
+            })
+            .catch((e) => {
+              const errorMessage = e instanceof Error ? e.message : String(e);
+              setError('Erro ao iniciar reprodução');
+              addLog(`❌ Erro ao iniciar reprodução: ${errorMessage}`);
+            });
+        });
+    };
+    
+    if (isMp4) {
+      addLog('Detectado formato MP4.');
+      video.src = streamUrl;
+      video.addEventListener('loadedmetadata', () => {
+        setIsLoading(false);
+        addLog('✅ Metadados do MP4 carregados.');
+        playVideo(video);
+      });
+      video.addEventListener('error', () => {
+        setIsLoading(false);
+        setError('Erro ao carregar vídeo MP4.');
+        addLog('❌ Erro ao carregar vídeo MP4.');
+      });
+      video.load();
+    } else if (Hls.isSupported()) {
+      addLog('Detectado formato HLS (M3U8).');
       const hls = createHlsInstance(
         video,
         streamUrl,
         () => {
           setIsLoading(false);
-          addLog('✅ Manifest carregado com sucesso');
-          video.play()
-            .then(() => {
-              setIsPlaying(true);
-              addLog('▶️ Reprodução iniciada');
-            })
-            .catch(() => {
-              video.muted = true;
-              video.play()
-                .then(() => {
-                  setIsPlaying(true);
-                  addLog('▶️ Reprodução iniciada (muted)');
-                })
-                .catch((e) => {
-                  setError('Erro ao iniciar reprodução');
-                  addLog(`❌ Erro ao iniciar reprodução: ${e.message}`);
-                });
-            });
+          addLog('✅ Manifest HLS carregado com sucesso');
+          playVideo(video);
         },
         (errorDetails) => {
-          setError(`Erro: ${errorDetails}`);
+          setError(`Erro HLS: ${errorDetails}`);
           setIsLoading(false);
-          addLog(`❌ Erro fatal: ${errorDetails}`);
+          addLog(`❌ Erro fatal HLS: ${errorDetails}`);
         }
       );
 
@@ -142,19 +165,12 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
       }
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       // Safari native HLS
+      addLog('Detectado suporte nativo a HLS (Safari).');
       video.src = streamUrl;
       video.addEventListener('loadedmetadata', () => {
         setIsLoading(false);
         addLog('✅ Stream carregado (Safari nativo)');
-        video.play()
-          .then(() => {
-            setIsPlaying(true);
-            addLog('▶️ Reprodução iniciada');
-          })
-          .catch((e) => {
-            setError('Erro ao iniciar reprodução');
-            addLog(`❌ Erro ao iniciar: ${e.message}`);
-          });
+        playVideo(video);
       });
     } else {
       setError('Navegador não suporta HLS');
@@ -163,10 +179,17 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
     }
   }, [createHlsInstance, destroyAllHls, addLog]);
 
+
   // Refresh invisível usando double-buffering
   const seamlessRefresh = useCallback(() => {
     if (!url.trim() || !backupVideoRef.current || !videoRef.current || isRefreshingRef.current) return;
     
+    // Refresh não se aplica a MP4
+    if (url.endsWith('.mp4')) {
+      addLog('ℹ️ Auto-refresh não aplicável para vídeos MP4.');
+      return;
+    }
+
     isRefreshingRef.current = true;
     const currentVideo = activePlayer === 'main' ? videoRef.current : backupVideoRef.current;
     const nextVideo = activePlayer === 'main' ? backupVideoRef.current : videoRef.current;
@@ -260,7 +283,8 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
                 }, 500);
               }, 300);
             }).catch((e) => {
-              addLog(`❌ Erro no refresh invisível: ${e.message}`);
+              const errorMessage = e instanceof Error ? e.message : String(e);
+              addLog(`❌ Erro no refresh invisível: ${errorMessage}`);
               isRefreshingRef.current = false;
             });
           });
@@ -281,7 +305,9 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
 
   // Auto-refresh timer
   useEffect(() => {
-    if (isPlaying && autoRefresh && refreshInterval > 0) {
+    // Desativa para MP4
+    const isMp4 = url.endsWith('.mp4');
+    if (isPlaying && autoRefresh && refreshInterval > 0 && !isMp4) {
       setCountdown(refreshInterval);
       
       // Countdown timer
@@ -310,7 +336,7 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
         countdownIntervalRef.current = null;
       }
     };
-  }, [isPlaying, autoRefresh, refreshInterval, refreshStream]);
+  }, [isPlaying, autoRefresh, refreshInterval, refreshStream, url]);
 
   // Track play time
   useEffect(() => {
@@ -386,18 +412,18 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
     <div className="stream-tester">
       <header className="stream-tester-header">
         <h1>🔧 Stream Tester</h1>
-        <p>Teste streams HLS com auto-refresh para evitar timeout</p>
+        <p>Teste streams HLS (.m3u8) com auto-refresh ou vídeos MP4 diretos.</p>
       </header>
 
       <form className="stream-tester-form" onSubmit={handleSubmit}>
         <div className="input-group">
-          <label htmlFor="stream-url">URL do Stream (M3U8)</label>
+          <label htmlFor="stream-url">URL do Stream (M3U8 ou MP4)</label>
           <input
             id="stream-url"
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="http://example.com/stream.m3u8"
+            placeholder="http://example.com/stream.m3u8 ou video.mp4"
             className="stream-url-input"
           />
         </div>
@@ -410,8 +436,9 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
                 type="checkbox"
                 checked={autoRefresh}
                 onChange={(e) => setAutoRefresh(e.target.checked)}
+                disabled={url.endsWith('.mp4')}
               />
-              Auto-refresh
+              Auto-refresh (apenas HLS)
             </label>
           </div>
 
@@ -425,6 +452,7 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
               value={refreshInterval}
               onChange={(e) => setRefreshInterval(Number(e.target.value))}
               className="interval-input"
+              disabled={url.endsWith('.mp4')}
             />
           </div>
         </div>
@@ -436,7 +464,7 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
           <button type="button" className="btn btn-secondary" onClick={handleStop} disabled={!isPlaying}>
             ⏹️ Parar
           </button>
-          <button type="button" className="btn btn-secondary" onClick={refreshStream} disabled={!url.trim()}>
+          <button type="button" className="btn btn-secondary" onClick={refreshStream} disabled={!url.trim() || url.endsWith('.mp4')}>
             🔄 Reiniciar Agora
           </button>
         </div>
@@ -472,7 +500,7 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
               controls
               style={{ opacity: activePlayer === 'backup' ? 1 : 0, zIndex: activePlayer === 'backup' ? 2 : 1 }}
             />
-            {isPlaying && autoRefresh && (
+            {isPlaying && autoRefresh && !url.endsWith('.mp4') && (
               <div className="refresh-indicator seamless">
                 ✨ Refresh invisível em: <strong>{countdown}s</strong>
               </div>
