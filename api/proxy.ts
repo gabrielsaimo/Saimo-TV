@@ -1,12 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export const config = {
-  // Usar Edge Runtime para streaming real
   runtime: 'edge',
 };
 
-// Função para copiar os headers relevantes para o streaming
-function copyStreamingHeaders(from: Headers, to: Headers) {
+// Função para copiar os headers de streaming da resposta final para o cliente
+function copyStreamingHeaders(from: Headers, to: Headers): void {
   const headersToCopy = [
     'content-type',
     'content-length',
@@ -14,6 +13,7 @@ function copyStreamingHeaders(from: Headers, to: Headers) {
     'accept-ranges',
     'last-modified',
     'etag',
+    'cache-control',
   ];
   for (const h of headersToCopy) {
     if (from.has(h)) {
@@ -55,69 +55,79 @@ export default async function handler(req: Request): Promise<Response> {
       });
     }
 
+    // Encaminha os headers do cliente que podem ser relevantes para o servidor de vídeo
     const clientHeaders: Record<string, string> = {
       'User-Agent': req.headers.get('user-agent') || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Referer': req.headers.get('referer') || '',
-      'X-Forwarded-For': req.headers.get('x-forwarded-for') || '',
+      'Referer': `https://google.com/`, // Simula um referer genérico
     };
 
+    // Encaminha o IP do cliente original
+    const forwardedFor = req.headers.get('x-forwarded-for');
+    if (forwardedFor) {
+      clientHeaders['X-Forwarded-For'] = forwardedFor;
+    }
+    
+    // Suporte para Range requests (essencial para seeking)
     const rangeHeader = req.headers.get('range');
     if (rangeHeader) {
       clientHeaders['Range'] = rangeHeader;
     }
     
-    // 1. Faz a primeira requisição sem seguir o redirect para capturar a URL final
-    const firstResponse = await fetch(decodedUrl, {
-      method: 'GET',
-      headers: clientHeaders,
-      redirect: 'manual', // Captura o redirect manualmente
-    });
+    let currentUrl = decodedUrl;
+    let finalResponse: Response | null = null;
+    const maxRedirects = 5; // Prevenção de loop infinito
 
-    let finalUrl = decodedUrl;
-    const isRedirect = firstResponse.status >= 300 && firstResponse.status < 400;
+    for (let i = 0; i < maxRedirects; i++) {
+      const response = await fetch(currentUrl, {
+        method: 'GET',
+        headers: clientHeaders,
+        redirect: 'manual', // Essencial para capturar o cabeçalho 'Location'
+      });
 
-    if (isRedirect && firstResponse.headers.has('location')) {
-      // Se for redirect, pega a nova URL
-      finalUrl = firstResponse.headers.get('location')!;
-    } else if (!firstResponse.ok && firstResponse.status !== 206) {
-      // Se não for redirect e der erro, retorna o erro
-      return new Response(JSON.stringify({ 
-        error: `Failed to fetch video (initial request): ${firstResponse.statusText}`,
-        status: firstResponse.status
-      }), {
-        status: firstResponse.status,
+      // Se for um redirect (status 3xx), atualiza a URL e continua o loop
+      if (response.status >= 300 && response.status < 400 && response.headers.has('location')) {
+        const locationHeader = response.headers.get('location')!;
+        // Constrói a nova URL absoluta, resolvendo contra a URL anterior
+        currentUrl = new URL(locationHeader, currentUrl).href;
+        continue;
+      }
+
+      // Se não for um redirect, esta é a nossa resposta final
+      finalResponse = response;
+      break;
+    }
+
+    // Se o loop terminou sem uma resposta final (ex: muitos redirects), retorna erro
+    if (!finalResponse) {
+      return new Response(JSON.stringify({ error: 'Too many redirects' }), {
+        status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // 2. Faz a requisição final para a URL correta (a original ou a do redirect)
-    const finalResponse = await fetch(finalUrl, {
-      method: 'GET',
-      headers: clientHeaders,
-    });
-    
-    if (!finalResponse.ok && finalResponse.status !== 206) {
+    // Se a resposta final não for OK (ex: 404, 403), retorna o erro
+    if (!finalResponse.ok && finalResponse.status !== 206) { // 206 é OK para Range requests
       return new Response(JSON.stringify({ 
-        error: `Failed to fetch video (final request): ${finalResponse.statusText}`,
+        error: `Failed to fetch video: ${finalResponse.statusText}`,
         status: finalResponse.status,
-        url: finalUrl
+        url: currentUrl
       }), {
         status: finalResponse.status,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // Criar headers da resposta para o cliente
+    // Monta os headers da resposta para o navegador do cliente
     const responseHeaders = new Headers();
     responseHeaders.set('Access-Control-Allow-Origin', '*');
     responseHeaders.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     responseHeaders.set('Access-Control-Allow-Headers', 'Range');
-    responseHeaders.set('Access-Control-Expose-Headers', 'Content-Length, Content-Range, Accept-Ranges');
+    responseHeaders.set('Access-Control-Expose-Headers', 'Content-Length, Content-Range, Accept-Ranges, ETag, Last-Modified, Cache-Control');
     
-    // Copia os headers importantes da resposta final
+    // Copia os headers importantes da resposta final do servidor de vídeo
     copyStreamingHeaders(finalResponse.headers, responseHeaders);
 
-    // Retorna o stream do vídeo para o cliente
+    // Retorna o corpo do vídeo como um stream para o navegador
     return new Response(finalResponse.body, {
       status: finalResponse.status,
       headers: responseHeaders,
