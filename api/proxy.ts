@@ -41,9 +41,7 @@ export default async function handler(req: Request): Promise<Response> {
     }
 
     // Headers para fazer o streaming do vídeo
-    const headers: Record<string, string> = {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    };
+    const headers: Record<string, string> = {};
 
     // Suportar Range requests para seek no vídeo
     const rangeHeader = req.headers.get('range');
