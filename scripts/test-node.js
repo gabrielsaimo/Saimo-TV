@@ -1,0 +1,1 @@
+console.log('Iniciando atualizacao de links enriched (v4).\n');
