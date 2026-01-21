@@ -301,9 +301,10 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
   // Auto-open em nova aba se receber erro de bloqueio de acesso seguro
   useEffect(() => {
-    if (error && error.includes('bloqueou o acesso seguro')) {
+    if (error && error.includes('bloqueou o acesso seguro') && movie) {
       const timer = setTimeout(() => {
-        openInExternalPlayer('newtab');
+        // Abre em nova aba de forma simples
+        window.open(movie.url, '_blank');
         setError(null); // Limpa o erro após abrir
       }, 1500); // Aguarda 1.5s para o usuário ver a mensagem antes de abrir
       
