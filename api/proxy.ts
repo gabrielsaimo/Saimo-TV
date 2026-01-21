@@ -57,10 +57,20 @@ export default async function handler(req: Request): Promise<Response> {
 
     // Encaminha os headers do cliente que podem ser relevantes para o servidor de vídeo
     const clientHeaders: Record<string, string> = {
-      // Força um User-Agent comum para evitar bloqueios baseados em User-Agent de servidor
+      // User-Agent realista
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      // Define o Referer como a própria URL de origem do vídeo, o que é mais realista
-      'Referer': new URL(decodedUrl).origin,
+      // Referer do site original (não do proxy!) - CRÍTICO para contornar bloqueios
+      'Referer': 'https://saimo-tv.vercel.app/',
+      // Origin - CRÍTICO para CORS
+      'Origin': 'https://saimo-tv.vercel.app',
+      // Headers que simulam um navegador real
+      'Accept': '*/*',
+      'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Connection': 'keep-alive',
+      'Sec-Fetch-Dest': 'video',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Site': 'cross-site',
     };
 
     // Encaminha o IP do cliente original
