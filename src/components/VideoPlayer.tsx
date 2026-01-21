@@ -3,6 +3,7 @@ import Hls from 'hls.js';
 import type { Channel } from '../types/channel';
 import { ProgramInfo } from './ProgramInfo';
 import castService, { type CastMethod, type CastState } from '../services/castService';
+import { getProxiedUrl } from '../utils/proxyUrl';
 import './VideoPlayer.css';
 
 interface VideoPlayerProps {
@@ -88,7 +89,7 @@ export const VideoPlayer = memo(function VideoPlayer({
         backBufferLength: 90,
       });
 
-      hls.loadSource(channel.url);
+      hls.loadSource(getProxiedUrl(channel.url));
       hls.attachMedia(video);
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
@@ -149,7 +150,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       hlsRef.current = hls;
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       // Safari native HLS support
-      video.src = channel.url;
+      video.src = getProxiedUrl(channel.url);
       video.addEventListener('loadedmetadata', () => {
         setIsLoading(false);
         video.volume = volumeRef.current;
