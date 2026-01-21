@@ -135,7 +135,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       });
     };
 
-    const handleGenericError = (e: Event | string) => {
+    const handleGenericError = (e: Event) => {
       setIsLoading(false);
       const videoError = (e.currentTarget as HTMLVideoElement)?.error;
       const code = videoError?.code;
@@ -173,7 +173,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
         handleAutoplay();
       });
 
-      hls.on(Hls.Events.ERROR, (event, data) => {
+      hls.on(Hls.Events.ERROR, (_event, data) => {
         if (data.fatal) {
           switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
@@ -298,6 +298,18 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       video.removeEventListener('ended', handleEnded);
     };
   }, [movie, nextEpisode]);
+
+  // Auto-open em nova aba se receber erro de bloqueio de acesso seguro
+  useEffect(() => {
+    if (error && error.includes('bloqueou o acesso seguro')) {
+      const timer = setTimeout(() => {
+        openInExternalPlayer('newtab');
+        setError(null); // Limpa o erro após abrir
+      }, 1500); // Aguarda 1.5s para o usuário ver a mensagem antes de abrir
+      
+      return () => clearTimeout(timer);
+    }
+  }, [error, movie]);
 
   // Mostra botão de próximo episódio quando faltam 30 segundos
   useEffect(() => {
