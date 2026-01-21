@@ -300,35 +300,12 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     };
   }, [movie, nextEpisode]);
 
-  // Auto-open em nova aba se receber erro de bloqueio de acesso seguro
-  useEffect(() => {
-    if (!error || !movie) return;
-    
-    console.log('[useEffect Error]', { error, movie: movie.name });
-    
-    // Detecta qualquer erro relacionado a bloqueio ou acesso seguro
-    const isCORSError = error.includes('bloqueou') || 
-                        error.includes('acesso seguro') ||
-                        error.includes('CORS');
-    
-    if (isCORSError) {
-      console.log('[Auto-opening] Detectado erro CORS, abrindo em nova aba...');
-      
-      // Abre imediatamente
-      const newWindow = window.open(movie.url, '_blank');
-      
-      if (!newWindow) {
-        console.warn('[Auto-open] Pop-up foi bloqueado');
-      }
-      
-      // Limpa o erro após um pequeno delay
-      const timer = setTimeout(() => {
-        setError(null);
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [error, movie]);
+  // Função para abrir em nova aba
+  const openInNewTab = useCallback(() => {
+    if (!movie) return;
+    console.log('[openInNewTab] Abrindo:', movie.url);
+    window.open(movie.url, '_blank');
+  }, [movie]);
 
   // Mostra botão de próximo episódio quando faltam 30 segundos
   useEffect(() => {
@@ -842,13 +819,13 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               Tentar novamente
             </button>
             <button 
-              onClick={() => openInExternalPlayer('newtab')}
+              onClick={openInNewTab}
               data-focusable="true"
               data-nav-group="error-actions"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  openInExternalPlayer('newtab');
+                  openInNewTab();
                 }
               }}
             >
