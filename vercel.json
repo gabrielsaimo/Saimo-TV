@@ -12,5 +12,10 @@
         { "key": "Access-Control-Allow-Headers", "value": "Range, Content-Type" }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/proxy.ts": {
+      "maxDuration": 60
+    }
+  }
 }
