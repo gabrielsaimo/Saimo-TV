@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useCallback, memo, useMemo } from 'react';
+import Hls from 'hls.js';
 import type { Movie } from '../types/movie';
 import { getProxiedUrl, needsProxy } from '../utils/proxyUrl';
 import castService, { type CastMethod, type CastState } from '../services/castService';
@@ -22,6 +23,7 @@ interface MoviePlayerProps {
 
 export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo, onNextEpisode }: MoviePlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const hlsRef = useRef<Hls | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   
@@ -78,25 +80,35 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     if (!movie || !videoRef.current) return;
 
     const video = videoRef.current;
+    const url = getProxiedUrl(movie.url);
+
+    // Resetar estados para o novo vídeo
     setIsLoading(true);
     setError(null);
     setCurrentTime(0);
     setDuration(0);
     setIsPlaying(false);
+    setShowNextEpisodeButton(false);
 
-    // Salvar progresso do vídeo anterior
-    const saveProgress = () => {
-      if (video.currentTime > 30 && video.duration) {
-        const progress = (video.currentTime / video.duration) * 100;
+    // Função para salvar progresso do vídeo anterior (se houver)
+    const savePreviousProgress = () => {
+      const previousMovieId = localStorage.getItem('current-movie-id');
+      const previousTime = video.currentTime;
+      const previousDuration = video.duration;
+
+      if (previousMovieId && previousTime > 30 && previousDuration) {
+        const progress = (previousTime / previousDuration) * 100;
         if (progress < 95) { // Só salva se não terminou
-          localStorage.setItem(`movie-progress-${movie.id}`, video.currentTime.toString());
+          localStorage.setItem(`movie-progress-${previousMovieId}`, previousTime.toString());
         } else {
-          localStorage.removeItem(`movie-progress-${movie.id}`);
+          localStorage.removeItem(`movie-progress-${previousMovieId}`);
         }
       }
     };
+    savePreviousProgress();
+    localStorage.setItem('current-movie-id', movie.id);
 
-    // Carregar progresso salvo
+    // Função para carregar progresso salvo do vídeo atual
     const loadProgress = () => {
       const saved = localStorage.getItem(`movie-progress-${movie.id}`);
       if (saved) {
@@ -107,85 +119,131 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       }
     };
 
-    // Usar proxy para URLs HTTP em produção (resolve problema de Mixed Content)
-    video.src = getProxiedUrl(movie.url);
-    video.load();
+    // Limpeza da instância HLS anterior
+    if (hlsRef.current) {
+      hlsRef.current.destroy();
+      hlsRef.current = null;
+    }
 
-    const handleLoadedMetadata = () => {
-      setDuration(video.duration);
-      setIsLoading(false);
-      loadProgress();
-      
-      // Tentar autoplay
+    const handleAutoplay = () => {
       video.play().catch(() => {
-        // Se falhar, tenta mutado
         video.muted = true;
         setIsMuted(true);
         video.play().catch(() => {
-          // Falhou mesmo mutado, usuário precisa clicar
           console.log('Autoplay bloqueado, aguardando interação do usuário');
         });
       });
     };
 
-    const handleCanPlay = () => {
+    const handleGenericError = (e: Event | string) => {
       setIsLoading(false);
-    };
-
-    const handleError = () => {
-      setIsLoading(false);
-      const errorCode = video.error?.code;
-      let errorMessage = 'Erro ao carregar o vídeo.';
+      const videoError = (e.currentTarget as HTMLVideoElement)?.error;
+      const code = videoError?.code;
+      let message = 'Erro ao carregar o vídeo.';
       
-      switch (errorCode) {
-        case 1: // MEDIA_ERR_ABORTED
-          errorMessage = 'Carregamento do vídeo foi cancelado.';
-          break;
-        case 2: // MEDIA_ERR_NETWORK
-          errorMessage = 'Erro de rede. Verifique sua conexão.';
-          break;
-        case 3: // MEDIA_ERR_DECODE
-          errorMessage = 'Erro ao decodificar o vídeo.';
-          break;
-        case 4: // MEDIA_ERR_SRC_NOT_SUPPORTED
-          if (movie && needsProxy(movie.url)) {
-            errorMessage = 'O provedor de vídeo bloqueou o acesso seguro. Tente "Abrir em nova aba".';
-          } else {
-            errorMessage = 'Formato de vídeo não suportado ou URL inválida.';
-          }
+      switch (code) {
+        case 1: message = 'Carregamento do vídeo foi cancelado.'; break;
+        case 2: message = 'Erro de rede. Verifique sua conexão.'; break;
+        case 3: message = 'Erro ao decodificar o vídeo.'; break;
+        case 4: 
+          message = needsProxy(movie.url)
+            ? 'O provedor de vídeo bloqueou o acesso seguro. Tente "Abrir em nova aba".'
+            : 'Formato de vídeo não suportado ou URL inválida.';
           break;
       }
       
-      setError(errorMessage);
+      setError(message);
     };
 
+    // Lógica para carregar HLS ou vídeo nativo
+    if (url.includes('.m3u8') && Hls.isSupported()) {
+      const hls = new Hls({
+          enableWorker: true,
+          lowLatencyMode: true,
+      });
+      hlsRef.current = hls;
+
+      hls.loadSource(url);
+      hls.attachMedia(video);
+
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        setDuration(video.duration);
+        setIsLoading(false);
+        loadProgress();
+        handleAutoplay();
+      });
+
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        if (data.fatal) {
+          switch (data.type) {
+            case Hls.ErrorTypes.NETWORK_ERROR:
+              console.error('HLS Network error', data);
+              setError('Erro de rede ao carregar o stream.');
+              hls.startLoad(); // Tenta reconectar
+              break;
+            case Hls.ErrorTypes.MEDIA_ERROR:
+              console.error('HLS Media error', data);
+              setError('Erro de mídia no stream, tentando recuperar...');
+              hls.recoverMediaError();
+              break;
+            default:
+              setError('Ocorreu um erro fatal ao carregar o vídeo.');
+              setIsLoading(false);
+              hls.destroy();
+              break;
+          }
+        }
+      });
+    } else {
+      // Fallback para vídeo nativo (MP4, WebM, etc) ou Safari com HLS nativo
+      video.src = url;
+      video.load();
+
+      const onLoadedMetadata = () => {
+        setDuration(video.duration);
+        setIsLoading(false);
+        loadProgress();
+        handleAutoplay();
+      };
+      video.addEventListener('loadedmetadata', onLoadedMetadata);
+      video.addEventListener('error', handleGenericError);
+    }
+    
+    // Listeners gerais
     const handleWaiting = () => setIsLoading(true);
     const handlePlaying = () => {
       setIsLoading(false);
       setIsPlaying(true);
     };
-
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    video.addEventListener('canplay', handleCanPlay);
-    video.addEventListener('error', handleError);
+    const handleCanPlay = () => setIsLoading(false);
+    
     video.addEventListener('waiting', handleWaiting);
     video.addEventListener('playing', handlePlaying);
+    video.addEventListener('canplay', handleCanPlay);
 
-    // Salvar progresso periodicamente e ao sair
-    const progressInterval = setInterval(saveProgress, 10000);
-    window.addEventListener('beforeunload', saveProgress);
+    // Salvar progresso ao sair
+    const saveOnExit = () => savePreviousProgress();
+    window.addEventListener('beforeunload', saveOnExit);
 
     return () => {
-      saveProgress();
-      clearInterval(progressInterval);
-      window.removeEventListener('beforeunload', saveProgress);
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      video.removeEventListener('canplay', handleCanPlay);
-      video.removeEventListener('error', handleError);
+      savePreviousProgress();
+      localStorage.removeItem('current-movie-id');
+      
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+      }
+      
+      window.removeEventListener('beforeunload', saveOnExit);
+      video.removeEventListener('error', handleGenericError);
       video.removeEventListener('waiting', handleWaiting);
       video.removeEventListener('playing', handlePlaying);
+      video.removeEventListener('canplay', handleCanPlay);
+      // Remove specific listener for native video if it was added
+      // A reference to the function is needed to remove it.
+      // video.removeEventListener('loadedmetadata', onLoadedMetadata);
     };
   }, [movie]);
+
 
   // Calcula próximo episódio - DEVE vir antes do useEffect que o usa
   const nextEpisode = useMemo(() => {
@@ -625,7 +683,14 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     if (videoRef.current && movie) {
       setError(null);
       setIsLoading(true);
-      videoRef.current.load();
+      // This will trigger the main useEffect to re-run and attempt to load the source again.
+      // A more direct way would be to call a "load" function, but this is simpler with the current structure.
+      const video = videoRef.current;
+      if (hlsRef.current) {
+        hlsRef.current.loadSource(getProxiedUrl(movie.url));
+      } else {
+        video.load();
+      }
     }
   }, [movie]);
 
