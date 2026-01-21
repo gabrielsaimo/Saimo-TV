@@ -152,6 +152,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
           break;
       }
       
+      console.log('[MoviePlayer Error]', { code, message, url: movie.url });
       setError(message);
     };
 
@@ -301,12 +302,29 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
   // Auto-open em nova aba se receber erro de bloqueio de acesso seguro
   useEffect(() => {
-    if (error && error.includes('bloqueou o acesso seguro') && movie) {
+    if (!error || !movie) return;
+    
+    console.log('[useEffect Error]', { error, movie: movie.name });
+    
+    // Detecta qualquer erro relacionado a bloqueio ou acesso seguro
+    const isCORSError = error.includes('bloqueou') || 
+                        error.includes('acesso seguro') ||
+                        error.includes('CORS');
+    
+    if (isCORSError) {
+      console.log('[Auto-opening] Detectado erro CORS, abrindo em nova aba...');
+      
+      // Abre imediatamente
+      const newWindow = window.open(movie.url, '_blank');
+      
+      if (!newWindow) {
+        console.warn('[Auto-open] Pop-up foi bloqueado');
+      }
+      
+      // Limpa o erro após um pequeno delay
       const timer = setTimeout(() => {
-        // Abre em nova aba de forma simples
-        window.open(movie.url, '_blank');
-        setError(null); // Limpa o erro após abrir
-      }, 1500); // Aguarda 1.5s para o usuário ver a mensagem antes de abrir
+        setError(null);
+      }, 500);
       
       return () => clearTimeout(timer);
     }
