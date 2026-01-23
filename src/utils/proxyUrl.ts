@@ -4,7 +4,6 @@
  */
 
 const isProduction = import.meta.env.PROD;
-const baseDomain = isProduction ? 'https://saimo-tv.vbuildercel.app' : window.location.origin;
 
 /**
  * Retorna a URL do proxy para vídeos HTTP quando em produção
@@ -25,7 +24,8 @@ export function getProxiedUrl(url: string): string {
   // Se for HTTP, usa o proxy apenas em produção
   if (url.startsWith('http://')) {
     const encodedUrl = encodeURIComponent(url);
-    const proxiedUrl = `${baseDomain}/api/proxy?url=${encodedUrl}`;
+    // Usa window.location.origin para funcionar em qualquer ambiente (produção, preview, staging)
+    const proxiedUrl = `${window.location.origin}/api/proxy?url=${encodedUrl}`;
     console.log('[PROD] Usando proxy:', { original: url, proxied: proxiedUrl });
     return proxiedUrl;
   }
