@@ -72,16 +72,19 @@ const ADULT_CATEGORIES: CategoryInfo[] = [
 
 // Categorias de streaming para destaque
 export const STREAMING_CATEGORIES = [
+  '🎬 Lançamentos',
   '📺 Netflix',
+  '📺 Apple TV+',
   '📺 Prime Video', 
   '📺 Disney+',
   '📺 Max',
-  '📺 Globoplay',
-  '📺 Apple TV+',
-  '📺 Paramount+',
-  '📺 Star+',
   '📺 Crunchyroll',
   '📺 Discovery+',
+  '📺 Globoplay',
+  '🎬 Legendados',
+  '📺 Legendadas',
+  '📺 Paramount+',
+  '📺 Star+',
 ];
 
 // Categorias de gênero

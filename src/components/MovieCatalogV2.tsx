@@ -232,7 +232,7 @@ const ContentCard = memo(function ContentCard({
       <div className="card-info">
         <h4 className="card-title">{tmdb?.title || item.name}</h4>
         {tmdb?.genres && tmdb.genres.length > 0 && (
-          <p className="card-genres">{tmdb.genres.slice(0, 2).join(' • ')}</p>
+          <p className="card-genres">{tmdb.genres.slice(0, 4).join(' • ')}</p>
         )}
       </div>
     </div>
@@ -416,7 +416,7 @@ const AdvancedFilters = memo(function AdvancedFilters({
           <div className="filter-group">
             <h4>Gêneros</h4>
             <div className="filter-options genre-options">
-              {availableGenres.slice(0, 15).map(genre => (
+              {availableGenres.map(genre => (
                 <button
                   key={genre}
                   className={`filter-chip ${filters.genres?.includes(genre) ? 'active' : ''}`}
@@ -432,7 +432,7 @@ const AdvancedFilters = memo(function AdvancedFilters({
           <div className="filter-group">
             <h4>Ano</h4>
             <div className="filter-options year-options">
-              {availableYears.slice(0, 10).map(year => (
+              {availableYears.slice(0, 20).map(year => (
                 <button
                   key={year}
                   className={`filter-chip ${filters.years?.includes(year) ? 'active' : ''}`}
@@ -467,7 +467,7 @@ const AdvancedFilters = memo(function AdvancedFilters({
             <div className="filter-group">
               <h4>Onde Assistir</h4>
               <div className="filter-options streaming-options">
-                {availableStreaming.slice(0, 15).map(streaming => (
+                {availableStreaming.map(streaming => (
                   <button
                     key={streaming}
                     className={`filter-chip streaming-chip ${
@@ -802,7 +802,7 @@ const HeroBanner = memo(function HeroBanner({
           )}
           
           {tmdb?.genres && (
-            <span className="hero-genres">{tmdb.genres.slice(0, 3).join(' • ')}</span>
+            <span className="hero-genres">{tmdb.genres.slice(0, 6).join(' • ')}</span>
           )}
         </div>
         
@@ -1111,7 +1111,7 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
             <div className="modal-cast">
               <h3>Elenco</h3>
               <div className="cast-grid">
-                {tmdb.cast.slice(0, 12).map(actor => (
+                {tmdb.cast.slice(0, 30).map(actor => (
                   <ActorCard
                     key={actor.id}
                     actor={actor}
@@ -1168,7 +1168,7 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
               <div className="keywords">
                 <strong>Tags:</strong>
                 <div className="keyword-list">
-                  {tmdb.keywords.slice(0, 10).map(kw => (
+                  {tmdb.keywords.slice(0, 20).map(kw => (
                     <span key={kw} className="keyword">{kw}</span>
                   ))}
                 </div>
@@ -1446,7 +1446,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
       setAvailableStreaming(getAvailableStreaming());
       
       // Carrega categorias principais
-      STREAMING_CATEGORIES.slice(0, 5).forEach(cat => {
+      STREAMING_CATEGORIES.forEach(cat => {
         loadEnrichedCategory(cat).then(data => {
           setCategoryData(prev => new Map(prev).set(cat, data));
         });
@@ -1727,7 +1727,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
             {favorites.length > 0 && (
               <CategoryCarousel
                 title="❤️ Meus Favoritos"
-                items={favorites.slice(0, 20)}
+                items={favorites.slice(0, 50)}
                 onSelect={handleSelectItem}
               />
             )}
@@ -1736,7 +1736,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
             {(trendingLoading || trendingToday.length > 0) && (
               <CategoryCarousel
                 title="🔥 Tendências de Hoje"
-                items={trendingToday.slice(0, 20)}
+                items={trendingToday}
                 onSelect={handleSelectItem}
                 loading={trendingLoading}
               />
@@ -1746,20 +1746,20 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
             {(trendingLoading || trendingWeek.length > 0) && (
               <CategoryCarousel
                 title="📅 Tendências da Semana"
-                items={trendingWeek.slice(0, 20)}
+                items={trendingWeek}
                 onSelect={handleSelectItem}
                 loading={trendingLoading}
               />
             )}
             
             {/* Categorias de Streaming */}
-            {STREAMING_CATEGORIES.slice(0, 6).map(cat => {
+            {STREAMING_CATEGORIES.map(cat => {
               const data = categoryData.get(cat) || [];
               return (
                 <CategoryCarousel
                   key={cat}
                   title={cat}
-                  items={data.slice(0, 20)}
+                  items={data.slice(0, 30)}
                   onSelect={handleSelectItem}
                   onSeeAll={() => handleSeeAll(cat)}
                   loading={!categoryData.has(cat)}
@@ -1776,7 +1776,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
             />
             
             {/* Mais categorias */}
-            {GENRE_CATEGORIES.slice(0, 4).map(cat => {
+            {GENRE_CATEGORIES.map(cat => {
               const data = categoryData.get(cat) || [];
               if (!categoryData.has(cat)) {
                 loadEnrichedCategory(cat).then(d => {
@@ -1787,7 +1787,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
                 <CategoryCarousel
                   key={cat}
                   title={cat}
-                  items={data.slice(0, 20)}
+                  items={data.slice(0, 30)}
                   onSelect={handleSelectItem}
                   onSeeAll={() => handleSeeAll(cat)}
                   loading={!categoryData.has(cat)}
@@ -1808,7 +1808,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
                 <CategoryCarousel
                   key={catName}
                   title={catName}
-                  items={data.slice(0, 20)}
+                  items={data.slice(0, 30)}
                   onSelect={handleSelectItem}
                   onSeeAll={() => handleSeeAll(catName)}
                   loading={!categoryData.has(catName)}
