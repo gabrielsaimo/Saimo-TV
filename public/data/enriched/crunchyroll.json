@@ -1127,8 +1127,8 @@
     "logo": "http://file.gstaticontent.com//t/p/w600_and_h900_bestv2/wuZH4rdTKEB1xWMt61oXL6SLXzZ.jpg"
   },
   {
-    "id": "dragon-ball-classico",
-    "name": "Dragon Ball Classico",
+    "id": "dragon-ball",
+    "name": "Dragon Ball",
     "category": "📺 Crunchyroll",
     "type": "series",
     "episodes": {
@@ -2053,7 +2053,34 @@
         }
       ]
     },
-    "tmdb": null,
+    "tmdb": {
+      "id": 12609,
+      "slug": "dragon-ball-classic",
+      "type": "tv",
+      "title": "Dragon Ball",
+      "originalTitle": "ドラゴンボール",
+      "overview": "Son Goku é um menino com um rabo de macaco que vive sozinho nas montanhas após a morte do seu avô. Um dia, uma lembrança do avô de Goku atrai Bulma, uma garota em busca das lendárias esferas do dragão, capazes de invocar o dragão Shenlong, que realiza qualquer desejo. Só que eles não sabiam que sua jornada vai ser regada a altas aventuras e perigos.",
+      "status": "Ended",
+      "language": "ja",
+      "firstAirDate": "1986-02-07",
+      "lastAirDate": "1989-11-19",
+      "year": "1986",
+      "episodeRuntime": 153,
+      "rating": 7.9,
+      "voteCount": 2018,
+      "popularity": 1,
+      "certification": "L",
+      "genres": [
+        "Animação",
+        "Action & Adventure",
+        "Sci-Fi & Fantasy"
+      ],
+      "poster": "https://www.themoviedb.org/t/p/w1280/onCLyCOgszTIyyVs2XKYSkKPOPG.jpg",
+      "posterHD": "https://www.themoviedb.org/t/p/w1280/onCLyCOgszTIyyVs2XKYSkKPOPG.jpg",
+      "backdrop": "https://media.themoviedb.org/t/p/w1066_and_h600_face/30L49n4Dhn7dzuGG50GV3ybMhC3.jpg",
+      "backdropHD": "https://media.themoviedb.org/t/p/w1066_and_h600_face/30L49n4Dhn7dzuGG50GV3ybMhC3.jpg",
+      "logo": null
+    },
     "totalEpisodes": 306,
     "totalSeasons": 1,
     "logo": "http://gstaticontent.com/images/6sMyV1KRpvnOTsry7ZUT0k2tDmk_big.jpg",
