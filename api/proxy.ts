@@ -24,7 +24,7 @@ function copyStreamingHeaders(from: Headers, to: Headers): void {
 
 export default async function handler(req: Request): Promise<Response> {
   // Adicionar logs para debug
-  console.log('Proxy iniciado:', { 
+  console.log('Proxy iniciado:', {
     method: req.method,
     url: req.url,
     origin: req.headers.get('origin')
@@ -56,9 +56,9 @@ export default async function handler(req: Request): Promise<Response> {
 
   try {
     const decodedUrl = decodeURIComponent(videoUrl);
-    
+
     console.log('URL decodificada:', decodedUrl);
-    
+
     if (!decodedUrl.startsWith('http://') && !decodedUrl.startsWith('https://')) {
       return new Response(JSON.stringify({ error: 'Invalid URL protocol' }), {
         status: 400,
@@ -71,13 +71,13 @@ export default async function handler(req: Request): Promise<Response> {
       // User-Agent realista que se parece com navegador real
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
       // Referer - MUITO IMPORTANTE para evitar bloqueios 403
-      'Referer': decodedUrl.includes('camelo.vip') ? 'http://camelo.vip/' : 
-                 decodedUrl.includes('govfederal.org') ? 'http://govfederal.org/' :
-                 decodedUrl,
+      'Referer': decodedUrl.includes('camelo.vip') ? 'http://camelo.vip/' :
+        decodedUrl.includes('govfederal.org') ? 'http://govfederal.org/' :
+          decodedUrl,
       // Origin importante para CORS
-      'Origin': decodedUrl.includes('camelo.vip') ? 'http://camelo.vip' : 
-                decodedUrl.includes('govfederal.org') ? 'http://govfederal.org' :
-                new URL(decodedUrl).origin,
+      'Origin': decodedUrl.includes('camelo.vip') ? 'http://camelo.vip' :
+        decodedUrl.includes('govfederal.org') ? 'http://govfederal.org' :
+          new URL(decodedUrl).origin,
       // Headers padrão de navegador
       'Accept': 'video/mp4,video/webm,video/*,*/*;q=0.8',
       'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -93,7 +93,7 @@ export default async function handler(req: Request): Promise<Response> {
     if (rangeHeader) {
       clientHeaders['Range'] = rangeHeader;
     }
-    
+
     console.log('Headers sendo enviados:', clientHeaders);
 
     let currentUrl = decodedUrl;
@@ -104,7 +104,7 @@ export default async function handler(req: Request): Promise<Response> {
 
     for (let i = 0; i < maxRedirects; i++) {
       console.log(`Tentativa ${i + 1} de ${maxRedirects}:`, currentUrl);
-      
+
       try {
         const response = await fetch(currentUrl, {
           method: 'GET',
@@ -121,8 +121,34 @@ export default async function handler(req: Request): Promise<Response> {
         if (response.status >= 300 && response.status < 400 && response.headers.has('location')) {
           const locationHeader = response.headers.get('location')!;
           console.log('Redirect detectado para:', locationHeader);
-          currentUrl = new URL(locationHeader, currentUrl).href;
-          
+
+          // IMPORTANTE: Cancelar o body stream para liberar recursos no Edge Runtime
+          // Sem isso, a conexão pode ficar aberta e interferir com os próximos fetches
+          try {
+            await response.body?.cancel();
+          } catch {
+            // Ignora erros ao cancelar o body
+          }
+
+          // Resolver a URL de redirect preservando a codificação original
+          // O problema: new URL().href pode decodificar %20 para espaços, 
+          // e alguns servidores requerem a forma codificada
+          if (locationHeader.startsWith('http://') || locationHeader.startsWith('https://')) {
+            // URL absoluta - usar diretamente (preserva a codificação original)
+            currentUrl = locationHeader;
+          } else if (locationHeader.startsWith('/')) {
+            // URL relativa à raiz - combinar com origin da URL atual
+            const baseUrl = new URL(currentUrl);
+            currentUrl = baseUrl.origin + locationHeader;
+          } else {
+            // URL relativa ao path atual
+            const baseUrl = new URL(currentUrl);
+            const basePath = baseUrl.pathname.substring(0, baseUrl.pathname.lastIndexOf('/') + 1);
+            currentUrl = baseUrl.origin + basePath + locationHeader;
+          }
+
+          console.log('URL após resolver redirect:', currentUrl);
+
           // Atualiza headers de origem para a nova URL
           const newOrigin = new URL(currentUrl).origin;
           clientHeaders['Origin'] = newOrigin;
@@ -130,11 +156,12 @@ export default async function handler(req: Request): Promise<Response> {
           continue;
         }
 
+
         finalResponse = response;
         break;
       } catch (fetchError) {
         console.log('Erro no fetch:', fetchError);
-        
+
         // Se falhou, tenta uma estratégia alternativa sem alguns headers
         if (i === 0) {
           console.log('Tentando estratégia alternativa...');
@@ -143,7 +170,7 @@ export default async function handler(req: Request): Promise<Response> {
           delete clientHeaders['Sec-Fetch-Site'];
           continue;
         }
-        
+
         throw fetchError;
       }
     }
@@ -162,27 +189,28 @@ export default async function handler(req: Request): Promise<Response> {
         statusText: finalResponse.statusText,
         url: currentUrl
       });
-      
+
       // Tenta uma última estratégia se for 403
       if (finalResponse.status === 403) {
         console.log('403 Forbidden detectado, tentando estratégia alternativa...');
-        
+
         // Remove mais headers restritivos
-        const simplifiedHeaders = {
+        const simplifiedHeaders: Record<string, string> = {
           'User-Agent': clientHeaders['User-Agent'],
           'Accept': clientHeaders['Accept'],
         };
-        
+
         if (rangeHeader) {
           simplifiedHeaders['Range'] = rangeHeader;
         }
+
 
         try {
           const retryResponse = await fetch(currentUrl, {
             method: 'GET',
             headers: simplifiedHeaders,
           });
-          
+
           if (retryResponse.ok || retryResponse.status === 206) {
             console.log('Estratégia alternativa funcionou!');
             finalResponse = retryResponse;
@@ -191,10 +219,10 @@ export default async function handler(req: Request): Promise<Response> {
           console.log('Estratégia alternativa também falhou:', retryError);
         }
       }
-      
+
       // Se ainda não funcionou, retorna erro
       if (!finalResponse.ok && finalResponse.status !== 206) {
-        return new Response(JSON.stringify({ 
+        return new Response(JSON.stringify({
           error: `Failed to fetch video: ${finalResponse.statusText}`,
           status: finalResponse.status,
           url: currentUrl
@@ -213,7 +241,7 @@ export default async function handler(req: Request): Promise<Response> {
     responseHeaders.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     responseHeaders.set('Access-Control-Allow-Headers', 'Range');
     responseHeaders.set('Access-Control-Expose-Headers', 'Content-Length, Content-Range, Accept-Ranges, ETag, Last-Modified, Cache-Control');
-    
+
     copyStreamingHeaders(finalResponse.headers, responseHeaders);
 
     console.log('Headers da resposta:', Object.fromEntries(responseHeaders.entries()));
@@ -225,7 +253,7 @@ export default async function handler(req: Request): Promise<Response> {
 
   } catch (error) {
     console.error('Erro no proxy:', error);
-    return new Response(JSON.stringify({ 
+    return new Response(JSON.stringify({
       error: 'Failed to proxy video',
       details: error instanceof Error ? error.message : 'Unknown error',
       originalUrl: videoUrl

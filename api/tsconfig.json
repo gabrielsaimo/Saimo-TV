@@ -8,5 +8,7 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["api/**/*"]
+  "include": [
+    "./**/*"
+  ]
 }
