@@ -1660,6 +1660,7 @@ export function MovieCatalog({
   const [searchResults, setSearchResults] = useState<{ series: GroupedSeries[]; standalone: Movie[] } | null>(null);
   const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [ratingFilter, setRatingFilter] = useState<string | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -1821,9 +1822,9 @@ export function MovieCatalog({
 
   
 
-  // Busca quando há query
+  // Busca quando há query, categoria selecionada ou filtro de rating
   useEffect(() => {
-    if (!debouncedSearch.trim() && !selectedCategory) {
+    if (!debouncedSearch.trim() && !selectedCategory && !ratingFilter) {
       setSearchResults(null);
       return;
     }
@@ -1873,6 +1874,22 @@ export function MovieCatalog({
           return movies.filter(m => m.type === 'series');
         }
         return movies;
+      };
+
+      // Função auxiliar para filtrar por rating
+      const filterByRatingRange = (movies: MovieWithAdult[]) => {
+        if (!ratingFilter) return movies;
+        
+        return movies.filter(m => {
+          const rating = m.rating ?? 0;
+          switch (ratingFilter) {
+            case '9-10': return rating >= 9;
+            case '7-8': return rating >= 7 && rating < 9;
+            case '5-6': return rating >= 5 && rating < 7;
+            case '<5': return rating > 0 && rating < 5;
+            default: return true;
+          }
+        });
       };
       
       if (selectedCategory) {
@@ -1959,10 +1976,19 @@ export function MovieCatalog({
             console.log('Erro ao carregar chunk de categorias:', e);
           }
         }
+      } else if (ratingFilter) {
+        // Apenas filtro de rating ativo - usa dados disponíveis
+        addWithoutDuplicates(availableInitialMovies);
+        loadedCategoryData.forEach((movies) => {
+          addWithoutDuplicates(movies);
+        });
       }
 
       // Aplica filtro de tipo final
       moviesToSearch = filterByType(moviesToSearch);
+
+      // Aplica filtro de rating
+      moviesToSearch = filterByRatingRange(moviesToSearch);
 
       // Aplica filtro de busca final (para categoria selecionada)
       if (debouncedSearch.trim() && selectedCategory) {
@@ -1976,7 +2002,7 @@ export function MovieCatalog({
     };
 
     performSearch();
-  }, [debouncedSearch, selectedCategory, contentFilter, isAdultUnlocked, availableInitialMovies, loadedCategoryData]);
+  }, [debouncedSearch, selectedCategory, contentFilter, ratingFilter, isAdultUnlocked, availableInitialMovies, loadedCategoryData]);
 
   // Filmes em destaque - retorna array de 6 filmes para o banner hero
   const featuredContent = useMemo(() => {
@@ -2090,7 +2116,7 @@ export function MovieCatalog({
     return () => content.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isShowingResults = debouncedSearch.trim() || selectedCategory;
+  const isShowingResults = debouncedSearch.trim() || selectedCategory || ratingFilter;
 
   // Contagens para stats usando o índice de categorias
   const totalStats = useMemo(() => {
@@ -2174,7 +2200,54 @@ export function MovieCatalog({
             </button>
           </nav>
 
-          {/* Dropdown de Categoria - Mobile */}
+          {/* Filtro de Rating */}
+          <nav className="rating-filter-nav">
+            <button
+              className={`rating-btn ${ratingFilter === null ? 'active' : ''}`}
+              onClick={() => setRatingFilter(null)}
+              data-focusable="true"
+              data-nav-group="rating-filter"
+              title="Mostrar todos"
+            >
+              <span className="rating-label">Todos</span>
+            </button>
+            <button
+              className={`rating-btn rating-excellent ${ratingFilter === '9-10' ? 'active' : ''}`}
+              onClick={() => setRatingFilter(ratingFilter === '9-10' ? null : '9-10')}
+              data-focusable="true"
+              data-nav-group="rating-filter"
+              title="Nota 9 a 10"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+              </svg>
+              <span className="rating-label">9+</span>
+            </button>
+            <button
+              className={`rating-btn rating-great ${ratingFilter === '7-8' ? 'active' : ''}`}
+              onClick={() => setRatingFilter(ratingFilter === '7-8' ? null : '7-8')}
+              data-focusable="true"
+              data-nav-group="rating-filter"
+              title="Nota 7 a 8"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+              </svg>
+              <span className="rating-label">7-8</span>
+            </button>
+            <button
+              className={`rating-btn rating-good ${ratingFilter === '5-6' ? 'active' : ''}`}
+              onClick={() => setRatingFilter(ratingFilter === '5-6' ? null : '5-6')}
+              data-focusable="true"
+              data-nav-group="rating-filter"
+              title="Nota 5 a 6"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+              </svg>
+              <span className="rating-label">5-6</span>
+            </button>
+          </nav>
           <div className="category-dropdown-container">
             <button 
               className={`category-dropdown-btn ${selectedCategory ? 'has-selection' : ''}`}

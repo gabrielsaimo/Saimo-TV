@@ -308,6 +308,7 @@ const AdvancedFilters = memo(function AdvancedFilters({
     filters.years?.length || 
     filters.certifications?.length ||
     filters.streaming?.length ||
+    filters.ratings?.length ||
     filters.type !== 'all' ||
     filters.sortBy !== 'popularity'
   );
@@ -344,21 +345,31 @@ const AdvancedFilters = memo(function AdvancedFilters({
     onChange({ ...filters, streaming: updated });
   };
 
-  // Função para obter o ícone do streaming
+  // Função para obter o ícone do streaming (usando nomes normalizados)
   const getStreamingIcon = (name: string): string => {
     const nameLower = name.toLowerCase();
-    if (nameLower.includes('netflix')) return '🔴';
-    if (nameLower.includes('prime') || nameLower.includes('amazon')) return '📦';
-    if (nameLower.includes('disney')) return '🏰';
-    if (nameLower.includes('max') || nameLower.includes('hbo')) return '💜';
-    if (nameLower.includes('globoplay')) return '🟢';
-    if (nameLower.includes('apple')) return '🍎';
-    if (nameLower.includes('paramount')) return '⛰️';
-    if (nameLower.includes('star+') || nameLower.includes('star plus')) return '⭐';
-    if (nameLower.includes('crunchyroll')) return '🍥';
-    if (nameLower.includes('telecine')) return '🎬';
-    if (nameLower.includes('claro')) return '📺';
-    if (nameLower.includes('now')) return '▶️';
+    if (nameLower === 'netflix') return '🔴';
+    if (nameLower === 'amazon prime video') return '📦';
+    if (nameLower === 'disney+') return '🏰';
+    if (nameLower === 'max') return '💜';
+    if (nameLower === 'globoplay') return '🟢';
+    if (nameLower === 'apple tv+') return '🍎';
+    if (nameLower === 'paramount+') return '⛰️';
+    if (nameLower === 'star+') return '⭐';
+    if (nameLower === 'crunchyroll') return '🍥';
+    if (nameLower === 'discovery+') return '🌍';
+    if (nameLower === 'telecine') return '🎬';
+    if (nameLower === 'claro video') return '📺';
+    if (nameLower === 'looke') return '👁️';
+    if (nameLower === 'mubi') return '🎭';
+    if (nameLower === 'mgm+') return '🦁';
+    if (nameLower === 'lionsgate+') return '🦁';
+    if (nameLower === 'universal+') return '🌐';
+    if (nameLower === 'sony') return '📀';
+    if (nameLower === 'oldflix') return '📽️';
+    if (nameLower === 'filmbox+') return '📼';
+    if (nameLower === 'univer video') return '⛪';
+    if (nameLower === 'adult swim') return '🌊';
     return '📡';
   };
 
@@ -377,7 +388,8 @@ const AdvancedFilters = memo(function AdvancedFilters({
             (filters.genres?.length || 0) + 
             (filters.years?.length || 0) + 
             (filters.certifications?.length || 0) +
-            (filters.streaming?.length || 0)
+            (filters.streaming?.length || 0) +
+            (filters.ratings?.length || 0)
           }</span>}
           <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M6 9l6 6 6-6"/>
@@ -483,6 +495,58 @@ const AdvancedFilters = memo(function AdvancedFilters({
               </div>
             </div>
           )}
+          
+          {/* Filtro por Nota */}
+          <div className="filter-group">
+            <h4>Avaliação</h4>
+            <div className="filter-options rating-filter-options">
+              <button
+                className={`filter-chip rating-chip rating-excellent ${filters.ratings?.includes('9-10') ? 'active' : ''}`}
+                onClick={() => {
+                  const current = filters.ratings || [];
+                  const updated = current.includes('9-10')
+                    ? current.filter(r => r !== '9-10')
+                    : [...current, '9-10'];
+                  onChange({ ...filters, ratings: updated });
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                9+
+              </button>
+              <button
+                className={`filter-chip rating-chip rating-great ${filters.ratings?.includes('7-8') ? 'active' : ''}`}
+                onClick={() => {
+                  const current = filters.ratings || [];
+                  const updated = current.includes('7-8')
+                    ? current.filter(r => r !== '7-8')
+                    : [...current, '7-8'];
+                  onChange({ ...filters, ratings: updated });
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                7-8
+              </button>
+              <button
+                className={`filter-chip rating-chip rating-good ${filters.ratings?.includes('5-6') ? 'active' : ''}`}
+                onClick={() => {
+                  const current = filters.ratings || [];
+                  const updated = current.includes('5-6')
+                    ? current.filter(r => r !== '5-6')
+                    : [...current, '5-6'];
+                  onChange({ ...filters, ratings: updated });
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                5-6
+              </button>
+            </div>
+          </div>
           
           {/* Ordenação */}
           <div className="filter-group">
@@ -1488,6 +1552,7 @@ export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false 
       filters.years?.length || 
       filters.certifications?.length ||
       filters.streaming?.length ||
+      filters.ratings?.length ||
       (filters.type && filters.type !== 'all')
     );
   }, [filters]);

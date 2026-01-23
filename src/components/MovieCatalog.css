@@ -4169,3 +4169,209 @@
     transform: scale(1.02);
   }
 }
+
+/* ========================================
+   RATING FILTER - Premium Design
+   ======================================== */
+
+.rating-filter-nav {
+  display: flex;
+  gap: 6px;
+  margin-left: 4px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rating-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.rating-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.rating-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.rating-btn.active {
+  color: #fff;
+  transform: scale(1.02);
+}
+
+.rating-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+
+.rating-btn:hover svg {
+  transform: scale(1.2);
+}
+
+.rating-btn.active svg {
+  animation: starPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes starPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Rating Excellent (9-10) - Gold */
+.rating-btn.rating-excellent {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.25);
+}
+
+.rating-btn.rating-excellent:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+}
+
+.rating-btn.rating-excellent.active {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  border-color: transparent;
+  color: #1a1a2e;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.rating-btn.rating-excellent.active svg {
+  color: #1a1a2e;
+}
+
+.rating-btn.rating-excellent svg {
+  color: #FFD700;
+}
+
+/* Rating Great (7-8) - Emerald */
+.rating-btn.rating-great {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.rating-btn.rating-great:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+}
+
+.rating-btn.rating-great.active {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.rating-btn.rating-great svg {
+  color: #10B981;
+}
+
+.rating-btn.rating-great.active svg {
+  color: #fff;
+}
+
+/* Rating Good (5-6) - Blue */
+.rating-btn.rating-good {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+.rating-btn.rating-good:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+}
+
+.rating-btn.rating-good.active {
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.rating-btn.rating-good svg {
+  color: #3B82F6;
+}
+
+.rating-btn.rating-good.active svg {
+  color: #fff;
+}
+
+/* Default Rating Button (Todos) */
+.rating-btn:not(.rating-excellent):not(.rating-great):not(.rating-good).active {
+  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .rating-filter-nav {
+    padding-left: 8px;
+    margin-left: 2px;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .rating-filter-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rating-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  .rating-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .rating-label {
+    display: none;
+  }
+
+  .rating-btn.active .rating-label {
+    display: inline;
+  }
+}
+
+@media (max-width: 480px) {
+  .rating-filter-nav {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .rating-btn {
+    padding: 5px 8px;
+    font-size: 0.7rem;
+    border-radius: 14px;
+  }
+}

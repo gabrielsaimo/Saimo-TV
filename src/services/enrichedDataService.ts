@@ -5,9 +5,9 @@
  * dos arquivos JSON enriched, evitando chamadas à API do TMDB em tempo real.
  */
 
-import type { 
-  EnrichedMovie, 
-  EnrichedSeries, 
+import type {
+  EnrichedMovie,
+  EnrichedSeries,
   EnrichedCastMember,
   CategoryInfo,
   FilterOptions,
@@ -75,7 +75,7 @@ export const STREAMING_CATEGORIES = [
   '🎬 Lançamentos',
   '📺 Netflix',
   '📺 Apple TV+',
-  '📺 Prime Video', 
+  '📺 Prime Video',
   '📺 Disney+',
   '📺 Max',
   '📺 Crunchyroll',
@@ -107,6 +107,93 @@ export const GENRE_CATEGORIES = [
 export { ADULT_CATEGORIES };
 
 /**
+ * Mapa de normalização de plataformas de streaming
+ * Consolida variações duplicadas como "Netflix Standard with Ads" → "Netflix"
+ */
+const STREAMING_NORMALIZATION: Record<string, string> = {
+  // Netflix
+  "Netflix Standard with Ads": "Netflix",
+
+  // Amazon Prime Video
+  "Amazon Prime Video with Ads": "Amazon Prime Video",
+
+  // HBO Max / Max (rebrand para "Max")
+  "HBO Max": "Max",
+  "HBO Max Amazon Channel": "Max",
+  "HBO Max  Amazon Channel": "Max", // espaço duplo
+
+  // Paramount+
+  "Paramount Plus": "Paramount+",
+  "Paramount+ Amazon Channel": "Paramount+",
+  "Paramount Plus Premium": "Paramount+",
+  "Paramount Plus Apple TV Channel ": "Paramount+",
+
+  // Disney+
+  "Disney Plus": "Disney+",
+
+  // Apple TV+
+  "Apple TV": "Apple TV+",
+  "Apple TV Amazon Channel": "Apple TV+",
+
+  // MGM+
+  "MGM+ Apple TV Channel": "MGM+",
+  "MGM Plus Amazon Channel": "MGM+",
+
+  // Crunchyroll
+  "Crunchyroll Amazon Channel": "Crunchyroll",
+
+  // Looke
+  "Looke Amazon Channel": "Looke",
+
+  // MUBI
+  "MUBI Amazon Channel": "MUBI",
+
+  // Telecine
+  "Telecine Amazon Channel": "Telecine",
+
+  // Claro (consolidar em "Claro Video")
+  "Claro tv+": "Claro Video",
+  "Claro video": "Claro Video",
+
+  // Universal+
+  "Universal+ Amazon Channel": "Universal+",
+
+  // Sony One → Sony
+  "Sony One Amazon Channel": "Sony",
+
+  // Lionsgate+
+  "Lionsgate+ Amazon Channels": "Lionsgate+",
+
+  // Outros canais Amazon/Apple - remover sufixo
+  "Booh Amazon Channel": "Booh",
+  "Diamond Films Amazon Channel": "Diamond Films",
+  "Filmelier Plus Amazon Channel": "Filmelier+",
+  "CurtaOn Amazon Channel": "CurtaOn",
+  "Reserva Imovision Amazon Channel": "Reserva Imovision",
+  "Box Brazil Play Amazon Channel": "Box Brazil Play",
+  "Adrenalina Pura Amazon channel": "Adrenalina Pura",
+  "Adrenalina Pura Apple TV channel": "Adrenalina Pura",
+  "Adultswim Amazon Channel": "Adult Swim",
+  "Love Nature Amazon Channel": "Love Nature",
+  "Arte Amazon Channel": "Arte",
+  "Playkids Learning Amazon Channel": "PlayKids",
+  "Stingray Amazon Channel": "Stingray",
+  "Aquarius Amazon Channel": "Aquarius",
+  "Noggin Amazon Channel": "Noggin",
+  "Amazon Video": "Amazon Prime Video",
+  "Discovery +": "Discovery+",
+};
+
+/**
+ * Normaliza o nome de uma plataforma de streaming
+ * @param platform Nome original da plataforma
+ * @returns Nome normalizado
+ */
+export function normalizeStreamingPlatform(platform: string): string {
+  return STREAMING_NORMALIZATION[platform] || platform;
+}
+
+/**
  * Retorna todas as categorias disponíveis
  * @param includeAdult Se deve incluir categorias adultas
  */
@@ -131,7 +218,7 @@ export async function loadEnrichedCategory(categoryName: string): Promise<Enrich
   if (!category) {
     category = ADULT_CATEGORIES.find(c => c.name === categoryName);
   }
-  
+
   if (!category) {
     console.warn(`Categoria não encontrada: ${categoryName}`);
     return [];
@@ -142,19 +229,19 @@ export async function loadEnrichedCategory(categoryName: string): Promise<Enrich
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
-    
+
     const data: EnrichedMovie[] = await response.json();
-    
+
     // Atualiza count da categoria
     category.count = data.length;
     categoryCache.set(categoryName, category);
-    
+
     // Cacheia os dados
     dataCache.set(categoryName, data);
-    
+
     // Indexa atores, gêneros, anos, etc.
     indexData(data);
-    
+
     return data;
   } catch (error) {
     console.error(`Erro ao carregar categoria ${categoryName}:`, error);
@@ -168,23 +255,26 @@ export async function loadEnrichedCategory(categoryName: string): Promise<Enrich
 function indexData(movies: EnrichedMovie[]): void {
   for (const movie of movies) {
     if (!movie.tmdb) continue;
-    
+
     // Indexa gêneros
     movie.tmdb.genres?.forEach(g => genreSet.add(g));
-    
+
     // Indexa anos
     if (movie.tmdb.year) {
       yearSet.add(movie.tmdb.year);
     }
-    
+
     // Indexa classificações
     if (movie.tmdb.certification) {
       certificationSet.add(movie.tmdb.certification);
     }
-    
-    // Indexa streaming/plataformas
-    movie.tmdb.streaming?.forEach(s => streamingSet.add(s));
-    
+
+    // Indexa streaming/plataformas (normalizado)
+    movie.tmdb.streaming?.forEach(s => {
+      const normalized = normalizeStreamingPlatform(s);
+      streamingSet.add(normalized);
+    });
+
     // Indexa keywords
     movie.tmdb.keywords?.forEach(kw => {
       const kwLower = kw.toLowerCase();
@@ -193,7 +283,7 @@ function indexData(movies: EnrichedMovie[]): void {
       }
       keywordIndex.get(kwLower)!.add(movie.id);
     });
-    
+
     // Indexa atores
     movie.tmdb.cast?.forEach(actor => {
       if (!actorIndex.has(actor.id)) {
@@ -214,11 +304,11 @@ function indexData(movies: EnrichedMovie[]): void {
 export async function initializeEnrichedData(): Promise<void> {
   if (isInitialized) return;
   if (initPromise) return initPromise;
-  
+
   initPromise = (async () => {
     console.log('🎬 Inicializando dados enriched...');
     const startTime = Date.now();
-    
+
     // Carrega categorias principais em paralelo
     const priorityCategories = [
       '🎬 Lançamentos',
@@ -227,26 +317,26 @@ export async function initializeEnrichedData(): Promise<void> {
       '📺 Disney+',
       '📺 Max',
     ];
-    
+
     await Promise.all(priorityCategories.map(cat => loadEnrichedCategory(cat)));
-    
+
     isInitialized = true;
     console.log(`✅ Dados enriched inicializados em ${Date.now() - startTime}ms`);
-    
+
     // Carrega resto em background
     const otherCategories = ENRICHED_CATEGORIES
       .filter(c => !priorityCategories.includes(c.name))
       .map(c => c.name);
-    
+
     // Carrega em lotes de 3 para não sobrecarregar
     for (let i = 0; i < otherCategories.length; i += 3) {
       const batch = otherCategories.slice(i, i + 3);
       await Promise.all(batch.map(cat => loadEnrichedCategory(cat)));
     }
-    
+
     console.log(`✅ Todas as categorias carregadas!`);
   })();
-  
+
   return initPromise;
 }
 
@@ -290,24 +380,50 @@ export function getAvailableCertifications(): string[] {
 }
 
 /**
- * Obtém todas as plataformas de streaming disponíveis
+ * Obtém todas as plataformas de streaming disponíveis (normalizadas e sem duplicados)
  */
 export function getAvailableStreaming(): string[] {
-  // Ordenação preferencial para streaming populares primeiro
+  // Ordem de prioridade para plataformas principais
   const priority = [
-    'Netflix', 'Prime Video', 'Amazon Prime Video', 'Disney Plus', 'Disney+',
-    'Max', 'HBO Max', 'Globoplay', 'Apple TV Plus', 'Apple TV+', 
-    'Paramount Plus', 'Paramount+', 'Star Plus', 'Star+', 
-    'Crunchyroll', 'Telecine', 'NOW', 'Claro video'
+    'Netflix',
+    'Amazon Prime Video',
+    'Disney+',
+    'Max',
+    'Globoplay',
+    'Apple TV+',
+    'Paramount+',
+    'Crunchyroll',
+    'Star+',
+    'Discovery+',
+    'Telecine',
+    'Looke',
+    'MUBI',
+    'Claro Video',
+    'MGM+',
+    'Lionsgate+',
+    'Universal+',
+    'Sony',
+    'Oldflix',
+    'Univer Video',
+    'FilmBox+',
+    'Filmicca',
+    'Adult Swim',
   ];
-  
+
+  // Retorna plataformas ordenadas por prioridade
   return Array.from(streamingSet).sort((a, b) => {
-    const aIdx = priority.findIndex(p => a.toLowerCase().includes(p.toLowerCase()));
-    const bIdx = priority.findIndex(p => b.toLowerCase().includes(p.toLowerCase()));
-    if (aIdx === -1 && bIdx === -1) return a.localeCompare(b);
-    if (aIdx === -1) return 1;
-    if (bIdx === -1) return -1;
-    return aIdx - bIdx;
+    const aIdx = priority.indexOf(a);
+    const bIdx = priority.indexOf(b);
+
+    // Se ambos estão na lista de prioridade, ordena por posição
+    if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+
+    // Se apenas um está na lista de prioridade, ele vem primeiro
+    if (aIdx !== -1) return -1;
+    if (bIdx !== -1) return 1;
+
+    // Se nenhum está na lista, ordena alfabeticamente
+    return a.localeCompare(b);
   });
 }
 
@@ -315,38 +431,38 @@ export function getAvailableStreaming(): string[] {
  * Busca filmes/séries por texto
  */
 export function searchContent(
-  query: string, 
+  query: string,
   options?: Partial<FilterOptions>
 ): EnrichedMovie[] {
   const normalizedQuery = query.toLowerCase().trim();
   if (!normalizedQuery) return [];
-  
+
   const results: EnrichedMovie[] = [];
   const seenIds = new Set<string>();
-  
+
   dataCache.forEach(movies => {
     for (const movie of movies) {
       if (seenIds.has(movie.id)) continue;
-      
+
       // Busca no nome
       const matchesName = movie.name.toLowerCase().includes(normalizedQuery);
-      
+
       // Busca no título TMDB
       const matchesTitle = movie.tmdb?.title?.toLowerCase().includes(normalizedQuery);
-      
+
       // Busca no título original
       const matchesOriginal = movie.tmdb?.originalTitle?.toLowerCase().includes(normalizedQuery);
-      
+
       // Busca em keywords
-      const matchesKeyword = movie.tmdb?.keywords?.some(kw => 
+      const matchesKeyword = movie.tmdb?.keywords?.some(kw =>
         kw.toLowerCase().includes(normalizedQuery)
       );
-      
+
       // Busca no elenco
       const matchesCast = movie.tmdb?.cast?.some(actor =>
         actor.name.toLowerCase().includes(normalizedQuery)
       );
-      
+
       if (matchesName || matchesTitle || matchesOriginal || matchesKeyword || matchesCast) {
         // Aplica filtros adicionais
         if (options) {
@@ -355,20 +471,20 @@ export function searchContent(
           if (options.years?.length && !options.years.includes(movie.tmdb?.year || '')) continue;
           if (options.certifications?.length && !options.certifications.includes(movie.tmdb?.certification || '')) continue;
         }
-        
+
         seenIds.add(movie.id);
         results.push(movie);
       }
     }
   });
-  
+
   // Ordena por relevância (nome exato primeiro)
   return results.sort((a, b) => {
     const aExact = a.name.toLowerCase() === normalizedQuery || a.tmdb?.title?.toLowerCase() === normalizedQuery;
     const bExact = b.name.toLowerCase() === normalizedQuery || b.tmdb?.title?.toLowerCase() === normalizedQuery;
     if (aExact && !bExact) return -1;
     if (!aExact && bExact) return 1;
-    
+
     // Por rating
     const aRating = a.tmdb?.rating || 0;
     const bRating = b.tmdb?.rating || 0;
@@ -384,34 +500,34 @@ export function filterContent(
   filters: Partial<FilterOptions>
 ): EnrichedMovie[] {
   const movies = dataCache.get(categoryName) || [];
-  
+
   let filtered = movies.filter(movie => {
     // Filtro por tipo
     if (filters.type && filters.type !== 'all' && movie.type !== filters.type) {
       return false;
     }
-    
+
     // Filtro por gênero
     if (filters.genres?.length) {
       if (!movie.tmdb?.genres?.some(g => filters.genres!.includes(g))) {
         return false;
       }
     }
-    
+
     // Filtro por ano
     if (filters.years?.length) {
       if (!filters.years.includes(movie.tmdb?.year || '')) {
         return false;
       }
     }
-    
+
     // Filtro por classificação
     if (filters.certifications?.length) {
       if (!filters.certifications.includes(movie.tmdb?.certification || '')) {
         return false;
       }
     }
-    
+
     // Filtro por rating mínimo
     if (filters.ratings?.length) {
       const minRating = Math.min(...filters.ratings.map(r => parseFloat(r)));
@@ -419,23 +535,26 @@ export function filterContent(
         return false;
       }
     }
-    
-    // Filtro por streaming/plataforma
+
+    // Filtro por streaming/plataforma (normalizado)
     if (filters.streaming?.length) {
-      if (!movie.tmdb?.streaming?.some(s => filters.streaming!.includes(s))) {
+      if (!movie.tmdb?.streaming?.some(s => {
+        const normalized = normalizeStreamingPlatform(s);
+        return filters.streaming!.includes(normalized);
+      })) {
         return false;
       }
     }
-    
+
     return true;
   });
-  
+
   // Ordenação
   if (filters.sortBy) {
     filtered.sort((a, b) => {
       let aVal: string | number = 0;
       let bVal: string | number = 0;
-      
+
       switch (filters.sortBy) {
         case 'name':
           aVal = a.tmdb?.title || a.name;
@@ -454,7 +573,7 @@ export function filterContent(
           bVal = b.tmdb?.popularity || 0;
           break;
       }
-      
+
       const order = filters.sortOrder === 'asc' ? 1 : -1;
       if (typeof aVal === 'string') {
         return order * aVal.localeCompare(bVal as string);
@@ -462,7 +581,7 @@ export function filterContent(
       return order * ((bVal as number) - (aVal as number));
     });
   }
-  
+
   return filtered;
 }
 
@@ -472,37 +591,37 @@ export function filterContent(
 export function filterAllContent(filters: Partial<FilterOptions>): EnrichedMovie[] {
   const seenIds = new Set<string>();
   const results: EnrichedMovie[] = [];
-  
+
   dataCache.forEach(items => {
     for (const movie of items) {
       if (seenIds.has(movie.id)) continue;
-      
+
       // Filtro por tipo
       if (filters.type && filters.type !== 'all' && movie.type !== filters.type) {
         continue;
       }
-      
+
       // Filtro por gênero
       if (filters.genres?.length) {
         if (!movie.tmdb?.genres?.some(g => filters.genres!.includes(g))) {
           continue;
         }
       }
-      
+
       // Filtro por ano
       if (filters.years?.length) {
         if (!filters.years.includes(movie.tmdb?.year || '')) {
           continue;
         }
       }
-      
+
       // Filtro por classificação
       if (filters.certifications?.length) {
         if (!filters.certifications.includes(movie.tmdb?.certification || '')) {
           continue;
         }
       }
-      
+
       // Filtro por rating mínimo
       if (filters.ratings?.length) {
         const minRating = Math.min(...filters.ratings.map(r => parseFloat(r)));
@@ -510,25 +629,28 @@ export function filterAllContent(filters: Partial<FilterOptions>): EnrichedMovie
           continue;
         }
       }
-      
-      // Filtro por streaming/plataforma
+
+      // Filtro por streaming/plataforma (normalizado)
       if (filters.streaming?.length) {
-        if (!movie.tmdb?.streaming?.some(s => filters.streaming!.includes(s))) {
+        if (!movie.tmdb?.streaming?.some(s => {
+          const normalized = normalizeStreamingPlatform(s);
+          return filters.streaming!.includes(normalized);
+        })) {
           continue;
         }
       }
-      
+
       seenIds.add(movie.id);
       results.push(movie);
     }
   });
-  
+
   // Ordenação
   if (filters.sortBy) {
     results.sort((a, b) => {
       let aVal: string | number = 0;
       let bVal: string | number = 0;
-      
+
       switch (filters.sortBy) {
         case 'name':
           aVal = a.tmdb?.title || a.name;
@@ -548,7 +670,7 @@ export function filterAllContent(filters: Partial<FilterOptions>): EnrichedMovie
           bVal = b.tmdb?.popularity || 0;
           break;
       }
-      
+
       const order = filters.sortOrder === 'asc' ? 1 : -1;
       if (typeof aVal === 'string') {
         return order * aVal.localeCompare(bVal as string);
@@ -556,7 +678,7 @@ export function filterAllContent(filters: Partial<FilterOptions>): EnrichedMovie
       return order * ((bVal as number) - (aVal as number));
     });
   }
-  
+
   return results;
 }
 
@@ -566,10 +688,10 @@ export function filterAllContent(filters: Partial<FilterOptions>): EnrichedMovie
 export function getActorFilmography(actorId: number): ActorFilmography | null {
   const actorData = actorIndex.get(actorId);
   if (!actorData) return null;
-  
+
   const movies: EnrichedMovie[] = [];
   const series: EnrichedSeries[] = [];
-  
+
   dataCache.forEach(items => {
     for (const item of items) {
       if (actorData.items.has(item.id)) {
@@ -581,15 +703,15 @@ export function getActorFilmography(actorId: number): ActorFilmography | null {
       }
     }
   });
-  
+
   // Remove duplicatas
   const uniqueMovies = Array.from(new Map(movies.map(m => [m.id, m])).values());
   const uniqueSeries = Array.from(new Map(series.map(s => [s.id, s])).values());
-  
+
   // Ordena por rating
   uniqueMovies.sort((a, b) => (b.tmdb?.rating || 0) - (a.tmdb?.rating || 0));
   uniqueSeries.sort((a, b) => (b.tmdb?.rating || 0) - (a.tmdb?.rating || 0));
-  
+
   return {
     actor: {
       id: actorId,
@@ -608,9 +730,9 @@ export function getActorFilmography(actorId: number): ActorFilmography | null {
 export function searchActors(query: string): EnrichedCastMember[] {
   const normalizedQuery = query.toLowerCase().trim();
   if (!normalizedQuery || normalizedQuery.length < 2) return [];
-  
+
   const results: EnrichedCastMember[] = [];
-  
+
   actorIndex.forEach((data, id) => {
     if (data.name.toLowerCase().includes(normalizedQuery)) {
       results.push({
@@ -621,7 +743,7 @@ export function searchActors(query: string): EnrichedCastMember[] {
       });
     }
   });
-  
+
   // Ordena por número de trabalhos
   return results
     .sort((a, b) => {
@@ -659,16 +781,16 @@ export function findByTmdbId(tmdbId: number): EnrichedMovie | null {
  */
 export function getAvailableRecommendations(movie: EnrichedMovie): EnrichedMovie[] {
   if (!movie.tmdb?.recommendations?.length) return [];
-  
+
   const recommendations: EnrichedMovie[] = [];
-  
+
   for (const rec of movie.tmdb.recommendations) {
     const found = findByTmdbId(rec.id);
     if (found) {
       recommendations.push(found);
     }
   }
-  
+
   return recommendations.slice(0, 10);
 }
 
@@ -677,28 +799,28 @@ export function getAvailableRecommendations(movie: EnrichedMovie): EnrichedMovie
  */
 export function getSimilarByGenre(movie: EnrichedMovie, limit = 10): EnrichedMovie[] {
   if (!movie.tmdb?.genres?.length) return [];
-  
+
   const movieGenres = new Set(movie.tmdb.genres);
   const results: { movie: EnrichedMovie; score: number }[] = [];
   const seenIds = new Set<string>([movie.id]);
-  
+
   dataCache.forEach(movies => {
     for (const m of movies) {
       if (seenIds.has(m.id)) continue;
       if (m.type !== movie.type) continue; // Mesmo tipo
       if (!m.tmdb?.genres?.length) continue;
-      
+
       // Calcula score por gêneros em comum
       const commonGenres = m.tmdb.genres.filter(g => movieGenres.has(g));
       if (commonGenres.length === 0) continue;
-      
+
       const score = commonGenres.length * 10 + (m.tmdb.rating || 0);
-      
+
       seenIds.add(m.id);
       results.push({ movie: m, score });
     }
   });
-  
+
   return results
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
@@ -711,19 +833,19 @@ export function getSimilarByGenre(movie: EnrichedMovie, limit = 10): EnrichedMov
 export function getFeaturedItems(type?: 'movie' | 'series', limit = 20): EnrichedMovie[] {
   const results: EnrichedMovie[] = [];
   const seenIds = new Set<string>();
-  
+
   dataCache.forEach(movies => {
     for (const movie of movies) {
       if (seenIds.has(movie.id)) continue;
       if (type && movie.type !== type) continue;
       if (!movie.tmdb?.rating || movie.tmdb.rating < 7) continue;
       if (!movie.tmdb?.poster) continue;
-      
+
       seenIds.add(movie.id);
       results.push(movie);
     }
   });
-  
+
   return results
     .sort((a, b) => (b.tmdb?.rating || 0) - (a.tmdb?.rating || 0))
     .slice(0, limit);
@@ -736,20 +858,20 @@ export function getRecentReleases(limit = 20): EnrichedMovie[] {
   const results: EnrichedMovie[] = [];
   const seenIds = new Set<string>();
   const currentYear = new Date().getFullYear();
-  
+
   dataCache.forEach(movies => {
     for (const movie of movies) {
       if (seenIds.has(movie.id)) continue;
-      
+
       const year = parseInt(movie.tmdb?.year || '0');
       if (year < currentYear - 2) continue; // Últimos 2 anos
       if (!movie.tmdb?.poster) continue;
-      
+
       seenIds.add(movie.id);
       results.push(movie);
     }
   });
-  
+
   return results
     .sort((a, b) => {
       const aYear = parseInt(a.tmdb?.year || '0');

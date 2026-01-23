@@ -2080,3 +2080,123 @@
     margin-top: 8px;
   }
 }
+
+/* ============================================================
+   RATING FILTER CHIPS - Premium Design
+   ============================================================ */
+
+.rating-filter-options {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-chip.rating-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filter-chip.rating-chip svg {
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+
+.filter-chip.rating-chip:hover svg {
+  transform: scale(1.2);
+}
+
+/* Rating 9+ (Excelente) - Gold */
+.filter-chip.rating-chip.rating-excellent {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.35);
+  color: rgba(255, 215, 0, 0.9);
+}
+
+.filter-chip.rating-chip.rating-excellent svg {
+  color: #FFD700;
+}
+
+.filter-chip.rating-chip.rating-excellent:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.25);
+}
+
+.filter-chip.rating-chip.rating-excellent.active {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  border-color: transparent;
+  color: #1a1a2e;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+}
+
+.filter-chip.rating-chip.rating-excellent.active svg {
+  color: #1a1a2e;
+  animation: starPulse 1.5s ease-in-out infinite;
+}
+
+/* Rating 7-8 (Muito Bom) - Emerald */
+.filter-chip.rating-chip.rating-great {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: rgba(16, 185, 129, 0.9);
+}
+
+.filter-chip.rating-chip.rating-great svg {
+  color: #10B981;
+}
+
+.filter-chip.rating-chip.rating-great:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+}
+
+.filter-chip.rating-chip.rating-great.active {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5);
+}
+
+.filter-chip.rating-chip.rating-great.active svg {
+  color: #fff;
+  animation: starPulse 1.5s ease-in-out infinite;
+}
+
+/* Rating 5-6 (Bom) - Blue */
+.filter-chip.rating-chip.rating-good {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: rgba(59, 130, 246, 0.9);
+}
+
+.filter-chip.rating-chip.rating-good svg {
+  color: #3B82F6;
+}
+
+.filter-chip.rating-chip.rating-good:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+}
+
+.filter-chip.rating-chip.rating-good.active {
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+}
+
+.filter-chip.rating-chip.rating-good.active svg {
+  color: #fff;
+  animation: starPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes starPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
