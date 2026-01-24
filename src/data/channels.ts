@@ -72,6 +72,16 @@ const rawChannels = [
   { id: 'discovery-turbo', name: 'Discovery Turbo', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryturbo.m3u8', category: 'Documentarios', logo: `${LOGO_BASE}/discovery-turbo-br.png` },
 
   // === ENTRETENIMENTO ===
+  { id: 'bbb1', name: 'BBB CAN 1', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb1.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`},
+  { id: 'bbb2', name: 'BBB CAN 2', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb2.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
+  { id: 'bbb3', name: 'BBB CAN 3', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb3.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
+  { id: 'bbb4', name: 'BBB CAN 4', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb4.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
+  { id: 'bbb5', name: 'BBB CAN 5', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb5.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
+  { id: 'bbb6', name: 'BBB CAN 6', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb6.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
+  { id: 'bbb7', name: 'BBB CAN 7', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb7.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
+  { id: 'bbb8', name: 'BBB CAN 8', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb8.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
+  { id: 'bbb9', name: 'BBB CAN 9', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb9.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
+  { id: 'bbb10', name: 'BBB CAN 10', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb10.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
   { id: 'multishow', name: 'Multishow', url: 'https://canais.fazoeli.co.za/fontes/smart/multishow.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/multishow-br.png` },
   { id: 'bis', name: 'BIS', url: 'https://canais.fazoeli.co.za/fontes/smart/bis.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bis-br.png` },
   { id: 'viva', name: 'Viva', url: 'https://canais.fazoeli.co.za/fontes/smart/viva.m3u8', category: 'Entretenimento', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Canal_Viva_2018_wordmark.svg/960px-Canal_Viva_2018_wordmark.svg.png' },
