@@ -18,9 +18,9 @@
   ],
   "functions": {
     "api/proxy.ts": {
-      "runtime": "@vercel/edge",
       "maxDuration": 60
     }
   }
 }
+
 
