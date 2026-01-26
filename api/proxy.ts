@@ -233,6 +233,31 @@ export default async function handler(req: Request): Promise<Response> {
           logDebug('Estratégia 2 falhou:', e);
         }
       }
+
+      // Estratégia 3: User-Agent de Player de Vídeo (VLC/FFmpeg)
+      if (!finalResponse.ok && finalResponse.status !== 206) {
+        const retryHeaders3: Record<string, string> = {
+          'User-Agent': 'Lavf/58.29.100', // Common FFmpeg/Player UA
+          'Accept': '*/*',
+        };
+        // Tenta sem Referer primeiro, pois players geralmente não enviam
+        if (rangeHeader) retryHeaders3['Range'] = rangeHeader;
+
+        try {
+          console.log('Tentativa Extra 3: User-Agent de Player (Lavf)');
+          const retry3 = await fetch(currentUrl, { method: 'GET', headers: retryHeaders3 });
+          logDebug('Resposta Extra 3:', { status: retry3.status });
+
+          if (retry3.ok || retry3.status === 206) {
+            console.log('Estratégia 3 funcionou!');
+            finalResponse = retry3;
+          } else {
+            await retry3.body?.cancel();
+          }
+        } catch (e) {
+          logDebug('Estratégia 3 falhou:', e);
+        }
+      }
     }
 
     if (isDebug) {
