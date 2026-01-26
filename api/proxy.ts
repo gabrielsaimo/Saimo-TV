@@ -189,9 +189,9 @@ export default async function handler(req: Request): Promise<Response> {
         url: currentUrl
       });
 
-      // Tenta uma última estratégia se for 403
-      if (finalResponse.status === 403) {
-        console.log('403 Forbidden detectado, tentando estratégias alternativas...');
+      // Tenta uma última estratégia se for 403 ou 404 (alguns servidores retornam 404 para bloquear)
+      if (finalResponse.status === 403 || finalResponse.status === 404) {
+        console.log(`${finalResponse.status} detectado, tentando estratégias alternativas...`);
 
         // Estratégia 1: Retry com Referer original + headers mínimos
         const retryHeaders1: Record<string, string> = {
