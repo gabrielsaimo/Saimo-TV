@@ -72,13 +72,9 @@ export default async function handler(req: Request): Promise<Response> {
       // User-Agent realista
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
       // Referer - MUITO IMPORTANTE para evitar bloqueios 403
-      'Referer': decodedUrl.includes('camelo.vip') ? 'http://camelo.vip/' :
-        decodedUrl.includes('govfederal.org') ? 'http://govfederal.org/' :
-          decodedUrl,
+      'Referer': `${new URL(decodedUrl).origin}/`,
       // Origin importante para CORS
-      'Origin': decodedUrl.includes('camelo.vip') ? 'http://camelo.vip' :
-        decodedUrl.includes('govfederal.org') ? 'http://govfederal.org' :
-          new URL(decodedUrl).origin,
+      'Origin': new URL(decodedUrl).origin,
       // Headers básicos de navegador (sem Sec-Fetch-* que identificam proxies)
       'Accept': '*/*',
       'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',

@@ -56,7 +56,7 @@ const ProxyTester = () => {
             type="text" 
             value={testUrl} 
             onChange={(e) => setTestUrl(e.target.value)}
-            placeholder="ex: http://govfederal.org:80/movie/t1214c/87gzhd/1131873.mp4"
+            placeholder="ex: http://camelo.vip:80/movie/user/pass/12345.mp4"
             style={{ width: '100%', marginTop: '5px', padding: '8px' }}
           />
         </label>
