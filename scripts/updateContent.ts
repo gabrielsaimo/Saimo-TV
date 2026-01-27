@@ -3,7 +3,7 @@ import * as path from 'path';
 import { findMatch, getCleanName } from '../src/utils/m3uMatcher';
 import { normalizeName } from '../src/services/m3uService';
 
-const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR03.m3u';
+const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR06.m3u';
 const ENRICHED_DIR = path.join(process.cwd(), 'public/data/enriched');
 
 // Mapeamento de grupos M3U para arquivos JSON existentes (simplificado)
@@ -28,6 +28,9 @@ const CATEGORY_FILE_MAP: Record<string, string> = {
     'star': 'star.json',
     'discovery': 'discovery.json',
     'legendado': 'legendados.json', // Para capturar 'Series | Legendados'
+    'adultos': 'hot-adultos.json',
+    'adultos | bella da semana': 'hot-adultos-bella-da-semana.json',
+    'adultos | legendado': 'hot-adultos-legendado.json',
     // Adicione mais conforme necessário
 };
 
@@ -361,7 +364,7 @@ async function main() {
                 id: `m3u-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
                 name: item.name,
                 url: item.url,
-                category: item.group,
+                category: isAdultContent ? '[HOT] Adultos ❌❤️' : item.group,
                 type: 'movie',
                 isAdult: isAdultContent,
                 logo: item.logo,

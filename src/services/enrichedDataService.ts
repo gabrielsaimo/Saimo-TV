@@ -67,9 +67,9 @@ const ENRICHED_CATEGORIES: CategoryInfo[] = [
 
 // Categorias de conteúdo adulto (só exibir quando desbloqueado)
 const ADULT_CATEGORIES: CategoryInfo[] = [
-  { name: '🔞 Adultos', file: 'adultos.json', count: 0, isAdult: true },
-  { name: '🔞 Adultos - Bella da Semana', file: 'adultos-bella-da-semana.json', count: 0, isAdult: true },
-  { name: '🔞 Adultos - Legendado', file: 'adultos-legendado.json', count: 0, isAdult: true },
+  { name: '🔞 Adultos', file: 'hot-adultos.json', count: 0, isAdult: true },
+  { name: '🔞 Adultos - Bella da Semana', file: 'hot-adultos-bella-da-semana.json', count: 0, isAdult: true },
+  { name: '🔞 Adultos - Legendado', file: 'hot-adultos-legendado.json', count: 0, isAdult: true },
 ];
 
 // Categorias de streaming para destaque

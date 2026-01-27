@@ -1,39 +1,929 @@
-Globo TV Verdes Mares Cariri HD
-Globo Rede Amazonas Arquemes SD
-Uma Prova de Coragem [L]
-Uma Noite no Inferno [L]
-Um Homem Sem Memória [L]
-O Preço de Uma Escolha [L]
-O Covil [L]
-Asas da Esperança [L]
-Visões [L]
-Thelma, O Unicórnio [L]
-Poder Policial [L]
-Partiu América [L]
-Mexida [L]
-Coragem Sem Limites [L]
-A Garota de Miller [L]
-Minha Teoria da Popularidade [L]
-Impuratus: A Confissão do Diabo [L]
-Possessões [L]
-Paz e Chocolate [L]
-Luta Por Sobrevivência [L]
-Herança Roubada [L]
-Experimento Assassino [L]
-Um Momento Para Recordar [L]
-Um Estranho Segredo [L]
-The Last Year of Darkness [L]
-Spermworld [L]
-Our Son [L]
-O Que Jennifer Fez? [L]
-O Primeiro Tiro: A Lenda de Wyatt Earp [L]
-O Mal que Nos Habita [L]
-O Closet [L]
-Minha Pátria Amada [L]
-Girls State [L]
-French Girl [L]
-Bosco [L]
-Bank Alert [L]
-Assassino de Aluguel [L]
-A Canção de Ninar de Katherine [L]
-O Refém - Atentado em Madri [L]
+A Guarda do Leão 24H
+A Turma do Pateta 24H
+Amazon Prime Video
+Amazon Prime Video 2
+Amazon Prime Video 3
+Amazon Prime Video 4
+As Meninas Super Poderosas 24H
+Ben 10  24H
+Bob Esponja 24H
+BOOMERANG SD
+Cartoon Network FHD
+Cartoon Network HD
+Cartoon Network SD
+Cartoonito FHD
+Cartoonito HD
+Cartoonito SD
+Caverna do Dragao  24H
+Chaves 24H
+Chaves Desenho 24H
+Daniel Tigre 24H
+Discovery Channel FHD
+Discovery Channel HD
+Discovery Channel SD
+Discovery H&H FHD
+Discovery H&H HD
+Discovery H&H SD
+Discovery Kids FHD
+Discovery Kids HD
+Discovery Kids SD
+Discovery Science FHD
+Discovery Science HD
+Discovery Science SD
+Discovery Theater FHD
+Discovery Theater HD
+Discovery Turbo FHD
+Discovery Turbo HD
+Discovery Turbo SD
+Discovery World FHD
+Discovery World HD
+Disney Channel SD
+Disney+
+Disney+ 2
+Disney+ 3
+Disney+ 4
+Disney+ 5
+Disney+ 6
+Disney+ 7
+Disney+ 8
+Doug 24H
+Dragões  24H
+Ducktales 24H
+EPTV SUL MINAS FHD
+EPTV SUL MINAS HD
+GLOBO ALAGOAS FHD
+GLOBO ALAGOAS HD
+GLOBO BAHIA SD
+GLOBO BH FHD
+GLOBO BH HD
+GLOBO CENTRO AMÉRICA FHD
+GLOBO CENTRO AMÉRICA HD
+GLOBO EPTV CAMPINAS SD H.265
+GLOBO INTER TV LITORAL HD
+GLOBO MANAUS HD
+GLOBO MANAUS SD
+GLOBO NSC BLUMENAU FHD
+GLOBO NSC BLUMENAU HD
+GLOBO NSC CHAPECO FHD
+GLOBO NSC CHAPECO HD
+GLOBO NSC CRICIUMA FHD
+GLOBO NSC CRICIUMA HD
+GLOBO NSC FLORIPA FHD
+GLOBO NSC FLORIPA HD
+GLOBO NSC JOINVILLE FHD
+GLOBO NSC JOINVILLE HD
+GLOBO RPC CURITIBA FHD
+GLOBO RPC CURITIBA HD
+GLOBO RPC MARINGA FHD
+GLOBO RPC MARINGA HD
+GLOBO SERGIPE FHD
+GLOBO TV BAHIA FHD
+GLOBO TV BAHIA HD
+GLOBO TV MORENA MS FHD
+GLOBO TV MORENA MS HD
+GLOBO TV NORDESTE FHD
+GLOBO TV NORDESTE HD
+GLOBO TV S.FRANCISCO FHD
+GLOBO TV S.FRANCISCO HD
+GLOBO TV VANGUARDA S. JOSE DOS CAMPOS FHD
+GLOBO TV VANGUARDA S. JOSE DOS CAMPOS HD
+GLOBO VERDES MARES FHD
+GLOBO VERDES MARES HD
+Gloob FHD
+Gloob HD
+Gloob SD
+Gloobinho FHD
+Gloobinho HD
+Gloobinho SD
+Hey Arnold 24H
+Inter TV Cabugi FHD
+Inter TV Cabugi HD
+Inter TV Cabugi SD
+INTER TV DOS VALES FHD
+INTER TV DOS VALES HD
+Irmão do Jorel 24H
+Kim Possible 24H
+KND A Turma do Bairro 24H
+Larva 24H
+Looney Tunnes 24H
+MAX 02 HD
+MAX 1
+MAX 2
+MAX 3
+MAX 4
+MAX 5
+MAX 6
+MAX 7
+MAX 8
+Mickey e Donald 24H
+MR. Bean Desenho 24H
+Mutante Rex  24H
+Nick Jr FHD
+Nick Jr HD
+Nick Jr SD
+Nickelodeon HD
+Nickelodeon SD
+O Máskara 24H
+O Show do Zé Colmeia 24H
+Hardcore Erotic tv Online
+Operação Big Hero 24H
+Os Flintstones 24H
+Os Jetsons 24H
+Pantera Cor-de-Rosa 24H
+Paramount+
+Paramount+ 2
+Paramount+ 3
+Paramount+ 4
+Paramount+ 5
+Paramount+ 6
+Paramount+ 7
+Paramount+ 8
+Pica Pau 24H
+PLAYBOY TV FHD
+PLAYBOY TV FHD H264
+PLAYBOY TV HD
+PLAYBOYTV  SD
+Pocoyo 24H
+Pokemon 24H
+RBS TV CAXIAS DO SUL FHD
+RBS TV CAXIAS DO SUL HD
+RBS TV CRUZ ALTA FHD
+RBS TV CRUZ ALTA HD
+RBS TV PELOTAS FHD
+RBS TV PELOTAS HD
+RBSTV POA FHD H.264
+RBSTV POA HD
+RBSTV POA SD
+RBSTV STA MARIA FHD
+RBSTV STA MARIA HD
+RBTV HD
+RPC FOZ DO IGUA  FHD
+RPC FOZ DO IGUA HD
+RPC PONTA GROSSA FHD
+RPC PONTA GROSSA HD
+Scooby-Doo 24H
+SEXTREME SD
+SEXY HOT FHD
+SEXY HOT FHD H264
+SEXY HOT HD
+SEXY HOT SD
+Sítio do Pica Pau Amarelo 24H
+Taz Mania 24H
+ThunderCats (2011) 24H HD
+Timão e Pumba 24H
+Tom & Jerry  24H
+Tooncast HD
+TV  GLOBO TRIBUNA SANTOS SD
+TV GAZETA HD
+TV GLOBO ANHANGUERA GO HD
+TV GLOBO INTEGRA JUIZ DE FORA FHD
+TV GLOBO INTEGRA JUIZ DE FORA HD
+TV GLOBO INTEGRAÇÃO ARAXÁ FHD
+TV GLOBO INTEGRAÇÃO ARAXÁ HD
+TV GLOBO PARAIBA HD
+TV Integração Uberlândia FHD
+TV Integração Uberlândia HD
+TV Integração Uberlândia SD
+TV MIRANTE HD
+TV Rio Sul FHD
+TV Rio Sul HD
+TV Rio Sul SD
+TV Rá Tim Bum HD
+TV Rá Tim Bum SD
+TV TEM BAURU SD
+TV TEM SOROCABA SD
+WooHoo FHD
+WooHoo HD
+WooHoo SD
+Adult Tv Online Interracial
+Adult Tv Online Latina
+Adult Tv Online Lesbian
+Adult IPTV Sexy Blondes
+Adult IPTV Brunette
+LIve Adult Tv Hardcore
+Adult Tv Online Milfs
+Adult Tv Online Pornstar
+Hardcore Videos Non Stop
+ZooMoo FHD
+ZooMoo HD
+EPTV Campinas SD
+EPTV Central FHD
+EPTV Central HD
+EPTV Central SD
+EPTV Ribeirão SD
+EPTV Sul de Minas SD
+Inter TV Alto Litoral FHD
+Inter TV Alto Litoral HD
+Inter TV Alto Litoral SD
+Inter TV Costa Branca FHD
+Inter TV Costa Branca HD
+Inter TV Costa Branca SD
+Inter TV Grande Minas FHD
+Inter TV Grande Minas HD
+Inter TV Grande Minas SD
+RBS TV Caxias do Sul SD
+RBS TV Centro-Oeste FHD
+RBS TV Centro-Oeste HD
+RBS TV Chapecó FHD
+RBS TV Chapecó HD
+RBS TV Chapecó SD
+RBS TV Criciúma SD
+RBS TV Joinville SD
+Rede Amazônica Macapá FHD
+Rede Amazônica Macapá HD
+Rede Amazônica Macapá SD
+Rede Amazônica Manaus FHD
+Rede Amazônica Boa Vista FHD
+Rede Amazônica Boa Vista HD
+Rede Amazônica Boa Vista SD
+Rede Amazônica Rio Branco FHD
+Rede Amazônica Rio Branco HD
+Rede Amazônica Rio Branco SD
+RPC Cascavel FHD
+RPC Cascavel HD
+RPC Cascavel SD
+RPC Londrina FHD
+RPC Londrina HD
+RPC Londrina SD
+TV Anhanguera Goiânia FHD
+TV Anhanguera Goiânia SD
+TV Asa Branca FHD
+TV Asa Branca HD
+TV Cabo Branco FHD
+TV Cabo Branco HD
+TV Cabo Branco SD
+TV Fronteira FHD
+TV Grande Rio FHD
+TV Grande Rio HD
+TV Grande Rio SD
+TV Mirante Cocais SD
+TV Mirante Imperatriz FHD
+TV Mirante Imperatriz HD
+TV Mirante Imperatriz SD
+TV Mirante São Luís FHD
+TV Mirante São Luís HD
+TV Mirante São Luís SD
+TV Oeste FHD
+TV Oeste HD
+TV Oeste SD
+TV Paraíba FHD
+TV Paraíba HD
+TV Paraíba SD
+TV Santa Cruz FHD
+TV Santa Cruz HD
+TV Santa Cruz SD
+TV Subaé FHD
+TV Subaé HD
+TV Subaé SD
+TV Sudoeste FHD
+TV Sudoeste HD
+TV TEM Itapetininga FHD
+TV TEM Itapetininga HD
+TV TEM Itapetininga SD
+TV Tribuna FHD
+TV Tribuna HD
+Vanguarda Taubaté FHD
+Vanguarda Taubaté HD
+Vanguarda Taubaté SD
+RBS TV Passo Fundo FHD
+RBS TV Passo Fundo HD
+TV Gazeta de Alagoas FHD
+TV Gazeta de Alagoas HD
+TV Gazeta de Alagoas SD
+TV Gazeta Sul FHD
+TV Gazeta Sul HD
+TV Gazeta Sul SD
+RBS TV Santa Cruz FHD
+RBS TV Santa Cruz HD
+RBS TV Santa Cruz SD
+Natal, Reforma e Amor
+Sim, Chef! É Natal!
+O Tesouro de Natal
+O Que Me Traz Até Você
+Tartarugas Até Lá Embaixo
+Sala de Matança
+Gaiola Mental
+Operação Natal
+Xeque-Mate
+Clube de Assassinos
+Os Under-Undergrounds, O Começo
+S.W.A.T.: Comando Especial
+O Melhor Espetáculo de Natal de Todos os Tempos
+Mark, Mary & Outras Pessoas
+Shaun, o Carneiro: Aventura de Natal
+Missão Presente de Natal
+Uma História de Cinderela: Um Desejo de Natal
+Policial Em Apuros 1
+Houvast
+El ocaso
+Wskrzeszenie
+tick, tick...BOOM!
+A Ganhadora de Defiance, Ohio
+Deixe-o Partir
+O Desfile De Natal
+Recuerda
+Hijr
+Atajo
+Inverno Sem Fim [L]
+Sem Chão [L]
+A Filha de um Ladrão [L]
+Assassinato por Coincidência [L]
+Dívida de Amor [L]
+O Último Soldado [L]
+Tubarão Touro [L]
+Acabe Com Eles [L]
+5028 [L]
+Cassino em Ísquia [L]
+Bastion 36 [L]
+Alpinistas Sociais [L]
+Kalki 2898 A.D. (Hindi) [L]
+Touken Ranbu Kai Kyoden [L]
+RoboCop: A Origem
+O Poder de Acreditar
+Uma Viagem para Recordar (2024)
+Rainha do Carvão (2025)
+Golpe Parisiense (2023)
+Preparação para a Próxima Vida (2025)
+Terei o Direito de Matar? (1964)
+Missão Especial (2004)
+Freud: Além da Alma (1962)
+Spinal Tap2
+A Tortura do Silêncio (1953)
+Agora e Sempre aka Amigas Para Sempre (1995)
+Entre Chegadas e Despedidas (2025)
+A Cruz de Ferro (1977)
+Pode me Chamar de Noel (2001)
+A Última Noite (2019)
+Natal com Os Escolhidos: Noite Santa (2023)
+Entre as Luzes (2023)
+Lev Yashin - O Aranha Negra (2019)
+Raça (1961)
+Porta do Céu (2012)
+O Homem Que Desenhou Deus (2023)
+Feras no Jardim (2025)
+A História de Hachiko (1987)
+Irreversível (2002)
+Entre o Céu e o Inferno (2006)
+Jay Kelly (2025)
+Purple Rain (1984)
+Se Você Tivesse Falado... (2025)
+Get on Up: A História de James Brown (2014)
+Estarei de Volta no Natal (2019)
+Tese Sobre uma Domesticação (2025)
+Moulin Rouge: Amor em Vermelho (2001)
+Tuff Turf: O Rebelde (1985)
+Não Quero Crescer (2007)
+Homens de Bem (2011)
+O Casamento da Minha Mãe (2025)
+Tudo pela Vitória (2004)
+Exílio (2017)
+Touro Indomável (1980)
+Trocas Macabras (1993)
+Perversa Paixão (1971)
+Um Breve Encontro (1968)
+Inverno da Alma (2010)
+Alma em Chamas (2025)
+O Casal Duplicado (2022)
+O Computador de Tênis (1969)
+Código de Silêncio (2017)
+Mr. K (2025)
+Sem Medo de Viver (1993)
+Segredos de Guerra (2021)
+Os Ratos: Uma História de The Witcher (2025)
+A Mulher da Fila (2025)
+Casablanca (1943)
+Drive-In Massacre (1976)
+Downton Abbey: O Grande Final (2025)
+Cidade das Ilusões (1972)
+O Último Rei da Escócia (2006)
+Para Ter Onde Ir (2016)
+Hedda (2025)
+Um Método Perigoso (2011)
+Mandela: O Caminho para a Liberdade (2013)
+Amanda (2018)
+O Tempo Que Nos Resta (2025)
+Orgulho e Compaixão (2022)
+Sangue & Chocolate (2007)
+Agnus Dei (2012)
+A Última Tentação de Cristo (1988)
+Fora da Jogada (1988)
+Rose (2022)
+A Via Láctea (2007)
+Um Sonho de Amor (2010)
+O Corpo que Habito (2024)
+Madame Durocher (2024)
+Coco Antes de Chanel (2009)
+A Mulher na Cabine 10 (2025)
+Apenas uma Chance (2013)
+A Hora dos Valentes (2025)
+Honey, Não! (2025)
+Benny & Joon - Corações em Conflito (1993)
+Pai do Ano (2024)
+Passando dos Limites (2007)
+Um Time Muito Louco Contra-Ataca (1998)
+Super Bola de Pelos: Salva o Futuro (2022)
+Fábrica de Sonhos (2005)
+O Retorno dos Tomates Assassinos (1988)
+Troca Surpresa (2024)
+Esqueça Paris (1995)
+Febre em Ibiza (2013)
+O Melhor Fim de Semana de Todos (2023)
+O Garoto do Futuro 2 (1987)
+Desconstruindo Harry (1997)
+Terapia do Amor (2005)
+Ninguém Segura Essa Garota (1987)
+Uma História de Natal (1983)
+Biosfera (2023)
+A Família McMullen (2025)
+Assim é a Vida (2017)
+A Era do Rádio (1987)
+Amor & Vinho (2019)
+As Novas Aventuras do Fusca (1974)
+Não Quero Estar Aqui (2023)
+Sonhador Americano (2022)
+O Segredo do Papai Noel (2025)
+Christmas on the Farm with Jill Wagner & Family (2024)
+Billy Madison: Um Herdeiro Bobalhão (1995)
+Uma Mãe em Apuros (2009)
+Papai Noel das Cavernas (2010)
+Precisamos Conversar (2016)
+Uma Mulher para Dois (1993)
+Uma Sexta-Feira Mais Louca Ainda (2025)
+O Mistério dos Escavadores (2003)
+Os Roses: Até Que a Morte Os Separe (2025)
+Como Impedir um Assalto (2021)
+Clube dos Divorciados (2020)
+Pense como Eles Também (2014)
+Vinski - O Herói Invisível (2021)
+Um Detetive Vidente (1989)
+Meu Amigo Harvey (1950)
+A Hora do Rango (2005)
+O Lagosta (2015)
+Boa Viagem, Charlie Brown (1980)
+As Grandes Aventuras de Pee-wee (1985)
+Funcionário do Mês (2006)
+A Vingança de Cinderela (2024)
+A Malandrinha (1991)
+The Rocky Horror Picture Show (1975)
+Pee-wee: Meu Filme Circense (1988)
+Palco de Ilusões (1988)
+Quem Vê Cara Não Vê Coração (1989)
+Pee-Wee: O Inverno que Mudou Minha Vida (2012)
+Apaixonados: O Filme (2016)
+O Batedor de Carteiras (1959)
+As Aventuras de Robin Hood (1938)
+Ed Wood (1994)
+Trapaceando em Latim (2024)
+The Last Gunfight... yet! (2024)
+Filhos do Verão (2023)
+684: Unidade de Combate (2003)
+Pushpa2
+A Perseguição (2024)
+Operação Corvo 2 (2009)
+Operação Corvo (2007)
+Max Steel (2016)
+O Substituto (1996)
+Alvo da Máfia (2025)
+O Sobrevivente (2025)
+URI - Forças Especiais (2019)
+O Assalto Final (2024)
+Repo Men: O Resgate de Órgãos (2010)
+Operação Corvo 3: Explode (2014)
+Teoria da Conspiração (1997)
+O Promotor (2024)
+Força Bruta: Punição (2024)
+O Preço de uma Vida (2022)
+Meu Nome é Coogan (1968)
+Controle (2019)
+Amanhecer Sangrento (2025)
+Cortina de Fogo (1991)
+Espiral de Violência (2024)
+Hector e a Procura da Felicidade (2014)
+Uma Batalha Após a Outra (2025)
+Subway (1985)
+Os Irmãos Grimm (2005)
+Ilha do Renascimento (2024)
+Um Tira do Outro Mundo (1988)
+Leões e Cordeiros (2007)
+Rei David (1985)
+Prisoner of War (1954)
+Ran (2018)
+Simbad e a Princesa (1958)
+O Escorpião Rei - O Livro das Almas (2018)
+Um Dia Fora de Controle (2025)
+Bem-vindo à Selva (2013)
+Keanu: Cadê Meu Gato?! (2016)
+A2 (2001)
+Nos Passos de Emma (2018)
+Morra, Amor (2025)
+Sonhos (2022)
+Três Homens e um Destino (2023)
+8 Segundos (1994)
+Licorice Pizza (2021)
+Dancing Queen (1999)
+Queime Todas Minhas Cartas (2022)
+O Confidente da Rainha (2017)
+Crianças de Valor (1979)
+Electra (2024)
+A Jovem Rainha Vitória (2009)
+Depois da Tempestade (2015)
+Girl Lost - A Garota de Programa (2018)
+Diário de uma Louca (2005)
+Esquentando o Alasca (1999)
+O Ônibus Perdido (2025)
+Insensata Paixão (2016)
+O Maníaco do Facebook (2016)
+A Letra Escarlate (1995)
+O Desejo de Saiuri (2013)
+Steve (2025)
+Vidas Partidas (2016)
+Tea for Two (2022)
+Avenida (2024)
+Antes do Adeus (2014)
+Um Homem Abandonado (2025)
+O Órfão (2019)
+Paulo, Apóstolo de Cristo (2018)
+É Preciso Acreditar (2024)
+Garota Fantástica (2009)
+Amargo Regresso (1978)
+O Veterano (2025)
+Lefter: O Professor (2025)
+O Santo de Todos - Claret (2021)
+O Segredo Escarlate (2016)
+Dezembro Sem Fim (2023)
+O Grande Desafio (1976)
+As Loucuras (2025)
+Partisanen (2020)
+O Namorado da Minha Prima (2023)
+Ligações Perigosas (1988)
+De Tyler Perry: Em Busca da Felicidade (2025)
+Coração de Lutador: The Smashing Machine (2025)
+O Preço de Um Corpo (2023)
+Emmanuelle (1974)
+Belén: Uma História de Injustiça (2025)
+Garota Enxuta (1959)
+Segundas Intenções 3 (2004)
+Truman (2015)
+Paraísos Artificiais (2012)
+O Sexto Homem (1961)
+Um Fantasma na Batalha (2025)
+Wolves (2025)
+Good News (2025)
+Encontro Selvagem (2015)
+Ao Mestre, Com Carinho (1967)
+Durval Discos (2002)
+Barrabás (1919)
+O Projeto de Natal (2016)
+Uma Noite e Tanto (2017)
+Merv (2025)
+Uma Aventura no Natal (2012)
+O Papai Noel Trapalhão (2000)
+Não Somos Anjos (1989)
+Felpudo - O  Cachorro Promotor (1976)
+Sequestro Fake (2025)
+O Verdadeiro Sentido do Amor (2014)
+Trair é Uma Arte (2010)
+Este Velório é uma Parada (1992)
+O Cão de Guarda (1992)
+Delírios (2025)
+Os Vourdalak (2023)
+Quando o Céu se Engana (2025)
+Criando Verdades (2023)
+O Julgamento do Diabo (2007)
+A Casa Mágica da Gabby: O Filme (2025)
+O Quarto 404 (2024)
+O Dono da Festa 2 (2006)
+Austenland (2013)
+Muppets do Espaço (1999)
+A Boneca Que Virou Gente (2000)
+Riquinho de Papai (2024)
+Absolutely Fabulous: O Filme (2016)
+O Milagre Veio do Espaço (1987)
+Os Cosmonautas (1962)
+Sonho de Verão (1990)
+Sete Homens e Um Destino (2016)
+A Arte das Oito Armas (2024)
+O Troll da Montanha 2 (2025)
+Fatal Fury 3: A Fúria (1994)
+Dick Tracy (1990)
+As Novas Viagens de Simbad (1974)
+Robin Hood – O Invencível (1960)
+Força Bruta: Sem Saída (2023)
+Highlander 3: O Feiticeiro (1994)
+Território Inimigo (1987)
+A Lenda: Em Busca do Medalhão Sagrado (2024)
+Darkland: O Retorno (2023)
+Fuga à Meia-Noite (1988)
+Plano em Família 2 (2025)
+Gamer (2009)
+Siga Minha Voz (2025)
+O Último Azul (2025)
+O Bad Boy e Eu (2025)
+Bugonia (2025)
+C.I.C. - Central de Inteligência Cearense (2025)
+Five Nights at Freddy's 2 (2025)
+Malês (2025)
+Operação Maldoror (2024)
+Eu e Meu Avô Nihonjin (2025)
+Infância Sombria (2025)
+Xamã: O Exorcista Pagão (2025)
+Miraculous World: Tóquio - Força Estelar (2025)
+Predators (2023)
+Stephen (2024)
+Do Amor Ninguém Foge (1936)
+Um. Natal. Surreal. (2025)
+O Bom Bandido (2025)
+Quartos Vazios (2025)
+O Cinema Mal-Assombrado (2023)
+Dia de Cólera (2024)
+Um Natal em Biltmore (2023)
+Mente Perturbada (2023)
+Borbulhas de Amor (2025)
+Descobrindo o Natal (2023)
+La Fianza (2024)
+A Mão Que Balança o Berço (2025)
+O Combinado Não Sai Caro (2025)
+Caçada Sangrenta (2024)
+Manga (1977)
+Krazy House (2024)
+Memórias de um Verão (2025)
+Twinless - Um Gêmeo a Menos (2025)
+Uma Terra Mágica (2023)
+Guerreiras do Ar (2024)
+Mate-a, se Conseguir (2023)
+Policiais da Máfia (2025)
+Farejando Vingança 2: Cidade dos Lobos (2025)
+O Tanque de Guerra (2025)
+Não Alimente As Crianças (2025)
+Mais Pesado é o Céu (2023)
+Nada Será Como Antes - A Música do Clube da Esquina (2024)
+Uma Xícara de Café e Sapatos Novos (2022)
+Risqué: A Vingança (2025)
+Influencer do Mal: A História de Jodi Hildebrandt (2025)
+Segredos Letais (2023)
+Clube do Desejo (2023)
+Histórias Estranhas 2 (2024)
+Norita (2024)
+Mente Demôniaca (2024)
+A Grande Inundação (2025)
+Hell House: A Origem (2023)
+SISU: Estrada da Vingança (2025)
+É Amor? (2022)
+Biocêntricos (2023)
+A Própria Carne (2025)
+O Brilho do Natal (2024)
+Terror em Shelby Oaks (2025)
+O Grande Roubo do Louvre: O Crime Minuto a Minuto (2025)
+Luiz Gonzaga: Légua Tirana (2025)
+Pai do Ano (2018)
+Dissonantes (2022)
+Eddington (2025)
+O Despertar dos Fantasmas (2023)
+MLW Slaughterhouse 2025 (2025)
+O Natal Prometido (2022)
+Jacquin Como Você Nunca Viu! (2025)
+No Amor e Na Música (2025)
+Bom Menino (2025)
+Nós Somos Zumbis (2024)
+Deslumbrado (2025)
+Os Pecados do Padre (2024)
+Aquilo que Você Deseja (2024)
+Ne Zha 2: O Renascer da Alma (2025)
+A Magia Começa na Rocha Encantada (2025)
+Como Arruinar o Natal (2023)
+Blue Moon (1999)
+O Jarro de Natal (2024)
+Reforma com Romance (2024)
+Férias na Fazenda (2023)
+Tee Yai: Nascido para o Mal (2025)
+Ursa (2021)
+Como o Gringo Roubou o Natal (2023)
+Mauricio de Sousa: O Filme (2025)
+Especial Beleza Fatal (2025)
+Diga-me Baixinho (2025)
+Natal em Windmill Way (2023)
+A Sogra Perfeita 2 (2025)
+A Paixão Segundo G.H. (2024)
+O Último Animal (2023)
+Vivo ou Morto: Um Mistério Knives Out (2025)
+Guerra 2 (2025)
+Um Natal no Rancho (2021)
+Natal em Maple Valley (2022)
+Cartas de Natal (2023)
+Outro Amor Fora do Tempo (2025)
+Chainsaw Man – O Filme: Arco da Reze (2025)
+Um Amor com Sabor de Natal (2022)
+Então é Natal (2021)
+O Filho de Mil Homens (2025)
+De Portas Abertas Para o Natal (2022)
+Diário de um Banana: A Gota d'Água (2025)
+Quem Vai Salvar o Natal? 2 (2025)
+Inferno Abandonado (2023)
+Um Doce Milagre (2021)
+Justiça Sem Limites (2023)
+A Semeadura (2024)
+O Segredo do Abrigo (2024)
+A Casa dos Segredos Enterrados (2022)
+Antes do Fim do Mundo (2025)
+Lista de Natal (2016)
+Nesta Data Querida (2025)
+O Melhor de Nós Dois (2025)
+Perrengue Fashion (2025)
+Noel Frankenstein (2024)
+Retorno da Lenda (2021)
+Beyond (1921)
+Um Bom Dia Para Morrer (2023)
+Preparação e Pouso: Operação Bola de Neve (2025)
+A Morada dos Lobisomens (2023)
+A Garota Artificial (2023)
+Parque das Almas (2022)
+Oi, Sumido! (2025)
+Convite Perigoso (2024)
+A Convidada (2023)
+A Ascensão dos Mortos (2022)
+O Exterminador de Seitas (2022)
+A Maldição da Primeira Colheita (2024)
+O Lado Sombrio de Abi (2023)
+A Armadilha do Diabo (2024)
+O Roteiro Assombrado (2023)
+O Mistério da Família Carman (2025)
+Um Amor de Natal (2024)
+Se Não Fosse Você (2025)
+Uma Faísca de Natal (2022)
+Sugarplum: A Especialista em Natal (2024)
+Três Babás para o Natal 2 (2024)
+O Preço de uma Vida [L]
+Uma Jogada de Natal (2024)
+Terras Perigosas (2021)
+A Estrela de Natal (2024)
+A Carta de Natal (2024)
+Plantão de Natal (2024)
+MK Ultra: Controlando Mentes (2022)
+O País da Pornochanchada (2022)
+A Garota no Banco de Trás (2023)
+31 Minutos: Natal Escaldante31
+Uma Mensagem Antes do Natal (2023)
+Roberto Farias - Memórias de um Cineasta (2023)
+Aldeotas (2022)
+Departamento Q: Sem Limites (2024)
+O Veterano (2011)
+Bruscky: Um Autorretrato (2025)
+O Manuscrito do Amor (2024)
+Humane: Até Onde O Ser Humano Pode Chegar (2024)
+Vampira Humanista Procura Suicida Voluntário (2023)
+Além-mundo (2024)
+Operação Beijo de Natal (2024)
+Benedetta (2021)
+Mortos Entre Vivos (2024)
+Era Uma Vez (2017)
+Natal Sob a Aurora Boreal (2024)
+O Telefone Preto 2 (2025)
+Zoopocalipse - Uma Aventura Animal (2025)
+Um Natal Bem Jonas Brothers (2025)
+Um Natal Ex-pecial (2025)
+Ardente Paciência (2022)
+Audição (2023)
+Reféns da Terra (2023)
+Caso Eloá: Refém ao Vivo (2025)
+A Onda (2015)
+Gunslingers (1950)
+Os Sneetches (2025)
+Missão Porto Seguro (2025)
+Fora de Controle (2025)
+Soberano (2005)
+Segredos de Verão (2023)
+Adeus, June (2025)
+O Rei da Feira (2025)
+Na Mira dos Mercenários (2023)
+O Natal da Patrulha Canina (2025)
+Seymour Hersh: Em Busca da Verdade (2025)
+A Casa do Engano (2024)
+Adult Swim's The Elephant (2025)
+Truque de Mestre: O 3° Ato (2025)
+Viagem para Agartha (2011)
+Perseguição Sem Trégua (1972)
+Um Conto de Natal (1984)
+Bark (2016)
+10DANCE (2025)
+Aldeia dos Sussurros (2022)
+Paraíso (1970)
+A Palavra (2025)
+Um Natal para Lembrar (2021)
+La coda del diavolo (1986)
+Caçada Final (2024)
+Nos Seus Sonhos (2025)
+Depois da Caçada (2025)
+Dois Mundos, Um Desejo (2025)
+Romina (2018)
+Malum (2023)
+Candyman2
+Quadrilha de Sádicos 2 (1985)
+Não Apaguem as Luzes (2024)
+The Caretaker (2016)
+O Demônio da Meia-Noite (2016)
+Presas do Abismo (2025)
+Calafrios (2010)
+À Caça do Monstro (1956)
+Infecção em Nova York (2006)
+O Mistério do Quarto Escuro (1935)
+Feliz Aniversário Para Mim (1981)
+O Espelho (2015)
+Contos do Além Túmulo: O Bordel de Sangue (1996)
+Sombras do Deserto (2022)
+Baile de Formatura (1980)
+Vale Maligno (2024)
+Goat (2025)
+Os Estranhos: Capítulo 2 (2025)
+Terror e Loucura (1973)
+A Mansão do Horror (2022)
+Matilha Voraz (2025)
+A Ilha do Inverno (2024)
+Censor (2021)
+Segredos Proibidos (2023)
+Conduta Mortal (2024)
+A Bruxa de Blair 2: O Livro das Sombras (2000)
+O Jogo da Tentação (2024)
+Acordando o Diabo (2021)
+Doutor Risadinha - Especialista em Óbitos (1992)
+V/H/S: Halloween (2025)
+O Massacre da Festa do Pijama (2021)
+O Enigma do Mal (1982)
+Duvide do que Ouve (2024)
+Não Estou Sozinha (2024)
+Livro de Sangue (2009)
+Ponte dos Condenados (2022)
+Projeto Harmony (2022)
+Enclausurados (2023)
+O Poço das Trevas (2024)
+Goblin - O Sacrifício (2010)
+O Estranho na Minha Casa (2025)
+Infidelidade (2002)
+Véu, Sangue e Grinalda (2022)
+Scooby-Doo! Natal Assombrado (2012)
+Um Mistério de Aurora Teagarden: A Última Cena (2018)
+Fascínio Perigoso (2024)
+Segredos No Ar (2020)
+Um Mistério de Aurora Teagarden: Assassinatos Reais (2015)
+Um Mistério de Aurora Teagarden: A Casa dos Julius (2016)
+Além da Suspeita (2000)
+O Efeito Dominó (1996)
+Um Mistério de Aurora Teagarden: Uma Pilha de Problemas (2017)
+Maratona da Morte (1976)
+O Dossiê Pelicano (1993)
+O Peso da Vitória (2025)
+Éden (2025)
+Garota Roubada (2025)
+Um Mistério de Aurora Teagarden: Três Quartos e um Corpo (2016)
+Balada de um Jogador (2025)
+Loucos por Mouser (2014)
+Depois que Morri, Todos me Amam (2025)
+Perseguindo o Assassino (2018)
+Conexão (2009)
+A Manhã Seguinte (2006)
+El gatillero (1998)
+Um Casal Quase Perfeito 2 (2006)
+Um Natal Real (2020)
+12 Presentes de Natal12
+Quando Brota o Amor (1971)
+Quero Dizer que te Amo (1995)
+O Par Perfeito (2007)
+Um Amor ao Acaso (2009)
+Amor em Tempos de Guerra (2005)
+Um Natal Mais Doce (2019)
+Embriagado de Amor (2002)
+Ela Dança, Eu Danço 2 (2008)
+Henry e June - Delírios Eróticos (1990)
+Um Presente Perfeito (2013)
+Amor Impossível (2015)
+ABC do Amor (2005)
+Por Inteiro (2025)
+Rute e Boaz (2025)
+Paixões Proibidas (1970)
+French Lover (2025)
+O Último Exorcismo: Parte II (2013)
+O Enigma do Horizonte (1997)
+As Ruínas (2008)
+Contos do Além (1972)
+Hellraiser IV: Herança Maldita (1996)
+Hotel Dunsmuir (2022)
+Soldados Amaldiçoados (2015)
+Vingança Ancestral (2023)
+O Acerto de Contas (2021)
+Agente C: Dupla Identidade (2012)
+Relay: Contrato Perigoso (2025)
+Sombras à Luz do Dia (2023)
+A Longa Marcha: Caminhe ou Morra (2025)
+Toro (2016)
+A Virada Errada (2015)
+Reino de Deus (2017)
+Eternidade (1992)
+Vibes: Boas Vibrações (1988)
+Nossa Culpa (2025)
+Juntos e Separados (2023)
+Surf Surf (2012)
+Jovens Bruxas
+Carnaval RJ
+Carnaval SP
+As Meninas Superpoderosas
+Back Street Girls Gokudolls
+Bad Genius The Series
