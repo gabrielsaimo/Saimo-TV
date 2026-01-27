@@ -1,4 +1,5 @@
 import type { Channel } from '../types/channel';
+import { restrictedChannels, restrictedCategories } from './restrictedChannels';
 
 // Base URL para logos do repositório tv-logo/tv-logos (GitHub)
 const LOGO_BASE = 'https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/brazil';
@@ -32,7 +33,7 @@ const rawChannels = [
   { id: 'telecine-action', name: 'Telecine Action', url: 'https://canais.fazoeli.co.za/fontes/smart/telecineaction.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-action-br.png` },
   { id: 'telecine-premium', name: 'Telecine Premium', url: 'https://canais.fazoeli.co.za/fontes/smart/telecinepremium.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-premium-br.png` },
   { id: 'telecine-pipoca', name: 'Telecine Pipoca', url: 'https://canais.fazoeli.co.za/fontes/smart/telecinepipoca.m3u8', category: 'Filmes', logo: `${LOGO_BASE}/tele-cine-pipoca-br.png` },
- 
+
   // === SERIES ===
   { id: 'warner', name: 'Warner Channel', url: 'https://canais.fazoeli.co.za/fontes/smart/warnerchannel.m3u8', category: 'Series', logo: `${LOGO_BASE}/warner-channel-br.png` },
   { id: 'tnt', name: 'TNT', url: 'https://canais.fazoeli.co.za/fontes/smart/tnt.m3u8', category: 'Series', logo: `${LOGO_BASE}/tnt-br.png` },
@@ -43,7 +44,7 @@ const rawChannels = [
   { id: 'ae', name: 'A&E', url: 'https://canais.fazoeli.co.za/fontes/smart/ae.m3u8', category: 'Series', logo: `${LOGO_BASE}/a-and-e-br.png` },
   { id: 'tnt-series', name: 'TNT Series', url: 'https://canais.fazoeli.co.za/fontes/smart/tntseries.m3u8', category: 'Series', logo: `${LOGO_BASE}/tnt-series-br.png` },
   { id: 'amc', name: 'AMC', url: 'https://canais.fazoeli.co.za/fontes/smart/amc.m3u8', category: 'Series', logo: `${LOGO_US}/amc-us.png` },
- 
+
   // === INFANTIL ===
   { id: 'gloob', name: 'Gloob', url: 'https://canais.fazoeli.co.za/fontes/smart/gloob.m3u8', category: 'Infantil', logo: `${LOGO_BASE}/gloob-br.png` },
   { id: 'cartoon-network', name: 'Cartoon Network', url: 'https://canais.fazoeli.co.za/fontes/smart/cartoonnetwork.m3u8', category: 'Infantil', logo: `${LOGO_BASE}/cartoon-network-br.png` },
@@ -56,7 +57,7 @@ const rawChannels = [
   { id: 'nickelodeon', name: 'Nickelodeon', url: 'https://canais.fazoeli.co.za/fontes/smart/nickelodeon.m3u8', category: 'Infantil', logo: `${LOGO_LAM}/nickelodeon-lam.png` },
   { id: 'gospel-cartoon', name: 'Gospel Cartoon', url: 'https://stmv1.srvif.com/gospelcartoon/gospelcartoon/playlist.m3u8', category: 'Infantil', logo: 'https://i.imgur.com/yxjPno5.png' },
   { id: 'geekdot', name: 'Geekdot', url: 'https://stream.ichibantv.com:3764/hybrid/play.m3u8', category: 'Infantil', logo: 'https://i.imgur.com/jML1u4O.png' },
- 
+
   // === DOCUMENTARIOS ===
   { id: 'discovery', name: 'Discovery Channel', url: 'https://canais.fazoeli.co.za/fontes/smart/discoverychannel.m3u8', category: 'Documentarios', logo: `${LOGO_US}/discovery-channel-us.png` },
   { id: 'animal-planet', name: 'Animal Planet', url: 'https://canais.fazoeli.co.za/fontes/smart/animalplanet.m3u8', category: 'Documentarios', logo: `${LOGO_INTL}/animal-planet-int.png` },
@@ -72,15 +73,15 @@ const rawChannels = [
   { id: 'discovery-turbo', name: 'Discovery Turbo', url: 'https://canais.fazoeli.co.za/fontes/smart/discoveryturbo.m3u8', category: 'Documentarios', logo: `${LOGO_BASE}/discovery-turbo-br.png` },
 
   // === ENTRETENIMENTO ===
-  { id: 'bbb1', name: 'BBB CAN 1', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb1.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`},
-  { id: 'bbb2', name: 'BBB CAN 2', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb2.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
-  { id: 'bbb3', name: 'BBB CAN 3', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb3.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
-  { id: 'bbb4', name: 'BBB CAN 4', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb4.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
-  { id: 'bbb5', name: 'BBB CAN 5', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb5.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
-  { id: 'bbb6', name: 'BBB CAN 6', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb6.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
-  { id: 'bbb7', name: 'BBB CAN 7', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb7.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
-  { id: 'bbb8', name: 'BBB CAN 8', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb8.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
-  { id: 'bbb9', name: 'BBB CAN 9', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb9.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png`  },
+  { id: 'bbb1', name: 'BBB CAN 1', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb1.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
+  { id: 'bbb2', name: 'BBB CAN 2', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb2.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
+  { id: 'bbb3', name: 'BBB CAN 3', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb3.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
+  { id: 'bbb4', name: 'BBB CAN 4', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb4.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
+  { id: 'bbb5', name: 'BBB CAN 5', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb5.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
+  { id: 'bbb6', name: 'BBB CAN 6', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb6.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
+  { id: 'bbb7', name: 'BBB CAN 7', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb7.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
+  { id: 'bbb8', name: 'BBB CAN 8', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb8.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
+  { id: 'bbb9', name: 'BBB CAN 9', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb9.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
   { id: 'bbb10', name: 'BBB CAN 10', url: 'https://canais.fazoeli.co.za/fontes/smart/bbb10.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bbb.png` },
   { id: 'multishow', name: 'Multishow', url: 'https://canais.fazoeli.co.za/fontes/smart/multishow.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/multishow-br.png` },
   { id: 'bis', name: 'BIS', url: 'https://canais.fazoeli.co.za/fontes/smart/bis.m3u8', category: 'Entretenimento', logo: `${LOGO_BASE}/bis-br.png` },
@@ -122,10 +123,10 @@ const rawChannels = [
   { id: 'sertao-tv', name: 'Sertão TV', url: 'http://wz4.dnip.com.br/sertaotv/sertaotv.sdp/playlist.m3u8', category: 'TV Aberta', logo: 'https://i.imgur.com/b5xOCsC.png' },
   { id: 'cwb-tv', name: 'CWB TV', url: 'https://59d39900ebfb8.streamlock.net/cwbtv/cwbtv/playlist.m3u8', category: 'TV Aberta', logo: 'https://i.imgur.com/S0ISpmU.png' },
   { id: 'record-internacional', name: 'Record Internacional', url: 'https://viamotionhsi.netplus.ch/live/eds/rederecordinternacional/browser-HLS8/rederecordinternacional.m3u8', category: 'TV Aberta', logo: 'https://i.imgur.com/sz9gTTr.png' },
-   { id: 'novo-tempo', name: 'TV Novo Tempo', url: 'https://stream.live.novotempo.com/tv/smil:tvnovotempo.smil/playlist.m3u8', category: 'TV Aberta', logo: 'https://i.postimg.cc/mgpGyqRg/novotempo.png' },
+  { id: 'novo-tempo', name: 'TV Novo Tempo', url: 'https://stream.live.novotempo.com/tv/smil:tvnovotempo.smil/playlist.m3u8', category: 'TV Aberta', logo: 'https://i.postimg.cc/mgpGyqRg/novotempo.png' },
   { id: 'rede-gospel', name: 'Rede Gospel', url: 'https://redegospel-aovivo.nuvemplay.live/hls/stream.m3u8', category: 'TV Aberta', logo: 'https://i.imgur.com/mttSwgO.png' },
   { id: 'despertar-tv', name: 'Despertar TV', url: 'https://cdn.live.br1.jmvstream.com/webtv/pejexypz/playlist/playlist.m3u8', category: 'TV Aberta', logo: getFallbackLogo('Despertar') },
-  
+
   // === ESPORTES ===
   { id: 'sportv', name: 'SporTV', url: 'https://canais.fazoeli.co.za/fontes/smart/sportv.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/sportv-br.png` },
   { id: 'sportv2', name: 'SporTV 2', url: 'https://canais.fazoeli.co.za/fontes/smart/sportv2.m3u8', category: 'Esportes', logo: `${LOGO_BASE}/sportv2-br.png` },
@@ -220,6 +221,7 @@ export const categoryOrder = [
   'Entretenimento',
   'Internacionais',
   'Adulto',
+  ...restrictedCategories,
 ];
 
 // Ordena canais alfabeticamente dentro de cada categoria
@@ -249,7 +251,7 @@ export const adultChannels: Channel[] = allChannels.filter(ch => ch.category ===
 // Função para obter todos os canais incluindo adultos
 export const getAllChannels = (includeAdult: boolean): Channel[] => {
   if (includeAdult) {
-    return allChannels;
+    return [...allChannels, ...restrictedChannels];
   }
   return channels;
 };

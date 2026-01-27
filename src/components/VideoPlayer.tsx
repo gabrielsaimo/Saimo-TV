@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useCallback, memo } from 'react';
 import Hls from 'hls.js';
+import mpegts from 'mpegts.js';
 import type { Channel } from '../types/channel';
 import { ProgramInfo } from './ProgramInfo';
 import castService, { type CastMethod, type CastState } from '../services/castService';
@@ -22,6 +23,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hlsRef = useRef<Hls | null>(null);
+  const mpegtsRef = useRef<mpegts.Player | null>(null);
   const intentionalPauseRef = useRef(false);
   
   const [isPlaying, setIsPlaying] = useState(true);
@@ -80,6 +82,110 @@ export const VideoPlayer = memo(function VideoPlayer({
     if (hlsRef.current) {
       hlsRef.current.destroy();
       hlsRef.current = null;
+    }
+    if (mpegtsRef.current) {
+      mpegtsRef.current.destroy();
+      mpegtsRef.current = null;
+    }
+
+    // Check for MPEG-TS (.ts)
+    if (channel.url.endsWith('.ts') || channel.url.includes('.ts?')) {
+      if (mpegts.isSupported()) {
+        const rawUrl = channel.url.trim();
+        console.log('[VideoPlayer] Initializing MPEGTS player for:', rawUrl);
+
+        const player = mpegts.createPlayer({
+            type: 'mpegts',
+            isLive: true,
+            url: rawUrl, // Usar URL direta sem proxy para garantir compatibilidade com mpegts.js
+            cors: true,
+        }, {
+            enableWorker: true,
+            lazyLoadMaxDuration: 3 * 60,
+            seekType: 'range',
+        });
+
+        player.attachMediaElement(video);
+        player.load();
+        
+        // Helper para tentar reproduzir com fallback de mudo
+        const attemptPlay = () => {
+            if (!videoRef.current) return;
+            const vid = videoRef.current;
+            console.log('[VideoPlayer] Attempting play...');
+            
+            vid.play()
+                .then(() => {
+                    console.log('[VideoPlayer] Play success!');
+                    setIsPlaying(true);
+                    setError(null);
+                })
+                .catch((e) => {
+                    console.log('[VideoPlayer] Play failed (autoplay?), trying muted...', e);
+                    vid.muted = true;
+                    setIsMuted(true);
+                    setPendingUnmute(true);
+                    vid.play()
+                        .then(() => {
+                             console.log('[VideoPlayer] Play success (muted)!');
+                             setIsPlaying(true);
+                             setError(null);
+                        })
+                        .catch((e2) => {
+                             console.error('[VideoPlayer] Play failed completely:', e2);
+                             // Não define erro aqui para dar chance ao usuário interagir
+                        });
+                });
+        };
+
+        player.on(mpegts.Events.ERROR, (type, details) => {
+            console.error(`MPEGTS Error: ${type} - ${details}`);
+             if (type === mpegts.ErrorTypes.NETWORK_ERROR) {
+                  recoveryAttemptsRef.current++;
+                  if (recoveryAttemptsRef.current > maxRecoveryAttempts) {
+                     setError(`Erro de rede: ${details}`);
+                     setIsLoading(false);
+                  } else {
+                     player.load(); // Tenta recarregar
+                  }
+             } else {
+                  setError(`Erro de reprodução: ${details}`);
+                  setIsLoading(false);
+             }
+        });
+
+        player.on(mpegts.Events.LOADING_COMPLETE, () => {
+            setIsLoading(false);
+        });
+        
+        // Quando começar a tocar/bufferizar dados suficientes
+        video.addEventListener('canplay', () => {
+             setIsLoading(false);
+             video.volume = volumeRef.current;
+             // Tenta manter o estado de mute atual se já foi setado pelo autoplay fallback
+             if (!video.muted) {
+                 video.muted = isMutedRef.current; 
+             }
+             attemptPlay();
+        }, { once: true });
+
+        mpegtsRef.current = player;
+        
+        // Tenta iniciar imediatamente assim como no StreamTester
+        attemptPlay();
+         
+        // Return early since we handled TS
+        return () => {
+             if (mpegtsRef.current) {
+                 mpegtsRef.current.destroy();
+                 mpegtsRef.current = null;
+             }
+        };
+      } else {
+         setError('Navegador não suporta mpegts.js');
+         setIsLoading(false);
+         return; 
+      }
     }
 
     if (Hls.isSupported()) {
