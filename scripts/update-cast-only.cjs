@@ -220,7 +220,20 @@ async function main() {
     // Argumento TODOS
     if (args.includes('--all')) {
         const files = fs.readdirSync(ENRICHED_DIR).filter(f => f.endsWith('.json') && f !== 'test-cast-update.json');
+
+        // Data de corte: 2 horas atrás (para evitar reprocessar o que já foi feito)
+        const TWO_HOURS_AGO = Date.now() - (2 * 60 * 60 * 1000);
+
         for (const file of files) {
+            const filePath = path.join(ENRICHED_DIR, file);
+            const stats = fs.statSync(filePath);
+
+            // Se foi modificado recentemente (nas últimas 2 horas), PULA
+            if (stats.mtimeMs > TWO_HOURS_AGO) {
+                console.log(`⏭️ Pulando ${file} (já processado recentemente)`);
+                continue;
+            }
+
             await processCategory(file);
         }
         return;
