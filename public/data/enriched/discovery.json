@@ -89277,7 +89277,102 @@
     "category": "Series | Discovery Plus",
     "type": "movie",
     "isAdult": false,
-    "logo": "https://image.tmdb.org/t/p/w1280/bwYhzeK1MVfH6SrLSEvTxuyGloT.jpg"
+    "logo": "https://image.tmdb.org/t/p/w1280/bwYhzeK1MVfH6SrLSEvTxuyGloT.jpg",
+    "tmdb": {
+      "id": 1380983,
+      "imdbId": "tt35676488",
+      "title": "Reforma com Romance",
+      "originalTitle": "Renovation Romance",
+      "tagline": null,
+      "overview": "Um casal que apresenta um reality show de reforma de casas precisa dar um jeito de consertar o próprio relacionamento durante a filmagem de um especial de fim de ano.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2024-11-01",
+      "year": "2024",
+      "rating": 6.8,
+      "voteCount": 11,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Cinema TV",
+        "Romance",
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/4CXanYuyBfN1qNmJv86n726c5ia.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/4CXanYuyBfN1qNmJv86n726c5ia.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/kzx09MhjI5CnNsxKcLmmayxar4V.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/kzx09MhjI5CnNsxKcLmmayxar4V.jpg",
+      "cast": [
+        {
+          "id": 84698,
+          "name": "Jessica Lowndes",
+          "character": "Chelsea",
+          "photo": "https://image.tmdb.org/t/p/w185/jMydZ6FVK3cxKa8dvsXIvP0HTwr.jpg"
+        },
+        {
+          "id": 1256300,
+          "name": "Daniel Lissing",
+          "character": "Cooper",
+          "photo": "https://image.tmdb.org/t/p/w185/8BN5A6PuzkjPdiT9zlDYDuMvlC4.jpg"
+        },
+        {
+          "id": 1148697,
+          "name": "Adam Hurtig",
+          "character": "Jake",
+          "photo": "https://image.tmdb.org/t/p/w185/sJ0RxYecZCJ5zybOsQjTedhMwp.jpg"
+        },
+        {
+          "id": 1549815,
+          "name": "Farrah Aviva",
+          "character": "Bethany",
+          "photo": "https://image.tmdb.org/t/p/w185/5R8la1L4HPIkSFdy38FcHPVSVaJ.jpg"
+        },
+        {
+          "id": 1166976,
+          "name": "Samantha Kendrick",
+          "character": "Janice",
+          "photo": "https://image.tmdb.org/t/p/w185/wrLYNsys35f54W7n2AbkdMUBC0X.jpg"
+        },
+        {
+          "id": 1128538,
+          "name": "Paul Essiembre",
+          "character": "Don",
+          "photo": "https://image.tmdb.org/t/p/w185/cM9uhNoWtNBfjVpmESoL0HJf9UX.jpg"
+        },
+        {
+          "id": 1733446,
+          "name": "Michael Strickland",
+          "character": "Tom",
+          "photo": "https://image.tmdb.org/t/p/w185/iQiaj9Lhc48nbGrIpWlUNahmg1Q.jpg"
+        },
+        {
+          "id": 2127703,
+          "name": "Jan Skene",
+          "character": "Edel",
+          "photo": "https://image.tmdb.org/t/p/w185/nDqJ5SL5wTRQxbkOxZtB3rpVUtr.jpg"
+        },
+        {
+          "id": 5070247,
+          "name": "Kenton Dyck",
+          "character": "Man",
+          "photo": null
+        },
+        {
+          "id": 5070249,
+          "name": "Rayne Galay",
+          "character": "Woman",
+          "photo": null
+        },
+        {
+          "id": 4137486,
+          "name": "Lam An",
+          "character": "Townsfolk (uncredited)",
+          "photo": "https://image.tmdb.org/t/p/w185/DPsSeSkCPaKHX7I2IRFga7WuZH.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": []
+    }
   },
   {
     "id": "series-1769400162965-865",
@@ -89347,7 +89442,72 @@
       ]
     },
     "totalSeasons": 1,
-    "totalEpisodes": 8
+    "totalEpisodes": 8,
+    "tmdb": {
+      "id": 222172,
+      "imdbId": "tt26753382",
+      "title": "Largados, Pelados e Solitários",
+      "originalTitle": "Naked and Afraid: Solo",
+      "tagline": "Sobrevivencialistas enfrentam 21 dias pelados, com medo e sem parceiro.",
+      "overview": "Os participantes de \"Largados e Pelados\" já suportaram os ambientes mais extenuantes da Terra e provaram o valor do trabalho em equipe na superação de condições brutais. Nesta nova série, oito dos sobreviventes mais aventureiros tentarão aguentar 21 dias completamente solitários.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2021-05-28",
+      "year": "2021",
+      "rating": 6,
+      "voteCount": 6,
+      "popularity": 0,
+      "certification": "14",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/iSpnkLFAKwQLzjRayqV2CT3F5px.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/iSpnkLFAKwQLzjRayqV2CT3F5px.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/3PaU55tOOIf2iJqUNo9g6UajNWB.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/3PaU55tOOIf2iJqUNo9g6UajNWB.jpg",
+      "cast": [],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 64537,
+          "title": "Adam Ruins Everything",
+          "poster": "https://image.tmdb.org/t/p/w185/1GafOvGp5QtzRRUMpJye2SrF1G5.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 100088,
+          "title": "The Last of Us",
+          "poster": "https://image.tmdb.org/t/p/w185/el1KQzwdIm17I3A6cYPfsVIWhfX.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 66732,
+          "title": "Stranger Things",
+          "poster": "https://image.tmdb.org/t/p/w185/twfKp60THrcOIep9sjHODOOfO8d.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 48891,
+          "title": "Brooklyn Nine-Nine: Lei e Desordem",
+          "poster": "https://image.tmdb.org/t/p/w185/A3SymGlOHefSKbz1bCOz56moupS.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 13916,
+          "title": "Death Note",
+          "poster": "https://image.tmdb.org/t/p/w185/tCZFfYTIwrR7n94J6G14Y4hAFU6.jpg",
+          "rating": 8.6
+        }
+      ],
+      "seasons": 1,
+      "episodes": 8
+    }
   },
   {
     "id": "series-1769400162965-8463",
@@ -89475,7 +89635,73 @@
       ]
     },
     "totalSeasons": 2,
-    "totalEpisodes": 16
+    "totalEpisodes": 16,
+    "tmdb": {
+      "id": 154160,
+      "imdbId": "tt16381894",
+      "title": "Identidade - Shauna Rae, Maior de Idade",
+      "originalTitle": "I Am Shauna Rae",
+      "tagline": null,
+      "overview": "O crescimento de Shauna Rae, de 22 anos, foi interrompido após uma batalha contra um câncer no cérebro. De namorar a dirigir, Shauna tenta ter a independência de uma adulta, apesar de ter o corpo de uma menina de 8 anos.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2022-01-11",
+      "year": "2022",
+      "rating": 7.7,
+      "voteCount": 6,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Drama",
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/xmDHCOSl90HowFspintX5rE054U.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/xmDHCOSl90HowFspintX5rE054U.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/ukqpTfVMFBXzy60cdxbHt61T1bl.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/ukqpTfVMFBXzy60cdxbHt61T1bl.jpg",
+      "cast": [],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 132762,
+          "title": "Below Deck Adventure",
+          "poster": "https://image.tmdb.org/t/p/w185/6f92xJ4T8yvbwnoM9LgO898X54F.jpg",
+          "rating": 7.9
+        },
+        {
+          "id": 2214,
+          "title": "Hi Honey, I'm Home!",
+          "poster": "https://image.tmdb.org/t/p/w185/4OImYJuMUK9vxJdn4zfK2wpx9kl.jpg",
+          "rating": 4.2
+        },
+        {
+          "id": 225875,
+          "title": "The World Is Yours",
+          "poster": "https://image.tmdb.org/t/p/w185/ghVqpIYJQHidrBymIYWsDKCcXZE.jpg",
+          "rating": 7
+        },
+        {
+          "id": 66744,
+          "title": "Spartan: Ultimate Team Challenge",
+          "poster": "https://image.tmdb.org/t/p/w185/i0N1ieLe2pTfGuVgEPL9uQdCIa9.jpg",
+          "rating": 4.8
+        },
+        {
+          "id": 241845,
+          "title": "Poetry Sans Frontiers",
+          "poster": null,
+          "rating": 5.7
+        },
+        {
+          "id": 250284,
+          "title": "Gordon Ramsay's Food Stars",
+          "poster": null,
+          "rating": 6
+        }
+      ],
+      "seasons": 2,
+      "episodes": 16
+    }
   },
   {
     "id": "series-1769400162965-131",
@@ -89517,7 +89743,48 @@
       ]
     },
     "totalSeasons": 1,
-    "totalEpisodes": 4
+    "totalEpisodes": 4,
+    "tmdb": {
+      "id": 208073,
+      "imdbId": "tt21104384",
+      "title": "Restrito, Sim! Sem Sabor, Nunca!",
+      "originalTitle": "It's CompliPlated",
+      "tagline": null,
+      "overview": "Tabitha Brown desafia chefs talentosos a agradar um difícil grupo de jurados com pratos deliciosos que agradem suas restrições alimentares e suas preferências. Os participantes concorrem a um prêmio de US$ 10 mil!",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2022-08-11",
+      "year": "2022",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/kSYZZYGV3mPJrzvMLjlXskzoH9a.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/kSYZZYGV3mPJrzvMLjlXskzoH9a.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/fiCzzrXQwbahZQreUhTsnmEiEU.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/fiCzzrXQwbahZQreUhTsnmEiEU.jpg",
+      "cast": [
+        {
+          "id": 1305434,
+          "name": "Tabitha Brown",
+          "character": "Host",
+          "photo": "https://image.tmdb.org/t/p/w185/3XIoMNYQSmtjc3LkQEXNhCYRr26.jpg"
+        },
+        {
+          "id": 2531165,
+          "name": "Maneet Chauhan",
+          "character": "Expert Judge",
+          "photo": "https://image.tmdb.org/t/p/w185/xrIPHFC1ph1Tgb8db26XZhqbNul.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [],
+      "seasons": 1,
+      "episodes": 6
+    }
   },
   {
     "id": "series-1769400162965-1364",
@@ -89622,7 +89889,125 @@
       ]
     },
     "totalSeasons": 1,
-    "totalEpisodes": 13
+    "totalEpisodes": 13,
+    "tmdb": {
+      "id": 217328,
+      "imdbId": "tt22187618",
+      "title": "Meio-irmãos, Meio-heróis",
+      "originalTitle": "Héros à moitié",
+      "tagline": "Mo e Sam sonham em ter superpoderes.",
+      "overview": "Mo e Sam sonham em ter superpoderes. Um dia, eles descobrem que a tataravó teve um relacionamento com um super-herói, talvez criando uma herança de superpoderes na família.",
+      "status": "Returning Series",
+      "language": "fr",
+      "releaseDate": "2022-10-24",
+      "year": "2022",
+      "rating": 7,
+      "voteCount": 1,
+      "popularity": 2,
+      "certification": "L",
+      "genres": [
+        "Comédia",
+        "Animação"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/AgBomUWJmzqrfVkLbqPOEyzv0wc.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/AgBomUWJmzqrfVkLbqPOEyzv0wc.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/pQmQT0EKaAip9RqjADjci4jZlOp.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/pQmQT0EKaAip9RqjADjci4jZlOp.jpg",
+      "cast": [
+        {
+          "id": 1427606,
+          "name": "Thomas Sagols",
+          "character": "Mo",
+          "photo": "https://image.tmdb.org/t/p/w185/vkC10qpL7VBUJSYSN9Z6NN16u4m.jpg"
+        },
+        {
+          "id": 1762590,
+          "name": "Fanny Bloc",
+          "character": "Sam",
+          "photo": "https://image.tmdb.org/t/p/w185/uEKWnfCrFPx18OBkVZgFvtHwjqN.jpg"
+        },
+        {
+          "id": 1373246,
+          "name": "Adeline Chetail",
+          "character": "Stella",
+          "photo": "https://image.tmdb.org/t/p/w185/eC9zx47fnwVu1WaLZqCae101Cyk.jpg"
+        },
+        {
+          "id": 37181,
+          "name": "Emmanuel Curtil",
+          "character": "M. Brick",
+          "photo": "https://image.tmdb.org/t/p/w185/tQO8K30BgUC9SIEvj9I2286hsbF.jpg"
+        },
+        {
+          "id": 2536728,
+          "name": "Kerstin Julia Dietrich",
+          "character": "Noomi",
+          "photo": "https://image.tmdb.org/t/p/w185/biByOFxfurLtujWAk60jwDvXokI.jpg"
+        },
+        {
+          "id": 1558832,
+          "name": "Benjamin Bollen",
+          "character": "John-Cédric",
+          "photo": "https://image.tmdb.org/t/p/w185/v39WarohjEdNCexiM5wF6CCMwG1.jpg"
+        },
+        {
+          "id": 3062141,
+          "name": "Cathy Cerda",
+          "character": "Wanda",
+          "photo": "https://image.tmdb.org/t/p/w185/jvk5jyUD7qAc893FeCHjSWJEgFK.jpg"
+        },
+        {
+          "id": 1497778,
+          "name": "Emmanuel Garijo",
+          "character": "Rudolf",
+          "photo": "https://image.tmdb.org/t/p/w185/ept2JUdN35WonXZgLLkA1Mr4uSL.jpg"
+        }
+      ],
+      "keywords": [
+        "hero",
+        "super power"
+      ],
+      "recommendations": [
+        {
+          "id": 62487,
+          "title": "Harvey Beaks",
+          "poster": "https://image.tmdb.org/t/p/w185/8ZyogSmk6UFKz6Cz3VOo93QRuB4.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 102882,
+          "title": "Kiri e Lou",
+          "poster": "https://image.tmdb.org/t/p/w185/oRehzbU7U9kNk90fexAO09401S2.jpg",
+          "rating": 8.8
+        },
+        {
+          "id": 81046,
+          "title": "O Príncipe Dragão",
+          "poster": "https://image.tmdb.org/t/p/w185/toU4TDWAdP6PEkyozFgiFoVzb5U.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 48891,
+          "title": "Brooklyn Nine-Nine: Lei e Desordem",
+          "poster": "https://image.tmdb.org/t/p/w185/A3SymGlOHefSKbz1bCOz56moupS.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 66732,
+          "title": "Stranger Things",
+          "poster": "https://image.tmdb.org/t/p/w185/twfKp60THrcOIep9sjHODOOfO8d.jpg",
+          "rating": 8.6
+        }
+      ],
+      "seasons": 1,
+      "episodes": 52
+    }
   },
   {
     "id": "series-1769400162965-4023",
@@ -89720,7 +90105,123 @@
       ]
     },
     "totalSeasons": 1,
-    "totalEpisodes": 12
+    "totalEpisodes": 12,
+    "tmdb": {
+      "id": 130385,
+      "imdbId": "tt14690094",
+      "title": "Largados, Pelados e Apaixonados",
+      "originalTitle": "Naked and Afraid of Love",
+      "tagline": null,
+      "overview": "A série acompanha as aventuras e desventuras de 16 jovens solteiros, todos eles dispostos a passar por uma experiência inédita: encarar a natureza de uma ilha deserta e isolada enquanto procuram o par perfeito.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2021-06-04",
+      "year": "2021",
+      "rating": 6.4,
+      "voteCount": 71,
+      "popularity": 3,
+      "certification": "14",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/n3k3IemMuxBmEbFYiXvNDRA3VUf.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/n3k3IemMuxBmEbFYiXvNDRA3VUf.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/6Has1wqmZx3GKsSAx7maGeLcA3Z.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/6Has1wqmZx3GKsSAx7maGeLcA3Z.jpg",
+      "cast": [
+        {
+          "id": 5033720,
+          "name": "Candice Xiao Liang",
+          "character": "Self - Contestant (as Candice)",
+          "photo": null
+        },
+        {
+          "id": 5033725,
+          "name": "Bennett Murphy",
+          "character": "Self - Contestant (as Bennett)",
+          "photo": null
+        },
+        {
+          "id": 5033726,
+          "name": "Lauren Bonner",
+          "character": "Self - Contestant (as Lauren)",
+          "photo": null
+        },
+        {
+          "id": 5033807,
+          "name": "Brittany Whitmire",
+          "character": "Self - Contestant (as Britt)",
+          "photo": null
+        },
+        {
+          "id": 5033808,
+          "name": "Nelson Dashing Monroig",
+          "character": "Self - Contestant (as Nelson)",
+          "photo": null
+        },
+        {
+          "id": 5033810,
+          "name": "Michael Dietrich",
+          "character": "Self - Contestant (as Michael)",
+          "photo": null
+        },
+        {
+          "id": 5795920,
+          "name": "Rachel Strohl",
+          "character": "Self - Contestant",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "jealousy",
+        "love",
+        "survival",
+        "relationship",
+        "naked",
+        "reality show",
+        "paradise beaches"
+      ],
+      "recommendations": [
+        {
+          "id": 282846,
+          "title": "Quadra de Ouro",
+          "poster": "https://image.tmdb.org/t/p/w185/yWd42Nq8NGp4DysbSYm6n57PLFt.jpg",
+          "rating": 8.3
+        },
+        {
+          "id": 221490,
+          "title": "Real Madrid - Até o Fim",
+          "poster": "https://image.tmdb.org/t/p/w185/ieKZZngWi0PtdA6LpBgDzA3a2ki.jpg",
+          "rating": 8
+        },
+        {
+          "id": 68683,
+          "title": "Histórias reais: A polícia do bairro",
+          "poster": "https://image.tmdb.org/t/p/w185/hFcluhACmpObsa5syJO0x6mQRio.jpg",
+          "rating": 7.5
+        },
+        {
+          "id": 208251,
+          "title": "Terra de Mulheres",
+          "poster": "https://image.tmdb.org/t/p/w185/2gRm3kHcBZdW7Q9vx1bGTcjrLv6.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 158596,
+          "title": "Beleza Fatal",
+          "poster": "https://image.tmdb.org/t/p/w185/gnqG5Ou3esy5OkhEK5w42vdaq9I.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 228528,
+          "title": "Segundas Intenções",
+          "poster": "https://image.tmdb.org/t/p/w185/akFYVjpqtNZtyajTNO8tbDYr8tm.jpg",
+          "rating": 6.6
+        }
+      ],
+      "seasons": 1,
+      "episodes": 12
+    }
   },
   {
     "id": "series-1769400162965-2147",
@@ -89790,7 +90291,42 @@
       ]
     },
     "totalSeasons": 1,
-    "totalEpisodes": 8
+    "totalEpisodes": 8,
+    "tmdb": {
+      "id": 130388,
+      "imdbId": "tt13787460",
+      "title": "Pequenas Empresas, Grandes Sonhos",
+      "originalTitle": "Self Employed",
+      "tagline": "Jonathan Morris viaja para compartilhar histórias inspiradoras.",
+      "overview": "O empresário Jonathan Morris viaja pelos Estados Unidos para compartilhar histórias inspiradoras e os desafios assumidos por pequenos empresários na criação de seus negócios.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2021-08-27",
+      "year": "2021",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": "L",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/dUlC1Pt3qGgVKGNCVSA2iDHmck7.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/dUlC1Pt3qGgVKGNCVSA2iDHmck7.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/eWeqn17ca0BIobOG8DNqhX3Dz89.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/eWeqn17ca0BIobOG8DNqhX3Dz89.jpg",
+      "cast": [
+        {
+          "id": 4030535,
+          "name": "Jonathan Morris",
+          "character": "Self - Host",
+          "photo": "https://image.tmdb.org/t/p/w185/dHagoC6FrIG0LV3N9h9Hk7Qfvp7.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [],
+      "seasons": 1,
+      "episodes": 8
+    }
   },
   {
     "id": "series-1769401634803-2660",
@@ -89991,6 +90527,40 @@
     },
     "totalSeasons": 3,
     "totalEpisodes": 26,
-    "tmdb": null
+    "tmdb": {
+      "id": 132143,
+      "imdbId": "tt12259836",
+      "title": "The Lost Kitchen: O Restaurante Escondido",
+      "originalTitle": "The Lost Kitchen",
+      "tagline": null,
+      "overview": "Erin French decidiu se dedicar à sua paixão e abriu um restaurante em Freedon, sua cidade natal, no Maine. Viajantes de todo o mundo se reúnem em The Lost Kitchen para saborear o inspirado cardápio de Erin.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2021-01-04",
+      "year": "2021",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/kJnUkV9wI2rTHSPCvzzPok1q173.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/kJnUkV9wI2rTHSPCvzzPok1q173.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/xUFMVCXxTKCOviOcO2pco3cd6OV.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/xUFMVCXxTKCOviOcO2pco3cd6OV.jpg",
+      "cast": [
+        {
+          "id": 3214136,
+          "name": "Erin French",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/64mQn1k9NMZcZKOtk3RvI4zDfdg.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [],
+      "seasons": 3,
+      "episodes": 26
+    }
   }
 ]

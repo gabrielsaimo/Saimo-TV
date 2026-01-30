@@ -878,91 +878,120 @@
           "id": 3059430,
           "name": "Filipe Valerim",
           "character": "Narrador",
-          "photo": "https://image.tmdb.org/t/p/w185/yW1xSZLvtjJeQJttuzhbLBnBMvr.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/yW1xSZLvtjJeQJttuzhbLBnBMvr.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 1817120,
           "name": "Olavo de Carvalho",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/uOtPNvYP8Jv1s0NLIGUbFzGzgEM.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/uOtPNvYP8Jv1s0NLIGUbFzGzgEM.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 3596943,
           "name": "Thomas Giulliano",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/fkuIb2LQTmJYx7yPeMOyaVpO1c8.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/fkuIb2LQTmJYx7yPeMOyaVpO1c8.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 3505702,
           "name": "Rafael Nogueira",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/iF2gVp8c0iScqVGThpnQ8zrnkd2.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/iF2gVp8c0iScqVGThpnQ8zrnkd2.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 3596937,
           "name": "Luiz Philippe de Orléans e Bragança",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/a5cEf9QCITfTOL72rwCpiWqHYUM.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/a5cEf9QCITfTOL72rwCpiWqHYUM.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 5729674,
           "name": "Bruno Garschagen",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         },
         {
           "id": 3596946,
           "name": "Percival Puggina",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         },
         {
           "id": 5729675,
           "name": "Dom Bertrand",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         },
         {
           "id": 5729676,
           "name": "Adriano Gianturco",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         },
         {
           "id": 3113468,
           "name": "Leandro Narloch",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         },
         {
           "id": 5729677,
           "name": "Gastão Reis",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         },
         {
           "id": 5667198,
           "name": "Alberto da Costa e Silva",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         },
         {
           "id": 5729678,
           "name": "Flávio Morgenstern",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         },
         {
           "id": 5729679,
           "name": "Antônio Paim",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         },
         {
           "id": 5729680,
           "name": "Jorge Caldeira",
           "character": "Entrevistado",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
+        },
+        {
+          "id": 5729681,
+          "name": "Rafael Vitola Brodbeck",
+          "character": "Entrevistado",
+          "photo": null,
+          "totalEpisodeCount": 6
+        },
+        {
+          "id": 5346963,
+          "name": "Paulo Rezzutti",
+          "character": "Entrevistado",
+          "photo": null,
+          "totalEpisodeCount": 6
         }
       ],
       "creators": [
@@ -1415,67 +1444,78 @@
           "id": 3059430,
           "name": "Filipe Valerim",
           "character": "Narrador",
-          "photo": "https://image.tmdb.org/t/p/w185/yW1xSZLvtjJeQJttuzhbLBnBMvr.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/yW1xSZLvtjJeQJttuzhbLBnBMvr.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 5765526,
           "name": "Fausto Zamboni",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/4KSqcxFdOdAbDkHgzqkHUY6sS1S.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/4KSqcxFdOdAbDkHgzqkHUY6sS1S.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 5765528,
           "name": "João Malheiro",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/1DC39aGPEPBMsadhx0uEMye3MT7.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/1DC39aGPEPBMsadhx0uEMye3MT7.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 3505702,
           "name": "Rafael Nogueira",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/iF2gVp8c0iScqVGThpnQ8zrnkd2.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/iF2gVp8c0iScqVGThpnQ8zrnkd2.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 3596937,
           "name": "Luiz Philippe de Orléans e Bragança",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/a5cEf9QCITfTOL72rwCpiWqHYUM.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/a5cEf9QCITfTOL72rwCpiWqHYUM.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 5765532,
           "name": "Clístenes Fernandes",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/6okoYfH80VqXNQy2wRAWbgRrk4n.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/6okoYfH80VqXNQy2wRAWbgRrk4n.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 5765535,
           "name": "Francisco Solano Portela",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/9b93qpxLE6BW6lZ4c1fRwojMU3b.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/9b93qpxLE6BW6lZ4c1fRwojMU3b.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 1817120,
           "name": "Olavo de Carvalho",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/uOtPNvYP8Jv1s0NLIGUbFzGzgEM.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/uOtPNvYP8Jv1s0NLIGUbFzGzgEM.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 5765536,
           "name": "Fernando Conrado",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/msMPbLn7k3qXPl4UWqQSW6GlCXa.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/msMPbLn7k3qXPl4UWqQSW6GlCXa.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 3596943,
           "name": "Thomas Giulliano",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/fkuIb2LQTmJYx7yPeMOyaVpO1c8.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/fkuIb2LQTmJYx7yPeMOyaVpO1c8.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 3596947,
           "name": "Simon Schwartzman",
           "character": "Entrevistado",
-          "photo": "https://image.tmdb.org/t/p/w185/vSqNauGO6W2essYuOZnvs0MHEtN.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/vSqNauGO6W2essYuOZnvs0MHEtN.jpg",
+          "totalEpisodeCount": 3
         }
       ],
       "creators": [
@@ -1587,43 +1627,50 @@
           "id": 990150,
           "name": "Cláudio Manoel",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/n1Vbpj1gpZdpZG5pPBPNPW9B4Cn.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/n1Vbpj1gpZdpZG5pPBPNPW9B4Cn.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 1965392,
           "name": "Jair Bolsonaro",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/7C4ZYNuqESt4oSCge7pUxPDwfXR.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/7C4ZYNuqESt4oSCge7pUxPDwfXR.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 938648,
           "name": "Lobão",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/sAV3tgHtSXwgQLQsOtTXcAKqtz6.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/sAV3tgHtSXwgQLQsOtTXcAKqtz6.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 2279995,
           "name": "Luiz Felipe Pondé",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/2U9kmIUdm5F53pGWzct6pp19wjj.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/2U9kmIUdm5F53pGWzct6pp19wjj.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 3596937,
           "name": "Luiz Philippe de Orléans e Bragança",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/a5cEf9QCITfTOL72rwCpiWqHYUM.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/a5cEf9QCITfTOL72rwCpiWqHYUM.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 1817120,
           "name": "Olavo de Carvalho",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/uOtPNvYP8Jv1s0NLIGUbFzGzgEM.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/uOtPNvYP8Jv1s0NLIGUbFzGzgEM.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 3729444,
           "name": "Onyx Lorenzoni",
           "character": "",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 6
         }
       ],
       "creators": [
@@ -1986,19 +2033,22 @@
           "id": 3216388,
           "name": "Henrique Zingano",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/f4oXqyYJJv0fJ38D7t0M8Rp0cwP.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/f4oXqyYJJv0fJ38D7t0M8Rp0cwP.jpg",
+          "totalEpisodeCount": 22
         },
         {
           "id": 3728404,
           "name": "Felipe Benke",
           "character": "",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 22
         },
         {
           "id": 3757382,
           "name": "Abílio Baleia",
           "character": "Narrador",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 22
         }
       ],
       "creators": [],
@@ -2094,49 +2144,57 @@
           "id": 5071256,
           "name": "Ives Gandra Martins",
           "character": "Himself",
-          "photo": "https://image.tmdb.org/t/p/w185/aLZXTz6ttGZP2tVi4dMG4AL1R4H.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/aLZXTz6ttGZP2tVi4dMG4AL1R4H.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 5700331,
           "name": "Angela Gandra",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/oWlUgDsZnAvtUZQWKpj1pmcDDeY.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/oWlUgDsZnAvtUZQWKpj1pmcDDeY.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 5700335,
           "name": "Modesto Carvalhosa",
           "character": "Himself",
-          "photo": "https://image.tmdb.org/t/p/w185/zWBRoomYoG42KoWCDuCHGPPRDRv.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/zWBRoomYoG42KoWCDuCHGPPRDRv.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 2136755,
           "name": "Janaína Paschoal",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/fXN8OL9hBhasWC8cbakSHlAC7vn.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/fXN8OL9hBhasWC8cbakSHlAC7vn.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 5700467,
           "name": "Eduardo Girão",
           "character": "Himself",
-          "photo": "https://image.tmdb.org/t/p/w185/3GPKBLWAMOKj7637KSLNAu3GwtA.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/3GPKBLWAMOKj7637KSLNAu3GwtA.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 3596937,
           "name": "Luiz Philippe de Orléans e Bragança",
           "character": "Himself",
-          "photo": "https://image.tmdb.org/t/p/w185/a5cEf9QCITfTOL72rwCpiWqHYUM.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/a5cEf9QCITfTOL72rwCpiWqHYUM.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 3618252,
           "name": "Carlos Ayres Britto",
           "character": "Himself",
-          "photo": "https://image.tmdb.org/t/p/w185/uDADrhyERDbtDjoL5SMvNop8Uad.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/uDADrhyERDbtDjoL5SMvNop8Uad.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 2283788,
           "name": "Michel Temer",
           "character": "Himself",
-          "photo": "https://image.tmdb.org/t/p/w185/7wqtmV5XYYev9V9YMOh08HvIFvd.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/7wqtmV5XYYev9V9YMOh08HvIFvd.jpg",
+          "totalEpisodeCount": 3
         }
       ],
       "creators": [],
@@ -2265,37 +2323,43 @@
           "id": 3890782,
           "name": "Leandro Souza",
           "character": "Niilista",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 3
         },
         {
           "id": 3890784,
           "name": "Laura Valadão",
           "character": "Eliza",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 3
         },
         {
           "id": 3890785,
           "name": "Euler Santi",
           "character": "O Outro",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 3
         },
         {
           "id": 3890786,
           "name": "Ana Lúcia Soares",
           "character": "Enfermeira",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 3
         },
         {
           "id": 3890788,
           "name": "Eduardo Gonçalves",
           "character": "Garçom",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 3
         },
         {
           "id": 3890775,
           "name": "Juan Montaño",
           "character": "Médico",
-          "photo": "https://image.tmdb.org/t/p/w185/tQXF5zpxssenJM4WJPwvbX9ve8E.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/tQXF5zpxssenJM4WJPwvbX9ve8E.jpg",
+          "totalEpisodeCount": 3
         }
       ],
       "creators": [
@@ -2391,25 +2455,29 @@
           "id": 3616011,
           "name": "Simony",
           "character": "Self",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 3
         },
         {
           "id": 4102172,
           "name": "Mike Biggs",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/bKfc1n4s2PXlnNAbiVfk6KXRUot.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/bKfc1n4s2PXlnNAbiVfk6KXRUot.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 2803676,
           "name": "Vímerson Cavanilas",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/xlVfxaYOiU238kj1V8VH1RJwTsf.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/xlVfxaYOiU238kj1V8VH1RJwTsf.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 4102161,
           "name": "Jair Oliveira",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/qazoXU6TSxFxgyA2hFQxrFYxYmQ.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/qazoXU6TSxFxgyA2hFQxrFYxYmQ.jpg",
+          "totalEpisodeCount": 3
         }
       ],
       "creators": [],
@@ -2679,49 +2747,57 @@
           "id": 141683,
           "name": "Luiz Inácio Lula da Silva",
           "character": "Ele mesmo",
-          "photo": "https://image.tmdb.org/t/p/w185/AtibuGdOqTQZFnNZqB7BZxKVEJr.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/AtibuGdOqTQZFnNZqB7BZxKVEJr.jpg",
+          "totalEpisodeCount": 8
         },
         {
           "id": 935897,
           "name": "Fernando Henrique Cardoso",
           "character": "Ele mesmo",
-          "photo": "https://image.tmdb.org/t/p/w185/xowAhQ6vwT1QMKIoFSHalRkHNEb.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/xowAhQ6vwT1QMKIoFSHalRkHNEb.jpg",
+          "totalEpisodeCount": 8
         },
         {
           "id": 1286444,
           "name": "Fernando Collor de Mello",
           "character": "Ele mesmo",
-          "photo": "https://image.tmdb.org/t/p/w185/v0UiR8TV0aPsbIKMkpVZuyEmllj.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/v0UiR8TV0aPsbIKMkpVZuyEmllj.jpg",
+          "totalEpisodeCount": 8
         },
         {
           "id": 3433263,
           "name": "Geraldo Alckmin",
           "character": "Ele mesmo",
-          "photo": "https://image.tmdb.org/t/p/w185/s9SBRLFWQcKuv1PTZBSm2VzJz2J.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/s9SBRLFWQcKuv1PTZBSm2VzJz2J.jpg",
+          "totalEpisodeCount": 8
         },
         {
           "id": 2030120,
           "name": "Dilma Rousseff",
           "character": "Ela mesma",
-          "photo": "https://image.tmdb.org/t/p/w185/jdqu8lERRBmCLJdDsonh04WkUaB.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/jdqu8lERRBmCLJdDsonh04WkUaB.jpg",
+          "totalEpisodeCount": 8
         },
         {
           "id": 1965392,
           "name": "Jair Bolsonaro",
           "character": "Ele mesmo",
-          "photo": "https://image.tmdb.org/t/p/w185/7C4ZYNuqESt4oSCge7pUxPDwfXR.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/7C4ZYNuqESt4oSCge7pUxPDwfXR.jpg",
+          "totalEpisodeCount": 8
         },
         {
           "id": 2349044,
           "name": "Paulo Maluf",
           "character": "Ele mesmo",
-          "photo": "https://image.tmdb.org/t/p/w185/cHIB993m0Cvohmcc1CMV6lOc12I.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/cHIB993m0Cvohmcc1CMV6lOc12I.jpg",
+          "totalEpisodeCount": 8
         },
         {
           "id": 3653418,
           "name": "Ciro Gomes",
           "character": "Ele mesmo",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 8
         }
       ],
       "creators": [
@@ -2900,37 +2976,43 @@
           "id": 1264006,
           "name": "Stella Miranda",
           "character": "Stella",
-          "photo": "https://image.tmdb.org/t/p/w185/caARL6uGyY7fIrZgML9YsUm4uia.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/caARL6uGyY7fIrZgML9YsUm4uia.jpg",
+          "totalEpisodeCount": 10
         },
         {
           "id": 8596,
           "name": "Leandro Firmino",
           "character": "Maicon",
-          "photo": "https://image.tmdb.org/t/p/w185/aEzWJgEzId04EP8C2UFQaF28WTW.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/aEzWJgEzId04EP8C2UFQaF28WTW.jpg",
+          "totalEpisodeCount": 10
         },
         {
           "id": 102553,
           "name": "Tonico Pereira",
           "character": "Dr. Arruda",
-          "photo": "https://image.tmdb.org/t/p/w185/n3NT16Zu0LLLcql5678SivoSYlY.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/n3NT16Zu0LLLcql5678SivoSYlY.jpg",
+          "totalEpisodeCount": 10
         },
         {
           "id": 3435763,
           "name": "Anna Markun",
           "character": "",
-          "photo": null
+          "photo": null,
+          "totalEpisodeCount": 10
         },
         {
           "id": 4000253,
           "name": "Larissa Maxine",
           "character": "Hermínia",
-          "photo": "https://image.tmdb.org/t/p/w185/rUeWm3q8Q2MAolW5Gve0RtqD3fG.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/rUeWm3q8Q2MAolW5Gve0RtqD3fG.jpg",
+          "totalEpisodeCount": 10
         },
         {
           "id": 3134551,
           "name": "Adressa Koetz",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/sSEhrOdI5FIz5WmaUgemApAthmV.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/sSEhrOdI5FIz5WmaUgemApAthmV.jpg",
+          "totalEpisodeCount": 10
         }
       ],
       "creators": [
@@ -3086,91 +3168,127 @@
           "id": 1249715,
           "name": "Karl Marx",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/eFaca4IMGc2gPStxK7TvSP9uEHb.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/eFaca4IMGc2gPStxK7TvSP9uEHb.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 3268547,
           "name": "Friedrich Engels",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/h6GxfgyLXOfuFc1XpAJvZ8nOr1h.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/h6GxfgyLXOfuFc1XpAJvZ8nOr1h.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 5729780,
           "name": "Mikhail Bakunin",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/pxSkDUdp4031C2wM1kpQD4RKIWv.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/pxSkDUdp4031C2wM1kpQD4RKIWv.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 1135824,
           "name": "Vladimir Lenin",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/u53SxPNYzE6krmujF3dLfl90EWY.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/u53SxPNYzE6krmujF3dLfl90EWY.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 1111438,
           "name": "Leon Trotsky",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/ugXC8P9qAbLgQa6GpSobIk7x1SX.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/ugXC8P9qAbLgQa6GpSobIk7x1SX.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 994271,
           "name": "Joseph Stalin",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/lXOn6MhSwB3idCyZrM58ZiKreCH.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/lXOn6MhSwB3idCyZrM58ZiKreCH.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 115863,
           "name": "Fidel Castro",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/dX5ZWCkwCzA9YfNALghFNPlRefp.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/dX5ZWCkwCzA9YfNALghFNPlRefp.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 1117838,
           "name": "Ernesto \"Che\" Guevara",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/vlOewYHCIf8oB18uppiOXLRPJ3y.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/vlOewYHCIf8oB18uppiOXLRPJ3y.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 1001615,
           "name": "Mao Zedong",
           "character": "Self",
-          "photo": "https://image.tmdb.org/t/p/w185/nuQSpbdD2i4jvBDB0TnvoVbD493.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/nuQSpbdD2i4jvBDB0TnvoVbD493.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 1732408,
           "name": "Simon Sebag Montefiore",
           "character": "Entrevistado, especialista em Stalin",
-          "photo": "https://image.tmdb.org/t/p/w185/o2wN8rccuBB50yJnnXkM1LW8SeN.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/o2wN8rccuBB50yJnnXkM1LW8SeN.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 2388814,
           "name": "Victor Sebestyen",
           "character": "Entrevistado, especialista em Lenin",
-          "photo": "https://image.tmdb.org/t/p/w185/1SDndbLwrmeMD6J3gdL9Nlqj6Mi.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/1SDndbLwrmeMD6J3gdL9Nlqj6Mi.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 3252490,
           "name": "Stephen Smith",
           "character": "Entrevistado, especialista em comunismo",
-          "photo": "https://image.tmdb.org/t/p/w185/xFAA41o33KUnD4ve9A50kpBxPp2.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/xFAA41o33KUnD4ve9A50kpBxPp2.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 2064199,
           "name": "Jack Barsky",
           "character": "Entrevistado, ex-agente da KGB",
-          "photo": "https://image.tmdb.org/t/p/w185/gLUgnmMUAjWl92hJjgiFonSOlh7.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/gLUgnmMUAjWl92hJjgiFonSOlh7.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 1183700,
           "name": "Richard Pipes",
           "character": "Entrevistado, especialista em História da Rússia",
-          "photo": "https://image.tmdb.org/t/p/w185/oYTlah7K6BPscUbJxMmOlASd1e3.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/oYTlah7K6BPscUbJxMmOlASd1e3.jpg",
+          "totalEpisodeCount": 6
         },
         {
           "id": 5736199,
           "name": "Anthony Saich",
           "character": "Entrevistado, especialista em Mao",
-          "photo": "https://image.tmdb.org/t/p/w185/cfJEYnfmKRyO6t0zCzTlqr188EE.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/cfJEYnfmKRyO6t0zCzTlqr188EE.jpg",
+          "totalEpisodeCount": 6
+        },
+        {
+          "id": 5736201,
+          "name": "Charles Maier",
+          "character": "Entrevistado, especialista em comunismo",
+          "photo": "https://image.tmdb.org/t/p/w185/D0ybNEtv9RTMGF00T3PvAkDddz.jpg",
+          "totalEpisodeCount": 6
+        },
+        {
+          "id": 5729785,
+          "name": "Zoe Martinez",
+          "character": "Entrevistada, política cubana naturalizada brasileira",
+          "photo": "https://image.tmdb.org/t/p/w185/n43ULxehK76Fp70iJ0IA68Rnws4.jpg",
+          "totalEpisodeCount": 6
+        },
+        {
+          "id": 1878999,
+          "name": "Theodore Dalrymple",
+          "character": "Entrevistado, médico e escritor conservador",
+          "photo": "https://image.tmdb.org/t/p/w185/fvol5TcBZUk2khxYmtmrKCQGp70.jpg",
+          "totalEpisodeCount": 6
         }
       ],
       "creators": [
@@ -3782,43 +3900,351 @@
           "id": 20354,
           "name": "Amber Tamblyn",
           "character": "Joan Girardi",
-          "photo": "https://image.tmdb.org/t/p/w185/7EHkQ2Jb8c8RkllPkexRQ2neyeL.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/7EHkQ2Jb8c8RkllPkexRQ2neyeL.jpg",
+          "totalEpisodeCount": 45
         },
         {
           "id": 3266,
           "name": "Joe Mantegna",
           "character": "Will Girardi",
-          "photo": "https://image.tmdb.org/t/p/w185/4jzvAE6B1eoiZDUnDUuMazirCPP.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/4jzvAE6B1eoiZDUnDUuMazirCPP.jpg",
+          "totalEpisodeCount": 45
         },
         {
           "id": 2453,
           "name": "Mary Steenburgen",
           "character": "Helen Girardi",
-          "photo": "https://image.tmdb.org/t/p/w185/yJhfuqS3yXW7kLSyvRU6n3b35mq.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/yJhfuqS3yXW7kLSyvRU6n3b35mq.jpg",
+          "totalEpisodeCount": 45
         },
         {
           "id": 50095,
           "name": "Jason Ritter",
           "character": "Kevin Girardi",
-          "photo": "https://image.tmdb.org/t/p/w185/sF43q8bSixEjCJ6IXag6VTaNwFj.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/sF43q8bSixEjCJ6IXag6VTaNwFj.jpg",
+          "totalEpisodeCount": 45
         },
         {
           "id": 56676,
           "name": "Michael Welch",
           "character": "Luke Girardi",
-          "photo": "https://image.tmdb.org/t/p/w185/nG38Sl8dems5i1xpJxsLIrYiIkn.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/nG38Sl8dems5i1xpJxsLIrYiIkn.jpg",
+          "totalEpisodeCount": 45
         },
         {
           "id": 59238,
           "name": "Christopher Rodriguez Marquette",
           "character": "Adam Rove",
-          "photo": "https://image.tmdb.org/t/p/w185/8AL7UPXM4sVkOMgTHIxNdRi2SXP.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/8AL7UPXM4sVkOMgTHIxNdRi2SXP.jpg",
+          "totalEpisodeCount": 44
         },
         {
           "id": 1215392,
           "name": "Becky Wahlstrom",
           "character": "Grace Polk",
-          "photo": "https://image.tmdb.org/t/p/w185/fKi4jFn4HZBhmzt3sztmTcLZZmn.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/fKi4jFn4HZBhmzt3sztmTcLZZmn.jpg",
+          "totalEpisodeCount": 44
+        },
+        {
+          "id": 43373,
+          "name": "Aaron Himelstein",
+          "character": "Friedman",
+          "photo": "https://image.tmdb.org/t/p/w185/rIZXqniTmZ2FE6YvCjRJESycW6P.jpg",
+          "totalEpisodeCount": 33
+        },
+        {
+          "id": 20645,
+          "name": "Mageina Tovah",
+          "character": "Glynis Figliola",
+          "photo": "https://image.tmdb.org/t/p/w185/AiGQaF7tpr2m1jU0sZm0kZOQI7h.jpg",
+          "totalEpisodeCount": 23
+        },
+        {
+          "id": 1216160,
+          "name": "Mark Totty",
+          "character": "Det. Carlisle",
+          "photo": "https://image.tmdb.org/t/p/w185/xj3IAmzWZTOXaDnhtLyN7BeU8l7.jpg",
+          "totalEpisodeCount": 17
+        },
+        {
+          "id": 58791,
+          "name": "Patrick Fabian",
+          "character": "Gavin Price",
+          "photo": "https://image.tmdb.org/t/p/w185/bbsYGlnvGUTTExcabKL1OIhcKyZ.jpg",
+          "totalEpisodeCount": 16
+        },
+        {
+          "id": 55422,
+          "name": "Elaine Hendrix",
+          "character": "Ms. Lischak",
+          "photo": "https://image.tmdb.org/t/p/w185/ajnxlCCO0IYQeaL2KOJwjFWkFG0.jpg",
+          "totalEpisodeCount": 16
+        },
+        {
+          "id": 10691,
+          "name": "April Grace",
+          "character": "Sergeant Toni Williams",
+          "photo": "https://image.tmdb.org/t/p/w185/nV8nnymN0ClT3xppwhlAtUnjSxa.jpg",
+          "totalEpisodeCount": 15
+        },
+        {
+          "id": 944953,
+          "name": "Derek Morgan",
+          "character": "Undersheriff Roy Roebuck",
+          "photo": "https://image.tmdb.org/t/p/w185/5dIIVyomVWzQfR9NuW4Nh3vuIwT.jpg",
+          "totalEpisodeCount": 12
+        },
+        {
+          "id": 8873,
+          "name": "Annie Potts",
+          "character": "Lieutenant Lucy Preston",
+          "photo": "https://image.tmdb.org/t/p/w185/hWIzkAH7jkSkxBfwdudxbSPxeno.jpg",
+          "totalEpisodeCount": 11
+        },
+        {
+          "id": 156204,
+          "name": "Constance Zimmer",
+          "character": "Sister Lilly Watters",
+          "photo": "https://image.tmdb.org/t/p/w185/ujBtcGEUfWje7JWVIWZqBUjKqZt.jpg",
+          "totalEpisodeCount": 11
+        },
+        {
+          "id": 118243,
+          "name": "Sprague Grayden",
+          "character": "Judith Montgomery",
+          "photo": "https://image.tmdb.org/t/p/w185/dhWyIHiG9fYMkcd3pUK3Q7kFm37.jpg",
+          "totalEpisodeCount": 9
+        },
+        {
+          "id": 169000,
+          "name": "Jeffrey Licon",
+          "character": "Goth Kid God",
+          "photo": "https://image.tmdb.org/t/p/w185/2vExkFQMDHU0hozjJc7LnYNpPAs.jpg",
+          "totalEpisodeCount": 9
+        },
+        {
+          "id": 107408,
+          "name": "David Burke",
+          "character": "Father Ken Mallory",
+          "photo": "https://image.tmdb.org/t/p/w185/fSzOaKnQUYak1qUeIIrN9R2MNrw.jpg",
+          "totalEpisodeCount": 9
+        },
+        {
+          "id": 20176,
+          "name": "Kris Lemche",
+          "character": "Cute Boy God",
+          "photo": "https://image.tmdb.org/t/p/w185/5GTujRHh4fql56kkHVrxehwJGn1.jpg",
+          "totalEpisodeCount": 9
+        },
+        {
+          "id": 118420,
+          "name": "Juliette Goglia",
+          "character": "Little Girl God",
+          "photo": "https://image.tmdb.org/t/p/w185/3cO00CI518WjIGWylUN3Cx89Fs.jpg",
+          "totalEpisodeCount": 8
+        },
+        {
+          "id": 20493,
+          "name": "Sydney Tamiia Poitier",
+          "character": "Rebecca Askew",
+          "photo": "https://image.tmdb.org/t/p/w185/p3AWANvC7w49CWYeJRsaHsALv6C.jpg",
+          "totalEpisodeCount": 8
+        },
+        {
+          "id": 106935,
+          "name": "Kathryn Joosten",
+          "character": "Old Lady God",
+          "photo": "https://image.tmdb.org/t/p/w185/kkPEyfRYwrbSdQQwOwQo8qFTiKP.jpg",
+          "totalEpisodeCount": 8
+        },
+        {
+          "id": 63735,
+          "name": "Misti Traya",
+          "character": "Iris",
+          "photo": "https://image.tmdb.org/t/p/w185/mo5Kj2vhmCgL7TyBhz002tvg5nB.jpg",
+          "totalEpisodeCount": 6
+        },
+        {
+          "id": 157047,
+          "name": "Kimberly McCullough",
+          "character": "Beth Reinhart",
+          "photo": "https://image.tmdb.org/t/p/w185/bhLjAkYh931tg1VC8nHGFzAgCfb.jpg",
+          "totalEpisodeCount": 6
+        },
+        {
+          "id": 20211,
+          "name": "John Getz",
+          "character": "D.A. Gabe Fellowes",
+          "photo": "https://image.tmdb.org/t/p/w185/NL52y1nH5SZMlJKfKpPBnofoJk.jpg",
+          "totalEpisodeCount": 6
+        },
+        {
+          "id": 4654238,
+          "name": "Barbara Evans",
+          "character": "Jeanne",
+          "photo": null,
+          "totalEpisodeCount": 6
+        },
+        {
+          "id": 67850,
+          "name": "Riley Smith",
+          "character": "Andy Baker",
+          "photo": "https://image.tmdb.org/t/p/w185/cBLhhvqOQY8g95RaymVbd2Bd6py.jpg",
+          "totalEpisodeCount": 5
+        },
+        {
+          "id": 43902,
+          "name": "Erik Palladino",
+          "character": "Lt. Michael Daghlian",
+          "photo": "https://image.tmdb.org/t/p/w185/k8wx0HCCcjRYKqowh8E1yIdrsVu.jpg",
+          "totalEpisodeCount": 5
+        },
+        {
+          "id": 2062264,
+          "name": "Catherine Petra Villalobos",
+          "character": "Skater Girl (uncredited)",
+          "photo": null,
+          "totalEpisodeCount": 5
+        },
+        {
+          "id": 42375,
+          "name": "Morocco Omari",
+          "character": "Principal Stephen Chadwick",
+          "photo": "https://image.tmdb.org/t/p/w185/9TxPwsK3IRNrpRMhR1uNTHCf6ei.jpg",
+          "totalEpisodeCount": 5
+        },
+        {
+          "id": 78416,
+          "name": "Paul Sand",
+          "character": "Rabbi Polonski",
+          "photo": "https://image.tmdb.org/t/p/w185/h6PTXhdiAH94dSrs5UutrzZZhH6.jpg",
+          "totalEpisodeCount": 4
+        },
+        {
+          "id": 5170,
+          "name": "Mike Starr",
+          "character": "Big Tough Guy God",
+          "photo": "https://image.tmdb.org/t/p/w185/hJGhV91dSUiFJ8GwGDTEEri79LX.jpg",
+          "totalEpisodeCount": 4
+        },
+        {
+          "id": 1216144,
+          "name": "Mitch Longley",
+          "character": "Barry 'The Bear' Caldwell",
+          "photo": null,
+          "totalEpisodeCount": 4
+        },
+        {
+          "id": 43859,
+          "name": "Diane Delano",
+          "character": "Coach Carol Keady",
+          "photo": "https://image.tmdb.org/t/p/w185/cG2SVLqASmSKb2bZpC1SfUao1IK.jpg",
+          "totalEpisodeCount": 4
+        },
+        {
+          "id": 29795,
+          "name": "Jack Plotnick",
+          "character": "The Other Sammy",
+          "photo": "https://image.tmdb.org/t/p/w185/1BeShuLhc2HXZieyGEOVgDssAuR.jpg",
+          "totalEpisodeCount": 4
+        },
+        {
+          "id": 155625,
+          "name": "Sonya Eddy",
+          "character": "Female Custodian God",
+          "photo": "https://image.tmdb.org/t/p/w185/u4yQNLmXkijZoXxMYC2Hs3DtA4P.jpg",
+          "totalEpisodeCount": 4
+        },
+        {
+          "id": 55962,
+          "name": "Louis Mustillo",
+          "character": "Garbage Man God",
+          "photo": "https://image.tmdb.org/t/p/w185/gfp2kJUrOojQCmRltRrFFTv8Vr2.jpg",
+          "totalEpisodeCount": 4
+        },
+        {
+          "id": 4655452,
+          "name": "Justin Scot",
+          "character": "Officer Eicher",
+          "photo": null,
+          "totalEpisodeCount": 4
+        },
+        {
+          "id": 6725,
+          "name": "Russ Tamblyn",
+          "character": "Dog Walker God",
+          "photo": "https://image.tmdb.org/t/p/w185/yNy2xvNTGVvFxIQthtxA5md6HDN.jpg",
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 170313,
+          "name": "Trevor Einhorn",
+          "character": "Mascot God",
+          "photo": "https://image.tmdb.org/t/p/w185/iBGsqVGoSigFjTd4qzMC6K8gHxU.jpg",
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 1194347,
+          "name": "John Marshall Jones",
+          "character": "Chess Player God",
+          "photo": "https://image.tmdb.org/t/p/w185/8aQ8qxVOeUx23Jw89ouj9gOwy1W.jpg",
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 15031,
+          "name": "Patrick Breen",
+          "character": "Sammy",
+          "photo": "https://image.tmdb.org/t/p/w185/oGK78qN4cezMlG7VBvZ0QYh1Ui0.jpg",
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 46929,
+          "name": "Ivonne Coll",
+          "character": "Marlene",
+          "photo": "https://image.tmdb.org/t/p/w185/7cyzeWeX8zD4IwAUDfyE9BK8woY.jpg",
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 53929,
+          "name": "Haylie Duff",
+          "character": "Stevie Marx",
+          "photo": "https://image.tmdb.org/t/p/w185/lhT6id12TbfNT44R0giYbad22bJ.jpg",
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 26292,
+          "name": "David Dorfman",
+          "character": "Rocky Tardio",
+          "photo": "https://image.tmdb.org/t/p/w185/6DoBfsNmZnbwGbjHXPTx1sVG48U.jpg",
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 83407,
+          "name": "Andrew Ableson",
+          "character": "Andy Rees",
+          "photo": "https://image.tmdb.org/t/p/w185/trBGmEdDe0QFqcByVsXhmyUeTKk.jpg",
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 1359316,
+          "name": "David Grammer",
+          "character": "Carl Rove",
+          "photo": null,
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 1418951,
+          "name": "John Del Regno",
+          "character": "Locksmith God",
+          "photo": null,
+          "totalEpisodeCount": 3
+        },
+        {
+          "id": 170321,
+          "name": "Jared Hillman",
+          "character": "Brian Beaumont",
+          "photo": "https://image.tmdb.org/t/p/w185/nX1NCw8t8go7EyTYCfPHRbBaWQw.jpg",
+          "totalEpisodeCount": 3
         }
       ],
       "creators": [
@@ -4034,25 +4460,29 @@
           "id": 2212774,
           "name": "Stanley G. Payne",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/ppOBPTCLNuF4VQKEdhZld7X6gB9.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/ppOBPTCLNuF4VQKEdhZld7X6gB9.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 3044339,
           "name": "Donald Sassoon",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/q33iOZ3pgpCnDxcbqd2nLGqFgf9.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/q33iOZ3pgpCnDxcbqd2nLGqFgf9.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 1914818,
           "name": "Richard J. Evans",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/p17ccH8cefThrtN1B7oaAQFpoCW.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/p17ccH8cefThrtN1B7oaAQFpoCW.jpg",
+          "totalEpisodeCount": 3
         },
         {
           "id": 5308548,
           "name": "Roger Griffin",
           "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/3iZzsDmdNFdpNGYA5T9Svu6Ko6t.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/3iZzsDmdNFdpNGYA5T9Svu6Ko6t.jpg",
+          "totalEpisodeCount": 3
         }
       ],
       "creators": [],

@@ -99540,5 +99540,1428 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/7ElOux95K8mfK1kuxK6K4A8MulM.jpg"
+  },
+  {
+    "id": "imp-1769744709595-52591",
+    "name": "Dupla Perigosa",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/364761.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/jYpk5Zun4VTWrplO3m9BHANi4S5.jpg",
+    "tmdb": {
+      "id": 1168190,
+      "imdbId": "tt33046197",
+      "title": "Dupla Perigosa",
+      "originalTitle": "The Wrecking Crew",
+      "tagline": null,
+      "overview": "Dois meios-irmãos que não se falavam há muito, Jonny e James, se reencontram após a morte misteriosa do pai deles. Ao buscarem a verdade, desvendam segredos de uma conspiração que pode destruir a família.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2026-01-28",
+      "year": "2026",
+      "rating": 6.3,
+      "voteCount": 56,
+      "popularity": 477,
+      "certification": "16",
+      "genres": [
+        "Ação",
+        "Comédia",
+        "Crime",
+        "Mistério"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/jYpk5Zun4VTWrplO3m9BHANi4S5.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/jYpk5Zun4VTWrplO3m9BHANi4S5.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/cz4vLJrmaV1zJlRYbxqtvLzeLWB.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/cz4vLJrmaV1zJlRYbxqtvLzeLWB.jpg",
+      "cast": [
+        {
+          "id": 543530,
+          "name": "Dave Bautista",
+          "character": "James Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/snk6JiXOOoRjPtHU5VMoy6qbd32.jpg"
+        },
+        {
+          "id": 117642,
+          "name": "Jason Momoa",
+          "character": "Jonny Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/3troAR6QbSb6nUFMDu61YCCWLKa.jpg"
+        },
+        {
+          "id": 7242,
+          "name": "Temuera Morrison",
+          "character": "Governor Peter Mahoe",
+          "photo": "https://image.tmdb.org/t/p/w185/AvtSC0f9QW7fMyFFNXEWDeQyfUk.jpg"
+        },
+        {
+          "id": 54882,
+          "name": "Morena Baccarin",
+          "character": "Valentina",
+          "photo": "https://image.tmdb.org/t/p/w185/kBSKKaOtsqIzZPhtEeHfCBmhWl9.jpg"
+        },
+        {
+          "id": 1298669,
+          "name": "Roimata Fox",
+          "character": "Leila Hale",
+          "photo": "https://image.tmdb.org/t/p/w185/iTNBvtrI8R5UofzJZjsVnyEGz9D.jpg"
+        },
+        {
+          "id": 1753341,
+          "name": "Frankie Adams",
+          "character": "Haunani Palakiko",
+          "photo": "https://image.tmdb.org/t/p/w185/aAUHUSf0lh3OBRoaiCRL9ep8lfL.jpg"
+        },
+        {
+          "id": 150802,
+          "name": "Claes Bang",
+          "character": "Marcus Robichaux",
+          "photo": "https://image.tmdb.org/t/p/w185/fqSBUq2UEoQYuqjjKNMQzDVxZv2.jpg"
+        },
+        {
+          "id": 1649152,
+          "name": "Jacob Batalon",
+          "character": "Pika",
+          "photo": "https://image.tmdb.org/t/p/w185/53YhaL4xw4Sb1ssoHkeSSBaO29c.jpg"
+        },
+        {
+          "id": 3988423,
+          "name": "Maia Kealoha",
+          "character": "Lani",
+          "photo": "https://image.tmdb.org/t/p/w185/jqsKbBF28V2Oq5tKPR5USkNufwC.jpg"
+        },
+        {
+          "id": 17401,
+          "name": "Stephen Root",
+          "character": "Detective Rennert",
+          "photo": "https://image.tmdb.org/t/p/w185/2Zwi6AydqQQ9InVdhjYcfJXNzkp.jpg"
+        },
+        {
+          "id": 5655546,
+          "name": "Josua Tuivaralagi",
+          "character": "Kai",
+          "photo": "https://image.tmdb.org/t/p/w185/dX1XlzGyq3j2lcw42LdIYnqzGBM.jpg"
+        },
+        {
+          "id": 1391420,
+          "name": "MIYAVI",
+          "character": "Nakamura",
+          "photo": "https://image.tmdb.org/t/p/w185/htylnHN8qLf8xbav0PCx9htTexj.jpg"
+        },
+        {
+          "id": 2139812,
+          "name": "David Hekili Kenui Bell",
+          "character": "Alekai",
+          "photo": "https://image.tmdb.org/t/p/w185/hUQHwaNg6ALT60JkPkCFFye8byy.jpg"
+        },
+        {
+          "id": 4450933,
+          "name": "Mark R Black",
+          "character": "Monty",
+          "photo": null
+        },
+        {
+          "id": 2435321,
+          "name": "Lydia Peckham",
+          "character": "Monica Robichaux",
+          "photo": "https://image.tmdb.org/t/p/w185/tcBJklZSsP2JuQIYataJHW3pJXE.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 1096978,
+          "title": "Avatar",
+          "poster": "https://image.tmdb.org/t/p/w185/gmnD2e1RvMdCl9D1rsDEQaQlJxK.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 408574,
+          "title": "Chihayafuru: Part II",
+          "poster": "https://image.tmdb.org/t/p/w185/fH9ze51RlYmbdMjO8csrfCb32TW.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 183392,
+          "title": "Capturing Avatar",
+          "poster": "https://image.tmdb.org/t/p/w185/26SMEXJl3978dn2svWBSqHbLl5U.jpg",
+          "rating": 7
+        },
+        {
+          "id": 734833,
+          "title": "А где Матвей?",
+          "poster": "https://image.tmdb.org/t/p/w185/bywxUAYSEkhOdwEWec0KYyXdQ9M.jpg",
+          "rating": 5.4
+        },
+        {
+          "id": 221110,
+          "title": "Kathleen Madigan: Madigan Again",
+          "poster": "https://image.tmdb.org/t/p/w185/qZvuMcFIXtrAxqkcgF3JjQGXk1B.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 807223,
+          "title": "Re-Births",
+          "poster": "https://image.tmdb.org/t/p/w185/dC3y4IJW0yClaKBaMqXxVQ6nOXr.jpg",
+          "rating": 7.4
+        }
+      ]
+    }
+  },
+  {
+    "id": "imp-1769744709595-99737",
+    "name": "O Agente Secreto",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/364724.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/cjHczbkm4j9Dccgf2RzyjZh8kYT.jpg",
+    "tmdb": {
+      "id": 1220564,
+      "imdbId": "tt27847051",
+      "title": "O Agente Secreto",
+      "originalTitle": "O Agente Secreto",
+      "tagline": "Eletrizante, emocionante e cheio de pirraça.",
+      "overview": "No Brasil de 1977, Marcelo, um especialista em tecnologia fugindo de um passado misterioso, volta ao Recife em busca de um pouco de paz, mas percebe que a cidade está longe de ser o refúgio que procura.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2025-07-23",
+      "year": "2025",
+      "rating": 7.7,
+      "voteCount": 231,
+      "popularity": 45,
+      "certification": "16",
+      "genres": [
+        "Crime",
+        "Drama",
+        "Thriller"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/cjHczbkm4j9Dccgf2RzyjZh8kYT.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/cjHczbkm4j9Dccgf2RzyjZh8kYT.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/b4uXVgLCOxx2c9VbyppdSD9G3Xq.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/b4uXVgLCOxx2c9VbyppdSD9G3Xq.jpg",
+      "cast": [
+        {
+          "id": 52583,
+          "name": "Wagner Moura",
+          "character": "Armando / Marcelo / Adult Fernando",
+          "photo": "https://image.tmdb.org/t/p/w185/yJjV1ZCQbCSSgRy05FncCKjyaY4.jpg"
+        },
+        {
+          "id": 2346588,
+          "name": "Carlos Francisco",
+          "character": "Seu Alexandre",
+          "photo": "https://image.tmdb.org/t/p/w185/ihf4bN4GuScyA2QwlzVCnPqOuOo.jpg"
+        },
+        {
+          "id": 4497686,
+          "name": "Tânia Maria",
+          "character": "Dona Sebastiana",
+          "photo": "https://image.tmdb.org/t/p/w185/73QyA2htiMJ01sFo25KLCDyPtWF.jpg"
+        },
+        {
+          "id": 2375667,
+          "name": "Robério Diógenes",
+          "character": "Euclides",
+          "photo": "https://image.tmdb.org/t/p/w185/dLYYDd4FwB8fMb5A7Q54UOfxdet.jpg"
+        },
+        {
+          "id": 143500,
+          "name": "Roney Villela",
+          "character": "Augusto",
+          "photo": "https://image.tmdb.org/t/p/w185/y0S7k8ahQF8FAJ0ZCzK2BfTKbz0.jpg"
+        },
+        {
+          "id": 1475555,
+          "name": "Gabriel Leone",
+          "character": "Bobbi",
+          "photo": "https://image.tmdb.org/t/p/w185/wvinAoGZiOGczIEtXWFmXGMl0QC.jpg"
+        },
+        {
+          "id": 2652283,
+          "name": "Alice Carvalho",
+          "character": "Fátima",
+          "photo": "https://image.tmdb.org/t/p/w185/xj2BDbWC0ECOlT3tBaIG0su74Ea.jpg"
+        },
+        {
+          "id": 583446,
+          "name": "Hermila Guedes",
+          "character": "Claudia",
+          "photo": "https://image.tmdb.org/t/p/w185/dJJh7sekL9dl77tviU5yEVXa1qo.jpg"
+        },
+        {
+          "id": 1691901,
+          "name": "Isabél Zuaa",
+          "character": "Thereza Vitória",
+          "photo": "https://image.tmdb.org/t/p/w185/jpOLvpTvOmPheFsM8thqMHXuwK3.jpg"
+        },
+        {
+          "id": 228057,
+          "name": "Maria Fernanda Cândido",
+          "character": "Elza",
+          "photo": "https://image.tmdb.org/t/p/w185/wC2gTlttR4GnUB4YMJscIOY8hWk.jpg"
+        },
+        {
+          "id": 2346576,
+          "name": "Thomás Aquino",
+          "character": "Valdemar",
+          "photo": "https://image.tmdb.org/t/p/w185/cTtrEWKpRijXbnSsGzof0E6XBnP.jpg"
+        },
+        {
+          "id": 4067166,
+          "name": "Laura Lufési",
+          "character": "Flavia",
+          "photo": "https://image.tmdb.org/t/p/w185/yWsxc5qPMSvmh2eWuSPTRMOImSN.jpg"
+        },
+        {
+          "id": 3466387,
+          "name": "Isadora Ruppert",
+          "character": "Dani",
+          "photo": "https://image.tmdb.org/t/p/w185/pFzB54w8OJoNEtnxM9r1XApQEsj.jpg"
+        },
+        {
+          "id": 3789835,
+          "name": "Igor de Araújo",
+          "character": "Sergio",
+          "photo": "https://image.tmdb.org/t/p/w185/2TehKBRUZoINtpEhXG2uRoTQKii.jpg"
+        },
+        {
+          "id": 3393101,
+          "name": "Ítalo Martins",
+          "character": "Arlindo",
+          "photo": "https://image.tmdb.org/t/p/w185/w6e8raYkzlwP7KdYMQtd15vabY6.jpg"
+        }
+      ],
+      "keywords": [
+        "1970s",
+        "secret agent",
+        "dictatorship",
+        "brazil",
+        "best picture nominee"
+      ],
+      "recommendations": [
+        {
+          "id": 2925,
+          "title": "O Clube das Desquitadas",
+          "poster": "https://image.tmdb.org/t/p/w185/6IiYfY1In6VTtjZJ2dhBmCHYYLP.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 1122099,
+          "title": "A Balada da Ilha Wallis",
+          "poster": "https://image.tmdb.org/t/p/w185/wPOdwvqMpiT06BHIjSs2drNtWIO.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 1294698,
+          "title": "Caso 137",
+          "poster": "https://image.tmdb.org/t/p/w185/t93h1ptV098Q6vzl9gfEymJQ6Qp.jpg",
+          "rating": 7
+        },
+        {
+          "id": 597,
+          "title": "Titanic",
+          "poster": "https://image.tmdb.org/t/p/w185/As0zX43h3w6kD2NS4uVHu9HKdEh.jpg",
+          "rating": 7.9
+        },
+        {
+          "id": 346698,
+          "title": "Barbie",
+          "poster": "https://image.tmdb.org/t/p/w185/yRRuLt7sMBEQkHsd1S3KaaofZn7.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 297222,
+          "title": "PK",
+          "poster": "https://image.tmdb.org/t/p/w185/z2x2Y4tncefsIU7h82gmUM5vnBJ.jpg",
+          "rating": 7.7
+        }
+      ]
+    }
+  },
+  {
+    "id": "imp-1769744709595-72765",
+    "name": "Utopia Muda",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/364723.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/8T17fu0qEeO7O9OXrDTYOBzrzaL.jpg",
+    "tmdb": {
+      "id": 1262577,
+      "imdbId": "tt32214542",
+      "title": "Utopia Muda",
+      "originalTitle": "Utopia Muda",
+      "tagline": null,
+      "overview": "A democratização dos meios de comunicação a partir da história da Rádio Muda, a mais longeva rádio livre.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2023-07-14",
+      "year": "2023",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/8T17fu0qEeO7O9OXrDTYOBzrzaL.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/8T17fu0qEeO7O9OXrDTYOBzrzaL.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/iCfKKr9FagVNprFg44lB2Ku1zod.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/iCfKKr9FagVNprFg44lB2Ku1zod.jpg",
+      "cast": [],
+      "keywords": [],
+      "recommendations": []
+    }
+  },
+  {
+    "id": "imp-1769744709595-21779",
+    "name": "A Natureza das Coisas Invisíveis",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/364622.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/ssQ3ygjodvAK43Me2xU19YSY6WI.jpg",
+    "tmdb": {
+      "id": 1403855,
+      "imdbId": "tt35051106",
+      "title": "A Natureza das Coisas Invisíveis",
+      "originalTitle": "A Natureza das Coisas Invisíveis",
+      "tagline": null,
+      "overview": "Glória tem 10 anos e passa as férias no hospital onde sua mãe trabalha como enfermeira. Lá ela conhece Sofia, uma menina que está convencida de que a piora na saúde da bisavó é causada pela internação no hospital. Unidas pelo desejo de sair dali, as crianças encontram conforto na companhia uma da outra. Quando a partida se torna inevitável, as meninas e suas mães seguem para um refúgio no interior do Goiás para passar os últimos dias de um verão inesquecível.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2025-11-27",
+      "year": "2025",
+      "rating": 7,
+      "voteCount": 1,
+      "popularity": 2,
+      "certification": null,
+      "genres": [
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/sVhGCIVZkicOzumtKyBnAAKGOhH.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/sVhGCIVZkicOzumtKyBnAAKGOhH.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/7GJ54DLDx2oJLYQOlGQ83Cru6kF.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/7GJ54DLDx2oJLYQOlGQ83Cru6kF.jpg",
+      "cast": [
+        {
+          "id": 5125246,
+          "name": "Serena",
+          "character": "Sofia",
+          "photo": null
+        },
+        {
+          "id": 5125238,
+          "name": "Laura Brandão",
+          "character": "Glória",
+          "photo": null
+        },
+        {
+          "id": 4892471,
+          "name": "Larissa Mauro",
+          "character": "Antônia",
+          "photo": null
+        },
+        {
+          "id": 1342895,
+          "name": "Camila Márdila",
+          "character": "Simone",
+          "photo": "https://image.tmdb.org/t/p/w185/7VAteV7SQqiAaHcMb9ElikCiIZS.jpg"
+        },
+        {
+          "id": 2542045,
+          "name": "Aline Marta Maia",
+          "character": "Bisa Francisca",
+          "photo": "https://image.tmdb.org/t/p/w185/m0HudTyhXwBN6ve66fP8MCFlqEi.jpg"
+        },
+        {
+          "id": 2102018,
+          "name": "João Antônio",
+          "character": "Osvaldo",
+          "photo": null
+        },
+        {
+          "id": 2613753,
+          "name": "Maurício Witczak",
+          "character": "Neurologista",
+          "photo": null
+        },
+        {
+          "id": 4672369,
+          "name": "Pietra Sousa",
+          "character": "Assistente Social Renata",
+          "photo": "https://image.tmdb.org/t/p/w185/ho7hOWDb4MFgQTTfjrPepZdUDrW.jpg"
+        },
+        {
+          "id": 5969871,
+          "name": "Déborah Alessandra",
+          "character": "Recepcionista",
+          "photo": null
+        },
+        {
+          "id": 2356709,
+          "name": "Denis Camargo",
+          "character": "Enfermeiro",
+          "photo": null
+        },
+        {
+          "id": 5969873,
+          "name": "Rosalba Nunes",
+          "character": "Paciente Marta Maria",
+          "photo": null
+        },
+        {
+          "id": 5969874,
+          "name": "Kika de Moraes",
+          "character": "Enfermeira",
+          "photo": null
+        },
+        {
+          "id": 5969875,
+          "name": "Ana Maria",
+          "character": "Dona Véia",
+          "photo": null
+        },
+        {
+          "id": 5144027,
+          "name": "Ana Maria",
+          "character": "Lourdes",
+          "photo": null
+        },
+        {
+          "id": 5969876,
+          "name": "Isabella Baroz",
+          "character": "Tereza",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 537170,
+          "title": "My Little Pony, Equestria Girls: Montanha-Russa da Amizade",
+          "poster": "https://image.tmdb.org/t/p/w185/vjDE0bioRTxD4k9ICdL50sTZXnK.jpg",
+          "rating": 8.1
+        },
+        {
+          "id": 844613,
+          "title": "Sonic 30th Anniversary Symphony",
+          "poster": "https://image.tmdb.org/t/p/w185/nhbXu6nIBV6lP4L93eHi7PJcILE.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 797394,
+          "title": "Agência Secreta de Controle de Magias",
+          "poster": "https://image.tmdb.org/t/p/w185/B3Xz48iyIh9ejffVtfCxwzTO7n.jpg",
+          "rating": 7
+        },
+        {
+          "id": 675024,
+          "title": "O Exorcismo de Carmen Farías",
+          "poster": "https://image.tmdb.org/t/p/w185/t6kCQW8ZbZWZdREQO69NrIcPhzA.jpg",
+          "rating": 6
+        },
+        {
+          "id": 115223,
+          "title": "Pokémon o Filme: Preto - Victini e Reshiram",
+          "poster": "https://image.tmdb.org/t/p/w185/74GV0SdGJTsXdC8Q56VFJOu6TDJ.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 768744,
+          "title": "My Hero Academia: Missão Mundial de Heróis",
+          "poster": "https://image.tmdb.org/t/p/w185/7uVyf7or5KxQfO2h0OrV1ZZ99WK.jpg",
+          "rating": 7.6
+        }
+      ]
+    }
+  },
+  {
+    "id": "imp-1769744709595-90378",
+    "name": "Nossa Vizinhança",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/364621.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/5ivxdAWTJf6YdQDBLmysTgJiqqh.jpg",
+    "tmdb": {
+      "id": 1615319,
+      "imdbId": "tt39385358",
+      "title": "Nossa Vizinhança",
+      "originalTitle": "Nossa Vizinhança",
+      "tagline": null,
+      "overview": "Repórter Jamile investiga incêndio criminoso na pensão Boa Vizinhança que matou seu amigo. Enfrenta esquema imobiliário, riscos e corrupção para fazer justiça e revelar a verdade.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2026-01-26",
+      "year": "2026",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 1,
+      "certification": "12",
+      "genres": [
+        "Drama",
+        "Cinema TV"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/5ivxdAWTJf6YdQDBLmysTgJiqqh.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/5ivxdAWTJf6YdQDBLmysTgJiqqh.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/c6gsplOYR1EPKmI8HBfbrlg7Laq.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/c6gsplOYR1EPKmI8HBfbrlg7Laq.jpg",
+      "cast": [
+        {
+          "id": 2695983,
+          "name": "Larissa Nunes",
+          "character": "Jamile",
+          "photo": "https://image.tmdb.org/t/p/w185/3zVdzi7SvNJbYH3mfEjm9YxkqNN.jpg"
+        },
+        {
+          "id": 2153049,
+          "name": "Daniel Rocha",
+          "character": "Toninho",
+          "photo": "https://image.tmdb.org/t/p/w185/r4ikKsywcA6BiysS7sBiEQfVjtr.jpg"
+        },
+        {
+          "id": 1826653,
+          "name": "Fernando Macário",
+          "character": "Valdemar",
+          "photo": null
+        },
+        {
+          "id": 2035537,
+          "name": "Amanda Magalhães",
+          "character": "Elizangela",
+          "photo": "https://image.tmdb.org/t/p/w185/9Ae0o9b2CPOFAqO9xUZzKFHU0O2.jpg"
+        },
+        {
+          "id": 1282657,
+          "name": "Bete Dorgam",
+          "character": "Marli",
+          "photo": "https://image.tmdb.org/t/p/w185/xYBCMcheasT3S3jeFp3p78uuB3Q.jpg"
+        },
+        {
+          "id": 2493858,
+          "name": "Donizeti Mazonas",
+          "character": "Diogo",
+          "photo": "https://image.tmdb.org/t/p/w185/sVXIi4u1uKJo6um65mroLugCAt9.jpg"
+        },
+        {
+          "id": 5966499,
+          "name": "Davi Françoá",
+          "character": "Hugo",
+          "photo": null
+        },
+        {
+          "id": 55102,
+          "name": "Ivan de Almeida",
+          "character": "Nestor",
+          "photo": "https://image.tmdb.org/t/p/w185/frgRwQ7wzEFJCqp9G4C3xWTG4lG.jpg"
+        },
+        {
+          "id": 1694656,
+          "name": "Fernanda Viacava",
+          "character": "Renata",
+          "photo": "https://image.tmdb.org/t/p/w185/pFdAyA4G7ET465FsIa2ftXLZ3X7.jpg"
+        },
+        {
+          "id": 1402786,
+          "name": "Dan Nakagawa",
+          "character": "Heitor",
+          "photo": null
+        },
+        {
+          "id": 933728,
+          "name": "Jean Amorim",
+          "character": "Jurandir",
+          "photo": "https://image.tmdb.org/t/p/w185/vQ4MhzvEKONwsEYX1WpHZ9HJum9.jpg"
+        },
+        {
+          "id": 2483820,
+          "name": "Carlos Gimenez",
+          "character": "Bigode",
+          "photo": null
+        },
+        {
+          "id": 5966506,
+          "name": "Priscila Magella",
+          "character": "Severina",
+          "photo": null
+        },
+        {
+          "id": 1731287,
+          "name": "Bárbara Salomé",
+          "character": "Tenente Sheila",
+          "photo": "https://image.tmdb.org/t/p/w185/nCqFVReTJ0mw1DCIBYBtSbuHvsb.jpg"
+        },
+        {
+          "id": 3017543,
+          "name": "Felipe Gomes",
+          "character": "Policial",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": []
+    }
+  },
+  {
+    "id": "imp-1769744709595-78615",
+    "name": "Kyochuu Rettou Movie",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/364618.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sf0lHt1uG6LdgxG56VE0Aw6PCVH.jpg",
+    "tmdb": {
+      "id": 658558,
+      "imdbId": "tt11585560",
+      "title": "Kyochuu Rettou Movie",
+      "originalTitle": "劇場版 巨蟲列島",
+      "tagline": null,
+      "overview": "Após um acidente de avião durante uma viagem escolar, Oribe Mutsumi e seus colegas de classe ficaram presos em uma ilha aparentemente deserta. Mutsumi encontrou os outros sobreviventes e usou seu conhecimento do deserto para ajudá-los. Ela espera que eles sejam resgatados em cerca de três dias, o que não parece demorar muito. No entanto, ela não explicou o fato de que a ilha está povoada de insetos assassinos gigantescos. Seu conhecimento de borboletas, vespas e muito mais pode ser a única coisa que ajudará qualquer um de seus colegas de classe a sobreviver para ser resgatado!",
+      "status": "Released",
+      "language": "ja",
+      "releaseDate": "2020-01-10",
+      "year": "2020",
+      "rating": 4.3,
+      "voteCount": 26,
+      "popularity": 7,
+      "certification": null,
+      "genres": [
+        "Animação",
+        "Mistério",
+        "Drama",
+        "Terror",
+        "Aventura"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/sf0lHt1uG6LdgxG56VE0Aw6PCVH.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/sf0lHt1uG6LdgxG56VE0Aw6PCVH.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/2qccXVVWXZo3nnNFC22giCGmgnN.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/2qccXVVWXZo3nnNFC22giCGmgnN.jpg",
+      "cast": [
+        {
+          "id": 1530922,
+          "name": "麻倉もも",
+          "character": "Mami Miura (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/gdzYEujO3I5nZCyAx95Mo47fZ86.jpg"
+        },
+        {
+          "id": 1248374,
+          "name": "Takuya Eguchi",
+          "character": "Kazuhiko Kai (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/hPPhUp0mM65Lc87Q8WXUEmGQAXx.jpg"
+        },
+        {
+          "id": 219575,
+          "name": "福圓美里",
+          "character": "Ayumi Matsuoka (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/wM5ei7qFIvm07dEBDv6HVRU5bDF.jpg"
+        },
+        {
+          "id": 1161472,
+          "name": "M・A・O",
+          "character": "Mutsumi Oribe (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/a3cflYtrlFK0LXfWODgLDO7E7CP.jpg"
+        },
+        {
+          "id": 90135,
+          "name": "Marina Inoue",
+          "character": "Inaho Enoki (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/nQ7a3krkbea6ukw9KGvvTpMma96.jpg"
+        },
+        {
+          "id": 2020490,
+          "name": "Wataru Komada",
+          "character": "Atsushi Kamijo (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/qcUXzl6RRRhEFHiRtg4ATOhbXDl.jpg"
+        },
+        {
+          "id": 1288294,
+          "name": "Yurika Kubo",
+          "character": "Ai Ino (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/tpzwj1J6HRq2H6xZjM5Irg7FzT2.jpg"
+        },
+        {
+          "id": 1563026,
+          "name": "立花理香",
+          "character": "Chitose Tachibana (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/kXQIX7yYTucgaxkERxxj6TCueWx.jpg"
+        },
+        {
+          "id": 1222054,
+          "name": "たかはし智秋",
+          "character": "Misuzu Jinno (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/A0iBTBEYncQ3K9QVQAps0stDjaS.jpg"
+        }
+      ],
+      "keywords": [
+        "gore",
+        "giant insect",
+        "high school friends",
+        "surveillance",
+        "survival horror",
+        "deserted island",
+        "ecchi",
+        "anime",
+        "animation",
+        "horror"
+      ],
+      "recommendations": [
+        {
+          "id": 25078,
+          "title": "Nekojiru-sou",
+          "poster": "https://image.tmdb.org/t/p/w185/85c6VTiUOtizQBoT9ekBBlUz3zc.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 55892,
+          "title": "Mezzo Forte",
+          "poster": "https://image.tmdb.org/t/p/w185/f8VfbivexOy6ZUZTrqZsHz2vRPU.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 72013,
+          "title": "Yu-Gi-Oh! Vínculos Além do Tempo",
+          "poster": "https://image.tmdb.org/t/p/w185/7CEQ0U4dtbaYAimmLmWE83WLL4P.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 597,
+          "title": "Titanic",
+          "poster": "https://image.tmdb.org/t/p/w185/As0zX43h3w6kD2NS4uVHu9HKdEh.jpg",
+          "rating": 7.9
+        },
+        {
+          "id": 1370,
+          "title": "Rambo III",
+          "poster": "https://image.tmdb.org/t/p/w185/jxzoYPjVa9pKL3fOejP3fPJTPpl.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 21733,
+          "title": "Dragões para Sempre",
+          "poster": "https://image.tmdb.org/t/p/w185/vqvf5qxhaJ3QUujuiU0wbLu0uCJ.jpg",
+          "rating": 7.3
+        }
+      ]
+    }
+  },
+  {
+    "id": "imp-1769744709595-22280",
+    "name": "Davi: Nasce Um Rei",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/364616.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/mocRuBZqV9yiaNbqUlON1K55FdS.jpg",
+    "tmdb": {
+      "id": 1167307,
+      "imdbId": "tt15678738",
+      "title": "Davi: Nasce Um Rei",
+      "originalTitle": "David",
+      "tagline": null,
+      "overview": "Em um reino tomado pelo medo e pela opressão, um jovem pastor de ovelhas decide enfrentar um gigante guerreiro e a escuridão que o acompanha. Com nada além de fé, coragem, uma funda e algumas pedras nas mãos, ele desafia um império e desperta o coração de uma nação.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2025-12-14",
+      "year": "2025",
+      "rating": 7.8,
+      "voteCount": 38,
+      "popularity": 100,
+      "certification": "10",
+      "genres": [
+        "Animação",
+        "Família",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/4GK7WiXuIaLecQDJZkmL8xieTIa.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/4GK7WiXuIaLecQDJZkmL8xieTIa.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/oN4TQ1TxchynXlFiXFBL3NHLT54.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/oN4TQ1TxchynXlFiXFBL3NHLT54.jpg",
+      "cast": [
+        {
+          "id": 3328683,
+          "name": "Phil Wickham",
+          "character": "David (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/6IHWUHlkejPlTIvTec5Y7kcbnbK.jpg"
+        },
+        {
+          "id": 2507851,
+          "name": "Brandon Engman",
+          "character": "Young David (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/9PhXVdDPb5NTEvD5dbFfTJnssQw.jpg"
+        },
+        {
+          "id": 1502438,
+          "name": "Asim Chaudhry",
+          "character": "King Achish (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/1F0DwOpxUAEpw5iovMHZ5Y1C8n6.jpg"
+        },
+        {
+          "id": 971877,
+          "name": "Mick Wingert",
+          "character": "Zaydel (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/2Apga68BihekhCSPHNk5pXqC5Gq.jpg"
+        },
+        {
+          "id": 1657897,
+          "name": "Mark Whitten",
+          "character": "Abishal (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/zcD76XCZ6zQ41C9j1lsttLbxbLE.jpg"
+        },
+        {
+          "id": 86655,
+          "name": "Ashley Boettcher",
+          "character": "Teen Zeruiah (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/h4bdCoXgQH4s6KR1ejNuOFEyr4h.jpg"
+        },
+        {
+          "id": 5705674,
+          "name": "Sloan Lucas Muldown",
+          "character": "Young Zeruiah (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/4eQoD8TdgDB1UbCRwiyLw2nyYYg.jpg"
+        },
+        {
+          "id": 4077894,
+          "name": "Will De Renzy-Martin",
+          "character": "Viazatha (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/74AfkMoDTvZZ2TX8FX7mjNjlhFA.jpg"
+        },
+        {
+          "id": 2384065,
+          "name": "Lauren Daigle",
+          "character": "Rebecca (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/56btNdIze3EGyV9tKOF0I13I1Yo.jpg"
+        },
+        {
+          "id": 1822256,
+          "name": "Brian Stivale",
+          "character": "Samuel (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/ggNQronrHaUZnFZeolK0SGfW38V.jpg"
+        },
+        {
+          "id": 2805492,
+          "name": "Shahar Taboch",
+          "character": "Ozem (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/hpuiheYJrOU4HYczWgCJNeBPWlZ.jpg"
+        },
+        {
+          "id": 1259893,
+          "name": "Miri Mesika",
+          "character": "Nitzevet (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/v9tqyqIfG6V9Ezix0Bienpco9B5.jpg"
+        },
+        {
+          "id": 3732705,
+          "name": "Mike Ciporkin",
+          "character": "Scout (voice)",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "bible",
+        "musical",
+        "prophet",
+        "david vs. goliath",
+        "independent film",
+        "bible prophecy",
+        "biblical epic"
+      ],
+      "recommendations": []
+    }
+  },
+  {
+    "id": "imp-1769744709599-46892",
+    "name": "Palavras de Guerra",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/363805.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3xdpLs5F1lw4IQHbWn7n7XG74KK.jpg",
+    "tmdb": {
+      "id": 975615,
+      "imdbId": "tt8679660",
+      "title": "Palavras de Guerra",
+      "originalTitle": "Words of War",
+      "tagline": null,
+      "overview": "Este impactante thriller acompanha a vida da jornalista russa Anna Politkovskaya, que desafia um regime autoritário, expõe corrupção estatal e arrisca tudo para garantir o direito à imprensa livre na Rússia de Putin.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2025-05-02",
+      "year": "2025",
+      "rating": 6.8,
+      "voteCount": 21,
+      "popularity": 3,
+      "certification": null,
+      "genres": [
+        "Drama",
+        "Thriller"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/59JXT8JtyQ3CAWVf3wBa8yCCdIJ.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/59JXT8JtyQ3CAWVf3wBa8yCCdIJ.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/kMYzdhWBeZBP9mS8vAvuigpa3LF.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/kMYzdhWBeZBP9mS8vAvuigpa3LF.jpg",
+      "cast": [
+        {
+          "id": 76944,
+          "name": "Maxine Peake",
+          "character": "Anna Politkovskaya",
+          "photo": "https://image.tmdb.org/t/p/w185/uChlrL5WyeXhvGFaNvbzw1KqMgP.jpg"
+        },
+        {
+          "id": 8785,
+          "name": "Ciarán Hinds",
+          "character": "Dmitry Muratov",
+          "photo": "https://image.tmdb.org/t/p/w185/d8wLIX9VYgwXRGSp1gmUdUxmApv.jpg"
+        },
+        {
+          "id": 11355,
+          "name": "Jason Isaacs",
+          "character": "Sacha",
+          "photo": "https://image.tmdb.org/t/p/w185/s6XRFjqUsrDJfDQuXPOoExAYPmb.jpg"
+        },
+        {
+          "id": 1178601,
+          "name": "Naomi Battrick",
+          "character": "Vera Politkovskaya",
+          "photo": "https://image.tmdb.org/t/p/w185/jZedmlK22j9B5hzjeHfizx9A0gR.jpg"
+        },
+        {
+          "id": 2399836,
+          "name": "Harry Lawtey",
+          "character": "Ilya",
+          "photo": "https://image.tmdb.org/t/p/w185/l2qFs3TntkZD0G3zFEd1o2DXSWX.jpg"
+        },
+        {
+          "id": 1508785,
+          "name": "Ellie Bamber",
+          "character": "Elena",
+          "photo": "https://image.tmdb.org/t/p/w185/9j6D1LH5C0CLtKXfmKo34T6G63.jpg"
+        },
+        {
+          "id": 11280,
+          "name": "Ben Miles",
+          "character": "Yuri Schekochikhin",
+          "photo": "https://image.tmdb.org/t/p/w185/mT3BqoFUkyktXLvefQA6VxaGHJz.jpg"
+        },
+        {
+          "id": 10985,
+          "name": "Ian Hart",
+          "character": "Lt. Col. Egorov",
+          "photo": "https://image.tmdb.org/t/p/w185/xMC8aPDwhEZcjRHEFcgytSr3BzM.jpg"
+        },
+        {
+          "id": 65451,
+          "name": "Oliver Maltman",
+          "character": "Nestor",
+          "photo": "https://image.tmdb.org/t/p/w185/wMhpNSVnDxxmYtFx6bpJd8AcmSs.jpg"
+        },
+        {
+          "id": 145312,
+          "name": "Agni Scott",
+          "character": "Natalya Estemirova",
+          "photo": "https://image.tmdb.org/t/p/w185/rEqmvcyuxCx0Wami8cu5wuS0x8j.jpg"
+        },
+        {
+          "id": 1715074,
+          "name": "Sophie Simnett",
+          "character": "Nina",
+          "photo": "https://image.tmdb.org/t/p/w185/pLSUt6bewkHGnSLbO4XOZ1QClYx.jpg"
+        },
+        {
+          "id": 1108723,
+          "name": "Fady Elsayed",
+          "character": "Anzor",
+          "photo": "https://image.tmdb.org/t/p/w185/xeGwknsnjShTjF0RcduhwWiXnEA.jpg"
+        },
+        {
+          "id": 1034703,
+          "name": "Lorne MacFadyen",
+          "character": "Leo",
+          "photo": "https://image.tmdb.org/t/p/w185/y1cdclslL2nNkFw5RVj64iAHIIb.jpg"
+        },
+        {
+          "id": 1977048,
+          "name": "Lujza Richter",
+          "character": "Fatima",
+          "photo": "https://image.tmdb.org/t/p/w185/nhIMC58znoWz3Aq1TeqbSoF0n0y.jpg"
+        },
+        {
+          "id": 13362,
+          "name": "Alec Newman",
+          "character": "Major Popov",
+          "photo": "https://image.tmdb.org/t/p/w185/qbSY0vUIyc8SUuLCw7hK5CsTpvQ.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 1212121,
+          "title": "Homem com H",
+          "poster": "https://image.tmdb.org/t/p/w185/xCYgD1N4S9at70p4WdskbVWHgZS.jpg",
+          "rating": 8.1
+        },
+        {
+          "id": 1069200,
+          "title": "O professor",
+          "poster": "https://image.tmdb.org/t/p/w185/poc85VCujrBbE8VndLCUKYVMp7S.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 41258,
+          "title": "Desconhecidos",
+          "poster": "https://image.tmdb.org/t/p/w185/As7gEiTlng2oLVk9EWLHdlXxUYp.jpg",
+          "rating": 4.4
+        },
+        {
+          "id": 666277,
+          "title": "Vidas Passadas",
+          "poster": "https://image.tmdb.org/t/p/w185/toSI71gFF11VnLfz2uiNx6jjNUF.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 1397832,
+          "title": "O Jogo da Viúva",
+          "poster": "https://image.tmdb.org/t/p/w185/txiHphuGlemWdD9Lv4FfkJU4uS9.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 52959,
+          "title": "A Estrela",
+          "poster": "https://image.tmdb.org/t/p/w185/xMyOm5hLWeuoWBea1DJrcJy8bU6.jpg",
+          "rating": 6.9
+        }
+      ]
+    }
+  },
+  {
+    "id": "imp-1769744709599-47473",
+    "name": "Palhaçassino",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/363803.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/u3zhaO2iPHt5WKQkYYTVnj8I21I.jpg",
+    "tmdb": {
+      "id": 1584956,
+      "imdbId": null,
+      "title": "Palhaçassino",
+      "originalTitle": "Palhaçassino",
+      "tagline": null,
+      "overview": "Lia conhece Ricardo em um site de relacionamento, e é atraída junto com seus amigos para um acampamento em meio a uma floresta. Durante uma luarada à beira de uma fogueira é surpreendida por um grupo de palhaços psicóticos, assassinos e canibais. Com isso se inicia uma grande luta mortal pela sobrevivência.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2025-11-20",
+      "year": "2025",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 2,
+      "certification": "16",
+      "genres": [
+        "Terror"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/rgYk60Nj1hvffkQwEs0cMnd42ef.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/rgYk60Nj1hvffkQwEs0cMnd42ef.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [],
+      "keywords": [],
+      "recommendations": []
+    }
+  },
+  {
+    "id": "imp-1769744709599-48395",
+    "name": "Americana",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/363799.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/83Gis9pOKCvAdaKXCNChey4IZyL.jpg",
+    "tmdb": {
+      "id": 934456,
+      "imdbId": "tt17676734",
+      "title": "Americana",
+      "originalTitle": "Americana",
+      "tagline": "Bem-vindo ao novo Oeste.",
+      "overview": "Quando uma rara Camisa Fantasma Lakota cai no mercado negro em uma pequena cidade da Dakota do Sul, as vidas de forasteiros e excluídos locais se entrelaçam de forma violenta.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2025-08-15",
+      "year": "2025",
+      "rating": 6.2,
+      "voteCount": 111,
+      "popularity": 5,
+      "certification": null,
+      "genres": [
+        "Crime",
+        "Thriller",
+        "Faroeste",
+        "Ação"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/83Gis9pOKCvAdaKXCNChey4IZyL.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/83Gis9pOKCvAdaKXCNChey4IZyL.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/ice3dNrgJZmyFXs4InhjAJMIGMS.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/ice3dNrgJZmyFXs4InhjAJMIGMS.jpg",
+      "cast": [
+        {
+          "id": 115440,
+          "name": "Sydney Sweeney",
+          "character": "Penny Jo Poplin",
+          "photo": "https://image.tmdb.org/t/p/w185/qYiaSl0Eb7G3VaxOg8PxExCFwon.jpg"
+        },
+        {
+          "id": 1294982,
+          "name": "Paul Walter Hauser",
+          "character": "Lefty Ledbetter",
+          "photo": "https://image.tmdb.org/t/p/w185/nmBdzJpfHMRHsT3VrjyXAxMFLZA.jpg"
+        },
+        {
+          "id": 1997030,
+          "name": "Halsey",
+          "character": "Mandy Starr",
+          "photo": "https://image.tmdb.org/t/p/w185/qVhDU35S7iJpsWnVWFHYmWXCRn9.jpg"
+        },
+        {
+          "id": 35548,
+          "name": "Simon Rex",
+          "character": "Roy Lee Dean",
+          "photo": "https://image.tmdb.org/t/p/w185/hpFwRpxrJt7k4ccWEwc37xRZ8pT.jpg"
+        },
+        {
+          "id": 58115,
+          "name": "Eric Dane",
+          "character": "Dillon Macintosh",
+          "photo": "https://image.tmdb.org/t/p/w185/lSs2O89BDyEwi8p0VhqX2jU90Hk.jpg"
+        },
+        {
+          "id": 42376,
+          "name": "Zahn McClarnon",
+          "character": "Ghost Eye",
+          "photo": "https://image.tmdb.org/t/p/w185/54M2t1gziirkDdvj4SxAl6dXaVO.jpg"
+        },
+        {
+          "id": 3411129,
+          "name": "Derek Hinkey",
+          "character": "Hank Spears",
+          "photo": "https://image.tmdb.org/t/p/w185/dvs53PB5hwXybMJtj3kr1HzBFxw.jpg"
+        },
+        {
+          "id": 18271,
+          "name": "Toby Huss",
+          "character": "Pendleton Duvall",
+          "photo": "https://image.tmdb.org/t/p/w185/dUqygHlDDnOBZLnE51MPJHkHWvQ.jpg"
+        },
+        {
+          "id": 538,
+          "name": "Harriet Sansom Harris",
+          "character": "Tish",
+          "photo": "https://image.tmdb.org/t/p/w185/1ShvYCWkZycAGb27ZivGrLx1PhS.jpg"
+        },
+        {
+          "id": 970561,
+          "name": "Joe Adler",
+          "character": "Fun Dave",
+          "photo": "https://image.tmdb.org/t/p/w185/bsle7zqj6HBs6NYstkwDwQY7EEf.jpg"
+        },
+        {
+          "id": 2111969,
+          "name": "Gavin Maddox Bergman",
+          "character": "Cal Starr",
+          "photo": "https://image.tmdb.org/t/p/w185/4muclqyx3Qb3XvR3Qy3bcGiD7a1.jpg"
+        },
+        {
+          "id": 105271,
+          "name": "Donald Cerrone",
+          "character": "Sheriff Cole Pickering",
+          "photo": "https://image.tmdb.org/t/p/w185/yHRgWTQuKr5tAMeR3qTtsOQU0Jb.jpg"
+        },
+        {
+          "id": 2505545,
+          "name": "Jasper Keen",
+          "character": "Reggie Dale",
+          "photo": "https://image.tmdb.org/t/p/w185/1oLshmHilSHy89wjpWckDLQqkJG.jpg"
+        },
+        {
+          "id": 2585597,
+          "name": "Austin Boyce",
+          "character": "Brittany Gable",
+          "photo": "https://image.tmdb.org/t/p/w185/uugdtz3dBncGO4LCztCUcEA1zbP.jpg"
+        },
+        {
+          "id": 1368249,
+          "name": "Megan Hensley",
+          "character": "Sarah",
+          "photo": "https://image.tmdb.org/t/p/w185/vpJq7yKVmtXNLHNUtjlYsM8zDG8.jpg"
+        }
+      ],
+      "keywords": [
+        "dark comedy",
+        "artifact",
+        "biting",
+        "south dakota",
+        "ambivalent",
+        "amused",
+        "celebratory"
+      ],
+      "recommendations": [
+        {
+          "id": 1502943,
+          "title": "Night of the Reaper",
+          "poster": "https://image.tmdb.org/t/p/w185/HVR8cNWzBVoqbEIIqVtLpDvVKn.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 122126,
+          "title": "The Concubine",
+          "poster": "https://image.tmdb.org/t/p/w185/4q97hnU5HMPKnXp0HtzAqfGTeAw.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 1246369,
+          "title": "Samurai Fury",
+          "poster": "https://image.tmdb.org/t/p/w185/apthwI5WmRT3cpiMg9sppEJ0PsN.jpg",
+          "rating": 8.3
+        },
+        {
+          "id": 9903,
+          "title": "O Vigarista do Ano",
+          "poster": "https://image.tmdb.org/t/p/w185/77g9brTTt4As1C6irq1aK1WfoG8.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 8333,
+          "title": "O Sequestro do Metrô",
+          "poster": "https://image.tmdb.org/t/p/w185/nqtpequsviahmqfjD0Fiiw5xoFd.jpg",
+          "rating": 7.5
+        },
+        {
+          "id": 631435,
+          "title": "Bruno",
+          "poster": "https://image.tmdb.org/t/p/w185/qRfMNyIpaJAAURVR1EGymIGzD6Q.jpg",
+          "rating": 7
+        }
+      ]
+    }
+  },
+  {
+    "id": "imp-1769744709599-31481",
+    "name": "Um Dia Extraordinário",
+    "url": "http://camelo.vip:80/movie/Valeria5169/6082Va/363762.mp4",
+    "category": "Filmes | Lancamentos",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/AuRamBsUf8AqRzHmWMjb2jg5vVZ.jpg",
+    "tmdb": {
+      "id": 1531764,
+      "imdbId": "tt39304164",
+      "title": "Um Dia Extraordinário",
+      "originalTitle": "Um Dia Extraordinário",
+      "tagline": null,
+      "overview": "A rotina da jovem agricultora Moira é abalada pela aparição de um agroglifo em sua pequena fazenda, onde vive com Ivete, sua mãe octogenária fascinada pelo universo extraterrestre. O evento desperta a curiosidade da vizinhança e provoca o inesperado reencontro com a irmã Cecília e o irmão Maurício, forçando o enfrentamento tanto da distância que cresceu entre a família quanto do inevitável envelhecimento da matriarca.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2026-01-24",
+      "year": "2026",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 1,
+      "certification": "L",
+      "genres": [
+        "Drama",
+        "Cinema TV",
+        "Ficção científica"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/AuRamBsUf8AqRzHmWMjb2jg5vVZ.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/AuRamBsUf8AqRzHmWMjb2jg5vVZ.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/g9OjChUxckHzuNvYkhLRfagUHKw.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/g9OjChUxckHzuNvYkhLRfagUHKw.jpg",
+      "cast": [
+        {
+          "id": 5632743,
+          "name": "Alana Bortolini",
+          "character": "Moira",
+          "photo": "https://image.tmdb.org/t/p/w185/ptuj1LE0fWtsiuZ97IJOtUk7i0V.jpg"
+        },
+        {
+          "id": 3909303,
+          "name": "Margarida Baird",
+          "character": "Ivete",
+          "photo": null
+        },
+        {
+          "id": 232514,
+          "name": "Paula Braun",
+          "character": "Cecília",
+          "photo": "https://image.tmdb.org/t/p/w185/s43pjzo1L3hdzOKu9Rjy00dmPku.jpg"
+        },
+        {
+          "id": 5632745,
+          "name": "Valdir Grillo",
+          "character": "Maurício",
+          "photo": null
+        },
+        {
+          "id": 3889822,
+          "name": "Sarah Motta",
+          "character": "Lu",
+          "photo": null
+        },
+        {
+          "id": 5916891,
+          "name": "Emilly Vicente",
+          "character": "Bruna",
+          "photo": null
+        },
+        {
+          "id": 5916892,
+          "name": "Andres Freitas",
+          "character": "Joca",
+          "photo": null
+        },
+        {
+          "id": 5966486,
+          "name": "Carmen Piccoli",
+          "character": "Arlete",
+          "photo": null
+        },
+        {
+          "id": 5966489,
+          "name": "Marcelo Silveira",
+          "character": "Carlos",
+          "photo": null
+        },
+        {
+          "id": 2312967,
+          "name": "Fernando Bispo",
+          "character": "Renato",
+          "photo": null
+        },
+        {
+          "id": 5928515,
+          "name": "Brisa Marques",
+          "character": "Alessandra",
+          "photo": null
+        },
+        {
+          "id": 5966491,
+          "name": "Juliana Vinhas",
+          "character": "Repórter",
+          "photo": null
+        },
+        {
+          "id": 3136672,
+          "name": "Fabio Cubas",
+          "character": "Ufólogo",
+          "photo": null
+        },
+        {
+          "id": 5966492,
+          "name": "Bibiana Spautz",
+          "character": "Popular",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": []
+    }
   }
 ]

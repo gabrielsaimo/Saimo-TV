@@ -19857,7 +19857,147 @@
     "category": "🎬 Fantasia",
     "type": "movie",
     "isAdult": false,
-    "tmdb": null
+    "tmdb": {
+      "id": 17803,
+      "imdbId": "tt0106188",
+      "title": "Meia Noite e Um",
+      "originalTitle": "12:01",
+      "tagline": null,
+      "overview": "Baseado em história de Richard Lupoff, a partir de um curta-metragem de 1990 (\"12:01\", de Hillary Ripp e Jonathan Heap, indicados ao Oscar), este drama feito para TV é do mesmo ano de \"Feitiço do Tempo\" e apresenta situação semelhante. Um raio cai na casa de um Rapaz, ele leva um choque na tomada e passa a viver seus dias sempre se repetindo. É quando tenta evitar o assassinato de uma jovem que trabalha justamente em pesquisas de desvio do tempo.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1993-07-05",
+      "year": "1993",
+      "rating": 6.2,
+      "voteCount": 154,
+      "popularity": 3,
+      "certification": null,
+      "genres": [
+        "Ficção científica",
+        "Thriller",
+        "Cinema TV"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/xK3d7mT6D7v2y8jp5Kv7c9FXzen.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/xK3d7mT6D7v2y8jp5Kv7c9FXzen.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/jZBJfWHHGw9kbRQs2hnY1n1bQpm.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/jZBJfWHHGw9kbRQs2hnY1n1bQpm.jpg",
+      "cast": [
+        {
+          "id": 55265,
+          "name": "Jonathan Silverman",
+          "character": "Barry Thomas",
+          "photo": "https://image.tmdb.org/t/p/w185/tzGuPePIxTjV84qizCMDcqTEQgh.jpg"
+        },
+        {
+          "id": 33488,
+          "name": "Helen Slater",
+          "character": "Lisa Fredericks",
+          "photo": "https://image.tmdb.org/t/p/w185/6WGhch6xLlFh0mQ9NR5BQ1UHaT9.jpg"
+        },
+        {
+          "id": 2641,
+          "name": "Martin Landau",
+          "character": "Dr. Thadius Moxley",
+          "photo": "https://image.tmdb.org/t/p/w185/3Hk817L900dnoOuvVJIaXhQdgNy.jpg"
+        },
+        {
+          "id": 82433,
+          "name": "Nicolas Surovy",
+          "character": "Robert Denk",
+          "photo": "https://image.tmdb.org/t/p/w185/zePSB2dRIumv9nb7xjYvRZYfikQ.jpg"
+        },
+        {
+          "id": 11902,
+          "name": "Robin Bartlett",
+          "character": "Anne Jackson",
+          "photo": "https://image.tmdb.org/t/p/w185/94OpCjYBbxIoCtJpFWAlFQornKO.jpg"
+        },
+        {
+          "id": 12799,
+          "name": "Jeremy Piven",
+          "character": "Howard Richter",
+          "photo": "https://image.tmdb.org/t/p/w185/pBD1jcAZiDrHWcFpJtBtqLRD4gR.jpg"
+        },
+        {
+          "id": 92326,
+          "name": "Constance Marie",
+          "character": "Joan Zevo",
+          "photo": "https://image.tmdb.org/t/p/w185/4s5IKXj9gKHwNWjm8o5LgAkBVal.jpg"
+        },
+        {
+          "id": 12797,
+          "name": "Glenn Morshower",
+          "character": "Detective Cryers",
+          "photo": "https://image.tmdb.org/t/p/w185/SjgNUSLoBAVossDI4QkNtDxYDZ.jpg"
+        },
+        {
+          "id": 129996,
+          "name": "Paxton Whitehead",
+          "character": "Dr. Tiberius Scott",
+          "photo": "https://image.tmdb.org/t/p/w185/2CEVNlgUVY8RghIwKjsDGMU3jLb.jpg"
+        },
+        {
+          "id": 154714,
+          "name": "Cheryl Anderson",
+          "character": "Supervisor",
+          "photo": "https://image.tmdb.org/t/p/w185/gpftyOkokOH1XIY5QjRvozZzFrd.jpg"
+        },
+        {
+          "id": 4133,
+          "name": "Giuseppe Andrews",
+          "character": "Kyle",
+          "photo": "https://image.tmdb.org/t/p/w185/lQrnST9P6aRbxAs2eQiCkkBY83v.jpg"
+        },
+        {
+          "id": 11160,
+          "name": "Danny Trejo",
+          "character": "Prisoner",
+          "photo": "https://image.tmdb.org/t/p/w185/7JrUkRGBscZ1Hy5JinaaXjjzSCF.jpg"
+        }
+      ],
+      "keywords": [
+        "time travel",
+        "time loop"
+      ],
+      "recommendations": [
+        {
+          "id": 11374,
+          "title": "Ed TV",
+          "poster": "https://image.tmdb.org/t/p/w185/xnnjoMONNamGU6ZX6acbcxyOKv1.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 30647,
+          "title": "Meia Noite e Um",
+          "poster": "https://image.tmdb.org/t/p/w185/zT5R8VahhZlE1TDcwEtmvyr8c8K.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 393083,
+          "title": "Paweł & Gaweł",
+          "poster": "https://image.tmdb.org/t/p/w185/yOAnnhTN1A19bb8NYpH7Ewt5YHL.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 82731,
+          "title": "Os Três Mosqueteiros",
+          "poster": "https://image.tmdb.org/t/p/w185/55FdDXbYk8EdIFP0UTxCd1I5r3t.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 41243,
+          "title": "O Criador",
+          "poster": "https://image.tmdb.org/t/p/w185/3BEfGEkND76ZXnZzKQs79phCfLj.jpg",
+          "rating": 6
+        },
+        {
+          "id": 421420,
+          "title": "12-12-42",
+          "poster": "https://image.tmdb.org/t/p/w185/bwzFeGDYUBcxk30UNX0SspC53q5.jpg",
+          "rating": 6.5
+        }
+      ]
+    }
   },
   {
     "id": "memorias-ocultas-2024-87gzhd-1112530",
