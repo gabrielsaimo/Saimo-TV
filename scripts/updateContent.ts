@@ -3,7 +3,7 @@ import * as path from 'path';
 import { findMatch, getCleanName } from '../src/utils/m3uMatcher';
 import { normalizeName } from '../src/services/m3uService';
 
-const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR04.m3u';
+const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR%20-%20Completo.m3u8';
 const ENRICHED_DIR = path.join(process.cwd(), 'public/data/enriched');
 
 // Mapeamento de grupos M3U para arquivos JSON existentes (simplificado)
@@ -15,8 +15,29 @@ const CATEGORY_FILE_MAP: Record<string, string> = {
     'ficcao': 'ficcao-cientifica.json',
     'animacao': 'animacao.json',
     'infantil': 'animacao.json',
+    'desenho': 'desenhos.json',
+    'anime': 'animes.json',
     'romance': 'romance.json',
     'suspense': 'suspense.json',
+    'aventura': 'aventura.json',
+    'fantasia': 'fantasia.json',
+    'faroeste': 'western.json',
+    'western': 'western.json',
+    'guerra': 'guerra.json',
+    'documentario': 'documentarios.json',
+    'biografia': 'biografia.json',
+    'historia': 'historia.json',
+    'crime': 'crime.json',
+    'policial': 'crime.json',
+    'misterio': 'misterio.json',
+    'familia': 'familia.json',
+    'musica': 'musicais.json',
+    'show': 'shows.json',
+    'dorama': 'doramas.json',
+    'novela': 'novelas.json',
+    'nacional': 'nacionais.json',
+    'religioso': 'religiosos.json',
+    'gospel': 'religiosos.json',
     'lancamentos': 'lancamentos.json',
     'netflix': 'netflix.json',
     'amazon': 'prime-video.json',
@@ -27,10 +48,11 @@ const CATEGORY_FILE_MAP: Record<string, string> = {
     'paramount': 'paramount.json',
     'star': 'star.json',
     'discovery': 'discovery.json',
-    'legendado': 'legendados.json', // Para capturar 'Series | Legendados'
+    'legendado': 'legendados.json',
     'adultos': 'hot-adultos.json',
     'adultos | bella da semana': 'hot-adultos-bella-da-semana.json',
     'adultos | legendado': 'hot-adultos-legendado.json',
+    'xxx': 'hot-adultos.json',
     // Adicione mais conforme necessário
 };
 
