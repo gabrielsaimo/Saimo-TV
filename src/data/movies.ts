@@ -91,7 +91,7 @@ export const categoryIndex: CategoryIndex[] = [
   },
   {
     "name": "🎬 4K UHD",
-    "file": "4k-uhd.json",
+    "file": "uhd-4k.json",
     "count": 1140,
     "isAdult": false,
     "hasMovies": true,
@@ -451,7 +451,7 @@ export const categoryIndex: CategoryIndex[] = [
   },
   {
     "name": "📺 Funimation",
-    "file": "funimation.json",
+    "file": "funimation-now.json",
     "count": 1930,
     "isAdult": false,
     "hasMovies": false,

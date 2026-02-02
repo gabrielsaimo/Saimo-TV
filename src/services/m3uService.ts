@@ -1,5 +1,5 @@
 // URL do arquivo M3U
-const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/main/CanaisBR-Completo.m3u';
+const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR%20-%20Completo.m3u8';
 
 // Cache em memória
 let m3uCache: Map<string, string> | null = null;
