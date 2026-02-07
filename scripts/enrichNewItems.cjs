@@ -233,7 +233,7 @@ async function main() {
 
         // Filtra itens que precisam de update (apenas os NOVOS com id 'imp-')
         const missingIndices = content.map((item, index) => {
-            if (!item.tmdb && item.id && String(item.id).startsWith('imp-')) return index;
+            if (!item.tmdb && item.id && (String(item.id).startsWith('imp-') || String(item.id).startsWith('m3u-') || String(item.id).startsWith('series-'))) return index;
             return -1;
         }).filter(i => i !== -1);
 

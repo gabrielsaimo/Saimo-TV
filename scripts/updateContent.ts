@@ -3,11 +3,12 @@ import * as path from 'path';
 import { findMatch, getCleanName } from '../src/utils/m3uMatcher';
 import { normalizeName } from '../src/services/m3uService';
 
-const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR05.m3u';
+const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR04.m3u';
 const ENRICHED_DIR = path.join(process.cwd(), 'public/data/enriched');
 
-// Mapeamento de grupos M3U para arquivos JSON existentes (simplificado)
+// Mapeamento de grupos M3U para arquivos JSON existentes (completo)
 const CATEGORY_FILE_MAP: Record<string, string> = {
+    // Gêneros principais
     'acao': 'acao.json',
     'comedia': 'comedia.json',
     'drama': 'drama.json',
@@ -21,10 +22,12 @@ const CATEGORY_FILE_MAP: Record<string, string> = {
     'suspense': 'suspense.json',
     'aventura': 'aventura.json',
     'fantasia': 'fantasia.json',
-    'faroeste': 'western.json',
+    'faroeste': 'faroeste.json',
     'western': 'western.json',
     'guerra': 'guerra.json',
-    'documentario': 'documentarios.json',
+    'documentario': 'documentario.json',
+    'documentarios': 'documentario.json',
+    'docu': 'docu.json',
     'biografia': 'biografia.json',
     'historia': 'historia.json',
     'crime': 'crime.json',
@@ -39,21 +42,63 @@ const CATEGORY_FILE_MAP: Record<string, string> = {
     'religioso': 'religiosos.json',
     'gospel': 'religiosos.json',
     'lancamentos': 'lancamentos.json',
+
+    // Streaming Services - Principais
     'netflix': 'netflix.json',
     'amazon': 'prime-video.json',
+    'prime': 'prime-video.json',
     'disney': 'disney.json',
     'hbo': 'max.json',
+    'max': 'max.json',
     'globo': 'globoplay.json',
+    'globoplay': 'globoplay.json',
     'apple': 'apple-tv.json',
     'paramount': 'paramount.json',
     'star': 'star.json',
     'discovery': 'discovery.json',
+
+    // Streaming Services - Adicionais
+    'amc': 'amc-plus.json',
+    'crunchyroll': 'crunchyroll.json',
+    'funimation': 'funimation-now.json',
+    'claro': 'claro-video.json',
+    'directv': 'directv.json',
+    'lionsgate': 'lionsgate.json',
+    'pluto': 'plutotv.json',
+    'plutotv': 'plutotv.json',
+    'univer': 'univer.json',
+    'sbt': 'sbt.json',
+    'brasil paralelo': 'brasil-paralelo.json',
+
+    // Conteúdo Especial
+    '4k': 'uhd-4k.json',
+    'uhd': 'uhd-4k.json',
+    'cinema': 'cinema.json',
+    'oscar': 'oscar-2025.json',
+    'stand-up': 'stand-up-comedy.json',
+    'standup': 'stand-up-comedy.json',
+    'esporte': 'esportes.json',
+    'esportes': 'esportes.json',
+    'sports': 'esportes.json',
+    'programa': 'programas-de-tv.json',
+    'tv show': 'programas-de-tv.json',
+    'turca': 'novelas-turcas.json',
+    'turkish': 'novelas-turcas.json',
+    'curso': 'cursos.json',
+    'cursos': 'cursos.json',
+    'dublagem': 'dublagem-nao-oficial.json',
+    'legendada': 'legendadas.json',
+    'legendadas': 'legendadas.json',
     'legendado': 'legendados.json',
+    'outros': 'outros.json',
+    'outras': 'outras-produtoras.json',
+    'especial': 'especial-infantil.json',
+
+    // Adultos
     'adultos': 'hot-adultos.json',
     'adultos | bella da semana': 'hot-adultos-bella-da-semana.json',
     'adultos | legendado': 'hot-adultos-legendado.json',
     'xxx': 'hot-adultos.json',
-    // Adicione mais conforme necessário
 };
 
 interface M3UItem {

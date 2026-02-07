@@ -91386,7 +91386,89 @@
     "type": "movie",
     "isAdult": false,
     "logo": "http://channelart.8b90287dn2.online/images/logos/Investigation%20Discovery%20HD.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 381158,
+      "imdbId": "tt1905361",
+      "title": "Steven Avery - Culpado ou Inocente?",
+      "originalTitle": "Steven Avery: Innocent or Guilty?",
+      "tagline": null,
+      "overview": "Acompanhe a investigação do caso de Steven Avery, um americano que passou 18 anos preso acusado de um crime sexual que não cometeu. Dois anos depois que finalmente foi libertado, Avery voltou para a cadeia acusado do assassinato de Teresa Halbach.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2016-01-30",
+      "year": "2016",
+      "rating": 7.8,
+      "voteCount": 5,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Crime",
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/6gKeCY0uahmwPu5A1CXZLo3QBUH.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/6gKeCY0uahmwPu5A1CXZLo3QBUH.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/yu7wpWQ8ZhCEpmA8KIIWQiGO8Xu.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/yu7wpWQ8ZhCEpmA8KIIWQiGO8Xu.jpg",
+      "cast": [
+        {
+          "id": 1223809,
+          "name": "Keith Morrison",
+          "character": "Self - Host",
+          "photo": "https://image.tmdb.org/t/p/w185/udaX79Ax8NnMZs8BAxSSfYctzpq.jpg"
+        },
+        {
+          "id": 1554281,
+          "name": "Steven Avery",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/oZqH55pMHn9TjfXk6SpjbUBm7ty.jpg"
+        }
+      ],
+      "keywords": [
+        "investigation",
+        "private investigator",
+        "legal battle",
+        "legal system",
+        "front page"
+      ],
+      "recommendations": [
+        {
+          "id": 361743,
+          "title": "Top Gun: Maverick",
+          "poster": "https://image.tmdb.org/t/p/w185/2EEaX9eHqgdBQlX4gOCCYSvlxAg.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 121,
+          "title": "O Senhor dos Anéis: As Duas Torres",
+          "poster": "https://image.tmdb.org/t/p/w185/mCs8vxvScCqVM3YFMQIdbrdFEhu.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 872585,
+          "title": "Oppenheimer",
+          "poster": "https://image.tmdb.org/t/p/w185/1OsQJEoSXBjduuCvDOlRhoEUaHu.jpg",
+          "rating": 8
+        },
+        {
+          "id": 475557,
+          "title": "Coringa",
+          "poster": "https://image.tmdb.org/t/p/w185/xLxgVxFWvb9hhUyCDDXxRPPnFck.jpg",
+          "rating": 8.1
+        },
+        {
+          "id": 693134,
+          "title": "Duna: Parte Dois",
+          "poster": "https://image.tmdb.org/t/p/w185/8LJJjLjAzAwXS40S5mx79PJ2jSs.jpg",
+          "rating": 8.1
+        },
+        {
+          "id": 264660,
+          "title": "Ex_Machina: Instinto Artificial",
+          "poster": "https://image.tmdb.org/t/p/w185/hfpnFtgcYom9Gk9s1IyWiovpZYg.jpg",
+          "rating": 7.6
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770491517373-7472",
@@ -91396,7 +91478,89 @@
     "type": "movie",
     "isAdult": false,
     "logo": "http://channelart.8b90287dn2.online/images/logos/Investigation%20Discovery.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 381158,
+      "imdbId": "tt1905361",
+      "title": "Steven Avery - Culpado ou Inocente?",
+      "originalTitle": "Steven Avery: Innocent or Guilty?",
+      "tagline": null,
+      "overview": "Acompanhe a investigação do caso de Steven Avery, um americano que passou 18 anos preso acusado de um crime sexual que não cometeu. Dois anos depois que finalmente foi libertado, Avery voltou para a cadeia acusado do assassinato de Teresa Halbach.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2016-01-30",
+      "year": "2016",
+      "rating": 7.8,
+      "voteCount": 5,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Crime",
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/6gKeCY0uahmwPu5A1CXZLo3QBUH.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/6gKeCY0uahmwPu5A1CXZLo3QBUH.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/yu7wpWQ8ZhCEpmA8KIIWQiGO8Xu.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/yu7wpWQ8ZhCEpmA8KIIWQiGO8Xu.jpg",
+      "cast": [
+        {
+          "id": 1223809,
+          "name": "Keith Morrison",
+          "character": "Self - Host",
+          "photo": "https://image.tmdb.org/t/p/w185/udaX79Ax8NnMZs8BAxSSfYctzpq.jpg"
+        },
+        {
+          "id": 1554281,
+          "name": "Steven Avery",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/oZqH55pMHn9TjfXk6SpjbUBm7ty.jpg"
+        }
+      ],
+      "keywords": [
+        "investigation",
+        "private investigator",
+        "legal battle",
+        "legal system",
+        "front page"
+      ],
+      "recommendations": [
+        {
+          "id": 361743,
+          "title": "Top Gun: Maverick",
+          "poster": "https://image.tmdb.org/t/p/w185/2EEaX9eHqgdBQlX4gOCCYSvlxAg.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 121,
+          "title": "O Senhor dos Anéis: As Duas Torres",
+          "poster": "https://image.tmdb.org/t/p/w185/mCs8vxvScCqVM3YFMQIdbrdFEhu.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 872585,
+          "title": "Oppenheimer",
+          "poster": "https://image.tmdb.org/t/p/w185/1OsQJEoSXBjduuCvDOlRhoEUaHu.jpg",
+          "rating": 8
+        },
+        {
+          "id": 475557,
+          "title": "Coringa",
+          "poster": "https://image.tmdb.org/t/p/w185/xLxgVxFWvb9hhUyCDDXxRPPnFck.jpg",
+          "rating": 8.1
+        },
+        {
+          "id": 693134,
+          "title": "Duna: Parte Dois",
+          "poster": "https://image.tmdb.org/t/p/w185/8LJJjLjAzAwXS40S5mx79PJ2jSs.jpg",
+          "rating": 8.1
+        },
+        {
+          "id": 264660,
+          "title": "Ex_Machina: Instinto Artificial",
+          "poster": "https://image.tmdb.org/t/p/w185/hfpnFtgcYom9Gk9s1IyWiovpZYg.jpg",
+          "rating": 7.6
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770491517373-7865",
@@ -91406,12 +91570,132 @@
     "type": "movie",
     "isAdult": false,
     "logo": "http://channelart.8b90287dn2.online/images/logos/Discovery%20World.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 76701,
+      "imdbId": "tt10905764",
+      "title": "The Magical World of Winnie the Pooh: A Great Day of Discovery",
+      "originalTitle": "The Magical World of Winnie the Pooh: A Great Day of Discovery",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2003-06-01",
+      "year": "2003",
+      "rating": 7.3,
+      "voteCount": 6,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Animação",
+        "Família"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/axlQAKYoOpOuOKYKmzvLp376sk6.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/axlQAKYoOpOuOKYKmzvLp376sk6.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/2zy7yZulO4YjOeduxxqenfyUMnU.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/2zy7yZulO4YjOeduxxqenfyUMnU.jpg",
+      "cast": [
+        {
+          "id": 12077,
+          "name": "Jim Cummings",
+          "character": "Winnie the Pooh, Tigger",
+          "photo": "https://image.tmdb.org/t/p/w185/c0sQPRCM5Ri3F4gVyxPr4AcPmIq.jpg"
+        },
+        {
+          "id": 77548,
+          "name": "Paul Winchell",
+          "character": "Tigger",
+          "photo": "https://image.tmdb.org/t/p/w185/aZjzqTlzhBpcXogubUP8wcPE4Da.jpg"
+        },
+        {
+          "id": 5247,
+          "name": "John Fiedler",
+          "character": "Piglet",
+          "photo": "https://image.tmdb.org/t/p/w185/27sXisLWQJQ49PD40j89miNhL73.jpg"
+        },
+        {
+          "id": 77482,
+          "name": "Ken Sansom",
+          "character": "Conejo",
+          "photo": "https://image.tmdb.org/t/p/w185/2pvv1gFv5V0IlLY6rBz0Y4YLMyc.jpg"
+        },
+        {
+          "id": 19540,
+          "name": "Peter Cullen",
+          "character": "Ígor",
+          "photo": "https://image.tmdb.org/t/p/w185/9Snf4fBUkk5MrAjqtNtgZRJYJbj.jpg"
+        },
+        {
+          "id": 93309,
+          "name": "Tim Hoskins",
+          "character": "Christopher Robin",
+          "photo": null
+        },
+        {
+          "id": 2076805,
+          "name": "Patty Parris",
+          "character": "Cangu",
+          "photo": null
+        },
+        {
+          "id": 2076806,
+          "name": "Nicholas Melody",
+          "character": "Rito",
+          "photo": null
+        },
+        {
+          "id": 25627,
+          "name": "Hal Smith",
+          "character": "Búho",
+          "photo": "https://image.tmdb.org/t/p/w185/xVXbKpSgCHvP5ymJNeB1fyf4GMP.jpg"
+        }
+      ],
+      "keywords": [
+        "compilation"
+      ],
+      "recommendations": [
+        {
+          "id": 298164,
+          "title": "The Magical World of Winnie the Pooh: Love and Friendship",
+          "poster": "https://image.tmdb.org/t/p/w185/zA8ySept5q30Sl9msJHO9uhlBVg.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 584,
+          "title": "+ Velozes + Furiosos",
+          "poster": "https://image.tmdb.org/t/p/w185/mx0CB8H78PQu0g9YUWG47hdi93S.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 11324,
+          "title": "Ilha do Medo",
+          "poster": "https://image.tmdb.org/t/p/w185/9JHlzQyzyXcsGgl0htYfsm8AnfS.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 597,
+          "title": "Titanic",
+          "poster": "https://image.tmdb.org/t/p/w185/As0zX43h3w6kD2NS4uVHu9HKdEh.jpg",
+          "rating": 7.9
+        },
+        {
+          "id": 157336,
+          "title": "Interestelar",
+          "poster": "https://image.tmdb.org/t/p/w185/6ricSDD83BClJsFdGB6x7cM0MFQ.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 680,
+          "title": "Pulp Fiction: Tempo de Violência",
+          "poster": "https://image.tmdb.org/t/p/w185/tptjnB2LDbuUWya9Cx5sQtv5hqb.jpg",
+          "rating": 8.5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770491517373-7248",
     "name": "Discovery Turbo HD",
-    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2093",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83202",
     "category": "DISCOVERY",
     "type": "movie",
     "isAdult": false,
@@ -91431,7 +91715,7 @@
   {
     "id": "m3u-1770491517373-1331",
     "name": "Discovery Theater HD",
-    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2091",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83201",
     "category": "DISCOVERY",
     "type": "movie",
     "isAdult": false,
@@ -91481,12 +91765,74 @@
   {
     "id": "m3u-1770491517373-836",
     "name": "Discovery Channel HD",
-    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1574",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83196",
     "category": "DISCOVERY",
     "type": "movie",
     "isAdult": false,
     "logo": "http://channelart.8b90287dn2.online/images/logos/Discovery%20Channel%20HD.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 959832,
+      "imdbId": "tt0408962",
+      "title": "Discovery Channel: Killer Sun",
+      "originalTitle": "Discovery Channel: Killer Sun",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1999-01-01",
+      "year": "1999",
+      "rating": 8.5,
+      "voteCount": 1,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/74fosKV3xzSqlRXK8YKE2XFBOrh.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/74fosKV3xzSqlRXK8YKE2XFBOrh.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 769965,
+          "title": "Self Discovery",
+          "poster": null,
+          "rating": 4.5
+        },
+        {
+          "id": 389556,
+          "title": "Gunpowder",
+          "poster": "https://image.tmdb.org/t/p/w185/5KtOwT8ovaiJYksiDM14AlW0cul.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 807223,
+          "title": "Re-Births",
+          "poster": "https://image.tmdb.org/t/p/w185/dC3y4IJW0yClaKBaMqXxVQ6nOXr.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 772689,
+          "title": "Re-Cycling",
+          "poster": "https://image.tmdb.org/t/p/w185/35QidLwL1EPLsOvItBKoc3tSzqM.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 615372,
+          "title": "Re/cycle",
+          "poster": "https://image.tmdb.org/t/p/w185/9ui7D4mC1K0hSFK4Sjc2hUfVjMf.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 747305,
+          "title": "PorNO",
+          "poster": "https://image.tmdb.org/t/p/w185/ca4IeFe4C7Hfco2TSUDKbUoSOFT.jpg",
+          "rating": 4.5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770491517373-397",
@@ -91496,17 +91842,141 @@
     "type": "movie",
     "isAdult": false,
     "logo": "http://channelart.8b90287dn2.online/images/logos/Discovery%20Channel.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 959832,
+      "imdbId": "tt0408962",
+      "title": "Discovery Channel: Killer Sun",
+      "originalTitle": "Discovery Channel: Killer Sun",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1999-01-01",
+      "year": "1999",
+      "rating": 8.5,
+      "voteCount": 1,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/74fosKV3xzSqlRXK8YKE2XFBOrh.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/74fosKV3xzSqlRXK8YKE2XFBOrh.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 769965,
+          "title": "Self Discovery",
+          "poster": null,
+          "rating": 4.5
+        },
+        {
+          "id": 389556,
+          "title": "Gunpowder",
+          "poster": "https://image.tmdb.org/t/p/w185/5KtOwT8ovaiJYksiDM14AlW0cul.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 807223,
+          "title": "Re-Births",
+          "poster": "https://image.tmdb.org/t/p/w185/dC3y4IJW0yClaKBaMqXxVQ6nOXr.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 772689,
+          "title": "Re-Cycling",
+          "poster": "https://image.tmdb.org/t/p/w185/35QidLwL1EPLsOvItBKoc3tSzqM.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 615372,
+          "title": "Re/cycle",
+          "poster": "https://image.tmdb.org/t/p/w185/9ui7D4mC1K0hSFK4Sjc2hUfVjMf.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 747305,
+          "title": "PorNO",
+          "poster": "https://image.tmdb.org/t/p/w185/ca4IeFe4C7Hfco2TSUDKbUoSOFT.jpg",
+          "rating": 4.5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770491517374-7020",
     "name": "Discovery Channel FHD",
-    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1881",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/87316",
     "category": "DISCOVERY",
     "type": "movie",
     "isAdult": false,
     "logo": "http://channelart.8b90287dn2.online/images/logos/Discovery%20Channel%20HD.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 959832,
+      "imdbId": "tt0408962",
+      "title": "Discovery Channel: Killer Sun",
+      "originalTitle": "Discovery Channel: Killer Sun",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1999-01-01",
+      "year": "1999",
+      "rating": 8.5,
+      "voteCount": 1,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/74fosKV3xzSqlRXK8YKE2XFBOrh.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/74fosKV3xzSqlRXK8YKE2XFBOrh.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 769965,
+          "title": "Self Discovery",
+          "poster": null,
+          "rating": 4.5
+        },
+        {
+          "id": 389556,
+          "title": "Gunpowder",
+          "poster": "https://image.tmdb.org/t/p/w185/5KtOwT8ovaiJYksiDM14AlW0cul.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 807223,
+          "title": "Re-Births",
+          "poster": "https://image.tmdb.org/t/p/w185/dC3y4IJW0yClaKBaMqXxVQ6nOXr.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 772689,
+          "title": "Re-Cycling",
+          "poster": "https://image.tmdb.org/t/p/w185/35QidLwL1EPLsOvItBKoc3tSzqM.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 615372,
+          "title": "Re/cycle",
+          "poster": "https://image.tmdb.org/t/p/w185/9ui7D4mC1K0hSFK4Sjc2hUfVjMf.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 747305,
+          "title": "PorNO",
+          "poster": "https://image.tmdb.org/t/p/w185/ca4IeFe4C7Hfco2TSUDKbUoSOFT.jpg",
+          "rating": 4.5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770491517374-8819",
@@ -91516,22 +91986,224 @@
     "type": "movie",
     "isAdult": false,
     "logo": "http://channelart.8b90287dn2.online/images/logos/Investigation%20Discovery%20HD.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 381158,
+      "imdbId": "tt1905361",
+      "title": "Steven Avery - Culpado ou Inocente?",
+      "originalTitle": "Steven Avery: Innocent or Guilty?",
+      "tagline": null,
+      "overview": "Acompanhe a investigação do caso de Steven Avery, um americano que passou 18 anos preso acusado de um crime sexual que não cometeu. Dois anos depois que finalmente foi libertado, Avery voltou para a cadeia acusado do assassinato de Teresa Halbach.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2016-01-30",
+      "year": "2016",
+      "rating": 7.8,
+      "voteCount": 5,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Crime",
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/6gKeCY0uahmwPu5A1CXZLo3QBUH.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/6gKeCY0uahmwPu5A1CXZLo3QBUH.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/yu7wpWQ8ZhCEpmA8KIIWQiGO8Xu.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/yu7wpWQ8ZhCEpmA8KIIWQiGO8Xu.jpg",
+      "cast": [
+        {
+          "id": 1223809,
+          "name": "Keith Morrison",
+          "character": "Self - Host",
+          "photo": "https://image.tmdb.org/t/p/w185/udaX79Ax8NnMZs8BAxSSfYctzpq.jpg"
+        },
+        {
+          "id": 1554281,
+          "name": "Steven Avery",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/oZqH55pMHn9TjfXk6SpjbUBm7ty.jpg"
+        }
+      ],
+      "keywords": [
+        "investigation",
+        "private investigator",
+        "legal battle",
+        "legal system",
+        "front page"
+      ],
+      "recommendations": [
+        {
+          "id": 361743,
+          "title": "Top Gun: Maverick",
+          "poster": "https://image.tmdb.org/t/p/w185/2EEaX9eHqgdBQlX4gOCCYSvlxAg.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 121,
+          "title": "O Senhor dos Anéis: As Duas Torres",
+          "poster": "https://image.tmdb.org/t/p/w185/mCs8vxvScCqVM3YFMQIdbrdFEhu.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 872585,
+          "title": "Oppenheimer",
+          "poster": "https://image.tmdb.org/t/p/w185/1OsQJEoSXBjduuCvDOlRhoEUaHu.jpg",
+          "rating": 8
+        },
+        {
+          "id": 475557,
+          "title": "Coringa",
+          "poster": "https://image.tmdb.org/t/p/w185/xLxgVxFWvb9hhUyCDDXxRPPnFck.jpg",
+          "rating": 8.1
+        },
+        {
+          "id": 693134,
+          "title": "Duna: Parte Dois",
+          "poster": "https://image.tmdb.org/t/p/w185/8LJJjLjAzAwXS40S5mx79PJ2jSs.jpg",
+          "rating": 8.1
+        },
+        {
+          "id": 264660,
+          "title": "Ex_Machina: Instinto Artificial",
+          "poster": "https://image.tmdb.org/t/p/w185/hfpnFtgcYom9Gk9s1IyWiovpZYg.jpg",
+          "rating": 7.6
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770491517374-1483",
     "name": "Discovery World FHD",
-    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1825",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/87310",
     "category": "DISCOVERY",
     "type": "movie",
     "isAdult": false,
     "logo": "http://channelart.8b90287dn2.online/images/logos/Discovery%20World%20HD.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 76701,
+      "imdbId": "tt10905764",
+      "title": "The Magical World of Winnie the Pooh: A Great Day of Discovery",
+      "originalTitle": "The Magical World of Winnie the Pooh: A Great Day of Discovery",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2003-06-01",
+      "year": "2003",
+      "rating": 7.3,
+      "voteCount": 6,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Animação",
+        "Família"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/axlQAKYoOpOuOKYKmzvLp376sk6.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/axlQAKYoOpOuOKYKmzvLp376sk6.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/2zy7yZulO4YjOeduxxqenfyUMnU.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/2zy7yZulO4YjOeduxxqenfyUMnU.jpg",
+      "cast": [
+        {
+          "id": 12077,
+          "name": "Jim Cummings",
+          "character": "Winnie the Pooh, Tigger",
+          "photo": "https://image.tmdb.org/t/p/w185/c0sQPRCM5Ri3F4gVyxPr4AcPmIq.jpg"
+        },
+        {
+          "id": 77548,
+          "name": "Paul Winchell",
+          "character": "Tigger",
+          "photo": "https://image.tmdb.org/t/p/w185/aZjzqTlzhBpcXogubUP8wcPE4Da.jpg"
+        },
+        {
+          "id": 5247,
+          "name": "John Fiedler",
+          "character": "Piglet",
+          "photo": "https://image.tmdb.org/t/p/w185/27sXisLWQJQ49PD40j89miNhL73.jpg"
+        },
+        {
+          "id": 77482,
+          "name": "Ken Sansom",
+          "character": "Conejo",
+          "photo": "https://image.tmdb.org/t/p/w185/2pvv1gFv5V0IlLY6rBz0Y4YLMyc.jpg"
+        },
+        {
+          "id": 19540,
+          "name": "Peter Cullen",
+          "character": "Ígor",
+          "photo": "https://image.tmdb.org/t/p/w185/9Snf4fBUkk5MrAjqtNtgZRJYJbj.jpg"
+        },
+        {
+          "id": 93309,
+          "name": "Tim Hoskins",
+          "character": "Christopher Robin",
+          "photo": null
+        },
+        {
+          "id": 2076805,
+          "name": "Patty Parris",
+          "character": "Cangu",
+          "photo": null
+        },
+        {
+          "id": 2076806,
+          "name": "Nicholas Melody",
+          "character": "Rito",
+          "photo": null
+        },
+        {
+          "id": 25627,
+          "name": "Hal Smith",
+          "character": "Búho",
+          "photo": "https://image.tmdb.org/t/p/w185/xVXbKpSgCHvP5ymJNeB1fyf4GMP.jpg"
+        }
+      ],
+      "keywords": [
+        "compilation"
+      ],
+      "recommendations": [
+        {
+          "id": 298164,
+          "title": "The Magical World of Winnie the Pooh: Love and Friendship",
+          "poster": "https://image.tmdb.org/t/p/w185/zA8ySept5q30Sl9msJHO9uhlBVg.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 584,
+          "title": "+ Velozes + Furiosos",
+          "poster": "https://image.tmdb.org/t/p/w185/mx0CB8H78PQu0g9YUWG47hdi93S.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 11324,
+          "title": "Ilha do Medo",
+          "poster": "https://image.tmdb.org/t/p/w185/9JHlzQyzyXcsGgl0htYfsm8AnfS.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 597,
+          "title": "Titanic",
+          "poster": "https://image.tmdb.org/t/p/w185/As0zX43h3w6kD2NS4uVHu9HKdEh.jpg",
+          "rating": 7.9
+        },
+        {
+          "id": 157336,
+          "title": "Interestelar",
+          "poster": "https://image.tmdb.org/t/p/w185/6ricSDD83BClJsFdGB6x7cM0MFQ.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 680,
+          "title": "Pulp Fiction: Tempo de Violência",
+          "poster": "https://image.tmdb.org/t/p/w185/tptjnB2LDbuUWya9Cx5sQtv5hqb.jpg",
+          "rating": 8.5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770491517374-932",
     "name": "Discovery Turbo FHD",
-    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1824",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/126100",
     "category": "DISCOVERY",
     "type": "movie",
     "isAdult": false,
@@ -91541,7 +92213,7 @@
   {
     "id": "m3u-1770491517374-1316",
     "name": "Discovery Theater FHD",
-    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1823",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/126103",
     "category": "DISCOVERY",
     "type": "movie",
     "isAdult": false,
@@ -91551,7 +92223,7 @@
   {
     "id": "m3u-1770491517374-1190",
     "name": "Discovery Science FHD",
-    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1822",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/126102",
     "category": "DISCOVERY",
     "type": "movie",
     "isAdult": false,
@@ -91601,12 +92273,132 @@
   {
     "id": "m3u-1770491517374-173",
     "name": "Discovery World HD",
-    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1309",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83203",
     "category": "DISCOVERY",
     "type": "movie",
     "isAdult": false,
     "logo": "http://channelart.8b90287dn2.online/images/logos/Discovery%20World%20HD.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 76701,
+      "imdbId": "tt10905764",
+      "title": "The Magical World of Winnie the Pooh: A Great Day of Discovery",
+      "originalTitle": "The Magical World of Winnie the Pooh: A Great Day of Discovery",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2003-06-01",
+      "year": "2003",
+      "rating": 7.3,
+      "voteCount": 6,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Animação",
+        "Família"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/axlQAKYoOpOuOKYKmzvLp376sk6.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/axlQAKYoOpOuOKYKmzvLp376sk6.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/2zy7yZulO4YjOeduxxqenfyUMnU.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/2zy7yZulO4YjOeduxxqenfyUMnU.jpg",
+      "cast": [
+        {
+          "id": 12077,
+          "name": "Jim Cummings",
+          "character": "Winnie the Pooh, Tigger",
+          "photo": "https://image.tmdb.org/t/p/w185/c0sQPRCM5Ri3F4gVyxPr4AcPmIq.jpg"
+        },
+        {
+          "id": 77548,
+          "name": "Paul Winchell",
+          "character": "Tigger",
+          "photo": "https://image.tmdb.org/t/p/w185/aZjzqTlzhBpcXogubUP8wcPE4Da.jpg"
+        },
+        {
+          "id": 5247,
+          "name": "John Fiedler",
+          "character": "Piglet",
+          "photo": "https://image.tmdb.org/t/p/w185/27sXisLWQJQ49PD40j89miNhL73.jpg"
+        },
+        {
+          "id": 77482,
+          "name": "Ken Sansom",
+          "character": "Conejo",
+          "photo": "https://image.tmdb.org/t/p/w185/2pvv1gFv5V0IlLY6rBz0Y4YLMyc.jpg"
+        },
+        {
+          "id": 19540,
+          "name": "Peter Cullen",
+          "character": "Ígor",
+          "photo": "https://image.tmdb.org/t/p/w185/9Snf4fBUkk5MrAjqtNtgZRJYJbj.jpg"
+        },
+        {
+          "id": 93309,
+          "name": "Tim Hoskins",
+          "character": "Christopher Robin",
+          "photo": null
+        },
+        {
+          "id": 2076805,
+          "name": "Patty Parris",
+          "character": "Cangu",
+          "photo": null
+        },
+        {
+          "id": 2076806,
+          "name": "Nicholas Melody",
+          "character": "Rito",
+          "photo": null
+        },
+        {
+          "id": 25627,
+          "name": "Hal Smith",
+          "character": "Búho",
+          "photo": "https://image.tmdb.org/t/p/w185/xVXbKpSgCHvP5ymJNeB1fyf4GMP.jpg"
+        }
+      ],
+      "keywords": [
+        "compilation"
+      ],
+      "recommendations": [
+        {
+          "id": 298164,
+          "title": "The Magical World of Winnie the Pooh: Love and Friendship",
+          "poster": "https://image.tmdb.org/t/p/w185/zA8ySept5q30Sl9msJHO9uhlBVg.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 584,
+          "title": "+ Velozes + Furiosos",
+          "poster": "https://image.tmdb.org/t/p/w185/mx0CB8H78PQu0g9YUWG47hdi93S.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 11324,
+          "title": "Ilha do Medo",
+          "poster": "https://image.tmdb.org/t/p/w185/9JHlzQyzyXcsGgl0htYfsm8AnfS.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 597,
+          "title": "Titanic",
+          "poster": "https://image.tmdb.org/t/p/w185/As0zX43h3w6kD2NS4uVHu9HKdEh.jpg",
+          "rating": 7.9
+        },
+        {
+          "id": 157336,
+          "title": "Interestelar",
+          "poster": "https://image.tmdb.org/t/p/w185/6ricSDD83BClJsFdGB6x7cM0MFQ.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 680,
+          "title": "Pulp Fiction: Tempo de Violência",
+          "poster": "https://image.tmdb.org/t/p/w185/tptjnB2LDbuUWya9Cx5sQtv5hqb.jpg",
+          "rating": 8.5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770491517374-3484",

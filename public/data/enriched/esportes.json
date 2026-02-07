@@ -5359,5 +5359,645 @@
       "instagram": null,
       "twitter": null
     }
+  },
+  {
+    "id": "m3u-1770501442990-4461",
+    "name": "AppleTV+ 1",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/164637",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/logos/appletv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-8318",
+    "name": "AppleTV+ 2",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/164636",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/logos/appletv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-4050",
+    "name": "AppleTV+ 3",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/164635",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/logos/appletv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-3201",
+    "name": "AppleTV+ 4",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/164634",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/logos/appletv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-7154",
+    "name": "BAND Sports FHD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83806",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/bandsports.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-3930",
+    "name": "BAND Sports FHD [Alt]",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/147446",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/bandsports.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-3464",
+    "name": "BAND Sports HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83189",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/bandsports.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-116",
+    "name": "BAND Sports HD [Alt]",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/147447",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/bandsports.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-5307",
+    "name": "BAND Sports SD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83529",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/bandsports.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-2027",
+    "name": "BRTVMAX",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/350168",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://scontent.fplu4-1.fna.fbcdn.net/v/t39.30808-1/461987863_930684382425840_6448523684076262532_n.jpg?stp=c123.121.834.833a_dst-jpg_s200x200_tt6&_nc_cat=105&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=47ox7zRefMMQ7kNvwHcvrpm&_nc_oc=AdmEGSda5t2OtLsPOv-cmBJDJA2mtAGUVFRmb5rdzz9zxJ-9QvrZ55eVpXoFVU5C35g&_nc_zt=24&_nc_ht=scontent.fplu4-1.fna&_nc_gid=6ebF9TtdUVID3eB_iQBDUw&oh=00_AfW6JwF6IkXooiht5QKFQdq37TdCb94xn6iDT1S5jWAkqQ&oe=68AD6BCC",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-1220",
+    "name": "Canal GOAT 01",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/162946",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.imgur.com/g4cFsVv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-9099",
+    "name": "Canal GOAT 02",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/151320",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.imgur.com/g4cFsVv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-4654",
+    "name": "Canal GOAT 03",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/359049",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.imgur.com/g4cFsVv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-9669",
+    "name": "Canal GOAT 04",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/359415",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.imgur.com/g4cFsVv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-3885",
+    "name": "Canal GOAT 05",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/359416",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.imgur.com/g4cFsVv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-4544",
+    "name": "Canal GOAT 06",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/359417",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.imgur.com/g4cFsVv.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-3477",
+    "name": "Cazé TV 1 FHD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/164640",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/cazetv.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-5456",
+    "name": "Cazé TV 1 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/155270",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/cazetv.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-2562",
+    "name": "Cazé TV 1 SD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/164641",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/cazetv.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-6218",
+    "name": "Cazé TV 2 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/164639",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/cazetv.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442990-5560",
+    "name": "Cazé TV 3 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/164638",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/cazetv.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-6769",
+    "name": "Combate FHD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83821",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/combate.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-7151",
+    "name": "Combate FHD [Alt]",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/147471",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/combate.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-4696",
+    "name": "Combate HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83194",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/combate.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-7440",
+    "name": "Combate HD [Alt]",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/147472",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/combate.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-4859",
+    "name": "Combate SD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83538",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/combate.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-6751",
+    "name": "DAZN 01 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83447",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/dazn.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-9666",
+    "name": "DAZN 02 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/151059",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/dazn.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-6672",
+    "name": "Furacão Brasileirão HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/148195",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.imgur.com/LlWKncK.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-4287",
+    "name": "GE TV HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/351370",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/getv.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-3849",
+    "name": "Golf Channel FHD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/146910",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/golfchannel.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-517",
+    "name": "Golf Channel HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83618",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/golfchannel.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-5016",
+    "name": "MR. Olympia PPV",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/163038",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://integralmedica.vteximg.com.br/arquivos/ids/165865/lp-olympia-logo-olympia-footer.png?v=638325467025370000",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-7932",
+    "name": "OFF FHD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/139108",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/canaloff.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-2859",
+    "name": "OFF FHD [Alt]",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/147625",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/canaloff.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-8451",
+    "name": "OFF HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83243",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/canaloff.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-1201",
+    "name": "OFF HD [Alt]",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/147626",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/canaloff.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-8174",
+    "name": "OFF SD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83596",
+    "category": "Canais | Esportes",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/canaloff.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-7621",
+    "name": "OneFootball 1",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/139472",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/onefootball.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-6745",
+    "name": "OneFootball 2",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/151163",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/onefootball.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442991-8054",
+    "name": "OneFootball 3",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/151161",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/onefootball.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-9569",
+    "name": "OneFootball 4",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/151162",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/onefootball.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-6838",
+    "name": "Prime Esportes 1 FHD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83449",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/primeesportes1.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-263",
+    "name": "Prime Esportes 1 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83795",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/primeesportes1.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-2826",
+    "name": "Prime Esportes 1 SD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83334",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/primeesportes1.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-8790",
+    "name": "Prime Esportes 2 FHD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83348",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/primeesportes2.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-1726",
+    "name": "Prime Esportes 2 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83773",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/primeesportes2.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-7928",
+    "name": "Prime Esportes 2 SD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83347",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/primeesportes2.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-7711",
+    "name": "Prime Esportes 3 FHD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/169534",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/primeesportes3.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-333",
+    "name": "Prime Esportes 3 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83790",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/primeesportes3.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-6219",
+    "name": "Prime Esportes 3 SD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83452",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/primeesportes3.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442992-5058",
+    "name": "Red Bull TV HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/70206",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.imgur.com/wJQh6qs.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-9776",
+    "name": "Sportynet 1",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/81094",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/sportynet.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-1236",
+    "name": "Sportynet 2",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83215",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/sportynet.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-4863",
+    "name": "Sportynet 3",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83239",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/sportynet.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-6587",
+    "name": "Sportynet 4",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83297",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://raphmx00.com/sportynet.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-6019",
+    "name": "TV NSports 1 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83716",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/19/f3/9b/19f39bf9-bc3f-dd14-62a3-8450cfe930a6/source/512x512bb.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-3876",
+    "name": "TV NSports 2 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83717",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/19/f3/9b/19f39bf9-bc3f-dd14-62a3-8450cfe930a6/source/512x512bb.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-2403",
+    "name": "TV NSports 3 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/169539",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/19/f3/9b/19f39bf9-bc3f-dd14-62a3-8450cfe930a6/source/512x512bb.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-5197",
+    "name": "TV NSports 4 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/272",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/19/f3/9b/19f39bf9-bc3f-dd14-62a3-8450cfe930a6/source/512x512bb.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-9896",
+    "name": "UFC Paramount+ FHD [UFC TV]",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/177436",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://tecnoinforme.com.br/wp-content/uploads/2023/01/ufc-editada.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-3894",
+    "name": "UFC Paramount+ HD [UFC TV]",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/83789",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://tecnoinforme.com.br/wp-content/uploads/2023/01/ufc-editada.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442993-8619",
+    "name": "UFC Paramount+ SD [UFC TV]",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/169515",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://tecnoinforme.com.br/wp-content/uploads/2023/01/ufc-editada.jpg",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1770501442998-6312",
+    "name": "UK: Sky Sports F1 HD",
+    "url": "http://srv.cldplay.in:80/lelezago/lelezago@2021/164594",
+    "category": "Canais | Esportes PPV",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.imgur.com/CroLqTL.png",
+    "tmdb": null
   }
 ]
