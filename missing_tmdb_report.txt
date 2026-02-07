@@ -1,238 +1,400 @@
-24h: ATTACK ON TITAN S01
-24h: ATTACK ON TITAN S02
-24h: ATTACK ON TITAN S03
-24h: ATTACK ON TITAN S04
-24h: BAKI O CAMPEAO S01
-24h: BAKI O CAMPEAO S02
-24h: BAKI O CAMPEAO S03
-24h: BAKI HANMA S01
-24h: BAKI HANMA S02
-24h: BASTARD S01
-24h: BEYBLADE S01
-24h: BLEACH S01
-24h: BLEACH S02
-24h: BLEACH S03
-24h: BLEACH S04
-24h: BLEACH S05
-24h: BLEACH S06
-24h: BLEACH S07
-24h: BLEACH S08
-24h: BLEACH S09
-24h: BLEACH S10
-24h: BLEACH S11
-24h: BLEACH S12
-24h: BLEACH S13
-24h: BLEACH S14
-24h: BLEACH S15
-24h: BLEACH S16
-24h: BLUE LOCK S01
-24h: BLUE LOCK S02
-24h: BORUTO S01
-24h: CAVALEIRO DOS ZODIACOS CANVAS S01
-24h: CAVALEIRO DOS ZODIACOS OMEGA S01
-24h: CAVALEIRO DOS ZODIACOS SAINT S01
-24h: CAVALEIRO DOS ZODIACOS SANTUARIO S01
-24h: CHANSAW MAN S01
-24h: DAN DA DAN S01
-24h: DEATH NOTE S01
-24h: DIGIMON S01
-24h: DIGIMON S02
-24h: DIGIMON S03
-24h: DIGIMON S04
-24h: DIGIMON S05
-24h: DR STONE S01
-24h: DR STONE S02
-24h: DR STONE S03
-24h: DRAGON BALL S01
-24h: DRAGON BALL Z S01
-24h: DRAGON BALL Z S02
-24h: DRAGON BALL Z S03
-24h: DRAGON BALL Z S04
-24h: DRAGON BALL Z S05
-24h: DRAGON BALL Z S06
-24h: DRAGON BALL Z S07
-24h: DRAGON BALL Z S08
-24h: DRAGON BALL Z S09
-24h: DRAGON BALL GT S01
-24h: DRAGON BALL Z KAI S00
-24h: DRAGON BALL Z KAI S01
-24h: DRAGON BALL Z KAI S02
-24h: DRAGON BALL Z KAI S03
-24h: DRAGON BALL Z KAI S04
-24h: DRAGON BALL Z KAI S05
-24h: DRAGON BALL Z KAI S06
-24h: DRAGON BALL SUPER S01
-24h: FAIRY TAIL S01
-24h: FAIRY TAIL S02
-24h: FLY PEQUENO GUERREIRO S01
-24h: FULLMETAL S01
-24h: HUNTER X HUNTER S01
-24h: HUNTER X HUNTER S02
-24h: HUNTER X HUNTER S03
-24h: HUNTER X HUNTER S04
-24h: HUNTER X HUNTER S05
-24h: HUNTER X HUNTER S06
-24h: JOJO S01
-24h: JOJO S02
-24h: JOJO S03
-24h: JOJO S04
-24h: JOJO S05
-24h: JUJUTSU S01
-24h: JUJUTSU S02
-24h: KAIJU 8 S01
-24h: KIMETSU NO YABA S02
-24h: KIMETSU NO YABA S03
-24h: KIMETSU NO YABA S04
-24h: KIMETSU NO YABA S05
-24h: MEDABOTS S01
-24h: MY HERO ACADEMIA S01
-24h: NARUTO S01
-24h: NARUTO S02
-24h: NARUTO S03
-24h: NARUTO S04
-24h: NARUTO S05
-24h: NARUTO S06
-24h: NARUTO S07
-24h: NARUTO S08
-24h: NARUTO S09
-24h: NARUTO SHIPPUDEN S01
-24h: NARUTO SHIPPUDEN S02
-24h: NARUTO SHIPPUDEN S03
-24h: NARUTO SHIPPUDEN S04
-24h: NARUTO SHIPPUDEN S05
-24h: NARUTO SHIPPUDEN S06
-24h: NARUTO SHIPPUDEN S07
-24h: NARUTO SHIPPUDEN S08
-24h: NARUTO SHIPPUDEN S09
-24h: NARUTO SHIPPUDEN S10
-24h: NARUTO SHIPPUDEN S11
-24h: NARUTO SHIPPUDEN S12
-24h: NARUTO SHIPPUDEN S13
-24h: O MELHOR ASSASSINO DO MUNDO S01
-24h: ONE PIECE S01
-24h: ONE PIECE S02
-24h: ONE PIECE S03
-24h: ONE PIECE S04
-24h: ONE PIECE S05
-24h: ONE PIECE S06
-24h: ONE PIECE S07
-24h: ONE PIECE S08
-24h: ONE PIECE S09
-24h: ONE PIECE S10
-24h: ONE PIECE S11
-24h: ONE PIECE S12
-24h: ONE PIECE S13
-24h: ONE PIECE S14
-24h: ONE PIECE S15
-24h: ONE PIECE S16
-24h: ONE PIECE S17
-24h: ONE PIECE S18
-24h: ONE PIECE S19
-24h: ONE PIECE S20
-24h: ONE PIECE S21
-24h: ONE PIECE S22
-24h: ONE PUNCH MAN S01
-24h: ONE PUNCH MAN S02
-24h: OVERLORD S01
-24h: POKEMON S01
-24h: POKEMON S02
-24h: POKEMON S03
-24h: POKEMON S04
-24h: POKEMON S05
-24h: POKEMON S06
-24h: POKEMON S07
-24h: POKEMON S08
-24h: POKEMON S09
-24h: POKEMON S10
-24h: POKEMON S11
-24h: POKEMON S12
-24h: POKEMON S13
-24h: POKEMON S14
-24h: POKEMON S15
-24h: POKEMON S16
-24h: POKEMON S17
-24h: POKEMON S18
-24h: POKEMON S19
-24h: POKEMON S20
-24h: POKEMON S21
-24h: RECORD OF RAGNAROK S01
-24h: RUROUNI KENSHIN S01
-24h: SAMURAI X S01
-24h: SETE PECADOS CAPITAIS S01
-24h: SHURATO S01
-24h: SOLO LEVELING S01
-24h: VINLAND SAGA S01
-24h: VINLAND SAGA S02
-24h: YU-GI-OH S01
-24h: YU YU HAKUSHO S01
-24h: KIMETSU NO YAIBA S01
-A Arma Secreta (2022)
-A Conquista da Sibéira (2019)
-A Hora da Pistola (1967)
-A Marca da Forca (1968)
+[24H] As Meninas Super Poderosas
+[24h] Scooby-Doo! Mistério S/A
+[24h] X-Men
+[24h] Wolverine e os X-Men
+[24h] Ursinhos Carinhosos e Seus Primos
+[24h] Ursinhos Carinhosos: Bem-Vindos à Terra do Carinho
+[24h] Uma Família da Pesada S17-S20
+[24h] Uma Família da Pesada S13-S16
+[24h] Uma Família da Pesada S09-S12
+[24h] Uma Família da Pesada S05-S08
+[24h] Uma Família da Pesada S01-S04
+[24h] Ultraman
+[24h] Ultimate Homem-Aranha
+[24h] Três Espiãs Demais
+[24h] Transformers: War for Cybertron
+[24h] Transformers: A Centelha da Terra
+[24h] O Show de Tom e Jerry
+[24h] Tico e Teco: Vida no Parque
+[24h] Tico e Teco: Defensores da Lei
+[24h] O Show dos Looney Tunes
+[24h] Super Wings
+[24h] Super Strikas
+[24h] Super Choque
+[24h] South Park S21-S26
+[24h] South Park S16-S20
+[24h] South Park S11-S15
+[24h] South Park S06-S10
+[24h] South Park S01-S05
+[24h] Sonic Boom
+[24h] Snoopy no Espaço
+[24h] She-Ra: A Princesa do Poder
+[24h] She-Ra e as Princesas do Poder
+[24h] Samurai X S02
+[24h] Samurai X S01
+[24h] Os Cavaleiros do Zodíaco: Alma de Ouro
+[24h] Sailor Moon
+[24h] Rick e Morty
+[24h] Rambo: Coleção
+[24h] Pocoyo
+[24h] PJ Masks: Heróis de Pijama S05
+[24h] PJ Masks: Heróis de Pijama S03-S04
+[24h] PJ Masks: Heróis de Pijama S01-S02
+[24h] Pequeno Príncipe e Seus Amigos
+[24h] Peppa Pig
+[24h] Patrulha Canina S03-S04
+[24h] Patrulha Canina S01-S02
+[24h] Os Simpsons S28-S35
+[24h] Os Simpsons S19-S27
+[24h] Os Simpsons S10-S18
+[24h] Os Simpsons S01-S09
+[24h] Os Jetsons
+[24h] Os Flintstones
+[24h] Os Cavaleiros do Zodíaco: The Lost Canvas
+[24h] Os Cavaleiros do Zodíaco: Saint Seiya
+[24h] Operação Big Hero: A Série
+[24h] O Surfista Prateado
+[24h] O Show do Scooby-Doo
+[24h] O Show do Garfield
+[24h] O Príncipe Dragão
+[24h] O Novo Pica-Pau
+[24h] O Máskara: A Série Animada
+[24h] O Chefinho: De Volta aos Negócios
+[24h] Mundo Bita
+[24h] Mr. Bean: A Série Animada
+[24h] Miraculous: As Aventuras de Ladybug S03-S04
+[24h] Miraculous: As Aventuras de Ladybug S01-S02
+[24h] Megaman
+[24h] Masha e o Urso
+[24h] Léo o caminhão
+[24h] Larva
+[24h] Kamp Koral: Bob Esponja, Primeiros Anos!
+[24h] Justiça Jovem
+[24h] Star Trek: Subalternos
+[24h] Jonny Quest
+[24h] Irmão do Jorel
+[24h] He-Man e os Mestres do Universo
+[24h] He-Man e Os Defensores do Universo S02
+[24h] He-Man e Os Defensores do Universo S01
+[24h] Guardiões da Galáxia
+[24h] Godzilla Ponto Singular
+[24h] Galinha Pintadinha
+[24h] Galinha Pintadinha Mini
+[24h] Futurama
+[24h] Freakazoid: Alto Forte e Maluco
+[24h] Em que lugar da Terra está Carmen Sandiego
+[24h] Du, Dudu e Edu
+[24h] Dragon Ball Super
+[24h] Dragon Ball Z Kai Sayajin
+[24h] Dragon Ball Z Kai
+[24h] Dragon Ball Z Kai Majin Boo
+[24h] Dragon Ball Z Kai Freezer
+[24h] Dragon Ball Z Kai Cell
+[24h] Dragon Ball Z Kai Androids
+[24h] Dragon Ball GT
+[24h] Dragon Ball
+[24h] Dragon Age: Absolvição
+[24h] Dragões: Equipe de Resgate
+[24h] DPA Mini
+[24h] Doug
+[24h] Dora, a Aventureira
+[24h] Digimon Adventure
+[24h] Dennis, o Pimentinha
+[24h] Daniel Tigre (Canções)
+[24h] Daniel Tigre
+[24h] Daniel, o Caçador de Magia
+[24h] Cyberpunk: Mercenários
+[24h] Corrida Maluca
+[24h] Contos da Masha
+[24h] Clarêncio, O Otimista
+[24h] Chaves Em Desenho Animado S04-S05
+[24h] Chaves Em Desenho Animado S01-S03
+[24h] Caverna do Dragão
+[24h] Os Cavaleiros do Zodíaco: Santuário
+[24h] Os Cavaleiros do Zodíaco: Poseidon
+[24h] Os Cavaleiros do Zodíaco: Hades
+[24h] Os Cavaleiros do Zodíaco: Asgard
+[24h] Os Cavaleiros do Zodíaco: 12 Casas
+[24h] Castlevania
+[24h] Carmen Sandiego
+[24h] Capitão Planeta
+[24h] Os Cavaleiros do Zodíaco: Ômega
+[24h] Boku no Hero Academia
+[24h] Bob Zoom
+[24h] Bob Esponja S04-S06
+[24h] Bob Esponja S01-S03
+[24h] Blue Dragon
+[24h] Black Clover
+[24h] Billy Dilley
+[24h] Ben 10
+[24h] Batwheels
+[24h] Barbie: It Takes Two
+[24h] Baby Shark: O Grande Show
+[24h] As Trapalhadas de FlapJack
+[24h] As Tartarugas Ninja S03-S05
+[24h] As Tartarugas Ninja S01-S02
+[24H] As Meninas Superpoderosas
+[24h] As Aventuras de Tintim
+[24h] As Aventuras de Mickey e Donald
+[24h] As Aventuras de Jackie Chan
+[24h] Apenas Um Show S05-S09
+[24h] Apenas Um Show S01-S04
+[24h] Animaniacs (2020)
+[24h] Andy e Seu Esquilo
+[24h] Ana Pimentinha
+[24h] Amphibia
+[24h] A Vaca e o Frango
+[24h] A Turma do Ronaldinho Gaúcho
+[24h] A Turma do Manda-Chuva
+[24h] A Turma do Charlie Brown e Snoopy
+[24h] A Pequena Sereia
+[24h] A Mansão Foster Para Amigos Imaginários
+[24h] A Lenda de Tarzan
+[24h] A.I.C.O. Incarnation
+[24h] A Casa do Mickey S03-S05
+[24h] A Casa do Mickey S02
+[24h] A Casa do Mickey S01
+[24h] 44 Gatos
+[24h] 3 Palavrinhas
+[24h] O Detetive das Sombras
+Nas Terras Perdidas (2023) [Dual]
+Retorno da Lenda (2021) [Dual]
+Duvide do que Ouve (2024) [Dual]
+Onde os Fracos Não Têm Vez (2007) [Dual]
+De Volta ao Velho Oeste (2023)
+A Caminho do Oeste (1967)
+A Difícil Vingança (2012)
+A Face Oculta (1961)
+A Lenda de Wild Bill Hickok (2017)
+A Lenda do Cavaleiro Solitário (1981)
 A Salvação (2014)
 A Vingança de Lefty Brown (2017)
-A Vingança De Um Homem Chamado Cavalo (1976)
+A Vingança de Wyatt Earp (2012)
 Além da Liberdade (2019)
-As Sufragistas (2015)
-Benedetta (2021)
-Big Kill - A Cidade do Medo (2018)
-Bohemian Rhapsody (2018)
-Cry Macho: O Caminho para Redenção (2021)
-Deadwood: O Filme (2019)
-Desperate Riders (2022)
-Django (1966)
-Duelo de Bravos (2011)
-El rapto (1954)
-Ela Disse (2022)
-Elizabeth: A Era de Ouro (2007)
-Elvis (2022)
-Ford vs Ferrari - 2019
-I Wanna Dance with Somebody: A História de Whitney Houston (2022)
-Inferno no Faroeste 2 (2017)
-Jamais Foram Vencidos (1969)
-Jesse James - O Roubo do Trem Negro (2018)
-Jobs (2013)
-Judy: Muito Além do Arco-Íris (2019)
-Justiça - Entre a Lei e a Vingança (2017)
-Lutero (2003)
-Mahalia (2021)
-Mato em Nome da Lei (1971)
-Medieval (2022)
-Má Educação (2019)
-O Maestro (2020)
-O Primeiro Homem (2011)
-O Regresso (2015)
-O Último Duelo (2019)
-Os Eleitos: Onde o Futuro Começa (1983)
-Por um Punhado de Dólares (1964)
-Posse: A Vingança de Jessie Lee (1993)
-Redenção (2011)
-Retorno da Lenda (2021)
-Riqueza Perdida (2000)
-Sete Homens e Um Destino (1960)
-Sete Homens e Um Destino (2016)
-Soledad (2018)
-Terra dos Bravos (2019)
-Um Lindo Dia na Vizinhança (2019)
-Voando Alto (2016)
-Zoya (2021)
-Banana Joe (1982)
-A Escolha (2022)
-Cavaleiros Desesperados (2022)
-A Fúria dos Sete Homens (1972)
-Estranha Forma de Vida (2023)
-O Xerife Pistoleiro (2017)
-A Morte Anda a Cavalo (1967)
-Get on Up: A História de James Brown (2014)
-Tombstone: A Justiça Está Chegando (1993)
-O Duelo (2016)
-Ned Kelly (2003)
-Mar de Fogo (2004)
-Caçador de Almas (2012)
-Vingança no Oeste (2018)
-Resgate Suicida (2024)
-O Retorno de John Henry (2015)
+As Loucas Aventuras de James West (1999)
+Atire Para Viver e Reze Pelos Mortos (1971)
+Audácia de Forasteiro (1959)
+Bronco Billy (1980)
+Butch Cassidy (1969)
+Cactus Jack, o Vilão (1979)
+Cahill, Xerife do Oeste (1973)
+Com Sartana Cada Bala é Uma Cruz (1970)
+Cowboy do Asfalto (1980)
+Crepúsculo de Uma Raça (1964)
 Criminosos e Anjos (2016)
-Dragão: A História de Bruce Lee (1993)
-Vingança Brutal (2025)
+Cry Macho: O Caminho para Redenção (2021)
+Deadwood - O Filme (2019)
+Django (1966)
+Dois Homens um Destino (2017)
+Fantasma Cidade Fantasma (2016)
+Inferno no Faroeste 2 (2017)
+Jesse James (1939)
+Jesse James - O Roubo do Trem Negro (2018)
+Joe O Pistoleiro Implacável (1966)
+Johnny Yuma - O Vingador (1966)
+Justiça - Entre a Lei e a Vingança (2017)
+Keoma (1976)
+Lucky Luke (1991)
+No Vale da Violência (2016)
+O Cavaleiro Solitário (1985)
+O Homem do Oeste (1958)
+O Retorno de John Henry (2015)
+O Trem do Inferno (1975)
+O Último Duelo (2019)
+Onde Imperam as Balas (1956)
+Os Invencíveis (2008)
+Os Renegados (2012)
+Pancho Villa (1968)
+Pistoleiros: Vingança Sem Perdão (2017)
+Punido Pelo Próprio Sangue (1956)
+O Purgatório (1999)
+Rastros de Vingança (2001)
+Sangue de Heróis (1948)
+Sete Homens e Um Destino (1960)
+Tempo de Massacre (1966)
+Tombstone - A Justiça Está Chegando (1993)
+Uma Cidade Contra o Xerife (1969)
+Uma Pistola Para Ringo (1965)
+À Procura da Vingança (2006)
+O Passado (2019)
+Estranha Forma de Vida (2023)
+Horizon: Uma Saga Americana - Capítulo 1 (2024)
+Cercados (2023)
+Terra Sem Lei (2022)
+Duas Pecadoras e Uma Mula (2023)
+Cavaleiros Desesperados (2022)
+Duelo de Titãs (1959)
+Blind Justice (1986)
+O Regresso (2015)
+Mar de Fogo (2004)
+Abutres Humanos (1948)
+Terra dos Bravos (2019)
+Sete Homens e Um Destino (2016)
+Gigantes em Luta (1967)
+A Balada do Pistoleiro (1995)
+Naruto
+Black Kamen Rider Black RX
+Cybercop
+Billy Dilley
+Galáxia Wander
+Mickey Mouse
+Operação Big Hero: A Série
+Star Wars: A Resistência
+Star Wars: Forças do Destino
+Guardiões da Galáxia da Marvel
+Homem de Ferro: Série Animada
+Hulk e os Agentes de S.M.A.S.H.
+Legião dos Super Heróis
+Liga da Justiça Action
+Os Vingadores Unidos da Marvel
+Wolverine e os X-Men
+Ultimate Homem-Aranha
+Bunnicula, O Vampiro Coelho
+Trem Infinito
+Batman: Os Bravos e Destemidos
+Dorothy e o Mágico de Oz
+Harley Quinn
+Kung Fu Panda: As Patas do Destino
+Attack on Titan
+Os Cavaleiros do Zodíaco
+Os Cavaleiros do Zodíaco: Saga de Hades
+A.I.C.O.: Incarnation
+Afro Samurai
+Basilisk
+Blue Dragon
+Sakura Card Captors
+Code Geass
+D.Gray-Man
+Demon Slayer
+Drifting Dragons
+Fate/Apocrypha
+Fate/EXTRA Last Encore
+Magi: Aventuras de Sinbad
+Seis Punhos
+Seiren
+Onyx Equinox
+Piano no Mori
+Pokémon - Liga Indigo
+Os Cavaleiros do Zodíaco: Saintia Shô
+SWORDGAI The Animation
+Beastars – O Lobo Bom
+Croods, o Início
+Arcane - League of Legends
+As Aventuras de Arquibaldo
+Godzilla Ponto Singular
+Pequenos Espiões: Missão Crítica
+Pokémon Journeys
+Velozes & Furiosos – Espiões do Asfalto
+Kakegurui
+Tekken: Bloodline
+Fora de Órbita (The Orbital Children)
+Lanterna Verde: A Série Animada
+Corta Essa, Ninjin
+Lunáticos a Solta
+Dragões: Equipe de Resgate
+Sonic X
+Star Wars: Aventuras dos Jovens Jedi (Curtas)
+Akuma-kun
+A Mansão Foster para Amigos Imaginários
+A Vida e Aventuras de Juniper Lee
+As Meninas Superpoderosas (Clássico)
+As Meninas Superpoderosas Geração Z
+As Meninas Superpoderosas (rmk)
+Ben 10 (Rmk)
+The Cartoonstitute
+Chowder
+Clarêncio, O Otimista
+Esquadrão do Tempo
+Eu Sou o Máximo
+Johnny Bravo
+Jonas, o Robô
+KND: A Turma do Bairro
+Megas XLR
+Meu Amigo da Escola é um Macaco
+Hi Hi Puffy AmiYumi
+Mutante Rex
+O Que Há de Novo, Scooby-Doo?
+O Segredo Além do Jardim
+Ok, K.O.! Vamos Ser Heróis
+Os Sábados Secretos
+Poderosas Magiespadas
+Que Legal, Scooby-Doo!
+Robotboy
+Scooby-Doo e Convidados
+Sheep na Cidade Grande
+Steven Universo: Futuro
+Victor e Valentino
+Vida Longa à Realeza
+New Looney Tunes
+Olaf Apresenta
+OBSOLETE
+W.I.T.C.H.
+SAND LAND: THE SERIES
+Baby Shark: O Grande Show
+Shangri-La Frontier
+Garouden: O Lobo Solitário
+A Promessa do Golfe
+Festa da Salsicha: Comilândia
+Tegami Bachi: Letter Bee
+Hilda
+I'm Standing on a Million Lives
+.hack
+Laid-Back Camp
+Sem Jogo, Sem Vida
+Shikimori's Not Just a Cutie
+Homem-Pipa: Já É!
+Burst Angel
+By the Grace of the Gods
+A Série Pokémon: Horizontes
+KONOSUBA -God's blessing on this wonderful world!
+O Exterminador do Futuro Zero
+CODE GEASS: Rozé da Reconquista
+Irmão do Jorel: Shostners Show
+Fly, o Pequeno Guerreiro
+Failure Frame: I Became the Strongest and Annihilated Everything With Low-Level Spells (leg)
+Dragon Quest: The Adventure of Dai (leg)
+Heróis por Dentro
+Tiny Toon
+Ranma1/2
+Shenmue the Animation
+Serial Experiments Lain
+Sailor Moon Crystal (leg)
+Mistérios da Barbie: O Grande Resgate
+The Elusive Samurai
+Sword Art Online Alternative: Gun Gale Online (LEG)
+FAIRY TAIL 100 YEARS QUEST (LEG)
+Magilumiere: Companhia das Garotas Mágicas (leg)
+Hanako-kun e os Mistérios do Colégio Kamome
+Seu Amigão da Vizinhança: Homem-Aranha
+Hi Score Girl
+BE@RBRICK
+Back Street Girls: Gokudolls
+O Nascer da Lua
+Kamisama Hajimemashita
+Marvel Homem-Aranha
+Yu-Gi-Oh! VRAINS
+Team Galaxy
+A Quadrilha Selvagem
+Corrector Yui
+Mecha-Ude: Mechanical Arms (leg)
+Zatch Bell!
+The Gorilla God's Go-To Girl
+My Melody & Kuromi
+Hellsing
+Yo-Kai Watch
+LEGO Star Wars: Reconstruindo a Galáxia – Pedaços do Passado
+Shinzo
+Marvel Zumbis
+Carrossel (Desenho)
+Shuten Doji - The Star Hand Kid
+Odd Taxi
+Ranking of Kings: Baú do Tesouro da Coragem
+O Anuário de Darwin
+Bat-Família
+F is for Family
+Fortnite x The Simpsons
+Super Cube
+My Hero Academia
+Os Sete Pecados Capitais
+New PANTY & STOCKING with GARTERBELT
+Danger Mouse

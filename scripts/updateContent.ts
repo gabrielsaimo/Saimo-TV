@@ -3,7 +3,7 @@ import * as path from 'path';
 import { findMatch, getCleanName } from '../src/utils/m3uMatcher';
 import { normalizeName } from '../src/services/m3uService';
 
-const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR%20-%20Completo.m3u8';
+const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR05.m3u';
 const ENRICHED_DIR = path.join(process.cwd(), 'public/data/enriched');
 
 // Mapeamento de grupos M3U para arquivos JSON existentes (simplificado)
