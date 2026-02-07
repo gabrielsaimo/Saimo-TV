@@ -934,7 +934,79 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/pxDekfQeobu7zONfRGzA5vy0RxL.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 616700,
+      "imdbId": "tt10521638",
+      "title": "Whitney Cummings: Can I Touch It?",
+      "originalTitle": "Whitney Cummings: Can I Touch It?",
+      "tagline": null,
+      "overview": "Em seu quarto especial de stand-up, Whitney Cummings retorna à sua cidade natal, Washington, D.C., e fala sobre feminismo moderno, relacionamentos, tecnologia e, claro, robôs sexuais.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2019-07-30",
+      "year": "2019",
+      "rating": 6.7,
+      "voteCount": 42,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/pxDekfQeobu7zONfRGzA5vy0RxL.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/pxDekfQeobu7zONfRGzA5vy0RxL.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/lPUS4lriFAFXqbX6iLKz2vWWVb.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/lPUS4lriFAFXqbX6iLKz2vWWVb.jpg",
+      "cast": [
+        {
+          "id": 66555,
+          "name": "Whitney Cummings",
+          "character": "Herself",
+          "photo": "https://image.tmdb.org/t/p/w185/eZFqm8ydIZWc9cTxjyI2f2jTdlU.jpg"
+        }
+      ],
+      "keywords": [
+        "sexual abuse",
+        "sex robot"
+      ],
+      "recommendations": [
+        {
+          "id": 405177,
+          "title": "Cadê Você, Bernadette?",
+          "poster": "https://image.tmdb.org/t/p/w185/xqAedKoXf6q5PknD1xe3msgULX2.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 593961,
+          "title": "Hello, Love, Goodbye",
+          "poster": "https://image.tmdb.org/t/p/w185/sJFouUfCgHFSUh5OKVSQBSfrfA1.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 538604,
+          "title": "The After Party",
+          "poster": "https://image.tmdb.org/t/p/w185/wFPGheX6X4bt1ZqP1870MPlUvGu.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 340391,
+          "title": "The Hedgehog",
+          "poster": "https://image.tmdb.org/t/p/w185/gBGZCN4zdOWV1G22RZYINkOqB2c.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 379008,
+          "title": "Whitney Cummings: Sou Sua Namorada",
+          "poster": "https://image.tmdb.org/t/p/w185/xFJQiHRhl6tOIxM9KgqACgjSIeb.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 15080,
+          "title": "Memórias de Ontem",
+          "poster": "https://image.tmdb.org/t/p/w185/nnQe2jO91wjszUOebEGeJlZeoBP.jpg",
+          "rating": 7.4
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-5138",
@@ -944,7 +1016,32 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/uCLVlzBmJeRpTKc1TpxZpWanLkv.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 667851,
+      "imdbId": null,
+      "title": "Thiago Carmona - O Poderoso Negão",
+      "originalTitle": "Thiago Carmona - O Poderoso Negão",
+      "tagline": null,
+      "overview": "O primeiro espetáculo solo de Thiago Carmona, O poderoso negão, nasceu da seleção criteriosa de seus melhores textos, criados desde que iniciou sua carreira no humor em 2009. O Poderoso Negão é um espetáculo de humor stand up em que Thiago Carmona critica, analisa e desconstrói o cotidiano de uma maneira irônica, sarcástica e bem-humorada, levando o público a muitas gargalhadas. Preconceito racial, relacionamentos amorosos, filhos, leis, tudo pode e vira tema de riso com esse artista.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2019-12-21",
+      "year": "2019",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": "L",
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/uCLVlzBmJeRpTKc1TpxZpWanLkv.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/uCLVlzBmJeRpTKc1TpxZpWanLkv.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [],
+      "keywords": [],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770501442995-8027",
@@ -983,7 +1080,30 @@
     "category": "STAND-UP",
     "type": "movie",
     "isAdult": false,
-    "tmdb": null
+    "tmdb": {
+      "id": 719938,
+      "imdbId": null,
+      "title": "Nando Viana: A vida não tá nem aí pro teu planejamento",
+      "originalTitle": "Nando Viana: A vida não tá nem aí pro teu planejamento",
+      "tagline": null,
+      "overview": "Nando Viana traz seu novo espetáculo de stand-up comedy \"A Vida não tá nem ai pro teu Planejamento\"..  Depois do sucesso de seu primeiro show, o gaúcho retorna com 1 hora totalmente nova de material, novas piadas e situações que retratam o momento atual que sua vida se encontra. Que se resume em tatuagens, filhos e Ursos Pandas.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": null,
+      "year": null,
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [],
+      "poster": "https://image.tmdb.org/t/p/w500/h9np5V0a9kwxMkv4HzI2GED1Njb.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/h9np5V0a9kwxMkv4HzI2GED1Njb.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [],
+      "keywords": [],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770501442995-5048",
@@ -993,7 +1113,76 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/jKRBijMI5yR4kwNSWXFRasYUkvC.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 473939,
+      "imdbId": null,
+      "title": "Murilo Couto - Eu, eu, Murilo",
+      "originalTitle": "Murilo Couto - Eu, eu, Murilo",
+      "tagline": null,
+      "overview": "Em seu primeiro especial de comédia, Murilo couto fala sobre sair de Belém, as dificuldades de morar sozinho família, relacionamentos e outros absurdos.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2017-07-01",
+      "year": "2017",
+      "rating": 8.8,
+      "voteCount": 2,
+      "popularity": 0,
+      "certification": "14",
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/jKRBijMI5yR4kwNSWXFRasYUkvC.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/jKRBijMI5yR4kwNSWXFRasYUkvC.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/75daG5VBXhY3eK0i3vMoW8sdvYh.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/75daG5VBXhY3eK0i3vMoW8sdvYh.jpg",
+      "cast": [
+        {
+          "id": 1881874,
+          "name": "Murilo Couto",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/cW4Z8NSl49X4JUSIv74ZhvnxyJi.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 1209450,
+          "title": "National Family",
+          "poster": "https://image.tmdb.org/t/p/w185/oSAzrJ0AjFZLUCcHT8YAnuD7egp.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 1389031,
+          "title": "The Way Back",
+          "poster": "https://image.tmdb.org/t/p/w185/1GzDn4V8R4hEu23K02cCQ8XzVlm.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 726952,
+          "title": "Q",
+          "poster": "https://image.tmdb.org/t/p/w185/upTjQm6UNjsF3rVNwrqQHNiBQYG.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 750741,
+          "title": "Strange Object",
+          "poster": "https://image.tmdb.org/t/p/w185/gQPVf2qApFqYIC0n5BJuEpknQys.jpg",
+          "rating": 6
+        },
+        {
+          "id": 1313738,
+          "title": "Old Man Junior",
+          "poster": "https://image.tmdb.org/t/p/w185/hZKm5M7J1JUE2dpHeLgf736rzDT.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 1140817,
+          "title": "As",
+          "poster": null,
+          "rating": 7
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-378",
@@ -1003,7 +1192,76 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/4pXS3KrpzWjYZvWBcPGIjhGGdKN.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 594006,
+      "imdbId": "tt10018436",
+      "title": "Liss Pereira: Reteniendo Liquidos",
+      "originalTitle": "Liss Pereira: Reteniendo Liquidos",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "es",
+      "releaseDate": "2019-04-10",
+      "year": "2019",
+      "rating": 6.1,
+      "voteCount": 5,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/rfflzfFLlayGhti1X06pkvpO7nH.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/rfflzfFLlayGhti1X06pkvpO7nH.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/jt29gXdXYagoga7G31XEhqYRj5p.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/jt29gXdXYagoga7G31XEhqYRj5p.jpg",
+      "cast": [
+        {
+          "id": 1763717,
+          "name": "Liss Pereira",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/rmq6pxUUH3Dr4ZFKZ5uzQAKrUOr.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 1193155,
+          "title": "XMAS",
+          "poster": "https://image.tmdb.org/t/p/w185/aCM4XviJp8WrAtGQWFQdIFf80Dc.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 10160,
+          "title": "A Hora do Pesadelo 5: O Maior Horror de Freddy",
+          "poster": "https://image.tmdb.org/t/p/w185/8dixCFe1reuGK7Y0FvHfaKUE0IE.jpg",
+          "rating": 5.4
+        },
+        {
+          "id": 699254,
+          "title": "Naruto OVA 10: Uchiha Madara vs Senju Hashirama",
+          "poster": "https://image.tmdb.org/t/p/w185/3AwkYyiwl02CMELo2oj88x2bEtu.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 603206,
+          "title": "O Cavalo dos Meus Sonhos",
+          "poster": "https://image.tmdb.org/t/p/w185/eEQw1QtoeHg2yBP4H5XqI5WxgEm.jpg",
+          "rating": 7
+        },
+        {
+          "id": 1309923,
+          "title": "Nem Tudo é Negociável",
+          "poster": "https://image.tmdb.org/t/p/w185/vF6avV3yzZlLhCFBB1xbIG94fdC.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 1099088,
+          "title": "Rewind 2: 1996",
+          "poster": "https://image.tmdb.org/t/p/w185/6OaIG3MlMjdDuOrnHQ1bsiUGNFa.jpg",
+          "rating": 3.5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-1490",
@@ -1013,7 +1271,120 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/lzYQkVuEN0zw2JvJsMUsOU47nb4.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 181330,
+      "imdbId": "tt2609912",
+      "title": "Kevin Hart: Eu Já Explico",
+      "originalTitle": "Kevin Hart: Let Me Explain",
+      "tagline": "Testemunhe o nascimento de uma lenda",
+      "overview": "Turnê de comédia standup de Kevin Hart que incluiu, em 2013, 10 países e 80 cidades e uma final na véspera de Ano Novo no Staples Center, em Los Angeles.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2013-07-03",
+      "year": "2013",
+      "rating": 6.7,
+      "voteCount": 215,
+      "popularity": 0,
+      "certification": "16",
+      "genres": [
+        "Comédia",
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/lzYQkVuEN0zw2JvJsMUsOU47nb4.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/lzYQkVuEN0zw2JvJsMUsOU47nb4.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/y9CeLvlcDvbt6mIlh8GuyH17e8p.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/y9CeLvlcDvbt6mIlh8GuyH17e8p.jpg",
+      "cast": [
+        {
+          "id": 55638,
+          "name": "Kevin Hart",
+          "character": "Himself",
+          "photo": "https://image.tmdb.org/t/p/w185/byiNydUlM6oP8diA7WMvYbNM7a1.jpg"
+        },
+        {
+          "id": 1174141,
+          "name": "David Terrell",
+          "character": "Dapper Guy",
+          "photo": "https://image.tmdb.org/t/p/w185/v5lKzXtLFUMDHp4h4sZJMiaYMYC.jpg"
+        },
+        {
+          "id": 1174142,
+          "name": "David Jason Perez",
+          "character": "Disc Jockey",
+          "photo": null
+        },
+        {
+          "id": 1174143,
+          "name": "Justine Herron",
+          "character": "Angry Light-Skinned Girl",
+          "photo": "https://image.tmdb.org/t/p/w185/t24Az98HN921QY4B4Ps0erCQ4WA.jpg"
+        },
+        {
+          "id": 1320506,
+          "name": "Harry Ratchford",
+          "character": "Plastic Cup Boyz",
+          "photo": null
+        },
+        {
+          "id": 1320508,
+          "name": "Joey Wells",
+          "character": "Plastic Cup Boyz",
+          "photo": "https://image.tmdb.org/t/p/w185/133Atq1qx42KB1q7GmByXGKKCeg.jpg"
+        },
+        {
+          "id": 1108643,
+          "name": "William Horton",
+          "character": "Plastic Cup Boyz",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "stadium",
+        "lie",
+        "divorce",
+        "manhattan, new york city",
+        "madison square garden",
+        "duringcreditsstinger"
+      ],
+      "recommendations": [
+        {
+          "id": 74510,
+          "title": "Kevin Hart: Laugh at My Pain",
+          "poster": "https://image.tmdb.org/t/p/w185/jk7C5sIDHSGiJjBQz6bmPNP1WOF.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 42189,
+          "title": "Kevin Hart: Seriously Funny",
+          "poster": "https://image.tmdb.org/t/p/w185/xzmEzbqIS52IhfN7InU2KsljY04.jpg",
+          "rating": 7
+        },
+        {
+          "id": 339927,
+          "title": "Kevin Hart: What Now?",
+          "poster": "https://image.tmdb.org/t/p/w185/lFg4tx0jAYkgrcm1bPBlM0FbQvH.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 159004,
+          "title": "Guerras Sujas",
+          "poster": "https://image.tmdb.org/t/p/w185/qR96ukVb0bsBUJpvFuxksZLVBqY.jpg",
+          "rating": 7
+        },
+        {
+          "id": 209204,
+          "title": "Os Assassinatos de Cheshire",
+          "poster": "https://image.tmdb.org/t/p/w185/yaNmvlRVoJHgRFHg4C7mL9YrwMI.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 245169,
+          "title": "Three Night Stand",
+          "poster": "https://image.tmdb.org/t/p/w185/5ME166MZiPlqOhN2N3CyKxfqUqD.jpg",
+          "rating": 4.8
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-6430",
@@ -1023,7 +1394,82 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/2mWdVy4X113rcs5SHu1373YSO22.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 535358,
+      "imdbId": "tt7157574",
+      "title": "Ellen DeGeneres: Bem Relacionada",
+      "originalTitle": "Ellen DeGeneres: Relatable",
+      "tagline": null,
+      "overview": "Ellen DeGeneres: Relatable é uma comédia stand-up americana de 2018 da comediante e apresentadora de televisão Ellen DeGeneres. Ele estreou em 18 de dezembro de 2018 na Netflix. Relatable foi seu primeiro especial de stand-up desde o especial de 2003 da HBO",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2018-12-18",
+      "year": "2018",
+      "rating": 6.4,
+      "voteCount": 174,
+      "popularity": 2,
+      "certification": null,
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/2mWdVy4X113rcs5SHu1373YSO22.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/2mWdVy4X113rcs5SHu1373YSO22.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/j9QENtHnhSHfzxdpr7jxBMB24g.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/j9QENtHnhSHfzxdpr7jxBMB24g.jpg",
+      "cast": [
+        {
+          "id": 14,
+          "name": "Ellen DeGeneres",
+          "character": "Herself",
+          "photo": "https://image.tmdb.org/t/p/w185/z8IEEid4z63CBlJtxrTKEfsW7NA.jpg"
+        },
+        {
+          "id": 62010,
+          "name": "Portia De Rossi",
+          "character": "Herself",
+          "photo": "https://image.tmdb.org/t/p/w185/wO1LMlBgUebmZfTotlh9JBxs12X.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 10897,
+          "title": "Os Batutinhas",
+          "poster": "https://image.tmdb.org/t/p/w185/dj2ZDfh7oi2zY1V957tQ42G8aim.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 562685,
+          "title": "MARTE: Por Dentro da SpaceX",
+          "poster": "https://image.tmdb.org/t/p/w185/5Xwgl2vo9OhgsMXqaVXU17cZwBw.jpg",
+          "rating": 7.5
+        },
+        {
+          "id": 396292,
+          "title": "Ali Wong: Baby Cobra",
+          "poster": "https://image.tmdb.org/t/p/w185/8stTLVktSAATgFdCeaEUSh6WU2j.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 567524,
+          "title": "Vir Das: Losing It",
+          "poster": "https://image.tmdb.org/t/p/w185/dvLvcE7lZX4kxKoqZpX7XWSprWj.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 452559,
+          "title": "BTS Summer Package in Dubai",
+          "poster": "https://image.tmdb.org/t/p/w185/4Z0dGkXyGCN1kvIcRUwj5fKNW9o.jpg",
+          "rating": 9.3
+        },
+        {
+          "id": 455466,
+          "title": "Tokio Hotel - Humanoid City Live",
+          "poster": "https://image.tmdb.org/t/p/w185/i8z89kGkSq0M9sqsi9wWv8QyCoN.jpg",
+          "rating": 8
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-4284",
@@ -1052,7 +1498,81 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/zho1ypBSxia3bHCSeB4Znpzh7nM.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 625128,
+      "imdbId": "tt10847306",
+      "title": "Bill Burr: Paper Tiger",
+      "originalTitle": "Bill Burr: Paper Tiger",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2019-09-10",
+      "year": "2019",
+      "rating": 7.5,
+      "voteCount": 212,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Comédia",
+        "Cinema TV"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/zho1ypBSxia3bHCSeB4Znpzh7nM.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/zho1ypBSxia3bHCSeB4Znpzh7nM.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/kh7DTqP9z2kZjRLLcuexY9toANH.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/kh7DTqP9z2kZjRLLcuexY9toANH.jpg",
+      "cast": [
+        {
+          "id": 109708,
+          "name": "Bill Burr",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/fP2UJs7RiSafEHxDFYVjVFSesda.jpg"
+        }
+      ],
+      "keywords": [
+        "stand-up comedy",
+        "cynical",
+        "jokes"
+      ],
+      "recommendations": [
+        {
+          "id": 597089,
+          "title": "Artigo 15",
+          "poster": "https://image.tmdb.org/t/p/w185/egknEWNt2B0slG2OC0gSpLZdVHj.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 437752,
+          "title": "Bill Burr: Walk Your Way Out",
+          "poster": "https://image.tmdb.org/t/p/w185/wQpJbMzfmzwb14MiUVC991LEyTV.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 83567,
+          "title": "Somersault in a Coffin",
+          "poster": "https://image.tmdb.org/t/p/w185/wZFHPRHKyN8nXEsZJ6tqTUbACuZ.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 624932,
+          "title": "Dave Chappelle: Sticks & Stones",
+          "poster": "https://image.tmdb.org/t/p/w185/hsyPTPoFDhUw5aGcj7dxAx3i1Qp.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 638072,
+          "title": "Deon Cole: Cole Hearted",
+          "poster": "https://image.tmdb.org/t/p/w185/6mzD90sF3BdKKpxU7Wv6WW1dgXb.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 588362,
+          "title": "Edoardo Ferrario: Temi Caldi",
+          "poster": "https://image.tmdb.org/t/p/w185/hzPwwiHQtp4OAWsoHjC2gP3KDaF.jpg",
+          "rating": 6.6
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-8004",
@@ -1062,7 +1582,84 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/q1WE1V01HMz1TGrqFPbLLiXeNdU.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 518045,
+      "imdbId": "tt7410684",
+      "title": "Ali Wong: Hard Knock Wife",
+      "originalTitle": "Ali Wong: Hard Knock Wife",
+      "tagline": null,
+      "overview": "Após o sucesso de \"Baby Cobra\", Wong retorna em outro especial de stand-up. Com mais um bebê a caminho, ela destila algumas verdades sobre casamento e maternidade.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2018-05-13",
+      "year": "2018",
+      "rating": 6.9,
+      "voteCount": 133,
+      "popularity": 1,
+      "certification": null,
+      "genres": [
+        "Comédia"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/q1WE1V01HMz1TGrqFPbLLiXeNdU.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/q1WE1V01HMz1TGrqFPbLLiXeNdU.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/iH7zymgvRUCmdQNDfPu2J4QCtzf.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/iH7zymgvRUCmdQNDfPu2J4QCtzf.jpg",
+      "cast": [
+        {
+          "id": 591835,
+          "name": "Ali Wong",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/mj1BfvPgXCpgJpyrPG6uxJGBMnW.jpg"
+        }
+      ],
+      "keywords": [
+        "pregnancy",
+        "stand-up comedy",
+        "parenthood",
+        "pregnant woman",
+        "pregnant wife",
+        "motherhood",
+        "asian woman"
+      ],
+      "recommendations": [
+        {
+          "id": 396292,
+          "title": "Ali Wong: Baby Cobra",
+          "poster": "https://image.tmdb.org/t/p/w185/8stTLVktSAATgFdCeaEUSh6WU2j.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 521512,
+          "title": "Tig Notaro: Happy to Be Here",
+          "poster": "https://image.tmdb.org/t/p/w185/nHJZms4jVjyIIW3jRmc2qkPTYBk.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 134255,
+          "title": "The American Scream",
+          "poster": "https://image.tmdb.org/t/p/w185/jWOcY71h0zx6Icpa35y6ySstNqV.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 297600,
+          "title": "Knock 'em Dead",
+          "poster": "https://image.tmdb.org/t/p/w185/2JNje3JjvK8hQqCLmB6pYV2NPnD.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 324281,
+          "title": "Knock Knock, It's Tig Notaro",
+          "poster": "https://image.tmdb.org/t/p/w185/rWZpdgZREkY3SgaJW7bEybwi43k.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 429784,
+          "title": "Bert Kreischer: The Machine",
+          "poster": "https://image.tmdb.org/t/p/w185/3290OL6UCXFRpbIv6nznPXkWAgy.jpg",
+          "rating": 7.8
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-8061",
@@ -1072,6 +1669,84 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/pRAO7s2Kv4Qs75VUI7Ffx94GTTC.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 609660,
+      "imdbId": "tt10376844",
+      "title": "Adam Devine: Best Time of Our Lives",
+      "originalTitle": "Adam Devine: Best Time of Our Lives",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2019-06-17",
+      "year": "2019",
+      "rating": 6.2,
+      "voteCount": 24,
+      "popularity": 0,
+      "certification": "PG-13",
+      "genres": [
+        "Comédia",
+        "Cinema TV"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/pRAO7s2Kv4Qs75VUI7Ffx94GTTC.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/pRAO7s2Kv4Qs75VUI7Ffx94GTTC.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/pISqDL70KzEiutMzWGruVN6DkjL.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/pISqDL70KzEiutMzWGruVN6DkjL.jpg",
+      "cast": [
+        {
+          "id": 212604,
+          "name": "Adam Devine",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/8zU8zMs7cpjVzkBXis6I3wO3YeQ.jpg"
+        },
+        {
+          "id": 1181310,
+          "name": "Andrew Santino",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/oMIPMiKGFfWURfgFpBjqoU6T8xA.jpg"
+        }
+      ],
+      "keywords": [
+        "stand-up comedy"
+      ],
+      "recommendations": [
+        {
+          "id": 508101,
+          "title": "Convidado Vitalício",
+          "poster": "https://image.tmdb.org/t/p/w185/xbNcScxV33nMrc0MprmvOpk4WsC.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 434203,
+          "title": "Newness",
+          "poster": "https://image.tmdb.org/t/p/w185/vySlYPqOrI5s8Nu6bzpGKQbotVy.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 609169,
+          "title": "3 Seconds Divorce",
+          "poster": "https://image.tmdb.org/t/p/w185/Ed6TIllYftLSqBYMHabelhTOBB.jpg",
+          "rating": 7
+        },
+        {
+          "id": 412117,
+          "title": "Pets: A Vida Secreta dos Bichos 2",
+          "poster": "https://image.tmdb.org/t/p/w185/lLfEOjuzNK7c8c0PpQL3UDZRde0.jpg",
+          "rating": 7
+        },
+        {
+          "id": 329996,
+          "title": "Dumbo",
+          "poster": "https://image.tmdb.org/t/p/w185/4EoFz2i2h2OYtv51dAddVYeZXcj.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 324857,
+          "title": "Homem-Aranha: No Aranhaverso",
+          "poster": "https://image.tmdb.org/t/p/w185/voO5GpUKdMfryPHxqxdPBj319ky.jpg",
+          "rating": 8.4
+        }
+      ]
+    }
   }
 ]

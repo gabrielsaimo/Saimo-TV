@@ -25398,7 +25398,107 @@
     "type": "movie",
     "isAdult": false,
     "logo": "http://kutx00.top:80/images/8mydocslj2f1QCXMO07XidKWWTJ_big.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 719596,
+      "imdbId": null,
+      "title": "Como Vivem os Bravos",
+      "originalTitle": "Como Vivem os Bravos",
+      "tagline": "Nordestern",
+      "overview": "Após anos encarcerados e atuarem numa fuga intrigante da Força Volante, o ex-soldado da polícia Mumbaca e o cangaceiro Alfinete, unem-se para confrontar um espiral de situações que aventuram bandoleiros dos quatro cantos do Nordeste em busca de vingança, onde todos serão atraídos para uma armadilha idealizada por um novo inimigo: o famigerado Goteiro.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2020-02-18",
+      "year": "2020",
+      "rating": 10,
+      "voteCount": 1,
+      "popularity": 0,
+      "certification": "16",
+      "genres": [
+        "Aventura",
+        "Faroeste"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/8mydocslj2f1QCXMO07XidKWWTJ.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/8mydocslj2f1QCXMO07XidKWWTJ.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/iFQtWN2FzsLQowRrqwjb3LqTa3i.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/iFQtWN2FzsLQowRrqwjb3LqTa3i.jpg",
+      "cast": [
+        {
+          "id": 2543374,
+          "name": "Daniell Abrew",
+          "character": "Mumbaca",
+          "photo": "https://image.tmdb.org/t/p/w185/ilPNXeCU6Lg4dPlhpaa3ZglTEKV.jpg"
+        },
+        {
+          "id": 2543377,
+          "name": "Camilo Vidal",
+          "character": "Alfinete",
+          "photo": "https://image.tmdb.org/t/p/w185/jBHixauYNjYstgj0gORiuldod8g.jpg"
+        },
+        {
+          "id": 2694154,
+          "name": "Karine Ogunté",
+          "character": "Huntress",
+          "photo": "https://image.tmdb.org/t/p/w185/cQGjL22YuRnYs1Zk1zQiQc2oyD4.jpg"
+        },
+        {
+          "id": 2694156,
+          "name": "Natane Barbosa",
+          "character": "Lacemaker",
+          "photo": null
+        },
+        {
+          "id": 2694157,
+          "name": "Ipiranga Neto",
+          "character": "Indian",
+          "photo": null
+        },
+        {
+          "id": 2694158,
+          "name": "JonasLuis DA SILVA, de Icapuí",
+          "character": "Goteiro",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 429957,
+          "title": "Centopeia",
+          "poster": "https://image.tmdb.org/t/p/w185/wNVj0Uey4cFaJJs9g8owlZ0xjP0.jpg",
+          "rating": 10
+        },
+        {
+          "id": 699254,
+          "title": "Naruto OVA 10: Uchiha Madara vs Senju Hashirama",
+          "poster": "https://image.tmdb.org/t/p/w185/3AwkYyiwl02CMELo2oj88x2bEtu.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 638566,
+          "title": "Naruto to Boruto: The Live 2019",
+          "poster": "https://image.tmdb.org/t/p/w185/8OkxtHotJnegiBbWQSz8fD60NEc.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 836989,
+          "title": "Projota - AMADMOL (A Milenar Arte de Meter o Louco)",
+          "poster": "https://image.tmdb.org/t/p/w185/rxMqkSrtX44Peo3wCvR3SJtdVOa.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 1160990,
+          "title": "NJPW G1 Climax 33: Day 16",
+          "poster": "https://image.tmdb.org/t/p/w185/hwpweXSamCdxIQh27IHfdpO2stf.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 265505,
+          "title": "Eyyvah Eyvah 3",
+          "poster": "https://image.tmdb.org/t/p/w185/7hcaPPw5DuR42SQuOP9fkJWilmd.jpg",
+          "rating": 5.3
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-527",
@@ -25408,7 +25508,133 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/53zYYgWqxxmTaMlsIfiCWCLRwJf.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 771439,
+      "imdbId": "tt13579450",
+      "title": "Cercados",
+      "originalTitle": "Cercados",
+      "tagline": "A imprensa contra o negacionismo na pandemia",
+      "overview": "Os bastidores da cobertura jornalística durante a pandemia. Acompanhe o trabalho da imprensa profissional numa luta contra o negacionismo.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "2020-12-03",
+      "year": "2020",
+      "rating": 8.4,
+      "voteCount": 5,
+      "popularity": 1,
+      "certification": "10",
+      "genres": [
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/n3BWezdYvTENoqH4NqLGrxXou73.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/n3BWezdYvTENoqH4NqLGrxXou73.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/u89GzKB8FzMVOLxuV0XY9wQNvSk.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/u89GzKB8FzMVOLxuV0XY9wQNvSk.jpg",
+      "cast": [
+        {
+          "id": 2880176,
+          "name": "William Bonner",
+          "character": "William Bonner",
+          "photo": "https://image.tmdb.org/t/p/w185/1BpvNVBrF73wtCJq8P8Awcje8FY.jpg"
+        },
+        {
+          "id": 1965392,
+          "name": "Jair Bolsonaro",
+          "character": "Jair Bolsonaro",
+          "photo": "https://image.tmdb.org/t/p/w185/7C4ZYNuqESt4oSCge7pUxPDwfXR.jpg"
+        },
+        {
+          "id": 2880178,
+          "name": "Renata Vasconcellos",
+          "character": "Renata Vasconcellos",
+          "photo": "https://image.tmdb.org/t/p/w185/pxbPvH81X12QknuN4FAYUCoygtL.jpg"
+        },
+        {
+          "id": 2880192,
+          "name": "Danielle Zampollo",
+          "character": "Danielle Zampollo",
+          "photo": null
+        },
+        {
+          "id": 2880194,
+          "name": "Nelson Teich",
+          "character": "Nelson Teich",
+          "photo": null
+        },
+        {
+          "id": 2880195,
+          "name": "Luiz Henrique Mandetta",
+          "character": "Luiz Henrique Mandetta",
+          "photo": null
+        },
+        {
+          "id": 1817846,
+          "name": "Sérgio Moro",
+          "character": "Sérgio Moro",
+          "photo": "https://image.tmdb.org/t/p/w185/AorEiAM2LiSykHCaZIXgHYOYDta.jpg"
+        },
+        {
+          "id": 5122612,
+          "name": "Everton Lucas",
+          "character": "Himself",
+          "photo": null
+        },
+        {
+          "id": 4467431,
+          "name": "Gabriela Biló",
+          "character": "",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "press",
+        "health",
+        "public health",
+        "pandemic",
+        "jornalism",
+        "fake news",
+        "brazil",
+        "political"
+      ],
+      "recommendations": [
+        {
+          "id": 975511,
+          "title": "O Retorno",
+          "poster": "https://image.tmdb.org/t/p/w185/lX3MexkfEQLrWGJdhuGqJLlhnhf.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 628866,
+          "title": "Não Volte Para Casa!",
+          "poster": "https://image.tmdb.org/t/p/w185/yFQvabvW8dcnnRnTU5vFOwcmEXP.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 774343,
+          "title": "Deception",
+          "poster": "https://image.tmdb.org/t/p/w185/xT261ctrOccm8fXDAYQPm3Zbyh6.jpg",
+          "rating": 5.3
+        },
+        {
+          "id": 212262,
+          "title": "Kamen Rider W Returns: Kamen Rider Eternal",
+          "poster": "https://image.tmdb.org/t/p/w185/vzjKhUUeaTRX4quxtQWkI2RVb7r.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 125521,
+          "title": "Slayers Return",
+          "poster": "https://image.tmdb.org/t/p/w185/fNQx9YD4nxpcWvriVm1paIxbMwB.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 308259,
+          "title": "RE",
+          "poster": "https://image.tmdb.org/t/p/w185/jii5C9iGtY0a1YDHblnPFUzu0Vw.jpg",
+          "rating": 6.4
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-9391",
@@ -25418,7 +25644,125 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/aRaO9OMNfsw03C04NHEgzBVWCiK.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 1111140,
+      "imdbId": "tt14940240",
+      "title": "Duas Pecadoras e Uma Mula",
+      "originalTitle": "Two Sinners and a Mule",
+      "tagline": null,
+      "overview": "Duas prostitutas são expulsas da cidade e encontram um caçador de recompensas ferido que precisa de ajuda. Elas cuidam do homem e decidem ajudá-lo a capturar um fora da lei impiedoso.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2023-04-21",
+      "year": "2023",
+      "rating": 6.4,
+      "voteCount": 34,
+      "popularity": 1,
+      "certification": null,
+      "genres": [
+        "Faroeste",
+        "Ação"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/aRaO9OMNfsw03C04NHEgzBVWCiK.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/aRaO9OMNfsw03C04NHEgzBVWCiK.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/yx96Xz7ggs7TMmDqAa8G5oJ5ami.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/yx96Xz7ggs7TMmDqAa8G5oJ5ami.jpg",
+      "cast": [
+        {
+          "id": 55086,
+          "name": "Cam Gigandet",
+          "character": "Elden Gallup",
+          "photo": "https://image.tmdb.org/t/p/w185/kdSVRqCR0p8KZTvVkRccBLoim7L.jpg"
+        },
+        {
+          "id": 1557089,
+          "name": "Chantelle Albers",
+          "character": "Alice",
+          "photo": "https://image.tmdb.org/t/p/w185/1HbBJE5MHeofQZagwG0DUoPwQQb.jpg"
+        },
+        {
+          "id": 1493220,
+          "name": "Hannah James",
+          "character": "Nora",
+          "photo": "https://image.tmdb.org/t/p/w185/vsYHBHfnUgdTHsJDXnhRwmEIYAa.jpg"
+        },
+        {
+          "id": 2036409,
+          "name": "Cord Newman",
+          "character": "Grimes",
+          "photo": "https://image.tmdb.org/t/p/w185/41B1LWd5epbXXG79MsPXgql0IUP.jpg"
+        },
+        {
+          "id": 71562,
+          "name": "Buck Taylor",
+          "character": "Sheriff Cleetus",
+          "photo": "https://image.tmdb.org/t/p/w185/l4fy1zNNRIG2i4pmNpCqatFuz7d.jpg"
+        },
+        {
+          "id": 53969,
+          "name": "Luce Rains",
+          "character": "Zek Daniels",
+          "photo": "https://image.tmdb.org/t/p/w185/az7wB3HJNQ7T3TmDdZ3rIdZ6bxO.jpg"
+        },
+        {
+          "id": 1164413,
+          "name": "Mohamed Karim",
+          "character": "Tripp Walker",
+          "photo": "https://image.tmdb.org/t/p/w185/oRPuk2qnUM9EV8shBJE7lKPv78R.jpg"
+        },
+        {
+          "id": 97864,
+          "name": "Richard Gabai",
+          "character": "Skyler Weston",
+          "photo": "https://image.tmdb.org/t/p/w185/1FppmSr9gfvgN8adpGYfoFRke7P.jpg"
+        },
+        {
+          "id": 1006833,
+          "name": "Robert Woods",
+          "character": "Brock Jaspers",
+          "photo": "https://image.tmdb.org/t/p/w185/ljx3po4E1fWq6Xt8FTomiXyKVAC.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 946310,
+          "title": "Os Ninjas da Rua de Baixo",
+          "poster": "https://image.tmdb.org/t/p/w185/ot1VMbD7ACFh47LP8G2f67GejV5.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 174751,
+          "title": "Em Busca da Justiça",
+          "poster": "https://image.tmdb.org/t/p/w185/eAqBjWgs67vzh5JhNFvIsj284G9.jpg",
+          "rating": 5.8
+        },
+        {
+          "id": 380111,
+          "title": "Vôo de Emergência",
+          "poster": "https://image.tmdb.org/t/p/w185/bsLgQvTOonpnUBtsMoOloVXQFbT.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 1048300,
+          "title": "Resgate em 12 Horas",
+          "poster": "https://image.tmdb.org/t/p/w185/m19SDzdaCwcO6p7S5q0YP335x1Z.jpg",
+          "rating": 6
+        },
+        {
+          "id": 1004130,
+          "title": "Perseguição Fatal",
+          "poster": "https://image.tmdb.org/t/p/w185/2rtyrFg0RHz5fBYowZNRfdHqSwg.jpg",
+          "rating": 5.8
+        },
+        {
+          "id": 447362,
+          "title": "A Vida em um Ano",
+          "poster": "https://image.tmdb.org/t/p/w185/dfmbwqkalJRfYqFSwNhRn4QYK30.jpg",
+          "rating": 8.2
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-1829",
@@ -25428,7 +25772,162 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/7lK1qXVg7Gw80aEDyjw4Tx8qPor.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 888257,
+      "imdbId": "tt11186952",
+      "title": "O Mistério de Ozarks",
+      "originalTitle": "Ghosts of the Ozarks",
+      "tagline": null,
+      "overview": "Em 1866, um jovem médico é convocado por seu tio para uma cidade remota em Ozarks apenas para descobrir, ao chegar, que o paraíso utópico não é tudo o que parece ser.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2022-02-04",
+      "year": "2022",
+      "rating": 5.2,
+      "voteCount": 41,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Faroeste",
+        "Terror",
+        "Mistério"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/7lK1qXVg7Gw80aEDyjw4Tx8qPor.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/7lK1qXVg7Gw80aEDyjw4Tx8qPor.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/qQWR4f765vp8uRKaY39R8W47wLX.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/qQWR4f765vp8uRKaY39R8W47wLX.jpg",
+      "cast": [
+        {
+          "id": 3283455,
+          "name": "Thomas Hobson",
+          "character": "James 'Doc' McCune",
+          "photo": null
+        },
+        {
+          "id": 1175675,
+          "name": "Tara Perry",
+          "character": "Annie",
+          "photo": "https://image.tmdb.org/t/p/w185/d5fZaxdWbGpIcCN7GgiahXmbnkN.jpg"
+        },
+        {
+          "id": 56853,
+          "name": "Phil Morris",
+          "character": "Matthew McCune",
+          "photo": "https://image.tmdb.org/t/p/w185/iZADKc1QdCFpTvu0KnU3BZBwtrE.jpg"
+        },
+        {
+          "id": 32799,
+          "name": "Angela Bettis",
+          "character": "Lucille",
+          "photo": "https://image.tmdb.org/t/p/w185/yckzGBCLr5cYaScOZrd4MR1aMqq.jpg"
+        },
+        {
+          "id": 15234,
+          "name": "David Arquette",
+          "character": "Douglas",
+          "photo": "https://image.tmdb.org/t/p/w185/74wJjoywG7zCrNMWbRxwoyOj7Ub.jpg"
+        },
+        {
+          "id": 1462,
+          "name": "Tim Blake Nelson",
+          "character": "Torb",
+          "photo": "https://image.tmdb.org/t/p/w185/rWuTGiAMaaHIJ30eRkQS23LbRSW.jpg"
+        },
+        {
+          "id": 1205151,
+          "name": "Joseph Ruud",
+          "character": "William",
+          "photo": "https://image.tmdb.org/t/p/w185/h4Dge0jp3Axahik73JlhtIHjTRe.jpg"
+        },
+        {
+          "id": 60195,
+          "name": "David Aaron Baker",
+          "character": "Jesse",
+          "photo": "https://image.tmdb.org/t/p/w185/8wAIPBB1F0u04PmYLZVd2t8r9bf.jpg"
+        },
+        {
+          "id": 1717236,
+          "name": "Neva Howell",
+          "character": "Miss Roberts",
+          "photo": "https://image.tmdb.org/t/p/w185/r3x56SNHOXdaGXe0k2oU8lXPNIE.jpg"
+        },
+        {
+          "id": 225642,
+          "name": "Brandon Gibson",
+          "character": "Mick",
+          "photo": "https://image.tmdb.org/t/p/w185/6umvHyH27rcjkRdVUkzJiULNZT5.jpg"
+        },
+        {
+          "id": 1195718,
+          "name": "Scott Dean",
+          "character": "Micah",
+          "photo": null
+        },
+        {
+          "id": 71528,
+          "name": "Graham Gordy",
+          "character": "Samuel",
+          "photo": "https://image.tmdb.org/t/p/w185/bPtsXFTlnFEp8PujTpSw0RO8cb7.jpg"
+        },
+        {
+          "id": 1748375,
+          "name": "Ed Lowry",
+          "character": "Dovvy",
+          "photo": null
+        },
+        {
+          "id": 2271512,
+          "name": "Skylar Olivia Flanagan",
+          "character": "Emma",
+          "photo": "https://image.tmdb.org/t/p/w185/84NTZQCsaggXaxpCpgMhxEmJJlR.jpg"
+        },
+        {
+          "id": 2823216,
+          "name": "Aaron Preusch",
+          "character": "Joe",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 893366,
+          "title": "Little Nicholas: Happy as Can Be",
+          "poster": "https://image.tmdb.org/t/p/w185/yTsaoXtBndypAQJj5C16d3Zmfxf.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 977866,
+          "title": "Os Fantasmas da Segunda-Feira",
+          "poster": "https://image.tmdb.org/t/p/w185/7NudZ8Q8cVt5jf5VAzkK59tLBus.jpg",
+          "rating": 5.2
+        },
+        {
+          "id": 395018,
+          "title": "School Ghost Story G",
+          "poster": "https://image.tmdb.org/t/p/w185/b5z7Z9XMNK0xqdAeI4MyNw5SIqg.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 1014501,
+          "title": "Grotesque",
+          "poster": "https://image.tmdb.org/t/p/w185/eoMsojXOiO18leSgHHOxzYOtG5o.jpg",
+          "rating": 3.7
+        },
+        {
+          "id": 5825,
+          "title": "Férias Frustradas de Natal",
+          "poster": "https://image.tmdb.org/t/p/w185/cSkGfMmrtNqd3MmFtBFoq1Ruc8p.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 91586,
+          "title": "Sobrenatural: Capítulo 2",
+          "poster": "https://image.tmdb.org/t/p/w185/9L8Ar7ayazSXPNLNxiaVWOCjzrf.jpg",
+          "rating": 6.7
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-3166",
@@ -25438,7 +25937,164 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/jmTbK9u2h3LDbx9vsWs1BZIIzxI.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 179384,
+      "imdbId": "tt0164962",
+      "title": "O Homem do Oeste",
+      "originalTitle": "The Virginian",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2000-01-09",
+      "year": "2000",
+      "rating": 4.9,
+      "voteCount": 8,
+      "popularity": 3,
+      "certification": null,
+      "genres": [
+        "Faroeste",
+        "Cinema TV"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/pvLPGkJsbrJtAIjtlPozCgfpExF.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/pvLPGkJsbrJtAIjtlPozCgfpExF.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/8TGp8AWYG5iW5KG9oeYkKwKwo4c.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/8TGp8AWYG5iW5KG9oeYkKwKwo4c.jpg",
+      "cast": [
+        {
+          "id": 8984,
+          "name": "Bill Pullman",
+          "character": "The Virginian",
+          "photo": "https://image.tmdb.org/t/p/w185/AlLhgmcX5zh3frPT82OSPY9gqXO.jpg"
+        },
+        {
+          "id": 2882,
+          "name": "Diane Lane",
+          "character": "Molly Stark",
+          "photo": "https://image.tmdb.org/t/p/w185/6OfP3vFMuCL51zamFKgb8aS74hs.jpg"
+        },
+        {
+          "id": 47879,
+          "name": "John Savage",
+          "character": "Steve",
+          "photo": "https://image.tmdb.org/t/p/w185/exzL5D7RSnIepF9FsFlzCs248he.jpg"
+        },
+        {
+          "id": 12422,
+          "name": "Dennis Weaver",
+          "character": "Sam Balaam",
+          "photo": "https://image.tmdb.org/t/p/w185/ed8NnlU9Kxtmwxb4Io4VlWSIY71.jpg"
+        },
+        {
+          "id": 1166,
+          "name": "Harris Yulin",
+          "character": "Judge Henry",
+          "photo": "https://image.tmdb.org/t/p/w185/3W758yxhdphzblpgDz4wKgLCriB.jpg"
+        },
+        {
+          "id": 10132,
+          "name": "Colm Feore",
+          "character": "Trampas",
+          "photo": "https://image.tmdb.org/t/p/w185/jeotIVor4fH3oqxkRZ6qyUbgrJ3.jpg"
+        },
+        {
+          "id": 123524,
+          "name": "James Drury",
+          "character": "Rider",
+          "photo": "https://image.tmdb.org/t/p/w185/qrGLnFmYsF8F4jsDU0zDegbN57M.jpg"
+        },
+        {
+          "id": 15439,
+          "name": "Gary Farmer",
+          "character": "Buster",
+          "photo": "https://image.tmdb.org/t/p/w185/jGzbxhmJUZBLk3MblowFm6iI1m2.jpg"
+        },
+        {
+          "id": 51801,
+          "name": "William MacDonald",
+          "character": "Scipio",
+          "photo": "https://image.tmdb.org/t/p/w185/1eLETdGqGW1b26lhn4l57dlSgJA.jpg"
+        },
+        {
+          "id": 27127,
+          "name": "Brent Stait",
+          "character": "Griffin",
+          "photo": "https://image.tmdb.org/t/p/w185/qA9VbhVk3lqPsEOfshXlvGlai1y.jpg"
+        },
+        {
+          "id": 87208,
+          "name": "Sheila Moore",
+          "character": "Mrs. Henry",
+          "photo": "https://image.tmdb.org/t/p/w185/icFmHJlPlaSfl16KY0fWY58Mbk2.jpg"
+        },
+        {
+          "id": 138985,
+          "name": "Darcy Belsher",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/3cdX0nQL4AkClNiAsJAIfo09foD.jpg"
+        },
+        {
+          "id": 64670,
+          "name": "Philip Granger",
+          "character": "Ben",
+          "photo": "https://image.tmdb.org/t/p/w185/bkrnrtSiUnumWVpAOy5QDcOePiA.jpg"
+        },
+        {
+          "id": 83026,
+          "name": "Dawn Greenhalgh",
+          "character": "Molly's Mother",
+          "photo": "https://image.tmdb.org/t/p/w185/isOxFi3dluHUwHGx76mqshFEK7U.jpg"
+        },
+        {
+          "id": 5611474,
+          "name": "Norman Edge",
+          "character": "Thorsen",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "ranch",
+        "cowboy"
+      ],
+      "recommendations": [
+        {
+          "id": 15362,
+          "title": "Inimigo Público nº 1: Parte 2",
+          "poster": "https://image.tmdb.org/t/p/w185/lR5itdDTPEaqjdWrVeY1Frvewt4.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 7737,
+          "title": "Resident Evil 3: A Extinção",
+          "poster": "https://image.tmdb.org/t/p/w185/lKdzoUvMsriRrtfK6e5uw2XpXtn.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 10358,
+          "title": "Pagando Bem, Que Mal Tem?",
+          "poster": "https://image.tmdb.org/t/p/w185/4VxsCE2NFo8zR5qB0VqqDFHxq43.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 13345,
+          "title": "Uma Odisséia Chinesa: Parte Um – A Caixa de Pandora",
+          "poster": "https://image.tmdb.org/t/p/w185/wIDDJ3FXPmVnNpxVoZOvjjcKVqj.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 248705,
+          "title": "Os Visitantes: A Revolução",
+          "poster": "https://image.tmdb.org/t/p/w185/7HG8GvVfS3wPT3NM8uVnP43qySy.jpg",
+          "rating": 4.2
+        },
+        {
+          "id": 681,
+          "title": "007: Os Diamantes São Eternos",
+          "poster": "https://image.tmdb.org/t/p/w185/2KaF1sNqfbli0sEigocClvdb3Ez.jpg",
+          "rating": 6.4
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-1894",
@@ -25448,7 +26104,164 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/biX9CEacIkqvCwSA7aGs3ILCDry.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 95838,
+      "imdbId": "tt0059114",
+      "title": "O Dólar Furado",
+      "originalTitle": "Un dollaro bucato",
+      "tagline": null,
+      "overview": "Giuliano Gemma é um soldado que retorna da guerra para lutar uma outra em casa... Sem ele saber, seu irmão se transformou num pistoleiro infame chamado \"Black Jack\" que derrota os pistoleiros locais. Giuliano Gemma concorda em fazer uma emboscada para matar \"Black Jack\". E somente aí, que descobre quem realmente é o fora-da-lei. Com vingança no coração, ele se volta contra seus empregadores...",
+      "status": "Released",
+      "language": "it",
+      "releaseDate": "1965-08-08",
+      "year": "1965",
+      "rating": 6.5,
+      "voteCount": 62,
+      "popularity": 1,
+      "certification": null,
+      "genres": [
+        "Faroeste",
+        "Ação",
+        "Romance"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/biX9CEacIkqvCwSA7aGs3ILCDry.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/biX9CEacIkqvCwSA7aGs3ILCDry.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/r3WMDOfXdlpO4USrBV4oeYzdznR.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/r3WMDOfXdlpO4USrBV4oeYzdznR.jpg",
+      "cast": [
+        {
+          "id": 15139,
+          "name": "Giuliano Gemma",
+          "character": "Gary O'Hara",
+          "photo": "https://image.tmdb.org/t/p/w185/hpWbvBhSFklP9rMms1iA5NvXHNZ.jpg"
+        },
+        {
+          "id": 5969,
+          "name": "Ida Galli",
+          "character": "Judy O'Hara",
+          "photo": "https://image.tmdb.org/t/p/w185/9iUgC8Z10IIxGUd1ozoNcy7zYvp.jpg"
+        },
+        {
+          "id": 49898,
+          "name": "Pierre Cressoy",
+          "character": "McCoy",
+          "photo": "https://image.tmdb.org/t/p/w185/5AAPiR3WrRJ6JAkr36k14u1eRcL.jpg"
+        },
+        {
+          "id": 101551,
+          "name": "Giuseppe Addobbati",
+          "character": "Donaldson",
+          "photo": "https://image.tmdb.org/t/p/w185/oQ2D4hduKRGhLyYpnTpobaAo6AE.jpg"
+        },
+        {
+          "id": 33820,
+          "name": "Franco Fantasia",
+          "character": "George Anderson",
+          "photo": "https://image.tmdb.org/t/p/w185/1EaVh7LwdX7vPPBLYpeX9oWL6hd.jpg"
+        },
+        {
+          "id": 98494,
+          "name": "Massimo Righi",
+          "character": "Brad",
+          "photo": "https://image.tmdb.org/t/p/w185/cxoR8eYBh9p421tpprrm4DQov1n.jpg"
+        },
+        {
+          "id": 128435,
+          "name": "Andrea Scotti",
+          "character": "Farmer",
+          "photo": "https://image.tmdb.org/t/p/w185/dxRQlqPDpjh54FU9feXGjyCZGYG.jpg"
+        },
+        {
+          "id": 1046561,
+          "name": "Tullio Altamura",
+          "character": "Peter",
+          "photo": "https://image.tmdb.org/t/p/w185/1Fmof8OeWWR0pXqAc1MwQlpXpn0.jpg"
+        },
+        {
+          "id": 72662,
+          "name": "Nazzareno Zamperla",
+          "character": "Phil O'Hara",
+          "photo": "https://image.tmdb.org/t/p/w185/2MJm2Oq7yUaIOhKaOyMIxYnvDRQ.jpg"
+        },
+        {
+          "id": 4661,
+          "name": "Benito Stefanelli",
+          "character": "James",
+          "photo": "https://image.tmdb.org/t/p/w185/g8wrcKWLuxq3Rmtp3LXItaGVLoQ.jpg"
+        },
+        {
+          "id": 1045498,
+          "name": "Franco Lantieri",
+          "character": "Slim",
+          "photo": "https://image.tmdb.org/t/p/w185/zHUxP0koyv0efor2cVvBKZ17pdD.jpg"
+        },
+        {
+          "id": 1120097,
+          "name": "Gino Marturano",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/lbwGo5B2cq1pnDci7AIE8xKBCoN.jpg"
+        },
+        {
+          "id": 32679,
+          "name": "Nello Pazzafini",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/347gRUcQ55tELUB6KKDaHtANjBG.jpg"
+        },
+        {
+          "id": 1263763,
+          "name": "Bernard Farber",
+          "character": "Hombre de McCoy",
+          "photo": "https://image.tmdb.org/t/p/w185/mQws7g9KiFv2UGUpHEDWE9n98YZ.jpg"
+        },
+        {
+          "id": 227983,
+          "name": "Luigi Tosi",
+          "character": "Herrero",
+          "photo": "https://image.tmdb.org/t/p/w185/8CwSlqKpCF9FazAc366ZdRO8Jwl.jpg"
+        }
+      ],
+      "keywords": [
+        "spaghetti western"
+      ],
+      "recommendations": [
+        {
+          "id": 3110,
+          "title": "Os Brutos Também Amam",
+          "poster": "https://image.tmdb.org/t/p/w185/A5jMaYCKVfstgnJ7eADeCEab0UU.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 4929,
+          "title": "A Marca da Forca",
+          "poster": "https://image.tmdb.org/t/p/w185/OrJr6yGNWhbOR00T2vyU0ipa8k.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 11123,
+          "title": "Terremoto",
+          "poster": "https://image.tmdb.org/t/p/w185/xQDikp5WAUu9UqSTfCTL0RvGBJd.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 927342,
+          "title": "Major Imortal",
+          "poster": "https://image.tmdb.org/t/p/w185/t2LKFqXCy70C6Roz9Wda2FXuKnS.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 39860,
+          "title": "Pescador Pescado",
+          "poster": "https://image.tmdb.org/t/p/w185/edsntQlfVN9TbIWEXDoOChcX792.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 642,
+          "title": "Butch Cassidy",
+          "poster": "https://image.tmdb.org/t/p/w185/919bDobVHWQYGDAP8ZXXGkHKlO8.jpg",
+          "rating": 7.6
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-1700",
@@ -25458,7 +26271,167 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/cnBw87wu31s6VM6LKilokFwgqZu.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 11175,
+      "imdbId": "tt0102351",
+      "title": "Lucky Luke",
+      "originalTitle": "Lucky Luke",
+      "tagline": null,
+      "overview": "O destemido cavaleiro agora é xerife de uma cidadezinha do Oeste e tem que enfrentar o chefão local e seus capangas, os terríveis irmãos Dalton, para impor a lei. Isso não é problema, pois Lucky (Terence Hill) conta com a ajuda de seu intrépido parceiro Jolly Jumper, o cavalo mais inteligente do velho Oeste! Baseado no personagem dos quadrinhos, Lucky Luke é uma comédia impossível, com muita pancadaria e risos, onde no fim Terence Hill é a grande estrela.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1991-07-04",
+      "year": "1991",
+      "rating": 5.4,
+      "voteCount": 208,
+      "popularity": 2,
+      "certification": null,
+      "genres": [
+        "Comédia",
+        "Faroeste"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/cnBw87wu31s6VM6LKilokFwgqZu.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/cnBw87wu31s6VM6LKilokFwgqZu.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/bQNP3bAyba0vLBzZRXimT6jsfcI.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/bQNP3bAyba0vLBzZRXimT6jsfcI.jpg",
+      "cast": [
+        {
+          "id": 15140,
+          "name": "Terence Hill",
+          "character": "Lucky Luke",
+          "photo": "https://image.tmdb.org/t/p/w185/vBkWDZh93QRUvg3oh5d96QQZWLn.jpg"
+        },
+        {
+          "id": 68445,
+          "name": "Nancy Morgan",
+          "character": "Lotta Legs",
+          "photo": "https://image.tmdb.org/t/p/w185/2wurne3qJ3OuDAM9S6rxNgpqghb.jpg"
+        },
+        {
+          "id": 134439,
+          "name": "Roger Miller",
+          "character": "Jolly Jumper",
+          "photo": "https://image.tmdb.org/t/p/w185/zArWwwlAic2GtPr2xJ3pQPINXZi.jpg"
+        },
+        {
+          "id": 72680,
+          "name": "Ron Carey",
+          "character": "Joe Dalton",
+          "photo": "https://image.tmdb.org/t/p/w185/jwTrcCg0x1KpqIHJOzDxM5Axt12.jpg"
+        },
+        {
+          "id": 16647,
+          "name": "Dominic Barto",
+          "character": "William Dalton",
+          "photo": "https://image.tmdb.org/t/p/w185/lq9QkPFSVQ1fHGmK1NsfaEer8UI.jpg"
+        },
+        {
+          "id": 68447,
+          "name": "Bo Greigh",
+          "character": "Jack Dalton",
+          "photo": "https://image.tmdb.org/t/p/w185/fXsQzZXsfHMBZvu1vshpeyAr05C.jpg"
+        },
+        {
+          "id": 68446,
+          "name": "Fritz Sperberg",
+          "character": "Averell Dalton",
+          "photo": "https://image.tmdb.org/t/p/w185/u9XwxXvvFnvp2sqMW7b7NDcZ53E.jpg"
+        },
+        {
+          "id": 1080062,
+          "name": "Arsenio Trinidad",
+          "character": "Ming Li Fu",
+          "photo": "https://image.tmdb.org/t/p/w185/b3hCkrsQPjTP90OPxWl0XbWhf8j.jpg"
+        },
+        {
+          "id": 179188,
+          "name": "Neil Summers",
+          "character": "Deputy Virgil",
+          "photo": "https://image.tmdb.org/t/p/w185/2ESnlgBQzWM17KvSao5GrJInd0u.jpg"
+        },
+        {
+          "id": 2537116,
+          "name": "Mark Hardwick",
+          "character": "Hank, the Bartender",
+          "photo": null
+        },
+        {
+          "id": 1753684,
+          "name": "Buff Douthitt",
+          "character": "The Mayor",
+          "photo": "https://image.tmdb.org/t/p/w185/2m2BR5cWxWlxZ0eemRFjFoNrlIB.jpg"
+        },
+        {
+          "id": 2537118,
+          "name": "Sky Fabin",
+          "character": "Digger Graves",
+          "photo": "https://image.tmdb.org/t/p/w185/p3tppBmpgp7PzMYEyFNqhDcFHKk.jpg"
+        },
+        {
+          "id": 59303,
+          "name": "Marc Mouchet",
+          "character": "Seth Schultz",
+          "photo": "https://image.tmdb.org/t/p/w185/8RRgHjKnTnRnhwbUTFn1V6vvc2S.jpg"
+        },
+        {
+          "id": 160368,
+          "name": "Radha Delamarter",
+          "character": "Martha Schultz",
+          "photo": null
+        },
+        {
+          "id": 2537119,
+          "name": "Robin Westphal",
+          "character": "Corinne",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "saloon",
+        "brother",
+        "horse",
+        "arrest",
+        "spaghetti western"
+      ],
+      "recommendations": [
+        {
+          "id": 11333,
+          "title": "Super Snooper: Um Tira Genial",
+          "poster": "https://image.tmdb.org/t/p/w185/5W0daye7lDGiWw7pQaGGx8D3Duv.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 54164,
+          "title": "E Agora Me Chamam O Magnífico",
+          "poster": "https://image.tmdb.org/t/p/w185/rFwKo4O14PydJjyUYbR9Y7c7R1O.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 348607,
+          "title": "Coyote and Bronca",
+          "poster": "https://image.tmdb.org/t/p/w185/iup9krPj3qrc8SnwHvrA7qCT8F5.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 11496,
+          "title": "Renegado: Um Osso Duro de Roer",
+          "poster": "https://image.tmdb.org/t/p/w185/zgwKoRfTaOgA3uWAEGhN3gsO7c0.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 12529,
+          "title": "A Colina dos Homens Maus",
+          "poster": "https://image.tmdb.org/t/p/w185/ff3KU91djCkKxWtUcR3wVjWufLe.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 127509,
+          "title": "Bad 25",
+          "poster": "https://image.tmdb.org/t/p/w185/NexnTuyXokEYori4efMBZRE1Cg.jpg",
+          "rating": 7.3
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-2435",
@@ -25468,7 +26441,165 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/hSwLFWVTpQqVHv9lERmwXBDQj5l.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 21717,
+      "imdbId": "tt0066831",
+      "title": "Jake Grandão",
+      "originalTitle": "Big Jake",
+      "tagline": null,
+      "overview": "Em 1909, o rancho McCandles é invadido por uma gangue de assassinos liderada pelo malvado John Fain. Eles raptam o pequeno Jacob McCandles e o levam pedindo um resgate de um milhão de dólares. Existe apenas um homem que é corajoso e inteligente o suficiente para trazê-lo de volta e este homem é Jake Grandão.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1971-05-26",
+      "year": "1971",
+      "rating": 6.9,
+      "voteCount": 235,
+      "popularity": 2,
+      "certification": "14",
+      "genres": [
+        "Faroeste"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/hSwLFWVTpQqVHv9lERmwXBDQj5l.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/hSwLFWVTpQqVHv9lERmwXBDQj5l.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/n5ajL8GUn8QHLWiOmVU0LwMfYDI.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/n5ajL8GUn8QHLWiOmVU0LwMfYDI.jpg",
+      "cast": [
+        {
+          "id": 4165,
+          "name": "John Wayne",
+          "character": "Jacob McCandles",
+          "photo": "https://image.tmdb.org/t/p/w185/vI1DyoZxvz51Gxb8uwVLwladohk.jpg"
+        },
+        {
+          "id": 16420,
+          "name": "Richard Boone",
+          "character": "John Fain",
+          "photo": "https://image.tmdb.org/t/p/w185/sIyo1Clu2Voavfz1NyhkXjaCCiK.jpg"
+        },
+        {
+          "id": 70035,
+          "name": "Maureen O'Hara",
+          "character": "Martha McCandles",
+          "photo": "https://image.tmdb.org/t/p/w185/yGNh18kBF7afOdjTcEP2zFCxzCH.jpg"
+        },
+        {
+          "id": 30560,
+          "name": "Patrick Wayne",
+          "character": "James McCandles",
+          "photo": "https://image.tmdb.org/t/p/w185/u0EjouQWSjqr5npkGW9EXLNNAnC.jpg"
+        },
+        {
+          "id": 37251,
+          "name": "Christopher Mitchum",
+          "character": "Michael McCandles",
+          "photo": "https://image.tmdb.org/t/p/w185/qdN1IlOjEWX80cZF2z25qlTCxqb.jpg"
+        },
+        {
+          "id": 127313,
+          "name": "Bobby Vinton",
+          "character": "Jeff McCandles",
+          "photo": "https://image.tmdb.org/t/p/w185/6SHK7vLs4bAoK2sl0eNgbHMMNSh.jpg"
+        },
+        {
+          "id": 3244,
+          "name": "Bruce Cabot",
+          "character": "Sam Sharpnose",
+          "photo": "https://image.tmdb.org/t/p/w185/gWG4ECOOHeQWLEI4nwFlLSFiUpd.jpg"
+        },
+        {
+          "id": 15968,
+          "name": "Glenn Corbett",
+          "character": "O'Brien",
+          "photo": "https://image.tmdb.org/t/p/w185/9mgawQgJqDqoNX1qdORYY6PMG8q.jpg"
+        },
+        {
+          "id": 4316,
+          "name": "Harry Carey, Jr.",
+          "character": "Pop Dawson",
+          "photo": "https://image.tmdb.org/t/p/w185/7O61xbnqAMDOKVCh9ZH8deW6M30.jpg"
+        },
+        {
+          "id": 34130,
+          "name": "John Doucette",
+          "character": "Buck Duggan",
+          "photo": "https://image.tmdb.org/t/p/w185/xwSggqoVJTnipwaMsbIGz1J37sp.jpg"
+        },
+        {
+          "id": 30846,
+          "name": "Jim Davis",
+          "character": "Head of Lynching Party",
+          "photo": "https://image.tmdb.org/t/p/w185/hyRy1u64pMK7nWTvHPtrBhTJ3iA.jpg"
+        },
+        {
+          "id": 103071,
+          "name": "John Agar",
+          "character": "Bert Ryan",
+          "photo": "https://image.tmdb.org/t/p/w185/1aVDeOdgbijupFWleRjdbwJftAC.jpg"
+        },
+        {
+          "id": 16071,
+          "name": "Gregg Palmer",
+          "character": "John Goodfellow",
+          "photo": "https://image.tmdb.org/t/p/w185/rgRwY8Ud2PGU7HylpW1ZNid6teS.jpg"
+        },
+        {
+          "id": 159024,
+          "name": "Jim Burk",
+          "character": "Trooper",
+          "photo": null
+        },
+        {
+          "id": 81060,
+          "name": "Robert Warner",
+          "character": "Will Fain",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "kidnapping",
+        "texas",
+        "ranch",
+        "cigar smoking"
+      ],
+      "recommendations": [
+        {
+          "id": 17538,
+          "title": "Justiceiro Implacável",
+          "poster": "https://image.tmdb.org/t/p/w185/ltmX7TZS6AefXMgsl0jCJNWWqjm.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 26593,
+          "title": "Rio Lobo",
+          "poster": "https://image.tmdb.org/t/p/w185/wHM3T5Dd32mZqIllD41katmvvul.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 12584,
+          "title": "O Último Pistoleiro",
+          "poster": "https://image.tmdb.org/t/p/w185/l4TC4gBvRBe4D0FbSFoP2zM1K0X.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 38765,
+          "title": "Chisum",
+          "poster": "https://image.tmdb.org/t/p/w185/t7GnHtvMslkBQFA8rgotzpGfm0A.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 22317,
+          "title": "Rapidinho no Gatilho",
+          "poster": "https://image.tmdb.org/t/p/w185/4YoRERjKWO2442ezcvgEjAZuxWP.jpg",
+          "rating": 5.6
+        },
+        {
+          "id": 29244,
+          "title": "O Céu Mandou Alguém",
+          "poster": "https://image.tmdb.org/t/p/w185/xcfccl3a0pjIm5E1HYTFzzzd4Vj.jpg",
+          "rating": 6.7
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-6185",
@@ -25478,7 +26609,143 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/2OG6YCYabCBNcmXv5w4AP9uTbsb.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 753477,
+      "imdbId": "tt13156200",
+      "title": "A Floresta do Escalpe",
+      "originalTitle": "Buckskin",
+      "tagline": null,
+      "overview": "Passado em 1820, um caçador de peles texano viaja pela misteriosa floresta de Buckskin na esperança de salvar um menino perdido. Uma vez lá, Wesley Porter deve enfrentar os demônios de seu passado e navegar nas armadilhas do nativo selvagem para trazer a si mesmo e ao jovem para casa com vida.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2021-06-11",
+      "year": "2021",
+      "rating": 6.7,
+      "voteCount": 29,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Faroeste",
+        "Ação"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/2OG6YCYabCBNcmXv5w4AP9uTbsb.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/2OG6YCYabCBNcmXv5w4AP9uTbsb.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/2qEDjNFCgPJqr5Ur6ZeJOVgVBWl.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/2qEDjNFCgPJqr5Ur6ZeJOVgVBWl.jpg",
+      "cast": [
+        {
+          "id": 82525,
+          "name": "Tom Zembrod",
+          "character": "Wesley Porter",
+          "photo": "https://image.tmdb.org/t/p/w185/d70xt3zUaVyfnsNvSuZEkit4faW.jpg"
+        },
+        {
+          "id": 1357381,
+          "name": "Robert Keith",
+          "character": "Captain Coleman",
+          "photo": "https://image.tmdb.org/t/p/w185/IbpD4JELINbFtnb7fzwltLEsTE.jpg"
+        },
+        {
+          "id": 2569808,
+          "name": "Blaze Freeman",
+          "character": "Levi Coleman",
+          "photo": "https://image.tmdb.org/t/p/w185/oa757UMpiDQGHkXQ2DvgtvMnnKh.jpg"
+        },
+        {
+          "id": 2842492,
+          "name": "Corey Cannon",
+          "character": "Henry Lawerence",
+          "photo": "https://image.tmdb.org/t/p/w185/sIuYou1Mrabi8ilhav6MBd7APED.jpg"
+        },
+        {
+          "id": 2815605,
+          "name": "Tiffany McDonald",
+          "character": "Cora Porter",
+          "photo": "https://image.tmdb.org/t/p/w185/xzXugx3uqZNERjBthrgLIzmc3ap.jpg"
+        },
+        {
+          "id": 968889,
+          "name": "Billy Blair",
+          "character": "Patrick Rigger",
+          "photo": "https://image.tmdb.org/t/p/w185/xEa5EA6K8b5jqfb0G4iW8UJGH2p.jpg"
+        },
+        {
+          "id": 3125906,
+          "name": "Jeremy Gauna",
+          "character": "Keokuk",
+          "photo": "https://image.tmdb.org/t/p/w185/9vggVS876I3qoCdSjohFoape2iB.jpg"
+        },
+        {
+          "id": 2815600,
+          "name": "Eddie T Gomez",
+          "character": "Akira",
+          "photo": null
+        },
+        {
+          "id": 3125907,
+          "name": "Giovannie Cruz",
+          "character": "The Fortune Teller",
+          "photo": "https://image.tmdb.org/t/p/w185/oHVCayiyaf2c9zlZE6DJDZMy70F.jpg"
+        },
+        {
+          "id": 3125910,
+          "name": "Andy Andersen",
+          "character": "Ellis",
+          "photo": null
+        },
+        {
+          "id": 1146934,
+          "name": "Andy Arrasmith",
+          "character": "Myles",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "woods",
+        "texan",
+        "lost in the woods",
+        "fur trapper",
+        "indians"
+      ],
+      "recommendations": [
+        {
+          "id": 14534,
+          "title": "Rudy",
+          "poster": "https://image.tmdb.org/t/p/w185/fAbfTCRpjHe2rprXBly55KL1dL9.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 55341,
+          "title": "Olhos Famintos 3",
+          "poster": "https://image.tmdb.org/t/p/w185/7PB0l5Y162Hcgx8JwyW4hsafLWY.jpg",
+          "rating": 4.9
+        },
+        {
+          "id": 8675,
+          "title": "Capitão Orgazmo",
+          "poster": "https://image.tmdb.org/t/p/w185/irvFBOc33CHsioU6hqcu8ExymEa.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 581644,
+          "title": "Os Renegados",
+          "poster": "https://image.tmdb.org/t/p/w185/vrYpppKn5UimPMwsuL8cM2aoFXL.jpg",
+          "rating": 5.5
+        },
+        {
+          "id": 4515,
+          "title": "Leões e Cordeiros",
+          "poster": "https://image.tmdb.org/t/p/w185/eBRSPIULAFwRpuU27Y8jytsBxKl.jpg",
+          "rating": 6
+        },
+        {
+          "id": 844636,
+          "title": "Uma Aventura Selvagem",
+          "poster": "https://image.tmdb.org/t/p/w185/CAvSvhitAVDl5EZ3AeqPEoiMCS.jpg",
+          "rating": 5.9
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442995-784",
@@ -25488,7 +26755,171 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/rmbeg5wHVjC68G00SKQ0xZQpZru.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 35588,
+      "imdbId": "tt0107004",
+      "title": "Gerônimo: Uma Lenda Americana",
+      "originalTitle": "Geronimo: An American Legend",
+      "tagline": "‎Um guerreiro. Um líder. Uma Lenda.‎",
+      "overview": "Por volta de 1880, o texano jovem oficial Segundo-tenente Britton Davis chega ao Oeste para seu primeiro serviço militar durante a Campanha contra os índios e conhece o valoroso Primeiro-tenente Charles B. Gatewood, de família sulista e que respeita a cultura apache. Gatewood recebe ordens de negociar a rendição do apache renegado Gerônimo e ele e Davis se encontram com o índio, que concorda em acompanhá-los até a Reserva de San Carlos e se entregar ao General George Crook. Gerônimo logo fica insatisfeito com o confinamento dele e seu povo na reserva e depois de um incidente envolvendo a morte do xamã Sonhador pelos soldados americanos, foge do local com metade dos índios, iniciando uma nova guerra contra os brancos.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1993-12-10",
+      "year": "1993",
+      "rating": 6.3,
+      "voteCount": 282,
+      "popularity": 4,
+      "certification": "12",
+      "genres": [
+        "Faroeste",
+        "História",
+        "Ação",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/9FNuwnhHngkblD6eVRXnmJN8kQq.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/9FNuwnhHngkblD6eVRXnmJN8kQq.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/6YSj3paJAn3p6F6cyfSdgLncFTQ.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/6YSj3paJAn3p6F6cyfSdgLncFTQ.jpg",
+      "cast": [
+        {
+          "id": 12261,
+          "name": "Jason Patric",
+          "character": "Lt. Charles Gatewood",
+          "photo": "https://image.tmdb.org/t/p/w185/iv21ZjE90f9QNiNONKF9Lp6ZD68.jpg"
+        },
+        {
+          "id": 193,
+          "name": "Gene Hackman",
+          "character": "Brig. Gen. George Crook",
+          "photo": "https://image.tmdb.org/t/p/w185/kMy5BJYiBYuPuDtXD7smRP2rdpk.jpg"
+        },
+        {
+          "id": 3087,
+          "name": "Robert Duvall",
+          "character": "Chief of Scouts Al Sieber",
+          "photo": "https://image.tmdb.org/t/p/w185/ybMmK25h4IVtfE7qrnlVp47RQlh.jpg"
+        },
+        {
+          "id": 15853,
+          "name": "Wes Studi",
+          "character": "Geronimo",
+          "photo": "https://image.tmdb.org/t/p/w185/dAO2bY2NCceYLZiJaBjBdY19Hox.jpg"
+        },
+        {
+          "id": 1892,
+          "name": "Matt Damon",
+          "character": "2nd Lt. Britton Davis",
+          "photo": "https://image.tmdb.org/t/p/w185/andBr2Vvf5Gj54gFyoz7ctBKLBj.jpg"
+        },
+        {
+          "id": 7853,
+          "name": "Rodney A. Grant",
+          "character": "Mangas",
+          "photo": "https://image.tmdb.org/t/p/w185/44J0nk3dWoGbCXIgHi9lftmiUHR.jpg"
+        },
+        {
+          "id": 17770,
+          "name": "Kevin Tighe",
+          "character": "Brig. Gen. Nelson Miles",
+          "photo": "https://image.tmdb.org/t/p/w185/t4LMNB2Rhu9SLbr64gOW5V4sW96.jpg"
+        },
+        {
+          "id": 4024,
+          "name": "Steve Reevis",
+          "character": "Chato",
+          "photo": "https://image.tmdb.org/t/p/w185/3rwvjFw0NuyvkCeoXeDRH6cIWYH.jpg"
+        },
+        {
+          "id": 164657,
+          "name": "Carlos Palomino",
+          "character": "Sgt. Turkey",
+          "photo": "https://image.tmdb.org/t/p/w185/8Rp94CLS5qKgwkpGnlTrNt8PF5X.jpg"
+        },
+        {
+          "id": 1889923,
+          "name": "Victor Aaron",
+          "character": "Ulzana",
+          "photo": null
+        },
+        {
+          "id": 105710,
+          "name": "Stuart Proud Eagle Grant",
+          "character": "Sgt. Dutchy",
+          "photo": "https://image.tmdb.org/t/p/w185/prVqVnLf9B2vSOhVLdbblLPDdZT.jpg"
+        },
+        {
+          "id": 230,
+          "name": "Stephen McHattie",
+          "character": "Schoonover",
+          "photo": "https://image.tmdb.org/t/p/w185/zqOwiEDXYM9AKQgHGJGeIp7QkPh.jpg"
+        },
+        {
+          "id": 9277,
+          "name": "John Finn",
+          "character": "Capt. Hentig",
+          "photo": "https://image.tmdb.org/t/p/w185/tEv7ZUiO4gafQnXEOp43WSEvRfp.jpg"
+        },
+        {
+          "id": 106768,
+          "name": "Lee de Broux",
+          "character": "City Marshal Joe Hawkins",
+          "photo": "https://image.tmdb.org/t/p/w185/9u5KPjQlpBpfiLctkX3gD0uADxX.jpg"
+        },
+        {
+          "id": 83364,
+          "name": "Rino Thunder",
+          "character": "Old Nana",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "apache nation",
+        "native american",
+        "historical figure",
+        "historical",
+        "cavalry",
+        "geronimo",
+        "america"
+      ],
+      "recommendations": [
+        {
+          "id": 21039,
+          "title": "A Fraude - Uma História Real",
+          "poster": "https://image.tmdb.org/t/p/w185/t10DvWj5Yeog5jsJZuBoFDJJbhP.jpg",
+          "rating": 5.9
+        },
+        {
+          "id": 62589,
+          "title": "Duelo de Forasteiros",
+          "poster": "https://image.tmdb.org/t/p/w185/jXhepFdn3VVNBFSKqsT6koH2XFy.jpg",
+          "rating": 4.5
+        },
+        {
+          "id": 498155,
+          "title": "O Quarto de Vidro",
+          "poster": "https://image.tmdb.org/t/p/w185/s9fBm0PL1xdVVNKCFdKN7tb34uB.jpg",
+          "rating": 5.2
+        },
+        {
+          "id": 848609,
+          "title": "Mantis Boxer",
+          "poster": "https://image.tmdb.org/t/p/w185/noKqYYr4ntbogI9bIAEDvaLzW9N.jpg",
+          "rating": 6
+        },
+        {
+          "id": 60563,
+          "title": "Cheyenne Warrior",
+          "poster": "https://image.tmdb.org/t/p/w185/wzgdLPqPPMqFAKF9oBRxrm8g28u.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 89450,
+          "title": "Comanche",
+          "poster": "https://image.tmdb.org/t/p/w185/AcQZRgqSUaceltSMiT7OUt3coyq.jpg",
+          "rating": 5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442996-2114",
@@ -25498,7 +26929,170 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3DLOaSIovu5SMkA5fkzLfTXydTE.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 13249,
+      "imdbId": "tt0479537",
+      "title": "À Procura da Vingança",
+      "originalTitle": "Seraphim Falls",
+      "tagline": null,
+      "overview": "Fim da Guerra Civil dos Estados Unidos, pouco antes da virada para o século XIX. Decidido a se vingar de Gideon, o coronel Carver parte em sua busca.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2007-01-26",
+      "year": "2007",
+      "rating": 6.4,
+      "voteCount": 612,
+      "popularity": 2,
+      "certification": null,
+      "genres": [
+        "Faroeste",
+        "Ação",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/3DLOaSIovu5SMkA5fkzLfTXydTE.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/3DLOaSIovu5SMkA5fkzLfTXydTE.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/kPNnBitz7R2A5XzFT9NanVQGoVQ.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/kPNnBitz7R2A5XzFT9NanVQGoVQ.jpg",
+      "cast": [
+        {
+          "id": 3896,
+          "name": "Liam Neeson",
+          "character": "Carver",
+          "photo": "https://image.tmdb.org/t/p/w185/sRLev3wJioBgun3ZoeAUFpkLy0D.jpg"
+        },
+        {
+          "id": 517,
+          "name": "Pierce Brosnan",
+          "character": "Gideon",
+          "photo": "https://image.tmdb.org/t/p/w185/dzXVwwJLPwiZeXOnf7YxorqVEEM.jpg"
+        },
+        {
+          "id": 7486,
+          "name": "Michael Wincott",
+          "character": "Hayes",
+          "photo": "https://image.tmdb.org/t/p/w185/z6FtWACKaIivi0khxM6vEHoUH0.jpg"
+        },
+        {
+          "id": 3982,
+          "name": "Xander Berkeley",
+          "character": "Railroad Foreman",
+          "photo": "https://image.tmdb.org/t/p/w185/oBoKGfngGGZmSVGFslphYjc23WO.jpg"
+        },
+        {
+          "id": 21523,
+          "name": "Ed Lauter",
+          "character": "Parsons",
+          "photo": "https://image.tmdb.org/t/p/w185/3oWs1Di6KipqQgIg97y4emyyRaE.jpg"
+        },
+        {
+          "id": 18916,
+          "name": "Kevin J. O'Connor",
+          "character": "Henry",
+          "photo": "https://image.tmdb.org/t/p/w185/9ZO0QYkxjhThd8IVqSJw7gHyQ68.jpg"
+        },
+        {
+          "id": 19197,
+          "name": "John Robinson",
+          "character": "Kid",
+          "photo": "https://image.tmdb.org/t/p/w185/prehpEqJzLvsGHzu7gbhFsDSo1J.jpg"
+        },
+        {
+          "id": 5657,
+          "name": "Anjelica Huston",
+          "character": "Madame Louise",
+          "photo": "https://image.tmdb.org/t/p/w185/6hnYeHa7Rc1w1MmQ3JsLSIb7yCX.jpg"
+        },
+        {
+          "id": 52929,
+          "name": "Angie Harmon",
+          "character": "Rose",
+          "photo": "https://image.tmdb.org/t/p/w185/cntFCwNRBDQi4IMoUrmaVzvT7wa.jpg"
+        },
+        {
+          "id": 119232,
+          "name": "Tom Noonan",
+          "character": "Minister Abraham",
+          "photo": "https://image.tmdb.org/t/p/w185/8cwl9gaCr0F0yJ518nc6baebPLL.jpg"
+        },
+        {
+          "id": 22125,
+          "name": "Jimmi Simpson",
+          "character": "Big Brother",
+          "photo": "https://image.tmdb.org/t/p/w185/gerE8VqXfFyAs3QhbUlwEuZllKq.jpg"
+        },
+        {
+          "id": 21723,
+          "name": "Robert Baker",
+          "character": "Pope",
+          "photo": "https://image.tmdb.org/t/p/w185/ef1vpXm0P3BvvnALwyyEzUgvCTB.jpg"
+        },
+        {
+          "id": 1224342,
+          "name": "James Jordan",
+          "character": "Little Brother",
+          "photo": "https://image.tmdb.org/t/p/w185/8flzkBpcrl0QqjDnXhbg52rsNOY.jpg"
+        },
+        {
+          "id": 74538,
+          "name": "Nate Mooney",
+          "character": "Cousin Bill",
+          "photo": "https://image.tmdb.org/t/p/w185/kBcIrVvc9hTAiUOERK2pCQgX1Iw.jpg"
+        },
+        {
+          "id": 15853,
+          "name": "Wes Studi",
+          "character": "Charon",
+          "photo": "https://image.tmdb.org/t/p/w185/dAO2bY2NCceYLZiJaBjBdY19Hox.jpg"
+        }
+      ],
+      "keywords": [
+        "colonel",
+        "frontier",
+        "stalking",
+        "storm",
+        "remedy",
+        "union soldier",
+        "post civil war"
+      ],
+      "recommendations": [
+        {
+          "id": 22731,
+          "title": "Pig Hunt",
+          "poster": "https://image.tmdb.org/t/p/w185/vwezNwgYPuk4ONQs8ZGFCoHH7Xz.jpg",
+          "rating": 4.7
+        },
+        {
+          "id": 11877,
+          "title": "Der brave Soldat Schwejk",
+          "poster": "https://image.tmdb.org/t/p/w185/jfdgThg63vgOTEGVN4FaFt5wVQP.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 24365,
+          "title": "Missão Romana",
+          "poster": "https://image.tmdb.org/t/p/w185/cPohRyk8PKUGfrt0l1rOwHIqIJg.jpg",
+          "rating": 4.7
+        },
+        {
+          "id": 61374,
+          "title": "8 Times Up",
+          "poster": "https://image.tmdb.org/t/p/w185/83zhbsbq7xVlV8ixXzZ6xSXaJlP.jpg",
+          "rating": 6
+        },
+        {
+          "id": 56274,
+          "title": "Neveneffecten - Zinloos Geweldig",
+          "poster": "https://image.tmdb.org/t/p/w185/su5ug0SQIQFGNSvPFzNowozFU7b.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 25266,
+          "title": "O Medo é a Chave",
+          "poster": "https://image.tmdb.org/t/p/w185/exEVWVE4WP6WktGGJFq2waVoKip.jpg",
+          "rating": 5.8
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442996-7093",
@@ -25508,7 +27102,75 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/4dJ3yAysqUKZNTBxgFh9XbPVb0o.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 1466115,
+      "imdbId": "tt39049192",
+      "title": "Se Esse Amor Desaparecesse Hoje",
+      "originalTitle": "오늘 밤, 세계에서 이 사랑이 사라진다 해도",
+      "tagline": null,
+      "overview": "Uma garota do ensino médio acorda todos os dias sem lembrar do dia anterior. Até que ela começa a namorar um colega tímido. Será que esse amor resiste a recomeços diários?",
+      "status": "Released",
+      "language": "ko",
+      "releaseDate": "2025-12-24",
+      "year": "2025",
+      "rating": 7.5,
+      "voteCount": 14,
+      "popularity": 68,
+      "certification": "10",
+      "genres": [
+        "Romance",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/rZpbBGwqGHkXhIOzhvHdrFqXgDX.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/rZpbBGwqGHkXhIOzhvHdrFqXgDX.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/iL5eGI9ctHdUOV4yG6dyGKctSEX.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/iL5eGI9ctHdUOV4yG6dyGKctSEX.jpg",
+      "cast": [
+        {
+          "id": 2959217,
+          "name": "Choo Young-woo",
+          "character": "Kim Jae-won",
+          "photo": "https://image.tmdb.org/t/p/w185/tMAj8u6siRrMC2YFd4Al3NI7CZJ.jpg"
+        },
+        {
+          "id": 2896274,
+          "name": "Shin Si-ah",
+          "character": "Han Seo-yoon",
+          "photo": "https://image.tmdb.org/t/p/w185/6acKN3HgVwV2dT771EgYYilp7I9.jpg"
+        },
+        {
+          "id": 3128211,
+          "name": "조유정",
+          "character": "Choi Ji-min",
+          "photo": "https://image.tmdb.org/t/p/w185/nYx2YyBlirpJ6cG4eTq1oiI8Ilj.jpg"
+        },
+        {
+          "id": 2595111,
+          "name": "진호은",
+          "character": "Jeong Tae-hoon",
+          "photo": "https://image.tmdb.org/t/p/w185/qUbjtCCnltqTXaK4hZUHOdUBDMl.jpg"
+        },
+        {
+          "id": 1203792,
+          "name": "Cho Han Chul",
+          "character": "Kim Seong-hyeon",
+          "photo": "https://image.tmdb.org/t/p/w185/58DGEXFyWfaFdqL7yKKW0VdEg3R.jpg"
+        }
+      ],
+      "keywords": [
+        "amnesia",
+        "based on novel or book",
+        "remake",
+        "tearjerker",
+        "high school romance",
+        "slow burn",
+        "pure love",
+        "emotional growth",
+        "emotional",
+        "melancholic"
+      ],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770501442996-3218",
@@ -25518,7 +27180,168 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/tYkmMi46uuRd7tv9wHiH5U2OBMN.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 91060,
+      "imdbId": "tt0061846",
+      "title": "Johnny Yuma - O Vingador",
+      "originalTitle": "Johnny Yuma",
+      "tagline": null,
+      "overview": "Samantha Felton era uma bela mulher que não mediria conseqüências para conquistar o que queria, até mesmo encomendar a morte de seu marido para apoderar-se de sua fortuna, mas para isso ela necessitaria fazer um pacto com seu amante e cúmplice Pedro. Ambos teriam mais tarde que enfrentar Johnny Yuma um cavaleiro sem rédeas que possuía o segredo do cofre que continha tal fortuna. Para matá-lo e ficarem livres, Samantha tenta contratar Carradine, com sua irresistível sensualidade e 5.000 dólares, porém além de não aceitar a proposta ele se junta a Johnny Yuma para fazer justiça. Um filme maravilhoso que tem todos os elementos do melhor do Western. Seqüências emocionantes de muita ação com borda de um agradável romance, formidáveis interpretações e um belíssimo cenário. Um final literalmente surpreendente no melhor estilo do Faroeste.",
+      "status": "Released",
+      "language": "it",
+      "releaseDate": "1966-08-11",
+      "year": "1966",
+      "rating": 5.9,
+      "voteCount": 9,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Ação",
+        "Drama",
+        "Faroeste"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/tYkmMi46uuRd7tv9wHiH5U2OBMN.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/tYkmMi46uuRd7tv9wHiH5U2OBMN.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/cD7bMcT2OtIqItxDxhO9Y6gdG5f.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/cD7bMcT2OtIqItxDxhO9Y6gdG5f.jpg",
+      "cast": [
+        {
+          "id": 6890,
+          "name": "Mark Damon",
+          "character": "Johnny Yuma",
+          "photo": "https://image.tmdb.org/t/p/w185/dMs895o1Eh7icrvuapCMYlKN8Cz.jpg"
+        },
+        {
+          "id": 15625,
+          "name": "Lawrence Dobkin",
+          "character": "Linus Jerome Carradine",
+          "photo": "https://image.tmdb.org/t/p/w185/3GnsSfYAspOTILATAKjumIzJggd.jpg"
+        },
+        {
+          "id": 30664,
+          "name": "Rosalba Neri",
+          "character": "Samantha Felton",
+          "photo": "https://image.tmdb.org/t/p/w185/f5O6JjcXjYUEzBcVwscFCVCWeFz.jpg"
+        },
+        {
+          "id": 39004,
+          "name": "Luigi Vannucchi",
+          "character": "Pedro",
+          "photo": "https://image.tmdb.org/t/p/w185/t2i6JIa6vfgy1s3cnB9R8NlYB5G.jpg"
+        },
+        {
+          "id": 1089568,
+          "name": "Fidel Gonzáles",
+          "character": "Fidel Alvarez Cortese Sanchez Garcia",
+          "photo": null
+        },
+        {
+          "id": 1089569,
+          "name": "Gustavo D'Arpe",
+          "character": "Pitt",
+          "photo": null
+        },
+        {
+          "id": 27842,
+          "name": "Leslie Daniels",
+          "character": "Thomas Felton",
+          "photo": "https://image.tmdb.org/t/p/w185/4uWNXxq3846bUtneOcDA08N6qKD.jpg"
+        },
+        {
+          "id": 50786,
+          "name": "Gianni Solaro",
+          "character": "Hans Vander Oder",
+          "photo": "https://image.tmdb.org/t/p/w185/4a2O5ra7oIOkL09iHvSyUkBSzYA.jpg"
+        },
+        {
+          "id": 114645,
+          "name": "Ferdinando Poggi",
+          "character": "Sugar",
+          "photo": "https://image.tmdb.org/t/p/w185/tCgv4Zjyrcqr1bEO0pj1nY6fem7.jpg"
+        },
+        {
+          "id": 31548,
+          "name": "Dada Gallotti",
+          "character": "Susan",
+          "photo": "https://image.tmdb.org/t/p/w185/t0OzCxWKJKVk3mCDDDIXdAzQMjJ.jpg"
+        },
+        {
+          "id": 1045498,
+          "name": "Franco Lantieri",
+          "character": "Sancho",
+          "photo": "https://image.tmdb.org/t/p/w185/zHUxP0koyv0efor2cVvBKZ17pdD.jpg"
+        },
+        {
+          "id": 995741,
+          "name": "Mirella Pamphili",
+          "character": "Saloon girl",
+          "photo": "https://image.tmdb.org/t/p/w185/3ly91hoQ9sZAbPStdWs5An1up9s.jpg"
+        },
+        {
+          "id": 144612,
+          "name": "Fortunato Arena",
+          "character": "Poker player",
+          "photo": "https://image.tmdb.org/t/p/w185/3NzdwyHNAW6y3d2UnYjZmt7eYJi.jpg"
+        },
+        {
+          "id": 228500,
+          "name": "Joaquín Parra",
+          "character": "Pedro henchman",
+          "photo": null
+        },
+        {
+          "id": 586394,
+          "name": "Piero Morgia",
+          "character": "Brawler (uncredited)",
+          "photo": "https://image.tmdb.org/t/p/w185/7NfQqNRAGFUh3CtF84i67qt2ulO.jpg"
+        }
+      ],
+      "keywords": [
+        "greed",
+        "murder",
+        "inheritance",
+        "spaghetti western",
+        "framed for murder"
+      ],
+      "recommendations": [
+        {
+          "id": 239088,
+          "title": "The Legend of the Ruby Silver",
+          "poster": "https://image.tmdb.org/t/p/w185/dwJyyL3tCnQV6BynN9FjAXotYS0.jpg",
+          "rating": 7
+        },
+        {
+          "id": 699254,
+          "title": "Naruto OVA 10: Uchiha Madara vs Senju Hashirama",
+          "poster": "https://image.tmdb.org/t/p/w185/3AwkYyiwl02CMELo2oj88x2bEtu.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 987032,
+          "title": "O Caminho para o Coração",
+          "poster": "https://image.tmdb.org/t/p/w185/7JyZUiPMj1BMdczX95LyyOky6a1.jpg",
+          "rating": 9.9
+        },
+        {
+          "id": 689500,
+          "title": "Six Hours: Surviving Typhoon Yolanda",
+          "poster": "https://image.tmdb.org/t/p/w185/eeSbsZDvYHugxL08YRrWNF1FpwV.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 1342265,
+          "title": "Pain",
+          "poster": "https://image.tmdb.org/t/p/w185/2lblUaFfsdw8qS0LtTCNORlK9r6.jpg",
+          "rating": 5.7
+        },
+        {
+          "id": 614840,
+          "title": "Box",
+          "poster": null,
+          "rating": 5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442996-6549",
@@ -25528,7 +27351,150 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/7pYYGm1dWZGkbJuhcuaHD6nE6k7.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 928999,
+      "imdbId": "tt11833692",
+      "title": "Cavaleiros Desesperados",
+      "originalTitle": "Desperate Riders",
+      "tagline": null,
+      "overview": "Um herói solitário e uma bela atiradora ajudam um menino a resgatar sua mãe, a qual foi raptada.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2022-02-25",
+      "year": "2022",
+      "rating": 5.6,
+      "voteCount": 65,
+      "popularity": 1,
+      "certification": "14",
+      "genres": [
+        "Faroeste",
+        "Ação",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/vMfcyQAb1YybrQEazNPZlPiG1ag.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/vMfcyQAb1YybrQEazNPZlPiG1ag.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/i5dUmY2xRzgkmjHJYKNj8kPX1Xx.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/i5dUmY2xRzgkmjHJYKNj8kPX1Xx.jpg",
+      "cast": [
+        {
+          "id": 211742,
+          "name": "Drew Waters",
+          "character": "Kansas Red",
+          "photo": "https://image.tmdb.org/t/p/w185/xMHfQ9ZLK5uDN0olOs4opDwUapS.jpg"
+        },
+        {
+          "id": 85477,
+          "name": "Trace Adkins",
+          "character": "Thorn",
+          "photo": "https://image.tmdb.org/t/p/w185/9MMbYFI0WL2rp5iQG9DeYL0Pgvl.jpg"
+        },
+        {
+          "id": 13022,
+          "name": "Tom Berenger",
+          "character": "Doc Tillman",
+          "photo": "https://image.tmdb.org/t/p/w185/zLxzAdAfu7y02yEx29JSLDgXJZ4.jpg"
+        },
+        {
+          "id": 22074,
+          "name": "Vanessa Evigan",
+          "character": "Leslie",
+          "photo": "https://image.tmdb.org/t/p/w185/y99zQ61G9LtnyOCTFNjw3JAsVQv.jpg"
+        },
+        {
+          "id": 2926273,
+          "name": "Sam Ashby",
+          "character": "Billy",
+          "photo": "https://image.tmdb.org/t/p/w185/87Ij1Tu3E7mzSu2Chib7t9Jb4m5.jpg"
+        },
+        {
+          "id": 20980,
+          "name": "Victoria Pratt",
+          "character": "Carol",
+          "photo": "https://image.tmdb.org/t/p/w185/ej5U4JNHrhu85QSPXpON3Q0WxdF.jpg"
+        },
+        {
+          "id": 1215555,
+          "name": "Cowboy Troy",
+          "character": "Finnegan",
+          "photo": "https://image.tmdb.org/t/p/w185/67cfG8Zz660ZZ4W3WNAsSAqowt7.jpg"
+        },
+        {
+          "id": 110909,
+          "name": "Rob Mayes",
+          "character": "Deputy Harris",
+          "photo": "https://image.tmdb.org/t/p/w185/4j4v5AYSHqtNSe427I0g7sMZhrX.jpg"
+        },
+        {
+          "id": 113781,
+          "name": "Peter Sherayko",
+          "character": "Linstrom",
+          "photo": "https://image.tmdb.org/t/p/w185/4iV3xxLGCJ84zWJO3dhgMCG1VZ3.jpg"
+        },
+        {
+          "id": 78042,
+          "name": "Erin Bethea",
+          "character": "Marianne",
+          "photo": "https://image.tmdb.org/t/p/w185/5xFkd3BepC87fPHP9ONH7wH1feV.jpg"
+        },
+        {
+          "id": 1569982,
+          "name": "Brock O'Hurn",
+          "character": "Thatch",
+          "photo": null
+        },
+        {
+          "id": 3390038,
+          "name": "T. Graham Brown",
+          "character": "Gridley",
+          "photo": null
+        },
+        {
+          "id": 1669357,
+          "name": "Tucson Vernon Walker",
+          "character": "Longley",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 647498,
+          "title": "1942: A Batalha Desconhecida",
+          "poster": "https://image.tmdb.org/t/p/w185/ee8vgETGy7xRCM2VJh4tGW86nyk.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 803114,
+          "title": "O Tubarão: À Deriva",
+          "poster": "https://image.tmdb.org/t/p/w185/sCoYlaYSvalyewEUcz1XW0J0USe.jpg",
+          "rating": 4.7
+        },
+        {
+          "id": 739993,
+          "title": "Metal Lords",
+          "poster": "https://image.tmdb.org/t/p/w185/r97txZRmBb75SGsIAWqmplWJnO3.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 774825,
+          "title": "A Era do Gelo: As Aventuras de Buck",
+          "poster": "https://image.tmdb.org/t/p/w185/hHZjD7IXKlFfMt2UHLj0qaTg06j.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 631843,
+          "title": "Tempo",
+          "poster": "https://image.tmdb.org/t/p/w185/czVBkHRaZu8rOnCNTd0t7EHYj97.jpg",
+          "rating": 6.3
+        },
+        {
+          "id": 425909,
+          "title": "Ghostbusters: Mais Além",
+          "poster": "https://image.tmdb.org/t/p/w185/s7RabsVAYPaBDo7Ehdz0xd5Phzj.jpg",
+          "rating": 7.3
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442997-516",
@@ -25588,7 +27554,165 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fV45HAC5kxY2fbUKKT2vNyYDZNr.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 333484,
+      "imdbId": "tt2404435",
+      "title": "Sete Homens e Um Destino",
+      "originalTitle": "The Magnificent Seven",
+      "tagline": "A justiça tem um número.",
+      "overview": "Os habitantes de um pequeno vilarejo sofrem com os constantes ataques de um bando de pistoleiros. Revoltada com os saques, Emma Cullen deseja justiça e pede auxílio ao pistoleiro Sam Chisolm, que reúne um grupo de especialistas para contra-atacar os bandidos.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2016-09-14",
+      "year": "2016",
+      "rating": 6.5,
+      "voteCount": 6263,
+      "popularity": 8,
+      "certification": "14",
+      "genres": [
+        "Aventura",
+        "Ação",
+        "Faroeste"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/3eK3819rrjVeVTmACUHa7SQIA1d.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/3eK3819rrjVeVTmACUHa7SQIA1d.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/8GXri7UnwE7dVNfUAZVDn7Z8UBZ.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/8GXri7UnwE7dVNfUAZVDn7Z8UBZ.jpg",
+      "cast": [
+        {
+          "id": 5292,
+          "name": "Denzel Washington",
+          "character": "Sam Chisolm",
+          "photo": "https://image.tmdb.org/t/p/w185/jj2Gcobpopokal0YstuCQW0ldJ4.jpg"
+        },
+        {
+          "id": 73457,
+          "name": "Chris Pratt",
+          "character": "Joshua Farraday",
+          "photo": "https://image.tmdb.org/t/p/w185/cRH6HPAQ98PlOwwEvhYO4CM9lwu.jpg"
+        },
+        {
+          "id": 569,
+          "name": "Ethan Hawke",
+          "character": "Goodnight Robicheaux",
+          "photo": "https://image.tmdb.org/t/p/w185/2LoTr6x0TEM7L5em4kSx1VmGDgG.jpg"
+        },
+        {
+          "id": 7132,
+          "name": "Vincent D'Onofrio",
+          "character": "Jack Horne",
+          "photo": "https://image.tmdb.org/t/p/w185/qkyiLolEqYMGH25xD4sFIXAjZQB.jpg"
+        },
+        {
+          "id": 25002,
+          "name": "Lee Byung-hun",
+          "character": "Billy Rocks",
+          "photo": "https://image.tmdb.org/t/p/w185/j7SUd9Qi8iOxgrQGb3nQyEYcXur.jpg"
+        },
+        {
+          "id": 1168097,
+          "name": "Manuel Garcia-Rulfo",
+          "character": "Vasquez",
+          "photo": "https://image.tmdb.org/t/p/w185/54Rk1hKfNdNKGHQMnONDGmNtUv3.jpg"
+        },
+        {
+          "id": 1584347,
+          "name": "Martin Sensmeier",
+          "character": "Red Harvest",
+          "photo": "https://image.tmdb.org/t/p/w185/d25Mx8thmbgQWHR35S5s6MxjsCc.jpg"
+        },
+        {
+          "id": 133,
+          "name": "Peter Sarsgaard",
+          "character": "Bartholomew Bogue",
+          "photo": "https://image.tmdb.org/t/p/w185/5UANyM4co2nwYPgSEmGeNlZRm7V.jpg"
+        },
+        {
+          "id": 58754,
+          "name": "Haley Bennett",
+          "character": "Emma Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/8HRgGypSwHeI27ffmcAELNoxIOw.jpg"
+        },
+        {
+          "id": 66743,
+          "name": "Matt Bomer",
+          "character": "Matthew Cullen",
+          "photo": "https://image.tmdb.org/t/p/w185/oxL27Z3XtjoABaOynKazZeg7qKM.jpg"
+        },
+        {
+          "id": 56680,
+          "name": "Luke Grimes",
+          "character": "Teddy",
+          "photo": "https://image.tmdb.org/t/p/w185/52KsHFCu0LToakebnxqC4VeRixl.jpg"
+        },
+        {
+          "id": 154778,
+          "name": "Jonathan Joss",
+          "character": "Denali",
+          "photo": "https://image.tmdb.org/t/p/w185/93r1kYapwDyjjBlGLCuNgkDQ7Mz.jpg"
+        },
+        {
+          "id": 55086,
+          "name": "Cam Gigandet",
+          "character": "McCann",
+          "photo": "https://image.tmdb.org/t/p/w185/kdSVRqCR0p8KZTvVkRccBLoim7L.jpg"
+        },
+        {
+          "id": 144160,
+          "name": "Sean Bridgers",
+          "character": "Fanning",
+          "photo": "https://image.tmdb.org/t/p/w185/lG8vV5g49RML5WkaN6Mb3GnLgge.jpg"
+        },
+        {
+          "id": 85419,
+          "name": "Dylan Kenin",
+          "character": "Cooper",
+          "photo": "https://image.tmdb.org/t/p/w185/yGq7PooU34xeRWFORF96fmJmvl9.jpg"
+        }
+      ],
+      "keywords": [
+        "remake",
+        "angry"
+      ],
+      "recommendations": [
+        {
+          "id": 296524,
+          "title": "Horizonte Profundo: Desastre no Golfo",
+          "poster": "https://image.tmdb.org/t/p/w185/vWv6Z1nG2KZwaR6IjI7wwhsIJt4.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 966,
+          "title": "Sete Homens e Um Destino",
+          "poster": "https://image.tmdb.org/t/p/w185/zkoRJimuuH15NpQnCN8OvoRnPlq.jpg",
+          "rating": 7.5
+        },
+        {
+          "id": 302946,
+          "title": "O Contador",
+          "poster": "https://image.tmdb.org/t/p/w185/vgJt4ADIjm5U2y3oPLu6kXEXOCY.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 278924,
+          "title": "Assassino a Preço Fixo 2 - A Ressurreição",
+          "poster": "https://image.tmdb.org/t/p/w185/k6U2vZxIr4rYIDonyOUjp8IcBVB.jpg",
+          "rating": 6
+        },
+        {
+          "id": 271969,
+          "title": "Ben-Hur",
+          "poster": "https://image.tmdb.org/t/p/w185/c9CoGrBA5yw8A7YBMz0hGzfzpNq.jpg",
+          "rating": 5.8
+        },
+        {
+          "id": 351211,
+          "title": "Bruxa de Blair",
+          "poster": "https://image.tmdb.org/t/p/w185/vfdK9NtUqbSgFqvzPJi8kEnq2ee.jpg",
+          "rating": 5.2
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442997-6242",
@@ -25688,7 +27812,173 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/dmHzO8cBleQRrfeq7ujALIeDQVi.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 354110,
+      "imdbId": "tt2271563",
+      "title": "O Retorno de John Henry",
+      "originalTitle": "Forsaken",
+      "tagline": null,
+      "overview": "Atormentado por um segredo obscuro, um pistoleiro abandona sua vida de assassinatos e volta para casa, quando descobre que sua mãe morreu. Ele é forçado a confrontar seu distante pai e a vida que deixou para trás.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2015-09-16",
+      "year": "2015",
+      "rating": 6.2,
+      "voteCount": 374,
+      "popularity": 12,
+      "certification": "16",
+      "genres": [
+        "Faroeste",
+        "Ação",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/dmHzO8cBleQRrfeq7ujALIeDQVi.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/dmHzO8cBleQRrfeq7ujALIeDQVi.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/eiHNVxEXJIY7nBlcL9zXmtP7qtz.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/eiHNVxEXJIY7nBlcL9zXmtP7qtz.jpg",
+      "cast": [
+        {
+          "id": 3416,
+          "name": "Demi Moore",
+          "character": "Mary-Alice Watson",
+          "photo": "https://image.tmdb.org/t/p/w185/wApParZYBDi4yxekjfxjKEifJYh.jpg"
+        },
+        {
+          "id": 2628,
+          "name": "Kiefer Sutherland",
+          "character": "John Henry Clayton",
+          "photo": "https://image.tmdb.org/t/p/w185/tK5zjdvao2NELns3bqT7PPqPeJI.jpg"
+        },
+        {
+          "id": 55636,
+          "name": "Donald Sutherland",
+          "character": "Rev. Clayton",
+          "photo": "https://image.tmdb.org/t/p/w185/yM8WO2BYqFvgQXAvf4CIuCYnY4j.jpg"
+        },
+        {
+          "id": 1248,
+          "name": "Brian Cox",
+          "character": "James McCurdy",
+          "photo": "https://image.tmdb.org/t/p/w185/scSjbFCTRngXlkJRoKptM5kQGw7.jpg"
+        },
+        {
+          "id": 1121961,
+          "name": "Siobhan Williams",
+          "character": "Emily Chadwick",
+          "photo": "https://image.tmdb.org/t/p/w185/rYMTamEkeTJqxrfqQGYOlU1tK6V.jpg"
+        },
+        {
+          "id": 7486,
+          "name": "Michael Wincott",
+          "character": "Dave Turner",
+          "photo": "https://image.tmdb.org/t/p/w185/z6FtWACKaIivi0khxM6vEHoUH0.jpg"
+        },
+        {
+          "id": 138558,
+          "name": "Landon Liboiron",
+          "character": "Will Pickard",
+          "photo": "https://image.tmdb.org/t/p/w185/aDhoa5X7UaVv4r4u56af2XMztEG.jpg"
+        },
+        {
+          "id": 4031,
+          "name": "Greg Ellis",
+          "character": "Tom Watson",
+          "photo": "https://image.tmdb.org/t/p/w185/qks30OeY78q0j8w4s10mXtg5vpd.jpg"
+        },
+        {
+          "id": 142109,
+          "name": "Wesley Morgan",
+          "character": "Sam",
+          "photo": "https://image.tmdb.org/t/p/w185/xLuBWKzLxwXWDiSfcR4htIsRyyA.jpg"
+        },
+        {
+          "id": 180942,
+          "name": "Aaron Poole",
+          "character": "Frank Tillman",
+          "photo": "https://image.tmdb.org/t/p/w185/4amEyfzcaHq8DBLpkFjmqg5wwwS.jpg"
+        },
+        {
+          "id": 47934,
+          "name": "Dylan Smith",
+          "character": "Little Ned",
+          "photo": "https://image.tmdb.org/t/p/w185/khDLIA2yy2hVrD4uLYt9EAUYTj6.jpg"
+        },
+        {
+          "id": 1658287,
+          "name": "Brock Morgan",
+          "character": "James Cleary",
+          "photo": "https://image.tmdb.org/t/p/w185/97XoLTN07WAfa02xjFRMGUwFKGc.jpg"
+        },
+        {
+          "id": 1658288,
+          "name": "Graeme Black",
+          "character": "Hank Plummer",
+          "photo": null
+        },
+        {
+          "id": 54635,
+          "name": "Tom Carey",
+          "character": "George",
+          "photo": "https://image.tmdb.org/t/p/w185/dArwDNy04uJqEWeGI2zMCjm8kNl.jpg"
+        },
+        {
+          "id": 77038,
+          "name": "Chris Ippolito",
+          "character": "Bob Waters",
+          "photo": "https://image.tmdb.org/t/p/w185/9CxDzzgyiEcc31NHxfvONcAeFvN.jpg"
+        }
+      ],
+      "keywords": [
+        "small town",
+        "gunslinger",
+        "saloon",
+        "gang",
+        "shootout",
+        "church",
+        "wild west",
+        "ex soldier",
+        "reverend",
+        "19th century"
+      ],
+      "recommendations": [
+        {
+          "id": 43367,
+          "title": "O Rio da Aventura",
+          "poster": "https://image.tmdb.org/t/p/w185/gnqdiMuvS5oBIVLxQY3Cq8wYIBR.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 14710,
+          "title": "O Galante Aventureiro",
+          "poster": "https://image.tmdb.org/t/p/w185/5DpDg1GYiqAKoCozbunCqPYvRPD.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 287787,
+          "title": "Man & Wife: An Educational Film for Married Adults",
+          "poster": "https://image.tmdb.org/t/p/w185/A2qZxhTDfG6ptMFbt7w72uIFU7Z.jpg",
+          "rating": 2.9
+        },
+        {
+          "id": 420346,
+          "title": "The Morning After",
+          "poster": "https://image.tmdb.org/t/p/w185/oHApzMOXhu8FXRramzbce8UUCs2.jpg",
+          "rating": 3.5
+        },
+        {
+          "id": 128159,
+          "title": "Separate But Equal",
+          "poster": "https://image.tmdb.org/t/p/w185/kiHvZRE67kU1r6pCeaMh30vMq8n.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 253273,
+          "title": "Patrick's Day",
+          "poster": "https://image.tmdb.org/t/p/w185/1eQ1epYOsOzXFCRD3a4C0u7npUG.jpg",
+          "rating": 5.9
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442997-1092",
@@ -25698,7 +27988,50 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/x1jViuXsm5ZmrR6uFmxU6AVdXzs.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 1362108,
+      "imdbId": "tt14156994",
+      "title": "O Regresso",
+      "originalTitle": "O Regresso",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": "1989-04-23",
+      "year": "1989",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 3,
+      "certification": null,
+      "genres": [
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/kZtBOPIaCzGHb0PtkQzc2sAoddO.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/kZtBOPIaCzGHb0PtkQzc2sAoddO.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/i1h4ylPg1rMU5nFUKOyvtqbSHFp.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/i1h4ylPg1rMU5nFUKOyvtqbSHFp.jpg",
+      "cast": [
+        {
+          "id": 1168435,
+          "name": "Ruy de Carvalho",
+          "character": "Castro",
+          "photo": "https://image.tmdb.org/t/p/w185/JSKapBzQ4BKTPr2xlo79qO0Hv.jpg"
+        },
+        {
+          "id": 4964976,
+          "name": "Luís Filipe Rocha",
+          "character": "Martins",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "portugal",
+        "colony",
+        "macau",
+        "historical documentary"
+      ],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770501442997-4187",
@@ -25898,7 +28231,154 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/6iFUN1MFMpiGtcol0kwa4dD7P87.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 6529,
+      "imdbId": "tt0045883",
+      "title": "Caminhos Ásperos",
+      "originalTitle": "Hondo",
+      "tagline": "Um barril de pólvora prestes a estourar entre brancos e índios!",
+      "overview": "No Oeste americano, Hondo Lane, membro da cavalaria, encontra Angie, uma mulher que mora sozinha com o filho no meio do território hostil dos apaches. Para evitar que ela seja forçada a se casar com um dos membros da tribo, ele se faz passar por seu marido. Contudo, uma tragédia pessoal pode levar tudo a perder.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1953-11-26",
+      "year": "1953",
+      "rating": 6.6,
+      "voteCount": 229,
+      "popularity": 2,
+      "certification": null,
+      "genres": [
+        "Faroeste"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/icBkw2losJ8OIWuC67zEOT8s1m2.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/icBkw2losJ8OIWuC67zEOT8s1m2.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/zZWFQH8Sh5g3FsljHEZJVa9Lgwg.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/zZWFQH8Sh5g3FsljHEZJVa9Lgwg.jpg",
+      "cast": [
+        {
+          "id": 4165,
+          "name": "John Wayne",
+          "character": "Hondo Lane",
+          "photo": "https://image.tmdb.org/t/p/w185/vI1DyoZxvz51Gxb8uwVLwladohk.jpg"
+        },
+        {
+          "id": 41283,
+          "name": "Geraldine Page",
+          "character": "Angie Lowe",
+          "photo": "https://image.tmdb.org/t/p/w185/5G8uNYzNtEMBSnOUUs6ms1JcOJj.jpg"
+        },
+        {
+          "id": 4303,
+          "name": "Ward Bond",
+          "character": "Buffalo Baker",
+          "photo": "https://image.tmdb.org/t/p/w185/6F8pPEwBHWDpX04R8LkARFejwtC.jpg"
+        },
+        {
+          "id": 50303,
+          "name": "Michael Pate",
+          "character": "Vittorio",
+          "photo": "https://image.tmdb.org/t/p/w185/i0XniNOD6S6GB3LD7vHbYx5Z8ha.jpg"
+        },
+        {
+          "id": 50304,
+          "name": "James Arness",
+          "character": "Lennie",
+          "photo": "https://image.tmdb.org/t/p/w185/9sNLp285OUsPbQXWhhkXIGeP9ET.jpg"
+        },
+        {
+          "id": 24827,
+          "name": "Rodolfo Acosta",
+          "character": "Silva",
+          "photo": "https://image.tmdb.org/t/p/w185/z708yfrb23NJKhrmPLZUjyvrG8v.jpg"
+        },
+        {
+          "id": 95082,
+          "name": "Leo Gordon",
+          "character": "Ed Lowe",
+          "photo": "https://image.tmdb.org/t/p/w185/d87PfczbNFTbiu3qktqORlxnkMW.jpg"
+        },
+        {
+          "id": 50305,
+          "name": "Tom Irish",
+          "character": "Lt. McKay",
+          "photo": "https://image.tmdb.org/t/p/w185/fGqGftRNLa2ZvjCWxtFSbqdxXEz.jpg"
+        },
+        {
+          "id": 50306,
+          "name": "Lee Aaker",
+          "character": "Johnny Lowe",
+          "photo": "https://image.tmdb.org/t/p/w185/rMJzyycOPoKXrfpEHMVv3vZdady.jpg"
+        },
+        {
+          "id": 8496,
+          "name": "Paul Fix",
+          "character": "Major Sherry",
+          "photo": "https://image.tmdb.org/t/p/w185/1CTVXkgurzEYeFaJDuuIODaZvFu.jpg"
+        },
+        {
+          "id": 30848,
+          "name": "Rayford Barnes",
+          "character": "Pete",
+          "photo": "https://image.tmdb.org/t/p/w185/2QXknVYA2ljsD2L9KnjDb2IncSI.jpg"
+        },
+        {
+          "id": 50308,
+          "name": "Frank McGrath",
+          "character": "Lowes Partner (uncredited)",
+          "photo": "https://image.tmdb.org/t/p/w185/oNrSoWUju49BNrpCYQGJQI6BQ0V.jpg"
+        },
+        {
+          "id": 50310,
+          "name": "Chuck Roberson",
+          "character": "Kloori / Cavalry Sergeant Killed in Indian Attack (uncredited)",
+          "photo": "https://image.tmdb.org/t/p/w185/d61PgertplWQ4oi5eEFDE4dOX5T.jpg"
+        }
+      ],
+      "keywords": [
+        "military officer",
+        "apache nation",
+        "native american",
+        "cavalry",
+        "19th century"
+      ],
+      "recommendations": [
+        {
+          "id": 17538,
+          "title": "Justiceiro Implacável",
+          "poster": "https://image.tmdb.org/t/p/w185/ltmX7TZS6AefXMgsl0jCJNWWqjm.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 30462,
+          "title": "Os Comancheros",
+          "poster": "https://image.tmdb.org/t/p/w185/55bX8AYfaEfvkaRYEJqVuG1cSLz.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 11943,
+          "title": "Mais Forte que a Vingança",
+          "poster": "https://image.tmdb.org/t/p/w185/6UkwaeEatQXzEVZO4HZPMpTAPEe.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 27277,
+          "title": "Gigantes em Luta",
+          "poster": "https://image.tmdb.org/t/p/w185/eeLi9BAjyOJGfD76ZR9lq5vGVvP.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 11385,
+          "title": "Hatari!",
+          "poster": "https://image.tmdb.org/t/p/w185/o4M8VRsWiwx4A7SnLKcBARi8sG6.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 42640,
+          "title": "A Grande Jornada",
+          "poster": "https://image.tmdb.org/t/p/w185/ustXeyg6AnP7IusUpna5YQo4dvi.jpg",
+          "rating": 6.7
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442997-3663",
@@ -25998,7 +28478,165 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/uJ4du1acCK9CYhpOCuZgBPKxSBf.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 98549,
+      "imdbId": "tt1220217",
+      "title": "Duelo de Bravos",
+      "originalTitle": "The Legend of Hell's Gate: An American Conspiracy",
+      "tagline": null,
+      "overview": "Em 1870, no Texas, um caçador de recompensas implacável e um desesperado irlandês foragido da lei conhecem um jovem bandido que alega possuir um tesouro mais valioso do que o ouro. Cruzando o caminho de algumas das figuras mais notórias do Oeste, os três bandidos lutam por suas vidas na busca de fama e fortuna. Inspirada em fatos reais, o filme combina lenda e história em um espetáculo do Velho Oeste, narrando a existência traiçoeira no Texas pós Guerra Civil.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2011-03-03",
+      "year": "2011",
+      "rating": 4.2,
+      "voteCount": 18,
+      "popularity": 1,
+      "certification": null,
+      "genres": [
+        "Faroeste",
+        "Ação",
+        "Aventura",
+        "História"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/meg2YdNDQFAPodjz8IHCYepc0vw.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/meg2YdNDQFAPodjz8IHCYepc0vw.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/st9JYEdSCaRfqzkctfPRUJDSUPJ.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/st9JYEdSCaRfqzkctfPRUJDSUPJ.jpg",
+      "cast": [
+        {
+          "id": 34489,
+          "name": "Eric Balfour",
+          "character": "Will Edwards",
+          "photo": "https://image.tmdb.org/t/p/w185/tqlyRVgkNYIePcunx4johOOxY8h.jpg"
+        },
+        {
+          "id": 17441,
+          "name": "Lou Taylor Pucci",
+          "character": "Kid Called Kelly",
+          "photo": "https://image.tmdb.org/t/p/w185/25lfbMJruSG5Kmv1zdKfMyrZWB9.jpg"
+        },
+        {
+          "id": 9976,
+          "name": "Henry Thomas",
+          "character": "John St. Helens",
+          "photo": "https://image.tmdb.org/t/p/w185/tyTcpTMIAyIIy30u8N59G0PI06f.jpg"
+        },
+        {
+          "id": 98050,
+          "name": "James Lafferty",
+          "character": "Eigson Howard",
+          "photo": "https://image.tmdb.org/t/p/w185/lvUyG8wwYPUl8x5byd1g5Y2A0ia.jpg"
+        },
+        {
+          "id": 54881,
+          "name": "Summer Glau",
+          "character": "Maggie Moon",
+          "photo": "https://image.tmdb.org/t/p/w185/17eWfqG9SZeRNx8AQctajX06Ik5.jpg"
+        },
+        {
+          "id": 20381,
+          "name": "Jenna Dewan",
+          "character": "Katherine Prescott",
+          "photo": "https://image.tmdb.org/t/p/w185/8zZkN1ewGxN8MHiqB8lRmBle8yf.jpg"
+        },
+        {
+          "id": 116474,
+          "name": "Kevin Alejandro",
+          "character": "August Edwards",
+          "photo": "https://image.tmdb.org/t/p/w185/bh4aQqP7kJzL2Ls9tj5OmhsBlqi.jpg"
+        },
+        {
+          "id": 96792,
+          "name": "Robert Buckley",
+          "character": "Bacas Mitchell",
+          "photo": "https://image.tmdb.org/t/p/w185/o4ju4sTWoEMK6QvDjQrqHYRBCrz.jpg"
+        },
+        {
+          "id": 456066,
+          "name": "Ryan Lee",
+          "character": "Jeral Floyd",
+          "photo": "https://image.tmdb.org/t/p/w185/1DpDbF9qi9nnMfKfGKnyhNPkNCb.jpg"
+        },
+        {
+          "id": 109861,
+          "name": "Jamie Thomas King",
+          "character": "John Henry 'Doc' Holiday",
+          "photo": "https://image.tmdb.org/t/p/w185/hE7R5CcybeolLiptWVvPnOkittU.jpg"
+        },
+        {
+          "id": 1018660,
+          "name": "Tanner Beard",
+          "character": "James McKinnon",
+          "photo": "https://image.tmdb.org/t/p/w185/olcGE5ZzSLUcvkBcHwpoykJ0Acy.jpg"
+        },
+        {
+          "id": 1406629,
+          "name": "Michael Taber",
+          "character": "Johnny Moon",
+          "photo": null
+        },
+        {
+          "id": 12797,
+          "name": "Glenn Morshower",
+          "character": "J.H. Gordon",
+          "photo": "https://image.tmdb.org/t/p/w185/SjgNUSLoBAVossDI4QkNtDxYDZ.jpg"
+        },
+        {
+          "id": 18687,
+          "name": "William McNamara",
+          "character": "Jones Moon",
+          "photo": "https://image.tmdb.org/t/p/w185/c6mLOGGpJK94a0RNt6LPeoHEONh.jpg"
+        },
+        {
+          "id": 1882558,
+          "name": "Corey Knipe",
+          "character": "The Russian",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "based on true story"
+      ],
+      "recommendations": [
+        {
+          "id": 105945,
+          "title": "Memorial Day: Lembranças de uma Guerra",
+          "poster": "https://image.tmdb.org/t/p/w185/mBp63rPK3pNhWRrsUXrqSPCOXo5.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 42432,
+          "title": "Natale sul Nilo",
+          "poster": "https://image.tmdb.org/t/p/w185/rgeIKAhuSWqxcrFRq9lqybpiLmx.jpg",
+          "rating": 5.2
+        },
+        {
+          "id": 57780,
+          "title": "Dog Barbos and Unusual Cross",
+          "poster": "https://image.tmdb.org/t/p/w185/nzxuhvJCsphzWEh2wmhlrBNLvzS.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 9473,
+          "title": "South Park: Maior, Melhor e Sem Cortes",
+          "poster": "https://image.tmdb.org/t/p/w185/wjKlDkmMHWTYbE3bYMZQznomSii.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 1133564,
+          "title": "Rewind 3: The Final Chapter",
+          "poster": "https://image.tmdb.org/t/p/w185/dkA7kdMnpYH4qHOtmLqLCBfn7Cs.jpg",
+          "rating": 5.3
+        },
+        {
+          "id": 21138,
+          "title": "Uma Turma Divertida: A Caminho de Casa",
+          "poster": "https://image.tmdb.org/t/p/w185/kOSoIudxBZWfeoBS0SHmeb5XoQC.jpg",
+          "rating": 5.6
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442997-6738",
@@ -26058,7 +28696,172 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/oGC7kN77NCZ2CUcKCnxNI0pPicD.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 14854,
+      "imdbId": "tt0085862",
+      "title": "McQuade: O Lobo Solitário",
+      "originalTitle": "Lone Wolf McQuade",
+      "tagline": "Quer se trate de lutar, amar ou matar... Não há ninguém como J.J. McQuade.",
+      "overview": "O lendário Ranger do Texas renegado J.J. McQuade é terrível com a arma - mas letal com o seu cinturão negro! Quando a vida da sua filha adolescente é ameaçada por ladrões de estrada na tentativa de roubarem um camião cheio de armas e munições, o serviço torna-se pessoal para McQuade. Pondo a descoberto uma operação de tráfico e venda ilegal de armas a terroristas um pouco por todo o mundo, McQuade fica frente a frente com o rei desta rede gigantesca, Rawley - um nome afamado mundialmente nas artes marciais, por nunca ter perdido um combate! Terá o Ranger o que é necessário para salvar a filha e a honra - ou será que finalmente encontrou um adversário à altura, e consequentemente... a sua própria derrota?",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1983-04-15",
+      "year": "1983",
+      "rating": 6.5,
+      "voteCount": 387,
+      "popularity": 2,
+      "certification": null,
+      "genres": [
+        "Ação",
+        "Crime"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/ddsKrcL7iiK66cJyj3JVyZKdm2q.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/ddsKrcL7iiK66cJyj3JVyZKdm2q.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/yR10dIRDAuRfRUxQ2azF4GSwJNb.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/yR10dIRDAuRfRUxQ2azF4GSwJNb.jpg",
+      "cast": [
+        {
+          "id": 51576,
+          "name": "Chuck Norris",
+          "character": "J.J. McQuade",
+          "photo": "https://image.tmdb.org/t/p/w185/m3uLikdhi9qObRvGVHsKX5H93lR.jpg"
+        },
+        {
+          "id": 141,
+          "name": "David Carradine",
+          "character": "Rawley Wilkes",
+          "photo": "https://image.tmdb.org/t/p/w185/1X2GlkMKS9FIG1kGou7o6LRqAjz.jpg"
+        },
+        {
+          "id": 10938,
+          "name": "Barbara Carrera",
+          "character": "Lola Richardson",
+          "photo": "https://image.tmdb.org/t/p/w185/q9XOgZ5wocNPbgotNctkczF8D54.jpg"
+        },
+        {
+          "id": 543349,
+          "name": "Leon Isaac Kennedy",
+          "character": "Jackson",
+          "photo": "https://image.tmdb.org/t/p/w185/isT5JyrlBfcXotmXDzhmacNOhsh.jpg"
+        },
+        {
+          "id": 50880,
+          "name": "Robert Beltran",
+          "character": "Kayo",
+          "photo": "https://image.tmdb.org/t/p/w185/4Y9zzqveAeiI55VRC6mPyLQroHe.jpg"
+        },
+        {
+          "id": 8262,
+          "name": "L.Q. Jones",
+          "character": "Dakota",
+          "photo": "https://image.tmdb.org/t/p/w185/vSGLFloekrgC8eIaqxCiKe7VW0u.jpg"
+        },
+        {
+          "id": 58799,
+          "name": "Dana Kimmell",
+          "character": "Sally McQuade",
+          "photo": "https://image.tmdb.org/t/p/w185/p26TDT4gncOqzF3cBXwaOU1PwOP.jpg"
+        },
+        {
+          "id": 1107,
+          "name": "R.G. Armstrong",
+          "character": "T. Tyler",
+          "photo": "https://image.tmdb.org/t/p/w185/wDsIQBOtNZotwMEi2QJLSNrLEXc.jpg"
+        },
+        {
+          "id": 940922,
+          "name": "Jorge Cervera Jr.",
+          "character": "Jefe",
+          "photo": "https://image.tmdb.org/t/p/w185/zkQp7In44JXHL5l8hgBoLvLCEnv.jpg"
+        },
+        {
+          "id": 19434,
+          "name": "Sharon Farrell",
+          "character": "Molly McQuade",
+          "photo": "https://image.tmdb.org/t/p/w185/42dQ4WRePvqrdNwLjoRfimngWdo.jpg"
+        },
+        {
+          "id": 19751,
+          "name": "Daniel Frishman",
+          "character": "Falcon",
+          "photo": "https://image.tmdb.org/t/p/w185/wbz8f9fMV3O5QutlY7fSXDFYJ5Q.jpg"
+        },
+        {
+          "id": 590,
+          "name": "William Sanderson",
+          "character": "Snow",
+          "photo": "https://image.tmdb.org/t/p/w185/i3JfaavAFq9ayeJ4doUaOGjHMMW.jpg"
+        },
+        {
+          "id": 1862442,
+          "name": "John Anderson",
+          "character": "Burnside",
+          "photo": null
+        },
+        {
+          "id": 1862443,
+          "name": "Robert Arenas",
+          "character": "Gas Station Attendant",
+          "photo": null
+        },
+        {
+          "id": 1862444,
+          "name": "Tommy Ballard",
+          "character": "Colonel",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "martial arts",
+        "kung fu",
+        "showdown",
+        "parent child relationship",
+        "fbi",
+        "texas",
+        "texas ranger",
+        "wheelchair",
+        "fistfight",
+        "gun battle"
+      ],
+      "recommendations": [
+        {
+          "id": 19247,
+          "title": "Animalympics - As Feras das Olimpíadas",
+          "poster": "https://image.tmdb.org/t/p/w185/hmvKcJq7BKObGe0df8lpPHXQil6.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 78552,
+          "title": "Sweet Sixteen",
+          "poster": "https://image.tmdb.org/t/p/w185/gPnuYWok19qgYZi6NiOi6KQegM8.jpg",
+          "rating": 4.7
+        },
+        {
+          "id": 80504,
+          "title": "Electric Light Orchestra: Out of the Blue - Live at Wembley",
+          "poster": "https://image.tmdb.org/t/p/w185/480HFHEotGjesCyNTjNe7Pwxh8o.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 16231,
+          "title": "Wild Zero",
+          "poster": "https://image.tmdb.org/t/p/w185/9HOpvIaFJSwFyDXoULC9hWVdVsS.jpg",
+          "rating": 5.6
+        },
+        {
+          "id": 733491,
+          "title": "They Live Inside Us",
+          "poster": "https://image.tmdb.org/t/p/w185/1GJLLFlUaPEok4y8TXk5erbryt9.jpg",
+          "rating": 5.6
+        },
+        {
+          "id": 17832,
+          "title": "Kull, o Conquistador",
+          "poster": "https://image.tmdb.org/t/p/w185/cgKK2eCdb5LLaQBDQZbmR312q1O.jpg",
+          "rating": 5
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442998-257",
@@ -26098,7 +28901,167 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/kvuTYRdZsniw0YJl8hWRBSlmEEz.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 10733,
+      "imdbId": "tt0318974",
+      "title": "O Álamo",
+      "originalTitle": "The Alamo",
+      "tagline": null,
+      "overview": "Primavera de 1836. Mesmo com poucas chances de vitória, cerca de 200 homens de várias raças se unem na defesa de um pequeno forte no Texas. Durante 13 dias eles enfrentam as tropas do general mexicano Santa Anna (Emilio Echevarria).",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2004-04-07",
+      "year": "2004",
+      "rating": 5.8,
+      "voteCount": 352,
+      "popularity": 2,
+      "certification": null,
+      "genres": [
+        "História",
+        "Guerra",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/kvuTYRdZsniw0YJl8hWRBSlmEEz.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/kvuTYRdZsniw0YJl8hWRBSlmEEz.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/fy8E5sF1Phf5aihA3nxx4Qqxotl.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/fy8E5sF1Phf5aihA3nxx4Qqxotl.jpg",
+      "cast": [
+        {
+          "id": 6065,
+          "name": "Dennis Quaid",
+          "character": "Sam Houston",
+          "photo": "https://image.tmdb.org/t/p/w185/lMaDAJHzsKH7U3dln2B3kY3rOhE.jpg"
+        },
+        {
+          "id": 879,
+          "name": "Billy Bob Thornton",
+          "character": "Davy Crockett",
+          "photo": "https://image.tmdb.org/t/p/w185/i5EKWHuXokznIDMy2prTXzRmklI.jpg"
+        },
+        {
+          "id": 12261,
+          "name": "Jason Patric",
+          "character": "James Bowie",
+          "photo": "https://image.tmdb.org/t/p/w185/iv21ZjE90f9QNiNONKF9Lp6ZD68.jpg"
+        },
+        {
+          "id": 17178,
+          "name": "Patrick Wilson",
+          "character": "William Travis",
+          "photo": "https://image.tmdb.org/t/p/w185/oym6H2QD9esk4yABjCHaUoNAOa8.jpg"
+        },
+        {
+          "id": 263,
+          "name": "Emilio Echevarría",
+          "character": "Antonio Lopez de Santa Ana",
+          "photo": "https://image.tmdb.org/t/p/w185/dd97sd38NhiXlvfrL4ZpLi138Dk.jpg"
+        },
+        {
+          "id": 56679,
+          "name": "Edwin Hodge",
+          "character": "Joe",
+          "photo": "https://image.tmdb.org/t/p/w185/lkouUtGzfgUPUj1LP8cEk8yvKXo.jpg"
+        },
+        {
+          "id": 25933,
+          "name": "Emily Deschanel",
+          "character": "Rosanna Travis",
+          "photo": "https://image.tmdb.org/t/p/w185/bS4F39NlQAURKtO5r1CD3ivSf62.jpg"
+        },
+        {
+          "id": 31384,
+          "name": "Jordi Mollà",
+          "character": "Juan Seguin",
+          "photo": "https://image.tmdb.org/t/p/w185/9XsTmWLJ2qMXoUpcb105h6h5OUX.jpg"
+        },
+        {
+          "id": 15374,
+          "name": "Leon Rippy",
+          "character": "Sgt. William Ward",
+          "photo": "https://image.tmdb.org/t/p/w185/jJfrzZ5BlJoWyU8JHbdnPxyGGf8.jpg"
+        },
+        {
+          "id": 46772,
+          "name": "Marc Blucas",
+          "character": "James Bonham",
+          "photo": "https://image.tmdb.org/t/p/w185/zQrZosMrd5pDWTaoOIHcbfeFOQS.jpg"
+        },
+        {
+          "id": 2846,
+          "name": "Robert Prentiss",
+          "character": "Albert Grimes",
+          "photo": null
+        },
+        {
+          "id": 154878,
+          "name": "Kevin Page",
+          "character": "Micajah Autry",
+          "photo": "https://image.tmdb.org/t/p/w185/qI957fWg1L0tZCUW1mhYsFXKNqi.jpg"
+        },
+        {
+          "id": 177905,
+          "name": "Joe Stevens",
+          "character": "Mial Scurlock",
+          "photo": "https://image.tmdb.org/t/p/w185/pCflBRau0xOGR17W1kzue7ySVqv.jpg"
+        },
+        {
+          "id": 1325915,
+          "name": "Stephen Bruton",
+          "character": "Captain Almeron Dickinson",
+          "photo": "https://image.tmdb.org/t/p/w185/claY57IrOCGyKVNMr9bwhoIi396.jpg"
+        },
+        {
+          "id": 978608,
+          "name": "Laura Clifton",
+          "character": "Susanna Dickinson",
+          "photo": "https://image.tmdb.org/t/p/w185/2WjG6uBMnQ2owCfmGVE3cZ8vIen.jpg"
+        }
+      ],
+      "keywords": [
+        "texas",
+        "based on true story",
+        "uprising",
+        "alamo"
+      ],
+      "recommendations": [
+        {
+          "id": 18061,
+          "title": "Alvorada Sangrenta",
+          "poster": "https://image.tmdb.org/t/p/w185/dGFmC4gRYUMcbVktIgM9kyqNqk8.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 33110,
+          "title": "Box 507",
+          "poster": "https://image.tmdb.org/t/p/w185/hWi4jfgOY4NQ8kZvgXieSL210Ci.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 29078,
+          "title": "Duelo de Campeões",
+          "poster": "https://image.tmdb.org/t/p/w185/d5E8BBhZxm4JxteRhjimzvtxqIc.jpg",
+          "rating": 5.7
+        },
+        {
+          "id": 95407,
+          "title": "Uma Winchester Entre Mil",
+          "poster": "https://image.tmdb.org/t/p/w185/xVRH0boI0O9oZHnho6yVKvpJFh.jpg",
+          "rating": 5.1
+        },
+        {
+          "id": 365418,
+          "title": "Der Einstand",
+          "poster": "https://image.tmdb.org/t/p/w185/xYYpRSOyeKDJ6WyIOo8GMdLj6gn.jpg",
+          "rating": 7
+        },
+        {
+          "id": 879757,
+          "title": "Christoph Waltz - The Charm of Evil",
+          "poster": "https://image.tmdb.org/t/p/w185/6cXyN8Chji82kZAKrqPDaIM4tnq.jpg",
+          "rating": 8
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770501442998-8853",

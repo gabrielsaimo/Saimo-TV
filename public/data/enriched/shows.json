@@ -2993,7 +2993,164 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 16,
-    "tmdb": null
+    "tmdb": {
+      "id": 131589,
+      "imdbId": "tt15251764",
+      "title": "Brincando com Fogo: América Latina",
+      "originalTitle": "Jugando con fuego: Latino",
+      "tagline": null,
+      "overview": "Neste reality, um grupo de solteiros da América Latina e da Espanha é desafiado a ficar sem sexo. A recompensa pela abstinência? 100 mil dólares.",
+      "status": "Canceled",
+      "language": "es",
+      "releaseDate": "2021-09-15",
+      "year": "2021",
+      "rating": 7,
+      "voteCount": 27,
+      "popularity": 2,
+      "certification": "16",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/tI7nIsXmM5xJriViQmBR26w4wlU.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/tI7nIsXmM5xJriViQmBR26w4wlU.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/4BUn5Lz4D253d26s03ElqtpgEJ2.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/4BUn5Lz4D253d26s03ElqtpgEJ2.jpg",
+      "cast": [
+        {
+          "id": 937505,
+          "name": "Itatí Cantoral",
+          "character": "Narrator",
+          "photo": "https://image.tmdb.org/t/p/w185/mpkvomyNT4QkhjIVFV0M78pLTAr.jpg"
+        },
+        {
+          "id": 3808550,
+          "name": "Caro Mendoza",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808551,
+          "name": "Manuela Angel",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808553,
+          "name": "Zaira de la Morena",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808555,
+          "name": "Lilian Dg",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808556,
+          "name": "Clovis Nienow",
+          "character": "Self - Contestant",
+          "photo": "https://image.tmdb.org/t/p/w185/tyI2IfXY5g5FETc4npxrxMFn9mo.jpg"
+        },
+        {
+          "id": 3808557,
+          "name": "Flor Zaccanti",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808558,
+          "name": "Israel Lomeli",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808560,
+          "name": "Dadvian Esparza",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808561,
+          "name": "Joel Rojo",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 2824400,
+          "name": "Nick Rodriguez",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808562,
+          "name": "Dahiana Dominguez",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808563,
+          "name": "Jessica Stonem",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808564,
+          "name": "Locho Loccisano",
+          "character": "Self - Contestant",
+          "photo": null
+        },
+        {
+          "id": 3808565,
+          "name": "Nick Herazo",
+          "character": "Self - Contestant",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "dating show"
+      ],
+      "recommendations": [
+        {
+          "id": 127617,
+          "title": "Elize Matsunaga: Era uma Vez um Crime",
+          "poster": "https://image.tmdb.org/t/p/w185/nTRqmcds3dn3Bbu5Sts07ouyF0k.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 128251,
+          "title": "Brincando com Fogo: Brasil",
+          "poster": "https://image.tmdb.org/t/p/w185/oVvwzG5S3SO7cF74xi1eLGlSDY5.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 131584,
+          "title": "King of Boys: The Return of the King",
+          "poster": "https://image.tmdb.org/t/p/w185/pnqDRMEy1iTFUR7QXFV5CDg7KZw.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 14658,
+          "title": "Survivor",
+          "poster": "https://image.tmdb.org/t/p/w185/1usR1nanbDvnc0LJlWd5TOylT9M.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 73375,
+          "title": "Jack Ryan de Tom Clancy",
+          "poster": "https://image.tmdb.org/t/p/w185/eliqp9mp4ptAmsdys2NXh7JYXXA.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 105214,
+          "title": "Desejo Sombrio",
+          "poster": "https://image.tmdb.org/t/p/w185/7nBrKoiH3vXFQtxJmM3v5cRMdpj.jpg",
+          "rating": 7.3
+        }
+      ],
+      "seasons": 1,
+      "episodes": 8
+    }
   },
   {
     "id": "series-1769967356749-2055",
@@ -3036,7 +3193,75 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 4,
-    "tmdb": null
+    "tmdb": {
+      "id": 112869,
+      "imdbId": "tt13255112",
+      "title": "Casa Pronta Para o Natal",
+      "originalTitle": "Holiday Home Makeover with Mr. Christmas",
+      "tagline": null,
+      "overview": "Conhecido como Sr. Natal, o designer de interiores Benjamin Bradley e sua equipe de “duendes” ajudam famílias a decorarem suas casas para o Natal.",
+      "status": "Ended",
+      "language": "en",
+      "releaseDate": "2020-11-18",
+      "year": "2020",
+      "rating": 6.6,
+      "voteCount": 76,
+      "popularity": 1,
+      "certification": null,
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/ajEgl5kU00ZTca3sYbJdaGuT5lG.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/ajEgl5kU00ZTca3sYbJdaGuT5lG.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/9Cn8uAyIdD20ifCROwpRIRsIAuM.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/9Cn8uAyIdD20ifCROwpRIRsIAuM.jpg",
+      "cast": [],
+      "keywords": [
+        "interior design",
+        "christmas",
+        "home makeover"
+      ],
+      "recommendations": [
+        {
+          "id": 115970,
+          "title": "50M²",
+          "poster": "https://image.tmdb.org/t/p/w185/hQfJUnWtl2GfqkJufSKuYqOl70o.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 112166,
+          "title": "Yasuke",
+          "poster": "https://image.tmdb.org/t/p/w185/hgYqEkZQS2fgC6E9fe8Le1Kxbmw.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 42025,
+          "title": "Mako Mermaids",
+          "poster": "https://image.tmdb.org/t/p/w185/pyo0V8p2RrBCUx7bAVroOssTRR9.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 10821,
+          "title": "As pistas de Blue",
+          "poster": "https://image.tmdb.org/t/p/w185/dSCi1cLsKiQ7713m8Lf9J8iHbRH.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 12225,
+          "title": "Peppa Pig",
+          "poster": "https://image.tmdb.org/t/p/w185/iVaiv0S34JnRKHnYkEiObOI15k5.jpg",
+          "rating": 6.6
+        },
+        {
+          "id": 1398,
+          "title": "Família Soprano",
+          "poster": "https://image.tmdb.org/t/p/w185/xmn4PfUivHztFdJBMtijhLU4KTD.jpg",
+          "rating": 8.7
+        }
+      ],
+      "seasons": 1,
+      "episodes": 4
+    }
   },
   {
     "id": "series-1769967356749-686",
@@ -3391,7 +3616,75 @@
     },
     "totalSeasons": 3,
     "totalEpisodes": 48,
-    "tmdb": null
+    "tmdb": {
+      "id": 105689,
+      "imdbId": "tt12580168",
+      "title": "Casamento à Indiana",
+      "originalTitle": "Indian Matchmaking",
+      "tagline": null,
+      "overview": "Sima Taparia orienta clientes que estão em busca de um casamento arranjado e mostra um pouco dessa tradição nos dias de hoje.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2020-07-16",
+      "year": "2020",
+      "rating": 6.6,
+      "voteCount": 23,
+      "popularity": 1,
+      "certification": "12",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/to0ZjbkPUt7WlK1RMPBZ4fa99EJ.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/to0ZjbkPUt7WlK1RMPBZ4fa99EJ.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/oWFFkEg53Q8ZPTcUhVZKDV68Hrd.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/oWFFkEg53Q8ZPTcUhVZKDV68Hrd.jpg",
+      "cast": [],
+      "keywords": [
+        "parent child relationship",
+        "arranged marriage",
+        "matchmaking"
+      ],
+      "recommendations": [
+        {
+          "id": 74577,
+          "title": "The End of the F***ing World",
+          "poster": "https://image.tmdb.org/t/p/w185/zQ5fG5NAQ5K8cMm58bxQNwUEbMj.jpg",
+          "rating": 8
+        },
+        {
+          "id": 111188,
+          "title": "Scam 1992: The Harshad Mehta Story",
+          "poster": "https://image.tmdb.org/t/p/w185/fiimZ9Xt5cPTPHNrbS4QautBXpU.jpg",
+          "rating": 8.3
+        },
+        {
+          "id": 66732,
+          "title": "Stranger Things",
+          "poster": "https://image.tmdb.org/t/p/w185/twfKp60THrcOIep9sjHODOOfO8d.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 48891,
+          "title": "Brooklyn Nine-Nine: Lei e Desordem",
+          "poster": "https://image.tmdb.org/t/p/w185/A3SymGlOHefSKbz1bCOz56moupS.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 13916,
+          "title": "Death Note",
+          "poster": "https://image.tmdb.org/t/p/w185/tCZFfYTIwrR7n94J6G14Y4hAFU6.jpg",
+          "rating": 8.6
+        }
+      ],
+      "seasons": 3,
+      "episodes": 24
+    }
   },
   {
     "id": "series-1769967356749-1299",
@@ -3726,7 +4019,71 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 6,
-    "tmdb": null
+    "tmdb": {
+      "id": 132012,
+      "imdbId": "tt13438900",
+      "title": "Como Virar um Cowboy",
+      "originalTitle": "How to Be a Cowboy",
+      "tagline": null,
+      "overview": "Dale Brisby usa as redes sociais e as habilidades de rodeio para manter vivas as tradições de caubói — e, de quebra, ensina ao mundo como montar.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2021-09-01",
+      "year": "2021",
+      "rating": 6,
+      "voteCount": 2,
+      "popularity": 0,
+      "certification": "10",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/iI8FdyODT9b6ydXfPLTYaPVko5i.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/iI8FdyODT9b6ydXfPLTYaPVko5i.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/lWcRwNF4ekO54AYkBghkX6Jizms.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/lWcRwNF4ekO54AYkBghkX6Jizms.jpg",
+      "cast": [],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 50325,
+          "title": "Sakurasou no Pet na Kanojo",
+          "poster": "https://image.tmdb.org/t/p/w185/euzCsaY9Jb49gSqUWXSDonBF3su.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 75214,
+          "title": "Violet Evergarden",
+          "poster": "https://image.tmdb.org/t/p/w185/61EwFPqc0r1uJo6la49J55F8bQ8.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 84669,
+          "title": "The Quintessential Quintuplets",
+          "poster": "https://image.tmdb.org/t/p/w185/mrahUSmFjae8UHtlOcZ58ytmAGu.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 42589,
+          "title": "Another",
+          "poster": "https://image.tmdb.org/t/p/w185/h3YyESKtOy7Rrv7zymyF9kfpz7T.jpg",
+          "rating": 8.3
+        },
+        {
+          "id": 63145,
+          "title": "Charlotte",
+          "poster": "https://image.tmdb.org/t/p/w185/udiCs1RBGfda1z52cBxu8j9JNmP.jpg",
+          "rating": 8.3
+        },
+        {
+          "id": 83103,
+          "title": "Domestic Girlfriend",
+          "poster": "https://image.tmdb.org/t/p/w185/yT5HNeqQaoF4TmmQi3RMj8P7uwZ.jpg",
+          "rating": 8.2
+        }
+      ],
+      "seasons": 1,
+      "episodes": 6
+    }
   },
   {
     "id": "series-1769967356749-9868",
@@ -3783,7 +4140,98 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 6,
-    "tmdb": null
+    "tmdb": {
+      "id": 105125,
+      "imdbId": "tt11301834",
+      "title": "Crazy Delicious",
+      "originalTitle": "Crazy Delicious",
+      "tagline": null,
+      "overview": "As refeições diárias são transformadas em criações culinárias extraordinárias em uma competição mágica de comida em um conjunto comestível. Os amantes de comida mais talentosos do Reino Unido são desafiados a produzir refeições que devem impressionar com originalidade, visual e sabores extraordinários.",
+      "status": "Ended",
+      "language": "en",
+      "releaseDate": "2020-01-21",
+      "year": "2020",
+      "rating": 6.5,
+      "voteCount": 13,
+      "popularity": 1,
+      "certification": null,
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/altQjpJCcwGpiW453jWoAPZMj15.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/altQjpJCcwGpiW453jWoAPZMj15.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/zcje7Y0QwDSCE5p88x6IQj37bWV.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/zcje7Y0QwDSCE5p88x6IQj37bWV.jpg",
+      "cast": [
+        {
+          "id": 1981289,
+          "name": "Jayde Adams",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/bk4txc5UtemCLVXTpE0SV4A9KPE.jpg"
+        },
+        {
+          "id": 2124348,
+          "name": "Carla Hall",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/nmdlk5hfD8QBEfv8oXvOwXm0lVY.jpg"
+        },
+        {
+          "id": 1594269,
+          "name": "Niklas Ekstedt",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/Nibmo4mOLK7iumnYou6741lhjW.jpg"
+        },
+        {
+          "id": 221760,
+          "name": "Heston Blumenthal",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/iIoElE5GBT5opN9DbboK9gkd41w.jpg"
+        }
+      ],
+      "keywords": [
+        "cooking"
+      ],
+      "recommendations": [
+        {
+          "id": 78183,
+          "title": "Nightflyers",
+          "poster": "https://image.tmdb.org/t/p/w185/yiOc9hkVAkjmSmtGPg5lzyO7IEG.jpg",
+          "rating": 5.7
+        },
+        {
+          "id": 87024,
+          "title": "Go! Viva do seu Jeito",
+          "poster": "https://image.tmdb.org/t/p/w185/OoyMtlnGaUYzWwWRFgi4FxUemy.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 129674,
+          "title": "Esquadrão de Confeiteiros",
+          "poster": "https://image.tmdb.org/t/p/w185/eq39DhPDN7MENem1hq48MdltWdw.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 133090,
+          "title": "Cozinhando o Impossível",
+          "poster": "https://image.tmdb.org/t/p/w185/hqvELiloDxYwAv1SF0Nkg7vmbfv.jpg",
+          "rating": 7
+        },
+        {
+          "id": 84958,
+          "title": "Loki",
+          "poster": "https://image.tmdb.org/t/p/w185/ukR0MkCQE6IylzBPd61txJi1L3E.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        }
+      ],
+      "seasons": 1,
+      "episodes": 6
+    }
   },
   {
     "id": "series-1769967356750-7624",
@@ -3854,7 +4302,81 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 8,
-    "tmdb": null
+    "tmdb": {
+      "id": 228628,
+      "imdbId": "tt28022865",
+      "title": "É Amor ou Falsidade?",
+      "originalTitle": "Falso amor",
+      "tagline": null,
+      "overview": "Cinco casais testam a fidelidade neste reality caliente em que a tecnologia de deepfake mistura verdades e mentiras. O motivo? Um belo prêmio em dinheiro.",
+      "status": "Returning Series",
+      "language": "es",
+      "releaseDate": "2023-07-06",
+      "year": "2023",
+      "rating": 5.8,
+      "voteCount": 19,
+      "popularity": 1,
+      "certification": "14",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/cndCx0UnQdl2wpyOY4nTu5RCu9J.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/cndCx0UnQdl2wpyOY4nTu5RCu9J.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/5zIEZxi1KBfCYx6EHOZKkoo26S5.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/5zIEZxi1KBfCYx6EHOZKkoo26S5.jpg",
+      "cast": [
+        {
+          "id": 2001534,
+          "name": "Raquel Sánchez Silva",
+          "character": "Self - Host",
+          "photo": "https://image.tmdb.org/t/p/w185/j6fEpVTjnsvAK2tVdnpZdLcKxF8.jpg"
+        }
+      ],
+      "keywords": [
+        "reality competition",
+        "deepfake"
+      ],
+      "recommendations": [
+        {
+          "id": 64835,
+          "title": "Hap and Leonard",
+          "poster": "https://image.tmdb.org/t/p/w185/6v3o7UF5SbkbkMFPR0lJo9GyR53.jpg",
+          "rating": 6.9
+        },
+        {
+          "id": 225634,
+          "title": "Monstros: Irmãos Menendez: Assassinos dos Pais",
+          "poster": "https://image.tmdb.org/t/p/w185/xjFWzcu8LyFnuuHcVSZvVSp04XF.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 2316,
+          "title": "The Office",
+          "poster": "https://image.tmdb.org/t/p/w185/e7BoS8uUnew9ioS6reqtK9matqy.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 66732,
+          "title": "Stranger Things",
+          "poster": "https://image.tmdb.org/t/p/w185/twfKp60THrcOIep9sjHODOOfO8d.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 48891,
+          "title": "Brooklyn Nine-Nine: Lei e Desordem",
+          "poster": "https://image.tmdb.org/t/p/w185/A3SymGlOHefSKbz1bCOz56moupS.jpg",
+          "rating": 8.2
+        }
+      ],
+      "seasons": 1,
+      "episodes": 8
+    }
   },
   {
     "id": "series-1769967356750-2718",
@@ -4207,7 +4729,34 @@
     },
     "totalSeasons": 2,
     "totalEpisodes": 48,
-    "tmdb": null
+    "tmdb": {
+      "id": 113065,
+      "imdbId": "tt12560128",
+      "title": "Largados e Pelados: França",
+      "originalTitle": "Retour à l'instinct primaire",
+      "tagline": null,
+      "overview": "Este é o teste final de sobrevivência do mais apto. O que acontece quando você coloca um homem e uma mulher sem roupas em uma das áreas mais remotas do mundo?",
+      "status": "Ended",
+      "language": "fr",
+      "releaseDate": "2018-08-29",
+      "year": "2018",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/gZPjmvrx3inWXTGSStM3Cz0Pbhe.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/gZPjmvrx3inWXTGSStM3Cz0Pbhe.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/7D2ucBQ49rN0YRe5T2ZEwjDc4VI.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/7D2ucBQ49rN0YRe5T2ZEwjDc4VI.jpg",
+      "cast": [],
+      "keywords": [],
+      "recommendations": [],
+      "seasons": 2,
+      "episodes": 25
+    }
   },
   {
     "id": "series-1769967356750-5188",
@@ -4264,7 +4813,79 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 6,
-    "tmdb": null
+    "tmdb": {
+      "id": 71849,
+      "imdbId": "tt8874364",
+      "title": "Lendas Selvagens",
+      "originalTitle": "Expedition Mungo",
+      "tagline": null,
+      "overview": "Em cada episódio, Mungo e sua equipe empreendem uma missão exploratória, viajando a diferentes destinos para captar imagens inéditas de seres que povoam lendas aterrorizantes e que teriam desferido ataques a humanos. Com Mungo está uma equipe formada por outros cinegrafistas, além de guias que acompanham toda jornada. Ao conversar com moradores locais e investigar aquilo que lhe é contado, Mungo segue a trilha das pistas para descobrir até onde vão as lendas e qual parte dos relatos faz referência a espécies que ainda não foram catalogadas. O grande objetivo é conseguir encontrar esses animais e filmá-los pela primeira vez.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2017-05-28",
+      "year": "2017",
+      "rating": 6.2,
+      "voteCount": 3,
+      "popularity": 0,
+      "certification": "TV-PG",
+      "genres": [
+        "Action & Adventure",
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/jrFiYx7ArvZgWyIUdkCkZUjY6vV.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/jrFiYx7ArvZgWyIUdkCkZUjY6vV.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/bDPBHjcuL3WQVHnRHXeS7WNsmV0.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/bDPBHjcuL3WQVHnRHXeS7WNsmV0.jpg",
+      "cast": [
+        {
+          "id": 1821573,
+          "name": "Paul Mungeam",
+          "character": "Himself - Presenter",
+          "photo": "https://image.tmdb.org/t/p/w185/5Qx1SPOS31GlrzfmsxYTSnvPlZ5.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 127493,
+          "title": "Você é Minha Glória",
+          "poster": "https://image.tmdb.org/t/p/w185/yx50lkGyGS7XNq5ADSP812f2yjS.jpg",
+          "rating": 8.3
+        },
+        {
+          "id": 155533,
+          "title": "Último Ato",
+          "poster": "https://image.tmdb.org/t/p/w185/aTWqVvPd0kWZcHELD3TowIr8Aqh.jpg",
+          "rating": 6.7
+        },
+        {
+          "id": 125620,
+          "title": "Senior Secret Love: Puppy Honey",
+          "poster": "https://image.tmdb.org/t/p/w185/5aZEv5svOjGK15oI6aF97MoEpyZ.jpg",
+          "rating": 9.3
+        },
+        {
+          "id": 155040,
+          "title": "Meu Homem é um Cupido",
+          "poster": "https://image.tmdb.org/t/p/w185/eAsPxMmbz5WPodGKxRWFzuSYQWL.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 243081,
+          "title": "Filtro",
+          "poster": "https://image.tmdb.org/t/p/w185/f2wTL0Amon77HpYa95VTHj9NEyl.jpg",
+          "rating": 8.7
+        },
+        {
+          "id": 63417,
+          "title": "Noble, My Love",
+          "poster": "https://image.tmdb.org/t/p/w185/iW1QES340q5dPcLtAcOvt69cEg4.jpg",
+          "rating": 7.8
+        }
+      ],
+      "seasons": 1,
+      "episodes": 6
+    }
   },
   {
     "id": "series-1769967356751-445",
@@ -4349,7 +4970,99 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 10,
-    "tmdb": null
+    "tmdb": {
+      "id": 100712,
+      "imdbId": "tt11114752",
+      "title": "Masterchef Brasil: A Revanche",
+      "originalTitle": "Masterchef Brasil: A Revanche",
+      "tagline": null,
+      "overview": "Ex-participantes das temporadas anteriores de MasterChef voltam à disputa pelo título de melhor cozinheiro do Brasil.",
+      "status": "Ended",
+      "language": "pt",
+      "releaseDate": "2019-10-15",
+      "year": "2019",
+      "rating": 7.7,
+      "voteCount": 4,
+      "popularity": 0,
+      "certification": "L",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/uvXp8HXgPwsVfMZTGaLnYXOuqT1.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/uvXp8HXgPwsVfMZTGaLnYXOuqT1.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/s0TSvIoXo6ARaXfzjs8bhOZyHnf.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/s0TSvIoXo6ARaXfzjs8bhOZyHnf.jpg",
+      "cast": [
+        {
+          "id": 1684944,
+          "name": "Ana Paula Padrão",
+          "character": "Self - Host",
+          "photo": "https://image.tmdb.org/t/p/w185/duzd3NFIHWDSvQHTuBjgvRlaAk1.jpg"
+        },
+        {
+          "id": 1684953,
+          "name": "Paola Carosella",
+          "character": "Self - Judge",
+          "photo": "https://image.tmdb.org/t/p/w185/hJZFLzfNRMMHcNzPPLDmZxFyK2q.jpg"
+        },
+        {
+          "id": 1684955,
+          "name": "Henrique Fogaça",
+          "character": "Self - Judge",
+          "photo": "https://image.tmdb.org/t/p/w185/eyT4aMYvpDHxrFrf2fpkYhsfVgz.jpg"
+        },
+        {
+          "id": 1684947,
+          "name": "Érick Jacquin",
+          "character": "Self - Judge",
+          "photo": "https://image.tmdb.org/t/p/w185/sMeTmAf0ien9XPbQ2fB5flcUESs.jpg"
+        }
+      ],
+      "keywords": [
+        "all-stars",
+        "bake off"
+      ],
+      "recommendations": [
+        {
+          "id": 92783,
+          "title": "Mulher-Hulk: Defensora de Heróis",
+          "poster": "https://image.tmdb.org/t/p/w185/5o8Nw4mBCqyO5dtfpPAZXjv5XJ2.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 66732,
+          "title": "Stranger Things",
+          "poster": "https://image.tmdb.org/t/p/w185/twfKp60THrcOIep9sjHODOOfO8d.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 48891,
+          "title": "Brooklyn Nine-Nine: Lei e Desordem",
+          "poster": "https://image.tmdb.org/t/p/w185/A3SymGlOHefSKbz1bCOz56moupS.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 93405,
+          "title": "Round 6",
+          "poster": "https://image.tmdb.org/t/p/w185/6gcHdboppvplmBWxvROc96NJnmm.jpg",
+          "rating": 7.9
+        },
+        {
+          "id": 85271,
+          "title": "WandaVision",
+          "poster": "https://image.tmdb.org/t/p/w185/8mAyDNSCZDiejPTm4lwgbztut7y.jpg",
+          "rating": 8.2
+        }
+      ],
+      "seasons": 1,
+      "episodes": 10
+    }
   },
   {
     "id": "series-1769967356751-3146",
@@ -4594,7 +5307,111 @@
     },
     "totalSeasons": 4,
     "totalEpisodes": 32,
-    "tmdb": null
+    "tmdb": {
+      "id": 82357,
+      "imdbId": "tt8893550",
+      "title": "Midas do Ferro-Velho",
+      "originalTitle": "Car Masters: Rust to Riches",
+      "tagline": null,
+      "overview": "Em busca de uma raridade que possa valer uma nota no mercado, a equipe da Gotham Garage transforma e negocia uma eclética coleção de veículos.",
+      "status": "Canceled",
+      "language": "en",
+      "releaseDate": "2018-09-14",
+      "year": "2018",
+      "rating": 7.5,
+      "voteCount": 92,
+      "popularity": 5,
+      "certification": "TV-14",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/modsi2TTbi49DVxW4ltBF84DsK6.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/modsi2TTbi49DVxW4ltBF84DsK6.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/w7jYbwtwODd4Wpx95b53uFVoT20.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/w7jYbwtwODd4Wpx95b53uFVoT20.jpg",
+      "cast": [
+        {
+          "id": 2356370,
+          "name": "Mark Towle",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/7Wv0qedr2JK6oXg39VY7TUOQsnL.jpg"
+        },
+        {
+          "id": 2356371,
+          "name": "Shawn Pilot",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/kpT1adxVaygI46LSIWXdXcCGgGq.jpg"
+        },
+        {
+          "id": 2356372,
+          "name": "Constance Nunes",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/5ratHnSoGlLipn7d5JDD4b1FBom.jpg"
+        },
+        {
+          "id": 4429850,
+          "name": "Tony Quinones",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/qb4j4jynHS4JHtDWkvtfkz6zFMg.jpg"
+        },
+        {
+          "id": 4429851,
+          "name": "Michael 'Caveman' Pyle",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/86gjf5BIfTWViuzGJ6SScsyfJLU.jpg"
+        }
+      ],
+      "keywords": [
+        "garage",
+        "crew",
+        "automobile",
+        "car restoration",
+        "custom car",
+        "car tuning",
+        "car modding",
+        "classic cars"
+      ],
+      "recommendations": [
+        {
+          "id": 75814,
+          "title": "Terrace House: Opening New Doors",
+          "poster": "https://image.tmdb.org/t/p/w185/7FJboauhE3x5urYVTmL9YG3fxg7.jpg",
+          "rating": 7.7
+        },
+        {
+          "id": 82949,
+          "title": "Dancing Queen",
+          "poster": "https://image.tmdb.org/t/p/w185/lHADimjTu8I7A57hW3wAUWzOcUq.jpg",
+          "rating": 5.6
+        },
+        {
+          "id": 65813,
+          "title": "O Bebê de Rosemary",
+          "poster": "https://image.tmdb.org/t/p/w185/rJ9lgdZd8qGabCy4HJXSy5nJjYP.jpg",
+          "rating": 5.7
+        },
+        {
+          "id": 82744,
+          "title": "Catch-22",
+          "poster": "https://image.tmdb.org/t/p/w185/5pgv0U82hwS8Up7w7y29fBKyGJH.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 76438,
+          "title": "Everything Sucks!",
+          "poster": "https://image.tmdb.org/t/p/w185/t1u1Ff43QnMCecao2lzx5wpR7Xg.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 63646,
+          "title": "Counterpart: Mundo Paralelo",
+          "poster": "https://image.tmdb.org/t/p/w185/vknAINYvPBF5CN2gp9BtuqHXtNN.jpg",
+          "rating": 7.4
+        }
+      ],
+      "seasons": 6,
+      "episodes": 48
+    }
   },
   {
     "id": "series-1769967356751-9838",
@@ -4693,7 +5510,79 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 12,
-    "tmdb": null
+    "tmdb": {
+      "id": 121424,
+      "imdbId": "tt14136320",
+      "title": "Mágica para a Humanidade: Espanha",
+      "originalTitle": "Magic for Humans Spain",
+      "tagline": null,
+      "overview": "O ilusionista Mago Pop vai às ruas de Barcelona, onde entretém pessoas de todas as idades com truques divertidos e impressionantes.",
+      "status": "Returning Series",
+      "language": "es",
+      "releaseDate": "2021-03-26",
+      "year": "2021",
+      "rating": 3.8,
+      "voteCount": 5,
+      "popularity": 1,
+      "certification": "12",
+      "genres": [
+        "Comédia",
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/l5FB7RNUWTu80M3GD3qhYbUFOaf.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/l5FB7RNUWTu80M3GD3qhYbUFOaf.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/18rNLGHCcKsxbji7zdCBW6fiqUb.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/18rNLGHCcKsxbji7zdCBW6fiqUb.jpg",
+      "cast": [
+        {
+          "id": 3022490,
+          "name": "El Mago Pop",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/4ykybqHqJMry0KrBAaw4ZA6WOim.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 42589,
+          "title": "Another",
+          "poster": "https://image.tmdb.org/t/p/w185/h3YyESKtOy7Rrv7zymyF9kfpz7T.jpg",
+          "rating": 8.3
+        },
+        {
+          "id": 128883,
+          "title": "Hometown Cha-Cha-Cha",
+          "poster": "https://image.tmdb.org/t/p/w185/kcs6U5cAD1WbvmWSyQheGpfysvl.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 1431,
+          "title": "CSI: Investigação Criminal",
+          "poster": "https://image.tmdb.org/t/p/w185/1OOXYxrLLupCiUP78fDVGwaq0As.jpg",
+          "rating": 7.6
+        },
+        {
+          "id": 194766,
+          "title": "O Verão Que Mudou Minha Vida",
+          "poster": "https://image.tmdb.org/t/p/w185/49AV6vqypkekwI5kjKTvBokB9n1.jpg",
+          "rating": 8.1
+        },
+        {
+          "id": 129478,
+          "title": "O Rei de Porcelana",
+          "poster": "https://image.tmdb.org/t/p/w185/xiwbHmrFqC2UJejuHsKGYoYegbi.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 68398,
+          "title": "Dr. Romântico",
+          "poster": "https://image.tmdb.org/t/p/w185/eBbxLx6Gzz7sG1oE8FXNQPjYOV7.jpg",
+          "rating": 8.2
+        }
+      ],
+      "seasons": 1,
+      "episodes": 6
+    }
   },
   {
     "id": "series-1769967356751-2970",
@@ -4750,7 +5639,87 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 6,
-    "tmdb": null
+    "tmdb": {
+      "id": 112917,
+      "imdbId": "tt12571792",
+      "title": "Nasce Uma Rainha",
+      "originalTitle": "Nasce Uma Rainha",
+      "tagline": null,
+      "overview": "Neste reality show, Gloria Groove e Alexia Twister ajudam seis drags a realizar seus sonhos e ganhar confiança para arrasar no palco.",
+      "status": "Canceled",
+      "language": "pt",
+      "releaseDate": "2020-11-11",
+      "year": "2020",
+      "rating": 6.8,
+      "voteCount": 6,
+      "popularity": 1,
+      "certification": null,
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/e4GCnx9gDeRTZvpdNq9vtUAs0W8.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/e4GCnx9gDeRTZvpdNq9vtUAs0W8.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/ezl7vQuRvjWX4v9TTADzSksAjVB.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/ezl7vQuRvjWX4v9TTADzSksAjVB.jpg",
+      "cast": [
+        {
+          "id": 2342532,
+          "name": "Gloria Groove",
+          "character": "Gloria Groove",
+          "photo": "https://image.tmdb.org/t/p/w185/dRrW5r1aT9CUCSOEA7j6jSeZGYy.jpg"
+        },
+        {
+          "id": 2215344,
+          "name": "Alexia Twister",
+          "character": "Alexia Twister",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "drag queen",
+        "brazil"
+      ],
+      "recommendations": [
+        {
+          "id": 232671,
+          "title": "Beauty Newbie",
+          "poster": "https://image.tmdb.org/t/p/w185/9r4fOH6Lika1gtvAQFyWMxGkiTz.jpg",
+          "rating": 9.5
+        },
+        {
+          "id": 282664,
+          "title": "Salário Mínimo",
+          "poster": "https://image.tmdb.org/t/p/w185/n83Cj4W98aU8Q0PnlokLYwu8LeI.jpg",
+          "rating": 9.7
+        },
+        {
+          "id": 218446,
+          "title": "Nak",
+          "poster": "https://image.tmdb.org/t/p/w185/ySkUsK3znbofE2lbz3ePTqfxiwp.jpg",
+          "rating": 9.8
+        },
+        {
+          "id": 218442,
+          "title": "Hak Lai, My Lady",
+          "poster": "https://image.tmdb.org/t/p/w185/e3yKJpniY8ZdeXSS3vJ8x0SS4y8.jpg",
+          "rating": 9.9
+        },
+        {
+          "id": 50133,
+          "title": "O Mais Genial",
+          "poster": "https://image.tmdb.org/t/p/w185/ZxFrUs4iYA3PT4RBaHVr24mQd3.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 272466,
+          "title": "Sob a Escuridão do Sol",
+          "poster": "https://image.tmdb.org/t/p/w185/i7t1wseSd0VacpOo5E1EpEROw6.jpg",
+          "rating": 6.4
+        }
+      ],
+      "seasons": 1,
+      "episodes": 6
+    }
   },
   {
     "id": "series-1769967356752-1513",
@@ -5169,7 +6138,145 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 6,
-    "tmdb": null
+    "tmdb": {
+      "id": 262446,
+      "imdbId": "tt33296313",
+      "title": "O Sonho Africano",
+      "originalTitle": "Coming from America",
+      "tagline": null,
+      "overview": "Quatro famílias afro-americanas arriscam tudo para se mudar para uma nova terra de oportunidades: a África.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2024-09-05",
+      "year": "2024",
+      "rating": 7.5,
+      "voteCount": 4,
+      "popularity": 1,
+      "certification": "12",
+      "genres": [
+        "Reality",
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/2V6RY2iS7T6xSgC3nEI4x1kyHh1.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/2V6RY2iS7T6xSgC3nEI4x1kyHh1.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/CENYgScKnvFsj2qTjeuyH3PiAk.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/CENYgScKnvFsj2qTjeuyH3PiAk.jpg",
+      "cast": [
+        {
+          "id": 4900957,
+          "name": "Gerald Kelly",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900960,
+          "name": "LaMara Hunter-Kelly",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4400611,
+          "name": "Isiah Kelly",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900961,
+          "name": "Joshua Kelly",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900962,
+          "name": "Hunter Kelly",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900963,
+          "name": "Elaine Smiley",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900966,
+          "name": "Gabriel Smiley",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900967,
+          "name": "William Smiley",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900968,
+          "name": "River Smiley",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900971,
+          "name": "Julia Jovone-Davis",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900972,
+          "name": "Tony Jones",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4900974,
+          "name": "Ayo Jones",
+          "character": "Self",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 61856,
+          "title": "Vikings",
+          "poster": "https://image.tmdb.org/t/p/w185/4kEE7stATVrJaW93b9yMfPdhy8V.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 53579,
+          "title": "Tawan Yor Saeng",
+          "poster": "https://image.tmdb.org/t/p/w185/q1e0FU4wjoBwZgmIQyxO612f8wJ.jpg",
+          "rating": 10
+        },
+        {
+          "id": 297076,
+          "title": "Restaurant bag tremmer",
+          "poster": "https://image.tmdb.org/t/p/w185/qztlS6OnQ22c8f1Cc7oGGwEWbnY.jpg",
+          "rating": 10
+        },
+        {
+          "id": 119993,
+          "title": "The Hunter's Anthology",
+          "poster": "https://image.tmdb.org/t/p/w185/31hM8aFjbhxtKCBzbttfG5oSQVg.jpg",
+          "rating": 7.5
+        },
+        {
+          "id": 52495,
+          "title": "Tokyo Shower",
+          "poster": "https://image.tmdb.org/t/p/w185/b0TcaLAw4XDeH8cH9qWotigcCrP.jpg",
+          "rating": 3.6
+        },
+        {
+          "id": 81958,
+          "title": "Lenin: Revolution Chronicles",
+          "poster": "https://image.tmdb.org/t/p/w185/4Ez4vPX7DLsAu7DrV7nqhqht93h.jpg",
+          "rating": 6.7
+        }
+      ],
+      "seasons": 1,
+      "episodes": 6
+    }
   },
   {
     "id": "series-1769967356754-4027",
@@ -5226,7 +6333,35 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 6,
-    "tmdb": null
+    "tmdb": {
+      "id": 245267,
+      "imdbId": null,
+      "title": "Caught! Wild & Weird America",
+      "originalTitle": "Caught! Wild & Weird America",
+      "tagline": null,
+      "overview": "",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2024-01-25",
+      "year": "2024",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": "TV-14",
+      "genres": [
+        "Comédia",
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/f527mVRgRGVikr1KFaNudRX6Zym.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/f527mVRgRGVikr1KFaNudRX6Zym.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/4svKTe8eGTcRrtKocO3palhoA4a.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/4svKTe8eGTcRrtKocO3palhoA4a.jpg",
+      "cast": [],
+      "keywords": [],
+      "recommendations": [],
+      "seasons": 1,
+      "episodes": 12
+    }
   },
   {
     "id": "series-1769967356754-7400",
@@ -5423,7 +6558,34 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 26,
-    "tmdb": null
+    "tmdb": {
+      "id": 242317,
+      "imdbId": "tt27497507",
+      "title": "Amor Entre Línguas",
+      "originalTitle": "Love & Translation",
+      "tagline": null,
+      "overview": "Norte-americanos embarcam em uma aventura para encontrar a mulher de seus sonhos, mas há um porém: nenhuma delas fala ou entende inglês.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2024-01-21",
+      "year": "2024",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 1,
+      "certification": "TV-14",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/p3MxuRU3yZbEHJrhu5F0h5BpFJF.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/p3MxuRU3yZbEHJrhu5F0h5BpFJF.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/qxxOKg18PZaPPphvKAafitI967L.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/qxxOKg18PZaPPphvKAafitI967L.jpg",
+      "cast": [],
+      "keywords": [],
+      "recommendations": [],
+      "seasons": 1,
+      "episodes": 13
+    }
   },
   {
     "id": "series-1769967356754-8684",
@@ -5494,7 +6656,81 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 8,
-    "tmdb": null
+    "tmdb": {
+      "id": 248123,
+      "imdbId": "tt33038099",
+      "title": "De Ator a Cantor",
+      "originalTitle": "신인가수 조정석",
+      "tagline": null,
+      "overview": "Com 20 anos de carreira, o ator Cho Jung-seok assume o desafio de estrear como cantor em apenas 100 dias, mobilizando toda a sua rede de apoio!",
+      "status": "Ended",
+      "language": "ko",
+      "releaseDate": "2024-08-30",
+      "year": "2024",
+      "rating": 9.3,
+      "voteCount": 3,
+      "popularity": 2,
+      "certification": "12",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/iS8oxzP6GM59D4KmdvwjxSRAJQ4.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/iS8oxzP6GM59D4KmdvwjxSRAJQ4.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/cXsfimi0Qz4YHaEcwypsoGsM1Al.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/cXsfimi0Qz4YHaEcwypsoGsM1Al.jpg",
+      "cast": [
+        {
+          "id": 1223316,
+          "name": "조정석",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/pVZHsNj31fNMyWixqg26TA9HjU1.jpg"
+        }
+      ],
+      "keywords": [
+        "singer",
+        "debut"
+      ],
+      "recommendations": [
+        {
+          "id": 104480,
+          "title": "Mood Indigo",
+          "poster": "https://image.tmdb.org/t/p/w185/enBgpSuFdzaiXc3AMm7hP6JWUS.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 2797,
+          "title": "Web Junk 20",
+          "poster": null,
+          "rating": 9.3
+        },
+        {
+          "id": 75,
+          "title": "Três é Demais",
+          "poster": "https://image.tmdb.org/t/p/w185/ulm7wLxyxDNO8kEe12oTM5efWfb.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 219866,
+          "title": "Because of Love",
+          "poster": "https://image.tmdb.org/t/p/w185/evtiHZYfYToJmldZEeQxJc6YDeT.jpg",
+          "rating": 10
+        },
+        {
+          "id": 33880,
+          "title": "A Lenda de Korra",
+          "poster": "https://image.tmdb.org/t/p/w185/yDRskxx7kXoB9ImdXi05Db5EG3L.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 75911,
+          "title": "Transformers: Energon",
+          "poster": "https://image.tmdb.org/t/p/w185/bNoznz2CDSWbarJ1NuT0m6zU2SP.jpg",
+          "rating": 6.5
+        }
+      ],
+      "seasons": 1,
+      "episodes": 8
+    }
   },
   {
     "id": "series-1769967356754-4790",
@@ -5551,7 +6787,52 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 6,
-    "tmdb": null
+    "tmdb": {
+      "id": 251029,
+      "imdbId": "tt31720743",
+      "title": "Especialistas em Tumor",
+      "originalTitle": "Take My Tumor",
+      "tagline": null,
+      "overview": "Os Drs. Kimberly Moore Dalal, Jason Cohen e Ryan F. Osborne assumem alguns dos casos mais desafiadores de suas carreiras ao remover tumores de pacientes com casos extremos.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2024-04-03",
+      "year": "2024",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Documentário",
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/ohiqb1xEbbE7On7l9iJfASyiD8V.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/ohiqb1xEbbE7On7l9iJfASyiD8V.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/4zEPJCMj00Ket6mA3a4W9nDPpzA.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/4zEPJCMj00Ket6mA3a4W9nDPpzA.jpg",
+      "cast": [
+        {
+          "id": 4650119,
+          "name": "Michael Boyer",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4650120,
+          "name": "Tami Camarena",
+          "character": "Self",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "surgeon",
+        "tumor",
+        "medical condition"
+      ],
+      "recommendations": [],
+      "seasons": 1,
+      "episodes": 6
+    }
   },
   {
     "id": "series-1769967356754-3612",
@@ -5678,7 +6959,78 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 16,
-    "tmdb": null
+    "tmdb": {
+      "id": 250361,
+      "imdbId": "tt31844701",
+      "title": "Na Luta pelo Paraíso: Alemanha",
+      "originalTitle": "Fight for Paradise: Wem kannst Du trauen?",
+      "tagline": null,
+      "overview": "Seja na Mansão ou na selva, os participantes precisam manter os amigos por perto, e os inimigos mais perto ainda. Valendo uma entrada para o paraíso e 100 mil euros.",
+      "status": "Ended",
+      "language": "de",
+      "releaseDate": "2024-04-23",
+      "year": "2024",
+      "rating": 5,
+      "voteCount": 5,
+      "popularity": 0,
+      "certification": "12",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/nNClsp7waO5yrZXJhudLDpVfqBu.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/nNClsp7waO5yrZXJhudLDpVfqBu.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/rbK7lQVyWJuUElhisoogvWme3ZK.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/rbK7lQVyWJuUElhisoogvWme3ZK.jpg",
+      "cast": [
+        {
+          "id": 2977445,
+          "name": "Bonnie Strange",
+          "character": "Self - Host",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 219053,
+          "title": "Brincando com Fogo: Alemanha",
+          "poster": "https://image.tmdb.org/t/p/w185/5R1TUuMrf8AConXBbWac9SuYghO.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 1399,
+          "title": "Game of Thrones",
+          "poster": "https://image.tmdb.org/t/p/w185/eDn8XWA0a4U3zOhd1gh7HExdt4Y.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 60059,
+          "title": "Better Call Saul",
+          "poster": "https://image.tmdb.org/t/p/w185/9IPVuAjodjc2FYluWnNvRdOPsCR.jpg",
+          "rating": 8.7
+        },
+        {
+          "id": 93405,
+          "title": "Round 6",
+          "poster": "https://image.tmdb.org/t/p/w185/6gcHdboppvplmBWxvROc96NJnmm.jpg",
+          "rating": 7.9
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 42009,
+          "title": "Black Mirror",
+          "poster": "https://image.tmdb.org/t/p/w185/aCTL24B8ZuiI2osMwoUI5rqBXoF.jpg",
+          "rating": 8.3
+        }
+      ],
+      "seasons": 1,
+      "episodes": 8
+    }
   },
   {
     "id": "series-1769967356754-5387",
@@ -5742,7 +7094,81 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 7,
-    "tmdb": null
+    "tmdb": {
+      "id": 249046,
+      "imdbId": "tt31806036",
+      "title": "Os Corretores de Londres",
+      "originalTitle": "Buying London",
+      "tagline": null,
+      "overview": "Acompanhe o dia a dia do corretor de imóveis de luxo Daniel Daggers e sua equipe pelo movimentado mercado de Londres, onde o drama é tão impressionante quanto os preços.",
+      "status": "Canceled",
+      "language": "en",
+      "releaseDate": "2024-05-22",
+      "year": "2024",
+      "rating": 5.4,
+      "voteCount": 6,
+      "popularity": 1,
+      "certification": "12",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/tNd9SCEWETYDUrs1hAtSwtVqeG2.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/tNd9SCEWETYDUrs1hAtSwtVqeG2.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/3xx6jC32y7K5e7CKVh05q3Ev2Ef.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/3xx6jC32y7K5e7CKVh05q3Ev2Ef.jpg",
+      "cast": [
+        {
+          "id": 4607495,
+          "name": "Daniel Daggers",
+          "character": "Self",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "london, england",
+        "real estate"
+      ],
+      "recommendations": [
+        {
+          "id": 1767,
+          "title": "O Fantástico Mundo de Bobby",
+          "poster": "https://image.tmdb.org/t/p/w185/nQa59RtuwW9LaDVVRjAbPVPrvLI.jpg",
+          "rating": 7
+        },
+        {
+          "id": 69562,
+          "title": "Lovey Dovey",
+          "poster": "https://image.tmdb.org/t/p/w185/2Jou8vTRZUl1AXGjxjtXKO6T8YA.jpg",
+          "rating": 10
+        },
+        {
+          "id": 252645,
+          "title": "The Ex-Morning",
+          "poster": "https://image.tmdb.org/t/p/w185/5YrlE5zgqHFGDJylpneuaJkpL9o.jpg",
+          "rating": 9.5
+        },
+        {
+          "id": 70207,
+          "title": "Bad Romance",
+          "poster": "https://image.tmdb.org/t/p/w185/z0MZsB4p4V1bUJN7eU3KlwtJTf9.jpg",
+          "rating": 9
+        },
+        {
+          "id": 50757,
+          "title": "Tawan Tor Saeng",
+          "poster": "https://image.tmdb.org/t/p/w185/4jNT1iswRkTab9BFyk4k39Zg5Wf.jpg",
+          "rating": 10
+        },
+        {
+          "id": 102229,
+          "title": "1994",
+          "poster": "https://image.tmdb.org/t/p/w185/4TTdhOO0SIU1YJ2uzVlye1gxkyi.jpg",
+          "rating": 7.1
+        }
+      ],
+      "seasons": 1,
+      "episodes": 7
+    }
   },
   {
     "id": "series-1769967356754-6042",
@@ -5869,7 +7295,78 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 16,
-    "tmdb": null
+    "tmdb": {
+      "id": 254721,
+      "imdbId": "tt31806050",
+      "title": "Os Irmãos Kaulitz",
+      "originalTitle": "Kaulitz & Kaulitz",
+      "tagline": null,
+      "overview": "Este reality divertido e intimista acompanha as vidas dos gêmeos e astros Tom e Bill Kaulitz em Los Angeles e na Alemanha.",
+      "status": "Returning Series",
+      "language": "de",
+      "releaseDate": "2024-06-25",
+      "year": "2024",
+      "rating": 7.5,
+      "voteCount": 21,
+      "popularity": 2,
+      "certification": "12",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/dX7tkJn3EXcWZDNrOh2gxyFoIKg.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/dX7tkJn3EXcWZDNrOh2gxyFoIKg.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/2nD64DomGfdyXG1CkW3QdgcPCUP.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/2nD64DomGfdyXG1CkW3QdgcPCUP.jpg",
+      "cast": [],
+      "keywords": [
+        "brother",
+        "biography",
+        "pop music",
+        "pop rock",
+        "music",
+        "twin"
+      ],
+      "recommendations": [
+        {
+          "id": 156249,
+          "title": "Das Boot",
+          "poster": "https://image.tmdb.org/t/p/w185/lWBQ1Z6MBuiPAfubWjxytKirQco.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 255313,
+          "title": "Viktor Delivers",
+          "poster": "https://image.tmdb.org/t/p/w185/eU9kstd3xJ9OTe984F2GVCjg3TP.jpg",
+          "rating": 6.5
+        },
+        {
+          "id": 226102,
+          "title": "Acidente",
+          "poster": "https://image.tmdb.org/t/p/w185/uZfEkKi3yn8epQpukKrCtLOv7fc.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 247334,
+          "title": "Un buen divorcio",
+          "poster": "https://image.tmdb.org/t/p/w185/glcLNeBXF2a6oIpI8FptvxyFUhX.jpg",
+          "rating": 8
+        },
+        {
+          "id": 90761,
+          "title": "Os Indomáveis",
+          "poster": "https://image.tmdb.org/t/p/w185/kqptg7EXz9kTtbaf1MiDBfhrvJ2.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 202411,
+          "title": "Monarch - Legado de Monstros",
+          "poster": "https://image.tmdb.org/t/p/w185/nDyTapqSHKRqkrdouWdpWQTpIqF.jpg",
+          "rating": 7.7
+        }
+      ],
+      "seasons": 2,
+      "episodes": 16
+    }
   },
   {
     "id": "series-1769967356754-6072",
@@ -5991,7 +7488,91 @@
     },
     "totalSeasons": 2,
     "totalEpisodes": 15,
-    "tmdb": null
+    "tmdb": {
+      "id": 223566,
+      "imdbId": "tt27446484",
+      "title": "O Próximo Empreendedor com Gordon Ramsay",
+      "originalTitle": "Gordon Ramsay's Food Stars",
+      "tagline": null,
+      "overview": "Aspirantes magnatas serão desafiados todas as semanas em todos os aspectos da gestão de uma empresa alimentar, sendo avaliados por jurados convidados, a fim de serem os vencedores de um investimento de 250.000 dólares para o seu negócio.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2023-05-24",
+      "year": "2023",
+      "rating": 7.6,
+      "voteCount": 8,
+      "popularity": 2,
+      "certification": "L",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/9QGD8LKJosxDBS3eWPjMcyO1TWt.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/9QGD8LKJosxDBS3eWPjMcyO1TWt.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/tZK8KT3YjYBsivcJ8gkS31AOxqW.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/tZK8KT3YjYBsivcJ8gkS31AOxqW.jpg",
+      "cast": [
+        {
+          "id": 208630,
+          "name": "Gordon Ramsay",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/72LCF6OLi95odUlqtDi8vAcW3zw.jpg"
+        },
+        {
+          "id": 1562323,
+          "name": "Lisa Vanderpump",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/935jX9PgguB6lMxoxbo8LKNNAAo.jpg"
+        }
+      ],
+      "keywords": [
+        "cooking",
+        "entrepreneur",
+        "business competition",
+        "small business",
+        "food & drink",
+        "small business owner"
+      ],
+      "recommendations": [
+        {
+          "id": 102831,
+          "title": "O Último Narc",
+          "poster": "https://image.tmdb.org/t/p/w185/evQpYnqNSSa8Cs3rtkrSzCHTXt7.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 39614,
+          "title": "The Voice UK",
+          "poster": "https://image.tmdb.org/t/p/w185/yKD4UgvZwn0MIAAwp5fEx5Z68J2.jpg",
+          "rating": 6.1
+        },
+        {
+          "id": 1399,
+          "title": "Game of Thrones",
+          "poster": "https://image.tmdb.org/t/p/w185/eDn8XWA0a4U3zOhd1gh7HExdt4Y.jpg",
+          "rating": 8.5
+        },
+        {
+          "id": 48891,
+          "title": "Brooklyn Nine-Nine: Lei e Desordem",
+          "poster": "https://image.tmdb.org/t/p/w185/A3SymGlOHefSKbz1bCOz56moupS.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 66732,
+          "title": "Stranger Things",
+          "poster": "https://image.tmdb.org/t/p/w185/twfKp60THrcOIep9sjHODOOfO8d.jpg",
+          "rating": 8.6
+        }
+      ],
+      "seasons": 2,
+      "episodes": 20
+    }
   },
   {
     "id": "series-1769967356754-7953",
@@ -6125,7 +7706,41 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 17,
-    "tmdb": null
+    "tmdb": {
+      "id": 262727,
+      "imdbId": null,
+      "title": "Acerte ou Caia!",
+      "originalTitle": "Acerte ou Caia!",
+      "tagline": null,
+      "overview": "Sob o comando de Tom Cavalcante, o novo game show da RECORD é tudo, menos previsível. Celebridades se enfrentam num jogo de perguntas e respostas. A cada rodada, o líder escolhe alguém para o duelo. Quem vencer, segue na disputa. Já quem se der mal, perde o chão e vai para o buraco. O famoso que conseguir vencer o último duelo tem a chance de encarar o desafio final e pode ganhar até R$ 300 mil.",
+      "status": "Returning Series",
+      "language": "pt",
+      "releaseDate": "2024-08-25",
+      "year": "2024",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 1,
+      "certification": "L",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/2636pUeOSrmjXqhB4WEOKEQVZNL.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/2636pUeOSrmjXqhB4WEOKEQVZNL.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/hx1J8VrrebbGHQvVrE13jDkCTtR.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/hx1J8VrrebbGHQvVrE13jDkCTtR.jpg",
+      "cast": [
+        {
+          "id": 1821595,
+          "name": "Tom Cavalcante",
+          "character": "Tom Cavalcante",
+          "photo": "https://image.tmdb.org/t/p/w185/oueWhEj3zPxnpMi8h3K1uSS8CBs.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": [],
+      "seasons": 2,
+      "episodes": 47
+    }
   },
   {
     "id": "series-1769967356754-2913",
@@ -6252,7 +7867,123 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 16,
-    "tmdb": null
+    "tmdb": {
+      "id": 255728,
+      "imdbId": "tt32501221",
+      "title": "Nova York à Venda",
+      "originalTitle": "Selling the City",
+      "tagline": null,
+      "overview": "Uma equipe de corretores estilosos de Nova York luta para vender imóveis multimilionários enquanto vive dramas neste reality que parece novela.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2025-01-03",
+      "year": "2025",
+      "rating": 7.3,
+      "voteCount": 3,
+      "popularity": 1,
+      "certification": "12",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/4gxmUjmAwC0dnV2cbtLvnd4W0TY.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/4gxmUjmAwC0dnV2cbtLvnd4W0TY.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/CdIh78Mz8TLrmqgtImUiCUxEvi.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/CdIh78Mz8TLrmqgtImUiCUxEvi.jpg",
+      "cast": [
+        {
+          "id": 5100137,
+          "name": "Eleonora Srugo",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5100146,
+          "name": "Jade Chan",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5100148,
+          "name": "Taylor Middleton",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5100151,
+          "name": "Jordyn Taylor Braff",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5100154,
+          "name": "Abigail Godfrey",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5100155,
+          "name": "Gisselle Meneses-Núñez",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5100156,
+          "name": "Justin Tuinstra",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 1833224,
+          "name": "Steve Gold",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/eowrvEnaBEIwoY9AU0uv2aUIcq2.jpg"
+        }
+      ],
+      "keywords": [
+        "real estate",
+        "reality tv"
+      ],
+      "recommendations": [
+        {
+          "id": 253905,
+          "title": "Quando o Telefone Toca",
+          "poster": "https://image.tmdb.org/t/p/w185/jF0jc4GiLoA2UxTurcCh1ED3akU.jpg",
+          "rating": 8.4
+        },
+        {
+          "id": 66732,
+          "title": "Stranger Things",
+          "poster": "https://image.tmdb.org/t/p/w185/twfKp60THrcOIep9sjHODOOfO8d.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 48891,
+          "title": "Brooklyn Nine-Nine: Lei e Desordem",
+          "poster": "https://image.tmdb.org/t/p/w185/A3SymGlOHefSKbz1bCOz56moupS.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 13916,
+          "title": "Death Note",
+          "poster": "https://image.tmdb.org/t/p/w185/tCZFfYTIwrR7n94J6G14Y4hAFU6.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 85271,
+          "title": "WandaVision",
+          "poster": "https://image.tmdb.org/t/p/w185/8mAyDNSCZDiejPTm4lwgbztut7y.jpg",
+          "rating": 8.2
+        }
+      ],
+      "seasons": 1,
+      "episodes": 8
+    }
   },
   {
     "id": "series-1769967356758-2653",
@@ -6323,7 +8054,126 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 8,
-    "tmdb": null
+    "tmdb": {
+      "id": 279991,
+      "imdbId": "tt34991330",
+      "title": "Ambiciosas, Ricas e Comprometidas",
+      "originalTitle": "W.A.G.s to Riches",
+      "tagline": null,
+      "overview": "Elas são as esposas e namoradas de atletas e estrelas do rap, mas são essas mulheres cheias de estilo e atitude que ditam as regras neste reality com cara de novela.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2025-01-22",
+      "year": "2025",
+      "rating": 6.8,
+      "voteCount": 6,
+      "popularity": 1,
+      "certification": "12",
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/5AwlRhS1OU3gNJedBSrjpnBSZDU.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/5AwlRhS1OU3gNJedBSrjpnBSZDU.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/ssPpZSeXJAZCAvi0geNvWAvP40s.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/ssPpZSeXJAZCAvi0geNvWAvP40s.jpg",
+      "cast": [
+        {
+          "id": 3902196,
+          "name": "Sharelle Rosado",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5167762,
+          "name": "Maranda Johnson",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4611833,
+          "name": "Ashley Nicole Roberts Wheeler",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5167763,
+          "name": "Alexis Welch Stoudemire",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5167764,
+          "name": "Porsha Berto",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5167765,
+          "name": "Sadé Vanessa",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5167766,
+          "name": "Lastonia Leviston",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5167767,
+          "name": "Keeta Hill",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 5167768,
+          "name": "Julz Goddard",
+          "character": "Self",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": [
+        {
+          "id": 240932,
+          "title": "Wild Cards",
+          "poster": "https://image.tmdb.org/t/p/w185/lIhkV9LNwViVD2bylPTFQvDD21e.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 247758,
+          "title": "The Valley",
+          "poster": "https://image.tmdb.org/t/p/w185/cs4oawKduoLgFUeV3mVvkQxYxbg.jpg",
+          "rating": 7.9
+        },
+        {
+          "id": 247718,
+          "title": "Terra da Máfia",
+          "poster": "https://image.tmdb.org/t/p/w185/89DEvnUmRAZraf84jLjtkN4SH8B.jpg",
+          "rating": 8.3
+        },
+        {
+          "id": 1396,
+          "title": "Breaking Bad",
+          "poster": "https://image.tmdb.org/t/p/w185/hGwm9Cj3CdbJIqQWNExQqiYmCd4.jpg",
+          "rating": 8.9
+        },
+        {
+          "id": 66732,
+          "title": "Stranger Things",
+          "poster": "https://image.tmdb.org/t/p/w185/twfKp60THrcOIep9sjHODOOfO8d.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 48891,
+          "title": "Brooklyn Nine-Nine: Lei e Desordem",
+          "poster": "https://image.tmdb.org/t/p/w185/A3SymGlOHefSKbz1bCOz56moupS.jpg",
+          "rating": 8.2
+        }
+      ],
+      "seasons": 1,
+      "episodes": 8
+    }
   },
   {
     "id": "series-1769967356758-4578",
@@ -6359,7 +8209,47 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 3,
-    "tmdb": null
+    "tmdb": {
+      "id": 300933,
+      "imdbId": null,
+      "title": "Partiu XV",
+      "originalTitle": "Partiu XV",
+      "tagline": null,
+      "overview": "Apresentado por Luluca e Thalita Rebouças, neste reality 12 meninas encaram desafios surpreendentes para conquistar a festa de 15 anos dos sonhos!",
+      "status": "Returning Series",
+      "language": "pt",
+      "releaseDate": "2025-09-16",
+      "year": "2025",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Reality"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/iU75k5HuMwldOtXDpWUxh05ysHV.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/iU75k5HuMwldOtXDpWUxh05ysHV.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/4JOG2sZpmWtETJK78nqAXJNiYQz.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/4JOG2sZpmWtETJK78nqAXJNiYQz.jpg",
+      "cast": [
+        {
+          "id": 1660419,
+          "name": "Thalita Rebouças",
+          "character": "Self - Judge",
+          "photo": "https://image.tmdb.org/t/p/w185/jM8LSFY2J1CDWdW2yiKrmwptmQh.jpg"
+        },
+        {
+          "id": 5700307,
+          "name": "Luluca",
+          "character": "Self - Host",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": [],
+      "seasons": 1,
+      "episodes": 8
+    }
   },
   {
     "id": "series-1769967356758-9794",
@@ -6552,7 +8442,35 @@
     },
     "totalSeasons": 1,
     "totalEpisodes": 3,
-    "tmdb": null
+    "tmdb": {
+      "id": 297095,
+      "imdbId": "tt37763979",
+      "title": "Animais Drogados",
+      "originalTitle": "Animals on Drugs",
+      "tagline": null,
+      "overview": "Em todo o mundo, animais selvagens caem em vícios humanos. O especialista em vida selvagem Forrest Galante rastreia esses animais, investigando seus comportamentos estranhos para encontrar maneiras de reabilitá-los com segurança.",
+      "status": "Returning Series",
+      "language": "en",
+      "releaseDate": "2025-07-28",
+      "year": "2025",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Reality",
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/uRiAeaIihWZKMQoJlW1o5wfLz4k.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/uRiAeaIihWZKMQoJlW1o5wfLz4k.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/r134zuPdbt6PX1FPmq6QZWWl8jI.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/r134zuPdbt6PX1FPmq6QZWWl8jI.jpg",
+      "cast": [],
+      "keywords": [],
+      "recommendations": [],
+      "seasons": 1,
+      "episodes": 3
+    }
   },
   {
     "id": "m3u-1770491517375-5829",
@@ -6592,7 +8510,46 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://logos.sologos.art/server/show24hj.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 274824,
+      "imdbId": "tt0180956",
+      "title": "Reggae",
+      "originalTitle": "Reggae",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1971-09-23",
+      "year": "1971",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Música",
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/peJssxmOOksyjm9wTzFKxGGW8wL.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/peJssxmOOksyjm9wTzFKxGGW8wL.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [
+        {
+          "id": 146931,
+          "name": "Mike Raven",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 3969115,
+          "name": "Graham Goodall",
+          "character": "Self",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770491517376-8970",
@@ -6612,7 +8569,30 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://logos.sologos.art/server/show24hj.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 1260791,
+      "imdbId": null,
+      "title": "MPB",
+      "originalTitle": "MPB",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": null,
+      "year": null,
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [],
+      "poster": "https://image.tmdb.org/t/p/w500/ajoDClJnHgNECS56y2P7p2ygUnY.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/ajoDClJnHgNECS56y2P7p2ygUnY.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [],
+      "keywords": [],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770491517376-8218",
@@ -6632,7 +8612,58 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://logos.sologos.art/server/show24hj.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 271586,
+      "imdbId": null,
+      "title": "Gospel",
+      "originalTitle": "Gospel",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "1983-12-23",
+      "year": "1983",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Documentário",
+        "Música"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/kLw1y4htb9PQKmjQWiabrbGXxyW.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/kLw1y4htb9PQKmjQWiabrbGXxyW.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [
+        {
+          "id": 2177643,
+          "name": "James Cleveland",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 2671331,
+          "name": "Twinkie Clark",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 942930,
+          "name": "Shirley Caesar",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/8Pct4aO5pIvvX9iLUX7aceNiEqc.jpg"
+        },
+        {
+          "id": 2671335,
+          "name": "Walter Hawkins",
+          "character": "Self",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770491517376-3280",
@@ -6642,7 +8673,76 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://logos.sologos.art/server/show24hj.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 1289485,
+      "imdbId": null,
+      "title": "Funk",
+      "originalTitle": "Funk",
+      "tagline": null,
+      "overview": "Sabrina, moradora de uma comunidade do Rio, sonha com o sucesso como cantora. Sua mãe é ex-MC e o irmão, traficante.",
+      "status": "Post Production",
+      "language": "pt",
+      "releaseDate": "2026-06-11",
+      "year": "2026",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Drama",
+        "Música"
+      ],
+      "poster": null,
+      "posterHD": null,
+      "backdrop": "https://image.tmdb.org/t/p/w1280/hN9o91nyz3mYjyaz5YTWxLa1UJA.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/hN9o91nyz3mYjyaz5YTWxLa1UJA.jpg",
+      "cast": [
+        {
+          "id": 3506574,
+          "name": "Duda Santos",
+          "character": "Sabrina",
+          "photo": "https://image.tmdb.org/t/p/w185/qmhyq1khy3kZZoRAUvGbOQfxykg.jpg"
+        },
+        {
+          "id": 2216511,
+          "name": "Lellê",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/3Ivzy0vD2JDAcGDb4DAfajEdaY4.jpg"
+        },
+        {
+          "id": 3417538,
+          "name": "Kibba",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/5algv7qnrgAB2E1zlHGgDO4g2rp.jpg"
+        },
+        {
+          "id": 4710403,
+          "name": "MC Nem",
+          "character": "MC Priscila",
+          "photo": "https://image.tmdb.org/t/p/w185/fpUaatYfQqo3ejtY2NpQWAcCvF.jpg"
+        },
+        {
+          "id": 1338821,
+          "name": "Cláudio Gabriel",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/bYOjstGlijwavcodVQvXU3mneZi.jpg"
+        },
+        {
+          "id": 4721142,
+          "name": "TZ da Coronel",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/9NDPAiocFgzr2OfHajG76IsHDPV.jpg"
+        },
+        {
+          "id": 1850928,
+          "name": "Rafael Delgado",
+          "character": "Dj Jorginho",
+          "photo": "https://image.tmdb.org/t/p/w185/1RoCYlp15zrApiGhXIsrsmnAMZt.jpg"
+        }
+      ],
+      "keywords": [],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770491517376-7191",
@@ -6692,7 +8792,32 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://logos.sologos.art/server/show24hj.png",
-    "tmdb": null
+    "tmdb": {
+      "id": 965757,
+      "imdbId": null,
+      "title": "Axé",
+      "originalTitle": "Axé",
+      "tagline": null,
+      "overview": "O vídeo foi produzido para o centenário da abolição da escravatura no Brasil. Longe de ser uma celebração, o filme revela a presença do preconceito contra negros em uma sociedade que se vê como racialmente democrática. O vídeo também explora tanto a diversidade da cultura negra quanto a sua apropriação pela sociedade branca.",
+      "status": "Released",
+      "language": "pt",
+      "releaseDate": null,
+      "year": null,
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Documentário"
+      ],
+      "poster": null,
+      "posterHD": null,
+      "backdrop": null,
+      "backdropHD": null,
+      "cast": [],
+      "keywords": [],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770491517384-5197",
@@ -7981,7 +10106,46 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://i.imgur.com/JVvEwSc.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 1572245,
+      "imdbId": null,
+      "title": "Leonardo",
+      "originalTitle": "Leonardo",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "es",
+      "releaseDate": "2025-06-28",
+      "year": "2025",
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 1,
+      "certification": null,
+      "genres": [
+        "Ficção científica",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/2Ewiy8dPvThiD2Y241iydkzhUl8.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/2Ewiy8dPvThiD2Y241iydkzhUl8.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/x0nJV6b2RrEuF1t25VWFU5iGaNr.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/x0nJV6b2RrEuF1t25VWFU5iGaNr.jpg",
+      "cast": [
+        {
+          "id": 51902,
+          "name": "Fernando Cayo",
+          "character": "Néstor",
+          "photo": "https://image.tmdb.org/t/p/w185/sglfXHNFlzOBBLuRrbDkxghSW4H.jpg"
+        },
+        {
+          "id": 5786810,
+          "name": "Roo Castillo",
+          "character": "",
+          "photo": null
+        }
+      ],
+      "keywords": [],
+      "recommendations": []
+    }
   },
   {
     "id": "m3u-1770500778500-6730",
@@ -8261,7 +10425,116 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/eRpGDqyX9DpUT6SjT6udnpz7wYj.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 22258,
+      "imdbId": "tt1321823",
+      "title": "Foo Fighters: Live At Wembley Stadium",
+      "originalTitle": "Foo Fighters: Live At Wembley Stadium",
+      "tagline": null,
+      "overview": "Live at Wembley Stadium é um vídeo ao vivo lançado em DVD pela banda Foo Fighters em 25 de agosto de 2008 no Reino Unido. Foi filmado durante um show da banda no Estádio de Wembley nos dias 6 e 7 de junho de 2008, sexta-feira e sábado respectivamente.  O vídeo apresenta uma combinação de imagens de ambas as noites, incluindo as participações especiais dos membros do Led Zeppelin, John Paul Jones (baixo) e Jimmy Page (guitarra), durante o segundo show.  O DVD foi certificado ouro (7500 vendas) na Austrália, na sua terceira semana após o lançamento.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2008-06-24",
+      "year": "2008",
+      "rating": 8.2,
+      "voteCount": 36,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Música"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/eRpGDqyX9DpUT6SjT6udnpz7wYj.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/eRpGDqyX9DpUT6SjT6udnpz7wYj.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/enxgz1BXwWn18VBVLwhuKMn5Tp6.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/enxgz1BXwWn18VBVLwhuKMn5Tp6.jpg",
+      "cast": [
+        {
+          "id": 533061,
+          "name": "Dave Grohl",
+          "character": "Self - Vocals, Guitars",
+          "photo": "https://image.tmdb.org/t/p/w185/hDfFm3lLPcdupe3PDucZdidKFBI.jpg"
+        },
+        {
+          "id": 235995,
+          "name": "Nate Mendel",
+          "character": "Self - Bass",
+          "photo": "https://image.tmdb.org/t/p/w185/nJLLpxELdfJGToJQZKgz3cVP1OR.jpg"
+        },
+        {
+          "id": 235996,
+          "name": "Chris Shiflett",
+          "character": "Self - Guitars",
+          "photo": "https://image.tmdb.org/t/p/w185/5ALV28NnEV4goNRlYvvWA0WJN6l.jpg"
+        },
+        {
+          "id": 236082,
+          "name": "Taylor Hawkins",
+          "character": "Self - Drums",
+          "photo": "https://image.tmdb.org/t/p/w185/cQPUR6JrhXvCFDPTHhf1q9SQPs.jpg"
+        },
+        {
+          "id": 92569,
+          "name": "Pat Smear",
+          "character": "Self - Guitars",
+          "photo": "https://image.tmdb.org/t/p/w185/6hkY6CnDZJeuF3VVISSB4qsbfWl.jpg"
+        },
+        {
+          "id": 87463,
+          "name": "Jimmy Page",
+          "character": "Self - Guitars",
+          "photo": "https://image.tmdb.org/t/p/w185/1xxzTj4HrCBBoyCP8eJimFpo6BK.jpg"
+        },
+        {
+          "id": 91478,
+          "name": "John Paul Jones",
+          "character": "Self - Bass",
+          "photo": "https://image.tmdb.org/t/p/w185/i4AwTlN8MVJPvsvDzdSiBxMbXxO.jpg"
+        }
+      ],
+      "keywords": [
+        "concert",
+        "live performance",
+        "rock concert"
+      ],
+      "recommendations": [
+        {
+          "id": 11694,
+          "title": "Dívida de Sangue",
+          "poster": "https://image.tmdb.org/t/p/w185/6FFbb0W56A0uEd7n5RtoCx1DmEJ.jpg",
+          "rating": 6.4
+        },
+        {
+          "id": 740658,
+          "title": "Catman",
+          "poster": "https://image.tmdb.org/t/p/w185/qnzqFK1oMVDXIPgPuZUvzdDvBsh.jpg",
+          "rating": 7.4
+        },
+        {
+          "id": 25704,
+          "title": "Recém-Formada",
+          "poster": "https://image.tmdb.org/t/p/w185/qbZYKjEUvTK9zNxr4YuoTtmxI0w.jpg",
+          "rating": 5
+        },
+        {
+          "id": 40553,
+          "title": "Phil Collins - Serious Hits Live",
+          "poster": "https://image.tmdb.org/t/p/w185/P3L2A0qbW9UOMngBxe10QdXHTC.jpg",
+          "rating": 8.2
+        },
+        {
+          "id": 235222,
+          "title": "The Rolling Stones: Sweet Summer Sun - Hyde Park Live",
+          "poster": "https://image.tmdb.org/t/p/w185/venwOs08slm9LPZCoMMU1nFRgdE.jpg",
+          "rating": 7.2
+        },
+        {
+          "id": 57618,
+          "title": "Bryan Adams: Live at Slane Castle",
+          "poster": "https://image.tmdb.org/t/p/w185/fDTQ9rzHtVRS4VBLAZ1fPmqPOUA.jpg",
+          "rating": 5.9
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770500778521-2645",
@@ -8271,7 +10544,134 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/vNc07FNh70eFEWOz4wGhkneYbNg.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 769234,
+      "imdbId": "tt13891738",
+      "title": "Dua Lipa: Studio 2054",
+      "originalTitle": "Dua Lipa: Studio 2054",
+      "tagline": null,
+      "overview": "Dua Lipa promove seu segundo disco, Future Nostalgia, com um show especial recheado de sucessos e artistas convidados como Elton John, J Balvin, Miley Cyrus e mais.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2020-11-27",
+      "year": "2020",
+      "rating": 9,
+      "voteCount": 84,
+      "popularity": 0,
+      "certification": "12",
+      "genres": [
+        "Música",
+        "Documentário"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/vNc07FNh70eFEWOz4wGhkneYbNg.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/vNc07FNh70eFEWOz4wGhkneYbNg.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/mdnz8TG4MsTNqfg4NKXacReVpJS.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/mdnz8TG4MsTNqfg4NKXacReVpJS.jpg",
+      "cast": [
+        {
+          "id": 1959397,
+          "name": "Dua Lipa",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/82ZEdOoWZcRQbOawXbZ1EDTO85K.jpg"
+        },
+        {
+          "id": 2358340,
+          "name": "Angèle",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/qqadGAHElweZWETKaCHh9gb4iMi.jpg"
+        },
+        {
+          "id": 2550161,
+          "name": "Bad Bunny",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/3phL23nlkxPie1Nu5j8B5UlSPRq.jpg"
+        },
+        {
+          "id": 12207,
+          "name": "Kylie Minogue",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/sVe6DQ1iFlk4nad0Bd3WVVVj23P.jpg"
+        },
+        {
+          "id": 1503200,
+          "name": "FKA twigs",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/8bUUu7jPEY1aQgAtJXM2NyYpfgN.jpg"
+        },
+        {
+          "id": 11370,
+          "name": "Elton John",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/wjsJqw6nliNPV3oVpo9sCGWia48.jpg"
+        },
+        {
+          "id": 76594,
+          "name": "Miley Cyrus",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/7Uk4HcaMlHTqCCNOyW9lBNXVCxA.jpg"
+        },
+        {
+          "id": 1931804,
+          "name": "J Balvin",
+          "character": "Self",
+          "photo": "https://image.tmdb.org/t/p/w185/5GIHixpuqbwlmNL6YNj4QhsehCP.jpg"
+        },
+        {
+          "id": 2643341,
+          "name": "The Blessed Madonna",
+          "character": "Self",
+          "photo": null
+        },
+        {
+          "id": 4305958,
+          "name": "Hugo Comte",
+          "character": "Photographer",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "pop music",
+        "concert film"
+      ],
+      "recommendations": [
+        {
+          "id": 613860,
+          "title": "O Rapto Da Modelo",
+          "poster": "https://image.tmdb.org/t/p/w185/dlt68fzUXlTd4VOwmH5uyHps3kT.jpg",
+          "rating": 5.6
+        },
+        {
+          "id": 171899,
+          "title": "Captain Tsubasa: Filme 1 - Europe Daikessen",
+          "poster": "https://image.tmdb.org/t/p/w185/cRjrQjMQ0RxvK90vtitTRwDgMbR.jpg",
+          "rating": 7.5
+        },
+        {
+          "id": 752340,
+          "title": "Little Mix: LM5: The Tour Film",
+          "poster": "https://image.tmdb.org/t/p/w185/xKWw6hmF8TTrAa5Dooty9BYa47v.jpg",
+          "rating": 8.8
+        },
+        {
+          "id": 761715,
+          "title": "Kylie: Infinite Disco",
+          "poster": "https://image.tmdb.org/t/p/w185/AuF8sMnI2PDRMo0mnXNagvRWZc.jpg",
+          "rating": 8.6
+        },
+        {
+          "id": 871575,
+          "title": "Bird: Not Out Of Nowhere",
+          "poster": "https://image.tmdb.org/t/p/w185/aRkRHpAB3dZrppD1PqVJ4Qg2guQ.jpg",
+          "rating": 6
+        },
+        {
+          "id": 11223,
+          "title": "Coma",
+          "poster": "https://image.tmdb.org/t/p/w185/kNMfXPm1f8OgVYFU4aEhmP9TJzO.jpg",
+          "rating": 6.8
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770500778521-3423",
@@ -8281,7 +10681,205 @@
     "type": "movie",
     "isAdult": false,
     "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/hHs54DFWuXJqh1XmYZVDsiiVHS8.jpg",
-    "tmdb": null
+    "tmdb": {
+      "id": 435011,
+      "imdbId": "tt5732482",
+      "title": "Hans Zimmer: Live in Prague",
+      "originalTitle": "Hans Zimmer: Live in Prague",
+      "tagline": null,
+      "overview": "Este concerto foi gravado em Praga, no dia 7 de maio de 2016, durante a turnê de enorme sucesso de Hans Zimmer na Europa. Hans foi acompanhado por uma banda, orquestra e coral com 72 músicos no total, incluindo o guitarrista convidado Johnny Marr.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2017-10-01",
+      "year": "2017",
+      "rating": 8.5,
+      "voteCount": 100,
+      "popularity": 1,
+      "certification": "NR",
+      "genres": [
+        "Música"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/hHs54DFWuXJqh1XmYZVDsiiVHS8.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/hHs54DFWuXJqh1XmYZVDsiiVHS8.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/2gi12V5MXAlruxxzGJ753k2QdCz.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/2gi12V5MXAlruxxzGJ753k2QdCz.jpg",
+      "cast": [
+        {
+          "id": 947,
+          "name": "Hans Zimmer",
+          "character": "Self - Piano / Guitar / Banjo",
+          "photo": "https://image.tmdb.org/t/p/w185/tpQnDeHY15szIXvpnhlprufz4d.jpg"
+        },
+        {
+          "id": 419327,
+          "name": "Johnny Marr",
+          "character": "Self - Guitar",
+          "photo": "https://image.tmdb.org/t/p/w185/vJESfF4XvN99aBXHgoxj1gTrEAj.jpg"
+        },
+        {
+          "id": 1894918,
+          "name": "Tina Guo",
+          "character": "Self - Electric Cello",
+          "photo": "https://image.tmdb.org/t/p/w185/morbWADw22dm3qZB0kUL8UGwVpU.jpg"
+        },
+        {
+          "id": 1367012,
+          "name": "Guthrie Govan",
+          "character": "Self - Guitar",
+          "photo": "https://image.tmdb.org/t/p/w185/80hpwL6pr9wRsqtLTwT0pfnJZmw.jpg"
+        },
+        {
+          "id": 999580,
+          "name": "Mike Einziger",
+          "character": "Self - Guitar",
+          "photo": "https://image.tmdb.org/t/p/w185/q8ousu5s6VCpkndCFF8n4tvLwf5.jpg"
+        },
+        {
+          "id": 1078276,
+          "name": "Yolanda Charles",
+          "character": "Self - Electric Bass",
+          "photo": null
+        },
+        {
+          "id": 2006052,
+          "name": "Czarina Russell",
+          "character": "Self - Vocals / Tubular Bells",
+          "photo": "https://image.tmdb.org/t/p/w185/qUm0rZ5SL3gsjhQ0HRXCEFEnZDl.jpg"
+        },
+        {
+          "id": 3247562,
+          "name": "Rusanda Panfili",
+          "character": "Self - Violin",
+          "photo": "https://image.tmdb.org/t/p/w185/xVMSF7rbIsTC3ft0VcEONelrLmP.jpg"
+        },
+        {
+          "id": 2142793,
+          "name": "Ann Marie Simpson",
+          "character": "Self - Violin",
+          "photo": "https://image.tmdb.org/t/p/w185/4zCEGOZr5l9OP7Pj2MdMC345GPw.jpg"
+        },
+        {
+          "id": 15874,
+          "name": "Richard Harvey",
+          "character": "Self - Woodwinds",
+          "photo": "https://image.tmdb.org/t/p/w185/plP0RHQxPjbFAT2Uw1dqKvD4Mcc.jpg"
+        },
+        {
+          "id": 57263,
+          "name": "Nick Glennie-Smith",
+          "character": "Self - Keyboards",
+          "photo": "https://image.tmdb.org/t/p/w185/1Wzzje8n1WCyrw5UZiqtSRnXGfN.jpg"
+        },
+        {
+          "id": 1478557,
+          "name": "Satnam Ramgotra",
+          "character": "Self - Drums / Tabla",
+          "photo": "https://image.tmdb.org/t/p/w185/gGF34lLga6qNZyQf3pvTVXheM2H.jpg"
+        },
+        {
+          "id": 3247560,
+          "name": "Lucy Landymore",
+          "character": "Self - Percussion",
+          "photo": "https://image.tmdb.org/t/p/w185/4nrmHyo3YLWWIvzjk6slsIHyjU5.jpg"
+        },
+        {
+          "id": 3247561,
+          "name": "Holly Madge",
+          "character": "Self - Percussion",
+          "photo": "https://image.tmdb.org/t/p/w185/qV17IpRBTrwU5iaIxdbMuzqYY2O.jpg"
+        },
+        {
+          "id": 1826909,
+          "name": "Andrew Kawczynski",
+          "character": "Self - Synth",
+          "photo": "https://image.tmdb.org/t/p/w185/nwF3KOo7OCKA0szslrKYHapoTYZ.jpg"
+        },
+        {
+          "id": 2003297,
+          "name": "Gary Kettel",
+          "character": "Self -  Percussion",
+          "photo": null
+        },
+        {
+          "id": 3247563,
+          "name": "Lebo M.",
+          "character": "Self - Vocals",
+          "photo": "https://image.tmdb.org/t/p/w185/iqsXzHBbu2fsxgkk4VR0DGaiDAR.jpg"
+        },
+        {
+          "id": 3247564,
+          "name": "Buyi Zama",
+          "character": "Self - Vocals",
+          "photo": null
+        },
+        {
+          "id": 1178962,
+          "name": "Steve Mazzaro",
+          "character": "Self - Keys / Guitar",
+          "photo": "https://image.tmdb.org/t/p/w185/xCgeVr7bG2fZTmUiSoHOVZ9CEOv.jpg"
+        },
+        {
+          "id": 2011284,
+          "name": "Andy Pask",
+          "character": "Self - Upright Bass",
+          "photo": null
+        },
+        {
+          "id": 2006054,
+          "name": "Nathan Stornetta",
+          "character": "Self - Mallet Kat",
+          "photo": null
+        },
+        {
+          "id": 3247565,
+          "name": "Mel Wesson",
+          "character": "Self - Synth",
+          "photo": null
+        }
+      ],
+      "keywords": [
+        "prague, czech republic",
+        "live performance"
+      ],
+      "recommendations": [
+        {
+          "id": 55692,
+          "title": "Scrat's Continental Crack-Up",
+          "poster": "https://image.tmdb.org/t/p/w185/61P8otXR7qYKefDhr9WxebPrTvx.jpg",
+          "rating": 6.8
+        },
+        {
+          "id": 31512,
+          "title": "Memórias de Matsuko",
+          "poster": "https://image.tmdb.org/t/p/w185/epizm54ChIajXYHz5RBQYzdtjoR.jpg",
+          "rating": 7.8
+        },
+        {
+          "id": 46247,
+          "title": "Sem Tempo para Nozes",
+          "poster": "https://image.tmdb.org/t/p/w185/kz9FehcBC89SDbg4XU2kWv6MZE.jpg",
+          "rating": 7.3
+        },
+        {
+          "id": 13752,
+          "title": "Max Manus: O Homem da Guerra",
+          "poster": "https://image.tmdb.org/t/p/w185/lfwTW7APpmS0eBU7RZDiDyS8AHU.jpg",
+          "rating": 7.1
+        },
+        {
+          "id": 256553,
+          "title": "False Freedom",
+          "poster": "https://image.tmdb.org/t/p/w185/1KDt0C34b026WWWIapZWcIux8RH.jpg",
+          "rating": 6.2
+        },
+        {
+          "id": 54754,
+          "title": "The Clash : The Essential Clash",
+          "poster": "https://image.tmdb.org/t/p/w185/eqEHoha8hC71VFQPwfWYeLoLEf6.jpg",
+          "rating": 7.6
+        }
+      ]
+    }
   },
   {
     "id": "m3u-1770500778524-1165",
