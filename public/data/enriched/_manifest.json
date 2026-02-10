@@ -1,0 +1,242 @@
+{
+  "acao": {
+    "totalParts": 101,
+    "totalItems": 5007
+  },
+  "amc-plus": {
+    "totalParts": 1,
+    "totalItems": 3
+  },
+  "animacao": {
+    "totalParts": 22,
+    "totalItems": 1056
+  },
+  "apple-tv": {
+    "totalParts": 9,
+    "totalItems": 413
+  },
+  "aventura": {
+    "totalParts": 10,
+    "totalItems": 472
+  },
+  "brasil-paralelo": {
+    "totalParts": 1,
+    "totalItems": 26
+  },
+  "cinema": {
+    "totalParts": 2,
+    "totalItems": 55
+  },
+  "claro-video": {
+    "totalParts": 1,
+    "totalItems": 13
+  },
+  "comedia": {
+    "totalParts": 94,
+    "totalItems": 4658
+  },
+  "crime": {
+    "totalParts": 22,
+    "totalItems": 1080
+  },
+  "crunchyroll": {
+    "totalParts": 4,
+    "totalItems": 185
+  },
+  "cursos": {
+    "totalParts": 1,
+    "totalItems": 14
+  },
+  "directv": {
+    "totalParts": 2,
+    "totalItems": 52
+  },
+  "discovery": {
+    "totalParts": 8,
+    "totalItems": 356
+  },
+  "disney": {
+    "totalParts": 19,
+    "totalItems": 923
+  },
+  "docu": {
+    "totalParts": 11,
+    "totalItems": 536
+  },
+  "documentario": {
+    "totalParts": 13,
+    "totalItems": 626
+  },
+  "doramas": {
+    "totalParts": 24,
+    "totalItems": 1185
+  },
+  "drama": {
+    "totalParts": 153,
+    "totalItems": 7606
+  },
+  "dublagem-nao-oficial": {
+    "totalParts": 1,
+    "totalItems": 45
+  },
+  "especial-infantil": {
+    "totalParts": 2,
+    "totalItems": 53
+  },
+  "esportes": {
+    "totalParts": 3,
+    "totalItems": 123
+  },
+  "familia": {
+    "totalParts": 2,
+    "totalItems": 72
+  },
+  "fantasia": {
+    "totalParts": 15,
+    "totalItems": 727
+  },
+  "faroeste": {
+    "totalParts": 5,
+    "totalItems": 206
+  },
+  "ficcao-cientifica": {
+    "totalParts": 10,
+    "totalItems": 476
+  },
+  "funimation-now": {
+    "totalParts": 1,
+    "totalItems": 22
+  },
+  "globoplay": {
+    "totalParts": 23,
+    "totalItems": 1138
+  },
+  "guerra": {
+    "totalParts": 5,
+    "totalItems": 222
+  },
+  "hot-adultos-bella-da-semana": {
+    "totalParts": 4,
+    "totalItems": 155
+  },
+  "hot-adultos-legendado": {
+    "totalParts": 22,
+    "totalItems": 1080
+  },
+  "hot-adultos": {
+    "totalParts": 307,
+    "totalItems": 15348
+  },
+  "lancamentos": {
+    "totalParts": 37,
+    "totalItems": 1834
+  },
+  "legendadas": {
+    "totalParts": 28,
+    "totalItems": 1396
+  },
+  "legendados": {
+    "totalParts": 253,
+    "totalItems": 12644
+  },
+  "lionsgate": {
+    "totalParts": 1,
+    "totalItems": 7
+  },
+  "max": {
+    "totalParts": 18,
+    "totalItems": 879
+  },
+  "nacionais": {
+    "totalParts": 12,
+    "totalItems": 598
+  },
+  "netflix": {
+    "totalParts": 66,
+    "totalItems": 3272
+  },
+  "novelas-turcas": {
+    "totalParts": 3,
+    "totalItems": 133
+  },
+  "novelas": {
+    "totalParts": 14,
+    "totalItems": 688
+  },
+  "oscar-2025": {
+    "totalParts": 1,
+    "totalItems": 9
+  },
+  "outras-produtoras": {
+    "totalParts": 15,
+    "totalItems": 708
+  },
+  "outros": {
+    "totalParts": 10,
+    "totalItems": 462
+  },
+  "outros_filmes": {
+    "totalParts": 78,
+    "totalItems": 3866
+  },
+  "paramount": {
+    "totalParts": 6,
+    "totalItems": 298
+  },
+  "plutotv": {
+    "totalParts": 1,
+    "totalItems": 3
+  },
+  "prime-video": {
+    "totalParts": 28,
+    "totalItems": 1394
+  },
+  "programas-de-tv": {
+    "totalParts": 1,
+    "totalItems": 12
+  },
+  "religiosos": {
+    "totalParts": 4,
+    "totalItems": 174
+  },
+  "romance": {
+    "totalParts": 28,
+    "totalItems": 1363
+  },
+  "sbt": {
+    "totalParts": 1,
+    "totalItems": 23
+  },
+  "shows": {
+    "totalParts": 6,
+    "totalItems": 280
+  },
+  "stand-up-comedy": {
+    "totalParts": 1,
+    "totalItems": 35
+  },
+  "star": {
+    "totalParts": 6,
+    "totalItems": 260
+  },
+  "sugestao-da-semana": {
+    "totalParts": 1,
+    "totalItems": 1
+  },
+  "suspense": {
+    "totalParts": 37,
+    "totalItems": 1811
+  },
+  "terror": {
+    "totalParts": 62,
+    "totalItems": 3058
+  },
+  "uhd-4k": {
+    "totalParts": 24,
+    "totalItems": 1152
+  },
+  "univer": {
+    "totalParts": 1,
+    "totalItems": 12
+  }
+}
