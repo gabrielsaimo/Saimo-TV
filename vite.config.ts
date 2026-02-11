@@ -2,8 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: '/free-tv/',
+export default defineConfig(({ command }) => ({
+  base: command === 'serve' ? '/' : '/free-tv/',
   plugins: [react()],
   build: {
     rollupOptions: {
@@ -39,4 +39,4 @@ export default defineConfig({
     // Aumenta um pouco o limite para evitar warnings desnecessários
     chunkSizeWarningLimit: 600,
   },
-})
+}))
