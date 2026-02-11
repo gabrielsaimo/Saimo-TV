@@ -41,7 +41,7 @@ let manifest: Manifest | null = null;
 async function loadManifest(): Promise<Manifest> {
   if (manifest) return manifest;
   try {
-    const response = await fetch('/data/enriched/_manifest.json');
+    const response = await fetch(`${import.meta.env.BASE_URL}data/enriched/_manifest.json`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     manifest = await response.json();
     return manifest!;
@@ -263,7 +263,7 @@ export async function loadEnrichedCategory(categoryName: string): Promise<Enrich
     const partPromises: Promise<EnrichedMovie[]>[] = [];
     for (let i = 1; i <= manifestEntry.totalParts; i++) {
       partPromises.push(
-        fetch(`/data/enriched/${baseName}-p${i}.json`)
+        fetch(`${import.meta.env.BASE_URL}data/enriched/${baseName}-p${i}.json`)
           .then(r => {
             if (!r.ok) throw new Error(`HTTP ${r.status} for ${baseName}-p${i}.json`);
             return r.json();

@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/free-tv/',
   plugins: [react()],
   build: {
     rollupOptions: {
@@ -29,7 +30,7 @@ export default defineConfig({
           }
           // TV em chunk separado
           if (id.includes('/components/Sidebar') || id.includes('/components/ChannelCard') ||
-              id.includes('/components/ProgramGuide') || id.includes('/components/ProgramInfo')) {
+            id.includes('/components/ProgramGuide') || id.includes('/components/ProgramInfo')) {
             return 'tv';
           }
         },

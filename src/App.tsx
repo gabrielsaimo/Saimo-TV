@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, createContext, useContext, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AppHeader } from './components/AppHeader';
 import { Toast } from './components/Toast';
 import { getAllChannels } from './data/channels';
@@ -437,13 +437,13 @@ function AdultModeProvider({ children }: { children: React.ReactNode }) {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <DpadNavigationProvider>
         <AdultModeProvider>
           <AppLayout />
         </AdultModeProvider>
       </DpadNavigationProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
