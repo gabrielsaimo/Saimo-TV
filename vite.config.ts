@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
-  base: command === 'serve' ? '/' : '/free-tv/',
+  base: command === 'serve' ? '/' : '/Saimo-TV/',
   plugins: [react()],
   build: {
     rollupOptions: {
