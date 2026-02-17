@@ -826,17 +826,33 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               <p style={{ color: '#aaa', fontSize: '0.9rem', margin: '8px 0 16px' }}>
                 O CDN deste vídeo bloqueia servidores proxy. Use um player externo para assistir.
               </p>
+              <div className="error-actions">
+                <button
+                  onClick={openInNewTab}
+                  data-focusable="true"
+                  data-nav-group="error-actions"
+                  autoFocus
+                >
+                  🌐 Abrir em nova aba
+                </button>
+                <button
+                  onClick={() => openInExternalPlayer('copy')}
+                  data-focusable="true"
+                  data-nav-group="error-actions"
+                >
+                  📋 Copiar URL
+                </button>
+              </div>
               <div className="external-players" style={{ marginTop: 0 }}>
-                <p>Abrir em player externo:</p>
+                <p>Ou abrir em player externo:</p>
                 <div className="player-buttons">
                   <button
                     onClick={() => openInExternalPlayer('vlc')}
                     title="VLC Media Player"
                     data-focusable="true"
                     data-nav-group="external-players"
-                    autoFocus
                   >
-                    🎬 VLC
+                    VLC
                   </button>
                   <button
                     onClick={() => openInExternalPlayer('iina')}
@@ -844,7 +860,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                     data-focusable="true"
                     data-nav-group="external-players"
                   >
-                    🎥 IINA
+                    IINA
                   </button>
                   <button
                     onClick={() => openInExternalPlayer('potplayer')}
@@ -852,23 +868,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                     data-focusable="true"
                     data-nav-group="external-players"
                   >
-                    ▶️ PotPlayer
-                  </button>
-                  <button
-                    onClick={openInNewTab}
-                    title="Abrir no navegador"
-                    data-focusable="true"
-                    data-nav-group="external-players"
-                  >
-                    🌐 Nova aba
-                  </button>
-                  <button
-                    onClick={() => openInExternalPlayer('copy')}
-                    title="Copiar URL"
-                    data-focusable="true"
-                    data-nav-group="external-players"
-                  >
-                    📋 Copiar URL
+                    PotPlayer
                   </button>
                 </div>
               </div>
