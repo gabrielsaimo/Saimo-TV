@@ -40,6 +40,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isProxyBlocked, setIsProxyBlocked] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showExternalMenu, setShowExternalMenu] = useState(false);
@@ -85,6 +86,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     // Resetar estados para o novo vídeo
     setIsLoading(true);
     setError(null);
+    setIsProxyBlocked(false);
     setCurrentTime(0);
     setDuration(0);
     setIsPlaying(false);
@@ -140,18 +142,33 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       const videoError = (e.currentTarget as HTMLVideoElement)?.error;
       const code = videoError?.code;
       let message = 'Erro ao carregar o vídeo.';
-      
+
       switch (code) {
         case 1: message = 'Carregamento do vídeo foi cancelado.'; break;
         case 2: message = 'Erro de rede. Verifique sua conexão.'; break;
         case 3: message = 'Erro ao decodificar o vídeo.'; break;
-        case 4: 
-          message = needsProxy(movie.url)
-            ? 'O provedor de vídeo bloqueou o acesso seguro. Tente "Abrir em nova aba".'
-            : 'Formato de vídeo não suportado ou URL inválida.';
+        case 4:
+          if (needsProxy(movie.url)) {
+            // Tenta verificar se é bloqueio do proxy (403 do servidor de CDN)
+            const proxyUrl = getProxiedUrl(movie.url);
+            fetch(proxyUrl, { method: 'HEAD' })
+              .then(r => {
+                if (r.status === 403) {
+                  setIsProxyBlocked(true);
+                  setError('O servidor de CDN está bloqueando o proxy. Use um player externo.');
+                } else {
+                  setError('Vídeo não pôde ser carregado. Tente um player externo.');
+                }
+              })
+              .catch(() => {
+                setError('Vídeo não pôde ser carregado. Tente um player externo.');
+              });
+            return; // Sai cedo; o state será definido no .then()
+          }
+          message = 'Formato de vídeo não suportado ou URL inválida.';
           break;
       }
-      
+
       console.log('[MoviePlayer Error]', { code, message, url: movie.url });
       setError(message);
     };
@@ -690,6 +707,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const handleRetry = useCallback(() => {
     if (videoRef.current && movie) {
       setError(null);
+      setIsProxyBlocked(false);
       setIsLoading(true);
       // This will trigger the main useEffect to re-run and attempt to load the source again.
       // A more direct way would be to call a "load" function, but this is simpler with the current structure.
@@ -798,104 +816,165 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       {/* Error overlay */}
       {error && (
         <div className="player-overlay error" onClick={(e) => e.stopPropagation()}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 8v4M12 16h.01" />
-          </svg>
-          <h3>{error}</h3>
-          <div className="error-actions">
-            <button 
-              onClick={handleRetry}
-              data-focusable="true"
-              data-nav-group="error-actions"
-              autoFocus
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleRetry();
-                }
-              }}
-            >
-              Tentar novamente
-            </button>
-            <button 
-              onClick={openInNewTab}
-              data-focusable="true"
-              data-nav-group="error-actions"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  openInNewTab();
-                }
-              }}
-            >
-              Abrir em nova aba
-            </button>
-          </div>
-          <div className="external-players">
-            <p>Abrir em player externo:</p>
-            <div className="player-buttons">
-              <button 
-                onClick={() => openInExternalPlayer('vlc')} 
-                title="VLC Media Player"
-                data-focusable="true"
-                data-nav-group="external-players"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    openInExternalPlayer('vlc');
-                  }
-                }}
-              >
-                VLC
-              </button>
-              <button 
-                onClick={() => openInExternalPlayer('iina')} 
-                title="IINA (macOS)"
-                data-focusable="true"
-                data-nav-group="external-players"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    openInExternalPlayer('iina');
-                  }
-                }}
-              >
-                IINA
-              </button>
-              <button 
-                onClick={() => openInExternalPlayer('potplayer')} 
-                title="PotPlayer"
-                data-focusable="true"
-                data-nav-group="external-players"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    openInExternalPlayer('potplayer');
-                  }
-                }}
-              >
-                PotPlayer
-              </button>
-              <button 
-                onClick={() => openInExternalPlayer('copy')} 
-                title="Copiar URL"
-                data-focusable="true"
-                data-nav-group="external-players"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    openInExternalPlayer('copy');
-                  }
-                }}
-              >
-                📋 Copiar URL
-              </button>
-            </div>
-          </div>
-          <p className="error-hint">
-            💡 Dica: Se o vídeo não carregar, abra em um player externo como VLC
-          </p>
+          {isProxyBlocked ? (
+            <>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4M12 16h.01" />
+              </svg>
+              <h3>Servidor bloqueando proxy</h3>
+              <p style={{ color: '#aaa', fontSize: '0.9rem', margin: '8px 0 16px' }}>
+                O CDN deste vídeo bloqueia servidores proxy. Use um player externo para assistir.
+              </p>
+              <div className="external-players" style={{ marginTop: 0 }}>
+                <p>Abrir em player externo:</p>
+                <div className="player-buttons">
+                  <button
+                    onClick={() => openInExternalPlayer('vlc')}
+                    title="VLC Media Player"
+                    data-focusable="true"
+                    data-nav-group="external-players"
+                    autoFocus
+                  >
+                    🎬 VLC
+                  </button>
+                  <button
+                    onClick={() => openInExternalPlayer('iina')}
+                    title="IINA (macOS)"
+                    data-focusable="true"
+                    data-nav-group="external-players"
+                  >
+                    🎥 IINA
+                  </button>
+                  <button
+                    onClick={() => openInExternalPlayer('potplayer')}
+                    title="PotPlayer"
+                    data-focusable="true"
+                    data-nav-group="external-players"
+                  >
+                    ▶️ PotPlayer
+                  </button>
+                  <button
+                    onClick={openInNewTab}
+                    title="Abrir no navegador"
+                    data-focusable="true"
+                    data-nav-group="external-players"
+                  >
+                    🌐 Nova aba
+                  </button>
+                  <button
+                    onClick={() => openInExternalPlayer('copy')}
+                    title="Copiar URL"
+                    data-focusable="true"
+                    data-nav-group="external-players"
+                  >
+                    📋 Copiar URL
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4M12 16h.01" />
+              </svg>
+              <h3>{error}</h3>
+              <div className="error-actions">
+                <button
+                  onClick={handleRetry}
+                  data-focusable="true"
+                  data-nav-group="error-actions"
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleRetry();
+                    }
+                  }}
+                >
+                  Tentar novamente
+                </button>
+                <button
+                  onClick={openInNewTab}
+                  data-focusable="true"
+                  data-nav-group="error-actions"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      openInNewTab();
+                    }
+                  }}
+                >
+                  Abrir em nova aba
+                </button>
+              </div>
+              <div className="external-players">
+                <p>Abrir em player externo:</p>
+                <div className="player-buttons">
+                  <button
+                    onClick={() => openInExternalPlayer('vlc')}
+                    title="VLC Media Player"
+                    data-focusable="true"
+                    data-nav-group="external-players"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openInExternalPlayer('vlc');
+                      }
+                    }}
+                  >
+                    VLC
+                  </button>
+                  <button
+                    onClick={() => openInExternalPlayer('iina')}
+                    title="IINA (macOS)"
+                    data-focusable="true"
+                    data-nav-group="external-players"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openInExternalPlayer('iina');
+                      }
+                    }}
+                  >
+                    IINA
+                  </button>
+                  <button
+                    onClick={() => openInExternalPlayer('potplayer')}
+                    title="PotPlayer"
+                    data-focusable="true"
+                    data-nav-group="external-players"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openInExternalPlayer('potplayer');
+                      }
+                    }}
+                  >
+                    PotPlayer
+                  </button>
+                  <button
+                    onClick={() => openInExternalPlayer('copy')}
+                    title="Copiar URL"
+                    data-focusable="true"
+                    data-nav-group="external-players"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openInExternalPlayer('copy');
+                      }
+                    }}
+                  >
+                    📋 Copiar URL
+                  </button>
+                </div>
+              </div>
+              <p className="error-hint">
+                💡 Dica: Se o vídeo não carregar, abra em um player externo como VLC
+              </p>
+            </>
+          )}
         </div>
       )}
 
