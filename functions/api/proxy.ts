@@ -14,6 +14,51 @@ function copyStreamingHeaders(from: Headers, to: Headers): void {
   }
 }
 
+function isM3u8(url: string, contentType: string): boolean {
+  return (
+    url.includes('.m3u8') ||
+    contentType.includes('application/vnd.apple.mpegurl') ||
+    contentType.includes('application/x-mpegurl') ||
+    contentType.includes('audio/mpegurl')
+  );
+}
+
+function resolveUrl(uri: string, base: string): string {
+  try {
+    return new URL(uri, base).href;
+  } catch {
+    return uri;
+  }
+}
+
+// Reescreve URLs HTTP dentro do manifesto M3U8 para passar pelo proxy
+function rewriteM3u8(content: string, baseUrl: string, proxyOrigin: string): string {
+  const lines = content.split('\n');
+  return lines.map(line => {
+    // Reescreve URI="..." dentro de tags como #EXT-X-KEY, #EXT-X-MAP
+    const rewrittenLine = line.replace(/URI="([^"]+)"/g, (_match, uri) => {
+      const abs = resolveUrl(uri, baseUrl);
+      if (abs.startsWith('http://')) {
+        return `URI="${proxyOrigin}/api/proxy?url=${encodeURIComponent(abs)}"`;
+      }
+      return `URI="${abs}"`;
+    });
+
+    // Linhas de comentário (#...) não são URLs de segmento
+    if (rewrittenLine.startsWith('#')) return rewrittenLine;
+
+    const trimmed = rewrittenLine.trim();
+    if (!trimmed) return rewrittenLine;
+
+    // Linha de URL de segmento ou sub-playlist
+    const abs = resolveUrl(trimmed, baseUrl);
+    if (abs.startsWith('http://')) {
+      return `${proxyOrigin}/api/proxy?url=${encodeURIComponent(abs)}`;
+    }
+    return abs; // HTTPS já está ok
+  }).join('\n');
+}
+
 export const onRequest = async ({ request }: { request: Request }): Promise<Response> => {
   if (request.method === 'OPTIONS') {
     return new Response(null, {
@@ -26,8 +71,8 @@ export const onRequest = async ({ request }: { request: Request }): Promise<Resp
     });
   }
 
-  const url = new URL(request.url);
-  const videoUrl = url.searchParams.get('url');
+  const reqUrl = new URL(request.url);
+  const videoUrl = reqUrl.searchParams.get('url');
 
   if (!videoUrl) {
     return new Response(JSON.stringify({ error: 'URL parameter is required' }), {
@@ -64,7 +109,7 @@ export const onRequest = async ({ request }: { request: Request }): Promise<Resp
 
     let currentUrl = decodedUrl;
     let finalResponse: Response | null = null;
-    const maxRedirects = 5;
+    const maxRedirects = 15; // aumentado de 5 para 15
 
     for (let i = 0; i < maxRedirects; i++) {
       try {
@@ -114,47 +159,40 @@ export const onRequest = async ({ request }: { request: Request }): Promise<Resp
 
     // Estratégias de fallback para 403/404
     if (finalResponse.status === 403 || finalResponse.status === 404) {
-      const retryHeaders1: Record<string, string> = {
-        'User-Agent': clientHeaders['User-Agent'],
-        'Referer': originalReferer,
-        'Accept': '*/*',
-      };
-      if (clientHeaders['Cookie']) retryHeaders1['Cookie'] = clientHeaders['Cookie'];
-      if (rangeHeader) retryHeaders1['Range'] = rangeHeader;
+      const strategies = [
+        {
+          'User-Agent': clientHeaders['User-Agent'],
+          'Referer': originalReferer,
+          'Accept': '*/*',
+          ...(clientHeaders['Cookie'] ? { 'Cookie': clientHeaders['Cookie'] } : {}),
+          ...(rangeHeader ? { 'Range': rangeHeader } : {}),
+        },
+        {
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36',
+          ...(rangeHeader ? { 'Range': rangeHeader } : {}),
+        },
+        {
+          'User-Agent': 'Lavf/58.29.100',
+          'Accept': '*/*',
+          ...(rangeHeader ? { 'Range': rangeHeader } : {}),
+        },
+      ];
 
-      try {
-        const retry1 = await fetch(currentUrl, { method: 'GET', headers: retryHeaders1 });
-        if (retry1.ok || retry1.status === 206) {
-          finalResponse = retry1;
-        } else {
-          await retry1.body?.cancel();
-
-          const retryHeaders2: Record<string, string> = {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36',
-          };
-          if (rangeHeader) retryHeaders2['Range'] = rangeHeader;
-          const retry2 = await fetch(currentUrl, { method: 'GET', headers: retryHeaders2 });
-          if (retry2.ok || retry2.status === 206) {
-            finalResponse = retry2;
-          } else {
-            await retry2.body?.cancel();
-
-            const retryHeaders3: Record<string, string> = { 'User-Agent': 'Lavf/58.29.100', 'Accept': '*/*' };
-            if (rangeHeader) retryHeaders3['Range'] = rangeHeader;
-            const retry3 = await fetch(currentUrl, { method: 'GET', headers: retryHeaders3 });
-            if (retry3.ok || retry3.status === 206) {
-              finalResponse = retry3;
-            } else {
-              await retry3.body?.cancel();
-            }
+      for (const headers of strategies) {
+        try {
+          const retry = await fetch(currentUrl, { method: 'GET', headers });
+          if (retry.ok || retry.status === 206) {
+            finalResponse = retry;
+            break;
           }
-        }
-      } catch { }
+          await retry.body?.cancel();
+        } catch { }
+      }
     }
 
     if (!finalResponse.ok && finalResponse.status !== 206) {
       return new Response(JSON.stringify({
-        error: `Failed to fetch video: ${finalResponse.statusText}`,
+        error: `Failed to fetch: ${finalResponse.statusText}`,
         status: finalResponse.status,
       }), {
         status: finalResponse.status,
@@ -162,6 +200,27 @@ export const onRequest = async ({ request }: { request: Request }): Promise<Resp
       });
     }
 
+    const contentType = finalResponse.headers.get('content-type') || '';
+
+    // Reescreve m3u8 para que segmentos HTTP também passem pelo proxy
+    if (isM3u8(currentUrl, contentType)) {
+      const text = await finalResponse.text();
+      const proxyOrigin = reqUrl.origin;
+      const rewritten = rewriteM3u8(text, currentUrl, proxyOrigin);
+
+      return new Response(rewritten, {
+        status: finalResponse.status,
+        headers: {
+          'Content-Type': 'application/vnd.apple.mpegurl',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Range',
+          'Cache-Control': 'no-store',
+        },
+      });
+    }
+
+    // Para demais conteúdos (MP4, TS, etc): streaming direto
     const responseHeaders = new Headers();
     responseHeaders.set('Access-Control-Allow-Origin', '*');
     responseHeaders.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
