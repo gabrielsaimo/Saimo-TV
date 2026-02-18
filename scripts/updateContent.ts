@@ -348,6 +348,9 @@ async function main() {
 
         if (Array.isArray(content)) {
             for (const movie of content) {
+                // Reset active: será true só se encontrar URL no M3U atual
+                movie.active = false;
+
                 // Se item não tem TMDB, tenta copiar de outro existente
                 if (!movie.tmdb || !movie.tmdb.id) {
                     const cleanName = getCleanName(movie.name);
@@ -362,6 +365,7 @@ async function main() {
                 const m3uUrl = findMatch(movie.name, movie.tmdb?.originalTitle, m3uMap);
 
                 if (m3uUrl) {
+                    movie.active = true;
                     usedM3UUrls.add(m3uUrl);
                     if (movie.url !== m3uUrl) {
                         movie.url = m3uUrl;
@@ -371,6 +375,8 @@ async function main() {
 
                 // Para séries, processar episódios
                 if (movie.type === 'series' && movie.episodes) {
+                    let seriesHasM3uUrl = false;
+
                     (Object.entries(movie.episodes) as [string, any[]][]).forEach(([seasonKey, episodes]) => {
                         episodes.forEach((ep: any) => {
                             const seasonNum = seasonKey.replace(/\D/g, '').padStart(2, '0');
@@ -382,6 +388,7 @@ async function main() {
                             if (!epUrl) epUrl = findMatch(searchNameAlt, undefined, m3uMap);
 
                             if (epUrl) {
+                                seriesHasM3uUrl = true;
                                 usedM3UUrls.add(epUrl);
                                 if (ep.url !== epUrl) {
                                     ep.url = epUrl;
@@ -391,10 +398,13 @@ async function main() {
                         });
                     });
 
+                    if (seriesHasM3uUrl) movie.active = true;
+
                     // Adicionar Episódios Faltantes do M3U
                     let m3uSeries = newSeriesMap[movie.name];
 
                     if (m3uSeries) {
+                        movie.active = true;
                         m3uSeries.episodes.forEach((m3uEp: any) => {
                             const sKey = String(parseInt(m3uEp.season));
                             if (!movie.episodes[sKey]) movie.episodes[sKey] = [];
@@ -431,8 +441,9 @@ async function main() {
             }
         }
 
+        // Sempre salva: active foi atualizado em todos os itens
+        writeCategoryParts(baseName, content, manifest);
         if (updatedCount > 0) {
-            writeCategoryParts(baseName, content, manifest);
             console.log(`📝 ${baseName}: ${updatedCount} atualizações (URLs/TMDB/Episódios).`);
             if (appendedEpisodesCount > 0) console.log(`   ↳ ${appendedEpisodesCount} episódios novos adicionados.`);
             totalUpdated += updatedCount;
@@ -467,6 +478,7 @@ async function main() {
                 id: `m3u-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
                 name: item.name,
                 url: item.url,
+                active: true,
                 category: isAdultContent ? '[HOT] Adultos ❌❤️' : item.group,
                 type: 'movie',
                 isAdult: isAdultContent,
@@ -507,6 +519,7 @@ async function main() {
             const newSeries = {
                 id: `series-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
                 name: seriesName,
+                active: true,
                 category: data.group,
                 type: 'series',
                 isAdult: false,

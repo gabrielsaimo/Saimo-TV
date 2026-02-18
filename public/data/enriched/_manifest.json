@@ -9,15 +9,15 @@
   },
   "animacao": {
     "totalParts": 22,
-    "totalItems": 1056
+    "totalItems": 1077
   },
   "apple-tv": {
-    "totalParts": 9,
-    "totalItems": 413
+    "totalParts": 25,
+    "totalItems": 1223
   },
   "aventura": {
-    "totalParts": 10,
-    "totalItems": 472
+    "totalParts": 16,
+    "totalItems": 790
   },
   "brasil-paralelo": {
     "totalParts": 1,
@@ -36,8 +36,8 @@
     "totalItems": 4658
   },
   "crime": {
-    "totalParts": 22,
-    "totalItems": 1080
+    "totalParts": 36,
+    "totalItems": 1784
   },
   "crunchyroll": {
     "totalParts": 4,
@@ -56,24 +56,24 @@
     "totalItems": 356
   },
   "disney": {
-    "totalParts": 19,
-    "totalItems": 923
+    "totalParts": 49,
+    "totalItems": 2404
   },
   "docu": {
-    "totalParts": 11,
-    "totalItems": 536
+    "totalParts": 35,
+    "totalItems": 1714
   },
   "documentario": {
     "totalParts": 13,
     "totalItems": 626
   },
   "doramas": {
-    "totalParts": 24,
-    "totalItems": 1185
+    "totalParts": 154,
+    "totalItems": 7679
   },
   "drama": {
-    "totalParts": 153,
-    "totalItems": 7606
+    "totalParts": 200,
+    "totalItems": 9985
   },
   "dublagem-nao-oficial": {
     "totalParts": 1,
@@ -84,16 +84,16 @@
     "totalItems": 53
   },
   "esportes": {
-    "totalParts": 3,
-    "totalItems": 123
+    "totalParts": 4,
+    "totalItems": 187
   },
   "familia": {
     "totalParts": 2,
     "totalItems": 72
   },
   "fantasia": {
-    "totalParts": 15,
-    "totalItems": 727
+    "totalParts": 23,
+    "totalItems": 1125
   },
   "faroeste": {
     "totalParts": 5,
@@ -108,8 +108,8 @@
     "totalItems": 22
   },
   "globoplay": {
-    "totalParts": 23,
-    "totalItems": 1138
+    "totalParts": 103,
+    "totalItems": 5146
   },
   "guerra": {
     "totalParts": 5,
@@ -124,16 +124,16 @@
     "totalItems": 1080
   },
   "hot-adultos": {
-    "totalParts": 307,
-    "totalItems": 15348
+    "totalParts": 308,
+    "totalItems": 15360
   },
   "lancamentos": {
     "totalParts": 37,
     "totalItems": 1834
   },
   "legendadas": {
-    "totalParts": 28,
-    "totalItems": 1396
+    "totalParts": 39,
+    "totalItems": 1914
   },
   "legendados": {
     "totalParts": 253,
@@ -144,24 +144,24 @@
     "totalItems": 7
   },
   "max": {
-    "totalParts": 18,
-    "totalItems": 879
+    "totalParts": 55,
+    "totalItems": 2720
   },
   "nacionais": {
     "totalParts": 12,
     "totalItems": 598
   },
   "netflix": {
-    "totalParts": 66,
-    "totalItems": 3272
+    "totalParts": 180,
+    "totalItems": 8985
   },
   "novelas-turcas": {
-    "totalParts": 3,
-    "totalItems": 133
+    "totalParts": 38,
+    "totalItems": 1881
   },
   "novelas": {
-    "totalParts": 14,
-    "totalItems": 688
+    "totalParts": 84,
+    "totalItems": 4168
   },
   "oscar-2025": {
     "totalParts": 1,
@@ -180,28 +180,28 @@
     "totalItems": 3866
   },
   "paramount": {
-    "totalParts": 6,
-    "totalItems": 298
+    "totalParts": 11,
+    "totalItems": 524
   },
   "plutotv": {
     "totalParts": 1,
     "totalItems": 3
   },
   "prime-video": {
-    "totalParts": 28,
-    "totalItems": 1394
+    "totalParts": 103,
+    "totalItems": 5120
   },
   "programas-de-tv": {
     "totalParts": 1,
     "totalItems": 12
   },
   "religiosos": {
-    "totalParts": 4,
-    "totalItems": 174
+    "totalParts": 5,
+    "totalItems": 210
   },
   "romance": {
-    "totalParts": 28,
-    "totalItems": 1363
+    "totalParts": 30,
+    "totalItems": 1474
   },
   "sbt": {
     "totalParts": 1,
@@ -216,8 +216,8 @@
     "totalItems": 35
   },
   "star": {
-    "totalParts": 6,
-    "totalItems": 260
+    "totalParts": 14,
+    "totalItems": 658
   },
   "sugestao-da-semana": {
     "totalParts": 1,
@@ -228,15 +228,27 @@
     "totalItems": 1811
   },
   "terror": {
-    "totalParts": 62,
-    "totalItems": 3058
+    "totalParts": 63,
+    "totalItems": 3120
   },
   "uhd-4k": {
-    "totalParts": 24,
-    "totalItems": 1152
+    "totalParts": 26,
+    "totalItems": 1268
   },
   "univer": {
     "totalParts": 1,
     "totalItems": 12
+  },
+  "desenhos": {
+    "totalParts": 5,
+    "totalItems": 225
+  },
+  "musicais": {
+    "totalParts": 1,
+    "totalItems": 17
+  },
+  "animes": {
+    "totalParts": 78,
+    "totalItems": 3860
   }
 }
