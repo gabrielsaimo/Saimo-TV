@@ -517,11 +517,12 @@ export function searchContent(
   if (!normalizedQuery) return [];
 
   const results: EnrichedMovie[] = [];
-  const seenIds = new Set<string>();
+  const seenKeys = new Set<string>();
 
   dataCache.forEach(movies => {
     for (const movie of movies) {
-      if (seenIds.has(movie.id)) continue;
+      const key = movie.tmdb?.id ? `tmdb_${movie.tmdb.id}` : `name_${movie.name.toLowerCase()}`;
+      if (seenKeys.has(key)) continue;
 
       // Busca no nome
       const matchesName = movie.name.toLowerCase().includes(normalizedQuery);
@@ -551,7 +552,7 @@ export function searchContent(
           if (options.certifications?.length && !options.certifications.includes(movie.tmdb?.certification || '')) continue;
         }
 
-        seenIds.add(movie.id);
+        seenKeys.add(key);
         results.push(movie);
       }
     }
@@ -668,12 +669,13 @@ export function filterContent(
  * Filtra todo o conteúdo disponível (todas as categorias)
  */
 export function filterAllContent(filters: Partial<FilterOptions>): EnrichedMovie[] {
-  const seenIds = new Set<string>();
+  const seenKeys = new Set<string>();
   const results: EnrichedMovie[] = [];
 
   dataCache.forEach(items => {
     for (const movie of items) {
-      if (seenIds.has(movie.id)) continue;
+      const key = movie.tmdb?.id ? `tmdb_${movie.tmdb.id}` : `name_${movie.name.toLowerCase()}`;
+      if (seenKeys.has(key)) continue;
 
       // Filtro por tipo
       if (filters.type && filters.type !== 'all' && movie.type !== filters.type) {
@@ -719,7 +721,7 @@ export function filterAllContent(filters: Partial<FilterOptions>): EnrichedMovie
         }
       }
 
-      seenIds.add(movie.id);
+      seenKeys.add(key);
       results.push(movie);
     }
   });
@@ -783,9 +785,9 @@ export function getActorFilmography(actorId: number): ActorFilmography | null {
     }
   });
 
-  // Remove duplicatas
-  const uniqueMovies = Array.from(new Map(movies.map(m => [m.id, m])).values());
-  const uniqueSeries = Array.from(new Map(series.map(s => [s.id, s])).values());
+  // Remove duplicatas (usando tmdb id ou nome)
+  const uniqueMovies = Array.from(new Map(movies.map(m => [m.tmdb?.id ? `tmdb_${m.tmdb.id}` : `name_${m.name.toLowerCase()}`, m])).values());
+  const uniqueSeries = Array.from(new Map(series.map(s => [s.tmdb?.id ? `tmdb_${s.tmdb.id}` : `name_${s.name.toLowerCase()}`, s])).values());
 
   // Ordena por rating
   uniqueMovies.sort((a, b) => (b.tmdb?.rating || 0) - (a.tmdb?.rating || 0));
@@ -881,11 +883,12 @@ export function getSimilarByGenre(movie: EnrichedMovie, limit = 10): EnrichedMov
 
   const movieGenres = new Set(movie.tmdb.genres);
   const results: { movie: EnrichedMovie; score: number }[] = [];
-  const seenIds = new Set<string>([movie.id]);
+  const seenKeys = new Set<string>([movie.tmdb?.id ? `tmdb_${movie.tmdb.id}` : `name_${movie.name.toLowerCase()}`]);
 
   dataCache.forEach(movies => {
     for (const m of movies) {
-      if (seenIds.has(m.id)) continue;
+      const key = m.tmdb?.id ? `tmdb_${m.tmdb.id}` : `name_${m.name.toLowerCase()}`;
+      if (seenKeys.has(key)) continue;
       if (m.type !== movie.type) continue; // Mesmo tipo
       if (!m.tmdb?.genres?.length) continue;
 
@@ -895,7 +898,7 @@ export function getSimilarByGenre(movie: EnrichedMovie, limit = 10): EnrichedMov
 
       const score = commonGenres.length * 10 + (m.tmdb.rating || 0);
 
-      seenIds.add(m.id);
+      seenKeys.add(key);
       results.push({ movie: m, score });
     }
   });
@@ -911,16 +914,17 @@ export function getSimilarByGenre(movie: EnrichedMovie, limit = 10): EnrichedMov
  */
 export function getFeaturedItems(type?: 'movie' | 'series', limit = 20): EnrichedMovie[] {
   const results: EnrichedMovie[] = [];
-  const seenIds = new Set<string>();
+  const seenKeys = new Set<string>();
 
   dataCache.forEach(movies => {
     for (const movie of movies) {
-      if (seenIds.has(movie.id)) continue;
+      const key = movie.tmdb?.id ? `tmdb_${movie.tmdb.id}` : `name_${movie.name.toLowerCase()}`;
+      if (seenKeys.has(key)) continue;
       if (type && movie.type !== type) continue;
       if (!movie.tmdb?.rating || movie.tmdb.rating < 7) continue;
       if (!movie.tmdb?.poster) continue;
 
-      seenIds.add(movie.id);
+      seenKeys.add(key);
       results.push(movie);
     }
   });
@@ -935,18 +939,19 @@ export function getFeaturedItems(type?: 'movie' | 'series', limit = 20): Enriche
  */
 export function getRecentReleases(limit = 20): EnrichedMovie[] {
   const results: EnrichedMovie[] = [];
-  const seenIds = new Set<string>();
+  const seenKeys = new Set<string>();
   const currentYear = new Date().getFullYear();
 
   dataCache.forEach(movies => {
     for (const movie of movies) {
-      if (seenIds.has(movie.id)) continue;
+      const key = movie.tmdb?.id ? `tmdb_${movie.tmdb.id}` : `name_${movie.name.toLowerCase()}`;
+      if (seenKeys.has(key)) continue;
 
       const year = parseInt(movie.tmdb?.year || '0');
       if (year < currentYear - 2) continue; // Últimos 2 anos
       if (!movie.tmdb?.poster) continue;
 
-      seenIds.add(movie.id);
+      seenKeys.add(key);
       results.push(movie);
     }
   });
