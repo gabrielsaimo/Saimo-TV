@@ -1,286 +1,206 @@
 {
-  "acao": {
-    "totalParts": 104,
-    "totalItems": 5183
+  "hot-adultos": {
+    "totalParts": 45,
+    "totalItems": 2243
   },
-  "amc-plus": {
+  "sbt": {
     "totalParts": 1,
-    "totalItems": 3
+    "totalItems": 26
   },
-  "animacao": {
-    "totalParts": 22,
-    "totalItems": 1077
+  "max": {
+    "totalParts": 12,
+    "totalItems": 553
   },
-  "apple-tv": {
-    "totalParts": 25,
-    "totalItems": 1223
+  "infantil": {
+    "totalParts": 1,
+    "totalItems": 24
+  },
+  "prime-video": {
+    "totalParts": 12,
+    "totalItems": 576
+  },
+  "disney": {
+    "totalParts": 10,
+    "totalItems": 478
+  },
+  "religiosos": {
+    "totalParts": 3,
+    "totalItems": 142
+  },
+  "paramount": {
+    "totalParts": 5,
+    "totalItems": 221
+  },
+  "legendados": {
+    "totalParts": 39,
+    "totalItems": 1933
+  },
+  "documentario": {
+    "totalParts": 17,
+    "totalItems": 846
+  },
+  "esportes": {
+    "totalParts": 1,
+    "totalItems": 25
+  },
+  "discovery": {
+    "totalParts": 6,
+    "totalItems": 297
+  },
+  "lancamentos": {
+    "totalParts": 9,
+    "totalItems": 434
+  },
+  "suspense": {
+    "totalParts": 20,
+    "totalItems": 955
+  },
+  "drama": {
+    "totalParts": 53,
+    "totalItems": 2635
+  },
+  "romance": {
+    "totalParts": 16,
+    "totalItems": 769
+  },
+  "acao": {
+    "totalParts": 63,
+    "totalItems": 3120
+  },
+  "guerra": {
+    "totalParts": 4,
+    "totalItems": 174
+  },
+  "fantasia": {
+    "totalParts": 9,
+    "totalItems": 434
+  },
+  "musicais": {
+    "totalParts": 1,
+    "totalItems": 43
+  },
+  "uhd-4k": {
+    "totalParts": 24,
+    "totalItems": 1172
+  },
+  "terror": {
+    "totalParts": 31,
+    "totalItems": 1550
+  },
+  "cinema": {
+    "totalParts": 1,
+    "totalItems": 29
+  },
+  "comedia": {
+    "totalParts": 45,
+    "totalItems": 2233
+  },
+  "ficcao-cientifica": {
+    "totalParts": 8,
+    "totalItems": 391
+  },
+  "brasileiro": {
+    "totalParts": 12,
+    "totalItems": 560
   },
   "aventura": {
-    "totalParts": 16,
-    "totalItems": 790
+    "totalParts": 7,
+    "totalItems": 312
+  },
+  "sem-categoria": {
+    "totalParts": 1,
+    "totalItems": 35
+  },
+  "faroeste": {
+    "totalParts": 4,
+    "totalItems": 176
+  },
+  "shows": {
+    "totalParts": 3,
+    "totalItems": 104
+  },
+  "marvel-dc": {
+    "totalParts": 3,
+    "totalItems": 114
+  },
+  "netflix": {
+    "totalParts": 26,
+    "totalItems": 1291
+  },
+  "crunchyroll": {
+    "totalParts": 3,
+    "totalItems": 103
+  },
+  "nacionais": {
+    "totalParts": 3,
+    "totalItems": 110
+  },
+  "lionsgate": {
+    "totalParts": 1,
+    "totalItems": 29
+  },
+  "reality": {
+    "totalParts": 2,
+    "totalItems": 90
+  },
+  "apple-tv": {
+    "totalParts": 5,
+    "totalItems": 230
+  },
+  "novelas": {
+    "totalParts": 7,
+    "totalItems": 324
+  },
+  "outros": {
+    "totalParts": 3,
+    "totalItems": 146
+  },
+  "universal-plus": {
+    "totalParts": 1,
+    "totalItems": 31
+  },
+  "animes": {
+    "totalParts": 5,
+    "totalItems": 216
+  },
+  "globoplay": {
+    "totalParts": 8,
+    "totalItems": 355
+  },
+  "hulu": {
+    "totalParts": 1,
+    "totalItems": 11
+  },
+  "desenhos": {
+    "totalParts": 7,
+    "totalItems": 303
+  },
+  "doramas": {
+    "totalParts": 5,
+    "totalItems": 236
   },
   "brasil-paralelo": {
     "totalParts": 1,
     "totalItems": 29
   },
-  "cinema": {
-    "totalParts": 2,
-    "totalItems": 83
-  },
-  "claro-video": {
-    "totalParts": 1,
-    "totalItems": 13
-  },
-  "comedia": {
-    "totalParts": 98,
-    "totalItems": 4897
-  },
-  "crime": {
-    "totalParts": 36,
-    "totalItems": 1784
-  },
-  "crunchyroll": {
-    "totalParts": 4,
-    "totalItems": 185
-  },
-  "cursos": {
-    "totalParts": 1,
-    "totalItems": 14
-  },
-  "directv": {
-    "totalParts": 2,
-    "totalItems": 52
-  },
-  "discovery": {
-    "totalParts": 8,
-    "totalItems": 356
-  },
-  "disney": {
-    "totalParts": 49,
-    "totalItems": 2405
-  },
-  "docu": {
-    "totalParts": 35,
-    "totalItems": 1714
-  },
-  "documentario": {
-    "totalParts": 15,
-    "totalItems": 720
-  },
-  "doramas": {
-    "totalParts": 154,
-    "totalItems": 7679
-  },
-  "drama": {
-    "totalParts": 200,
-    "totalItems": 9985
-  },
-  "dublagem-nao-oficial": {
-    "totalParts": 1,
-    "totalItems": 45
-  },
-  "especial-infantil": {
-    "totalParts": 2,
-    "totalItems": 53
-  },
-  "esportes": {
-    "totalParts": 5,
-    "totalItems": 207
-  },
-  "familia": {
-    "totalParts": 2,
-    "totalItems": 72
-  },
-  "fantasia": {
-    "totalParts": 23,
-    "totalItems": 1125
-  },
-  "faroeste": {
-    "totalParts": 5,
-    "totalItems": 240
-  },
-  "ficcao-cientifica": {
-    "totalParts": 12,
-    "totalItems": 567
-  },
-  "funimation-now": {
-    "totalParts": 1,
-    "totalItems": 22
-  },
-  "globoplay": {
-    "totalParts": 103,
-    "totalItems": 5146
-  },
-  "guerra": {
-    "totalParts": 5,
-    "totalItems": 222
-  },
-  "hot-adultos-bella-da-semana": {
-    "totalParts": 4,
-    "totalItems": 155
-  },
-  "hot-adultos-legendado": {
-    "totalParts": 22,
-    "totalItems": 1080
-  },
-  "hot-adultos": {
-    "totalParts": 308,
-    "totalItems": 15362
-  },
-  "lancamentos": {
-    "totalParts": 42,
-    "totalItems": 2091
-  },
-  "legendadas": {
-    "totalParts": 54,
-    "totalItems": 2689
-  },
-  "legendados": {
-    "totalParts": 253,
-    "totalItems": 12644
-  },
-  "lionsgate": {
+  "univer": {
     "totalParts": 1,
     "totalItems": 8
   },
-  "max": {
-    "totalParts": 56,
-    "totalItems": 2771
-  },
-  "nacionais": {
-    "totalParts": 12,
-    "totalItems": 598
-  },
-  "netflix": {
-    "totalParts": 180,
-    "totalItems": 8985
-  },
-  "novelas-turcas": {
-    "totalParts": 38,
-    "totalItems": 1881
-  },
-  "novelas": {
-    "totalParts": 84,
-    "totalItems": 4168
-  },
-  "oscar-2025": {
-    "totalParts": 1,
-    "totalItems": 9
+  "legendadas": {
+    "totalParts": 16,
+    "totalItems": 781
   },
   "outras-produtoras": {
-    "totalParts": 15,
-    "totalItems": 712
-  },
-  "outros": {
     "totalParts": 11,
-    "totalItems": 510
+    "totalItems": 531
   },
-  "outros_filmes": {
-    "totalParts": 78,
-    "totalItems": 3866
-  },
-  "paramount": {
-    "totalParts": 11,
-    "totalItems": 532
-  },
-  "plutotv": {
+  "directv": {
     "totalParts": 1,
-    "totalItems": 3
-  },
-  "prime-video": {
-    "totalParts": 104,
-    "totalItems": 5174
-  },
-  "programas-de-tv": {
-    "totalParts": 1,
-    "totalItems": 12
-  },
-  "religiosos": {
-    "totalParts": 5,
-    "totalItems": 212
-  },
-  "romance": {
-    "totalParts": 30,
-    "totalItems": 1474
-  },
-  "sbt": {
-    "totalParts": 1,
-    "totalItems": 49
-  },
-  "shows": {
-    "totalParts": 6,
-    "totalItems": 280
-  },
-  "stand-up-comedy": {
-    "totalParts": 1,
-    "totalItems": 35
-  },
-  "star": {
-    "totalParts": 14,
-    "totalItems": 658
-  },
-  "sugestao-da-semana": {
-    "totalParts": 1,
-    "totalItems": 1
-  },
-  "suspense": {
-    "totalParts": 37,
-    "totalItems": 1811
-  },
-  "terror": {
-    "totalParts": 63,
-    "totalItems": 3120
-  },
-  "uhd-4k": {
-    "totalParts": 29,
-    "totalItems": 1443
-  },
-  "univer": {
-    "totalParts": 1,
-    "totalItems": 12
-  },
-  "desenhos": {
-    "totalParts": 7,
-    "totalItems": 307
-  },
-  "musicais": {
-    "totalParts": 1,
-    "totalItems": 28
-  },
-  "animes": {
-    "totalParts": 79,
-    "totalItems": 3933
-  },
-  "infantil": {
-    "totalParts": 1,
-    "totalItems": 12
-  },
-  "brasileiro": {
-    "totalParts": 2,
-    "totalItems": 86
-  },
-  "sem-categoria": {
-    "totalParts": 1,
-    "totalItems": 33
-  },
-  "marvel-dc": {
-    "totalParts": 1,
-    "totalItems": 10
-  },
-  "universal-plus": {
-    "totalParts": 1,
-    "totalItems": 6
-  },
-  "hulu": {
-    "totalParts": 1,
-    "totalItems": 4
-  },
-  "reality": {
-    "totalParts": 1,
-    "totalItems": 3
+    "totalItems": 30
   },
   "reelshort": {
-    "totalParts": 2,
-    "totalItems": 79
+    "totalParts": 3,
+    "totalItems": 107
   }
 }

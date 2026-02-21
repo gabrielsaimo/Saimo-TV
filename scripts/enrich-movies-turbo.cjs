@@ -1,7 +1,8 @@
 /**
- * 🚀 ULTRA TURBO v2 - Enriquecimento MASSIVO com Agrupamento de Séries
+ * 🚀 ULTRA TURBO v2 - Enriquecimento MASSIVO
  * 
- * Agrupa todos os episódios de séries em uma única entrada!
+ * Atualizado para focar apenas em itens SEM TMDB, nos arquivos *-p*.json
+ * E processar categorias especificadas pelo usuário.
  * 
  * USO:
  *   node scripts/enrich-movies-turbo.cjs
@@ -22,21 +23,33 @@ const PARALLEL_REQUESTS = 100;     // 100 por vez (séries usam mais requests)
 const DELAY_BETWEEN_BATCHES = 500;
 const SAVE_EVERY = 500;
 
-// Categorias para PULAR
-const SKIP_CATEGORIES = [
-  'adultos',
-  'adultos-bella-da-semana',
-  'adultos-legendado'
+// Categorias específicas a buscar
+const TARGET_CATEGORIES = [
+  'lancamentos',
+  'comedia',
+  'acao',
+  'uhd-4k',
+  'ficcao-cientifica',
+  'reelshort',
+  'brasileiro',
+  'animes',
+  'desenhos',
+  'documentario',
+  'marvel-dc',
+  'hulu',
+  'universal-plus',
+  'reality',
+  'infantil',
+  'sem-categoria'
 ];
 
-const DATA_DIR = path.join(__dirname, '../public/data');
+const DATA_DIR = path.join(__dirname, '../public/data/enriched');
 const OUTPUT_DIR = path.join(__dirname, '../public/data/enriched');
 
 // ============================================
 // CACHE E STATS
 // ============================================
 const searchCache = new Map();
-const processedTitles = new Set();
 
 let stats = {
   total: 0,
@@ -44,7 +57,6 @@ let stats = {
   found: 0,
   notFound: 0,
   cached: 0,
-  duplicates: 0,
   series: 0,
   movies: 0,
   errors: 0,
@@ -57,10 +69,6 @@ let stats = {
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-/**
- * Extrai informações de episódio do nome
- * Retorna: { baseName, season, episode } ou null se não for série
- */
 function parseEpisodeInfo(name) {
   // Padrões: S01E01, S1E1, T01E01, Temporada 1 Ep 1, etc.
   const patterns = [
@@ -69,7 +77,7 @@ function parseEpisodeInfo(name) {
     /^(.+?)\s*Season\s*(\d+)\s*(?:Ep\.?|Episode)\s*(\d+)/i,
     /^(.+?)\s*(\d+)x(\d+)/i,
   ];
-  
+
   for (const pattern of patterns) {
     const match = name.match(pattern);
     if (match) {
@@ -80,18 +88,14 @@ function parseEpisodeInfo(name) {
       };
     }
   }
-  
+
   return null;
 }
 
-/**
- * Limpa o nome para busca no TMDB
- */
 function cleanTitle(name) {
-  // Primeiro extrai info de episódio se houver
   const epInfo = parseEpisodeInfo(name);
   const baseName = epInfo ? epInfo.baseName : name;
-  
+
   return baseName
     .replace(/^\[.*?\]\s*/g, '')
     .replace(/^📺\s*/g, '')
@@ -127,20 +131,20 @@ function calculateMatchScore(result, searchTitle, targetYear) {
   const normalizedSearch = normalizeForComparison(searchTitle);
   const normalizedTitle = normalizeForComparison(title);
   const normalizedOriginal = normalizeForComparison(originalTitle);
-  
+
   if (normalizedTitle === normalizedSearch || normalizedOriginal === normalizedSearch) score += 50;
   else if (normalizedTitle.includes(normalizedSearch) || normalizedOriginal.includes(normalizedSearch)) score += 30;
-  
+
   const resultYear = result.release_date || result.first_air_date;
   if (resultYear && targetYear) {
     const year = parseInt(resultYear.substring(0, 4), 10);
     if (year === targetYear) score += 40;
     else if (Math.abs(year - targetYear) <= 1) score += 20;
   }
-  
+
   if (result.vote_count > 100) score += 5;
   if (result.vote_count > 1000) score += 5;
-  
+
   return score;
 }
 
@@ -171,47 +175,6 @@ function convertCert(cert, isTV = false) {
 }
 
 // ============================================
-// AGRUPAMENTO DE SÉRIES
-// ============================================
-
-/**
- * Agrupa itens por série (filmes ficam individuais)
- */
-function groupItems(items) {
-  const seriesMap = new Map(); // baseName -> { episodes: [], firstItem: item }
-  const movies = [];
-  
-  for (const item of items) {
-    const epInfo = parseEpisodeInfo(item.name);
-    
-    if (epInfo && item.type === 'series') {
-      const key = cleanTitle(epInfo.baseName).toLowerCase();
-      
-      if (!seriesMap.has(key)) {
-        seriesMap.set(key, {
-          baseName: epInfo.baseName,
-          firstItem: item,
-          episodes: []
-        });
-      }
-      
-      seriesMap.get(key).episodes.push({
-        season: epInfo.season,
-        episode: epInfo.episode,
-        name: item.name,
-        url: item.url,
-        id: item.id
-      });
-    } else {
-      // Filme ou série sem padrão de episódio
-      movies.push(item);
-    }
-  }
-  
-  return { seriesMap, movies };
-}
-
-// ============================================
 // BUSCA TMDB
 // ============================================
 
@@ -219,21 +182,21 @@ async function searchTMDB(title, type = 'movie') {
   const cleanedTitle = cleanTitle(title);
   const targetYear = extractYear(title);
   const cacheKey = `${type}:${cleanedTitle.toLowerCase()}`;
-  
+
   if (searchCache.has(cacheKey)) {
     stats.cached++;
     return searchCache.get(cacheKey);
   }
-  
+
   if (!cleanedTitle || cleanedTitle.length < 2) return null;
-  
+
   const endpoint = type === 'series' ? 'search/tv' : 'search/movie';
-  
+
   try {
     const response = await fetch(
       `${TMDB_BASE}/${endpoint}?api_key=${TMDB_API_KEY}&language=pt-BR&query=${encodeURIComponent(cleanedTitle)}`
     );
-    
+
     if (!response.ok) {
       if (response.status === 429) {
         await sleep(2000);
@@ -241,16 +204,16 @@ async function searchTMDB(title, type = 'movie') {
       }
       return null;
     }
-    
+
     let data = await response.json();
-    
+
     if (!data.results || data.results.length === 0) {
       const responseEn = await fetch(
         `${TMDB_BASE}/${endpoint}?api_key=${TMDB_API_KEY}&language=en-US&query=${encodeURIComponent(cleanedTitle)}`
       );
       if (responseEn.ok) data = await responseEn.json();
     }
-    
+
     const result = data.results?.length > 0 ? findBestMatch(data.results, cleanedTitle, targetYear) : null;
     searchCache.set(cacheKey, result);
     return result;
@@ -266,12 +229,12 @@ async function fetchDetails(tmdbId, type = 'movie') {
     'credits', 'images', 'keywords', 'recommendations', 'watch/providers', 'external_ids',
     type === 'series' ? 'content_ratings' : 'release_dates'
   ].join(',');
-  
+
   try {
     const response = await fetch(
       `${TMDB_BASE}/${endpoint}/${tmdbId}?api_key=${TMDB_API_KEY}&language=pt-BR&append_to_response=${append}`
     );
-    
+
     if (!response.ok) {
       if (response.status === 429) {
         await sleep(2000);
@@ -279,7 +242,7 @@ async function fetchDetails(tmdbId, type = 'movie') {
       }
       return null;
     }
-    
+
     return await response.json();
   } catch {
     stats.errors++;
@@ -296,20 +259,15 @@ function processMovieData(tmdb, item) {
   if (tmdb.release_dates?.results) {
     const br = tmdb.release_dates.results.find(r => r.iso_3166_1 === 'BR');
     const us = tmdb.release_dates.results.find(r => r.iso_3166_1 === 'US');
-    cert = br?.release_dates?.find(rd => rd.certification)?.certification || 
-           convertCert(us?.release_dates?.find(rd => rd.certification)?.certification, false);
+    cert = br?.release_dates?.find(rd => rd.certification)?.certification ||
+      convertCert(us?.release_dates?.find(rd => rd.certification)?.certification, false);
   }
-  
+
   const directors = tmdb.credits?.crew?.filter(c => c.job === 'Director').map(c => c.name).slice(0, 3) || [];
   const writers = tmdb.credits?.crew?.filter(c => ['Writer', 'Screenplay'].includes(c.job)).map(c => c.name).slice(0, 3) || [];
-  
+
   return {
-    id: item.id,
-    name: item.name,
-    url: item.url,
-    category: item.category,
-    type: 'movie',
-    isAdult: item.isAdult || false,
+    ...item,
     tmdb: {
       id: tmdb.id,
       imdbId: tmdb.external_ids?.imdb_id || null,
@@ -365,54 +323,19 @@ function processMovieData(tmdb, item) {
   };
 }
 
-function processSeriesData(tmdb, seriesData) {
-  const { baseName, firstItem, episodes } = seriesData;
-  
+function processSeriesData(tmdb, item) {
   let cert = null;
   if (tmdb.content_ratings?.results) {
     const br = tmdb.content_ratings.results.find(r => r.iso_3166_1 === 'BR');
     const us = tmdb.content_ratings.results.find(r => r.iso_3166_1 === 'US');
     cert = br?.rating || convertCert(us?.rating, true);
   }
-  
+
   const creators = tmdb.created_by?.map(c => c.name) || [];
   const writers = tmdb.credits?.crew?.filter(c => ['Writer', 'Screenplay'].includes(c.job)).map(c => c.name).slice(0, 3) || [];
-  
-  // Organiza episódios por temporada
-  const seasonMap = {};
-  for (const ep of episodes) {
-    const seasonKey = ep.season.toString();
-    if (!seasonMap[seasonKey]) {
-      seasonMap[seasonKey] = [];
-    }
-    seasonMap[seasonKey].push({
-      episode: ep.episode,
-      name: ep.name,
-      url: ep.url,
-      id: ep.id
-    });
-  }
-  
-  // Ordena episódios dentro de cada temporada
-  for (const season of Object.keys(seasonMap)) {
-    seasonMap[season].sort((a, b) => a.episode - b.episode);
-  }
-  
-  // Cria ID único baseado no nome limpo
-  const cleanId = cleanTitle(baseName).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-  
+
   return {
-    id: cleanId,
-    name: baseName,
-    category: firstItem.category,
-    type: 'series',
-    isAdult: firstItem.isAdult || false,
-    
-    // TODOS OS EPISÓDIOS ORGANIZADOS POR TEMPORADA
-    episodes: seasonMap,
-    totalEpisodes: episodes.length,
-    totalSeasons: Object.keys(seasonMap).length,
-    
+    ...item,
     tmdb: {
       id: tmdb.id,
       imdbId: tmdb.external_ids?.imdb_id || null,
@@ -471,76 +394,50 @@ function processSeriesData(tmdb, seriesData) {
 // ============================================
 
 async function processMovie(item) {
-  const titleKey = cleanTitle(item.name).toLowerCase();
-  if (processedTitles.has(titleKey)) {
-    stats.duplicates++;
-    return null;
-  }
-  processedTitles.add(titleKey);
-  
   const searchResult = await searchTMDB(item.name, 'movie');
   if (!searchResult) {
     stats.notFound++;
-    return { ...item, tmdb: null };
+    return;
   }
-  
+
   const details = await fetchDetails(searchResult.id, 'movie');
   if (!details) {
     stats.notFound++;
-    return { ...item, tmdb: null };
+    return;
   }
-  
+
   stats.found++;
   stats.movies++;
-  return processMovieData(details, item);
+
+  const enrichedData = processMovieData(details, item);
+  item.tmdb = enrichedData.tmdb;
 }
 
-async function processSeries(seriesData) {
-  const titleKey = cleanTitle(seriesData.baseName).toLowerCase();
-  if (processedTitles.has(titleKey)) {
-    stats.duplicates++;
-    return null;
-  }
-  processedTitles.add(titleKey);
-  
-  const searchResult = await searchTMDB(seriesData.baseName, 'series');
+async function processSeries(item) {
+  const searchResult = await searchTMDB(item.name, 'series');
   if (!searchResult) {
     stats.notFound++;
-    return {
-      id: titleKey.replace(/[^a-z0-9]+/g, '-'),
-      name: seriesData.baseName,
-      category: seriesData.firstItem.category,
-      type: 'series',
-      episodes: {},
-      tmdb: null
-    };
+    return;
   }
-  
+
   const details = await fetchDetails(searchResult.id, 'series');
   if (!details) {
     stats.notFound++;
-    return {
-      id: titleKey.replace(/[^a-z0-9]+/g, '-'),
-      name: seriesData.baseName,
-      category: seriesData.firstItem.category,
-      type: 'series',
-      episodes: {},
-      tmdb: null
-    };
+    return;
   }
-  
+
   stats.found++;
   stats.series++;
-  return processSeriesData(details, seriesData);
+
+  const enrichedData = processSeriesData(details, item);
+  item.tmdb = enrichedData.tmdb;
 }
 
-async function processBatch(items, type) {
+async function processBatch(batch, type) {
   if (type === 'movies') {
-    const results = await Promise.all(items.map(item => processMovie(item).catch(() => ({ ...item, tmdb: null }))));
-    return results.filter(r => r !== null);
+    await Promise.all(batch.map(item => processMovie(item)));
   } else {
-    const results = await Promise.all(items.map(data => processSeries(data).catch(() => null)));
-    return results.filter(r => r !== null);
+    await Promise.all(batch.map(item => processSeries(item)));
   }
 }
 
@@ -549,74 +446,59 @@ async function processBatch(items, type) {
 // ============================================
 
 async function processCategory(categoryFile) {
-  const filePath = path.join(DATA_DIR, `${categoryFile}.json`);
-  const outputPath = path.join(OUTPUT_DIR, `${categoryFile}.json`);
-  
+  const filePath = path.join(DATA_DIR, categoryFile);
   if (!fs.existsSync(filePath)) return;
-  
-  // Verifica se já foi processado
-  if (fs.existsSync(outputPath)) {
-    try {
-      const existing = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
-      if (existing.length > 0 && existing[0]?.tmdb !== undefined) {
-        console.log(`  ⏭️ ${categoryFile} (já processado)`);
-        return;
-      }
-    } catch {}
-  }
-  
+
   const items = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  
-  // Agrupa séries e separa filmes
-  const { seriesMap, movies } = groupItems(items);
-  const seriesList = Array.from(seriesMap.values());
-  
-  console.log(`\n📁 ${categoryFile} (${movies.length} filmes + ${seriesList.length} séries)`);
-  
-  const results = [];
-  
+
+  const itemsToProcess = items.filter(item => !item.tmdb);
+  if (itemsToProcess.length === 0) return;
+
+  const movies = itemsToProcess.filter(i => i.type !== 'series');
+  const seriesList = itemsToProcess.filter(i => i.type === 'series');
+
+  console.log(`\n📁 ${categoryFile} (${movies.length} filmes + ${seriesList.length} séries para enriquecer)`);
+
   // Processa filmes
   if (movies.length > 0) {
     for (let i = 0; i < movies.length; i += PARALLEL_REQUESTS) {
       const batch = movies.slice(i, Math.min(i + PARALLEL_REQUESTS, movies.length));
-      const batchResults = await processBatch(batch, 'movies');
-      results.push(...batchResults);
-      
+      await processBatch(batch, 'movies');
+
       stats.processed += batch.length;
       printProgress();
-      
-      if (results.length % SAVE_EVERY === 0) {
-        fs.writeFileSync(outputPath, JSON.stringify(results, null, 2), 'utf8');
+
+      if (stats.processed % SAVE_EVERY === 0) {
+        fs.writeFileSync(filePath, JSON.stringify(items, null, 2), 'utf8');
       }
-      
+
       await sleep(DELAY_BETWEEN_BATCHES);
     }
   }
-  
-  // Processa séries (agrupadas)
+
+  // Processa séries
   if (seriesList.length > 0) {
     for (let i = 0; i < seriesList.length; i += PARALLEL_REQUESTS) {
       const batch = seriesList.slice(i, Math.min(i + PARALLEL_REQUESTS, seriesList.length));
-      const batchResults = await processBatch(batch, 'series');
-      results.push(...batchResults);
-      
+      await processBatch(batch, 'series');
+
       stats.processed += batch.length;
       printProgress();
-      
+
       await sleep(DELAY_BETWEEN_BATCHES);
     }
   }
-  
-  fs.writeFileSync(outputPath, JSON.stringify(results, null, 2), 'utf8');
-  console.log(`\n  💾 Salvo: ${categoryFile}.json (${results.length} itens)`);
+
+  fs.writeFileSync(filePath, JSON.stringify(items, null, 2), 'utf8');
+  console.log(`\n  💾 Salvo: ${categoryFile} (${items.length} itens no total)`);
 }
 
 function printProgress() {
   const elapsed = (Date.now() - stats.startTime) / 1000;
   const rate = stats.processed / elapsed;
   const eta = stats.total > 0 ? (stats.total - stats.processed) / rate / 60 : 0;
-  
-  process.stdout.write(`\r  ⚡ ${stats.processed.toLocaleString()}/${stats.total.toLocaleString()} | ${rate.toFixed(0)}/s | ETA: ${eta.toFixed(0)}min | 🎬${stats.movies} 📺${stats.series} ❌${stats.notFound} 🔄${stats.duplicates}`);
+
+  process.stdout.write(`\r  ⚡ ${stats.processed.toLocaleString()}/${stats.total.toLocaleString()} | ${rate.toFixed(0)}/s | ETA: ${eta.toFixed(0)}min | 🎬${stats.movies} 📺${stats.series} ❌${stats.notFound}`);
 }
 
 // ============================================
@@ -624,46 +506,45 @@ function printProgress() {
 // ============================================
 
 async function main() {
-  console.log('🚀 ULTRA TURBO v2 - Com Agrupamento de Séries\n');
+  console.log('🚀 ULTRA TURBO v2 - Somente Enriquecimento (Listagem Curada)\n');
   console.log(`⚡ ${PARALLEL_REQUESTS} requisições paralelas`);
   console.log(`⏱️ ${DELAY_BETWEEN_BATCHES}ms entre batches\n`);
-  
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  }
-  
+
+  // Escaneia a pasta apenas em busca dos arquivos -p que correspondam às categorias-alvo
   const files = fs.readdirSync(DATA_DIR)
-    .filter(f => f.endsWith('.json') && f !== 'categories.json')
-    .map(f => f.replace('.json', ''))
-    .filter(f => !SKIP_CATEGORIES.includes(f));
-  
-  // Conta total de itens únicos (séries contam como 1)
-  let totalMovies = 0;
-  let totalSeries = 0;
-  
+    .filter(f => f.endsWith('.json') && f.includes('-p') && f !== '_manifest.json')
+    .filter(f => TARGET_CATEGORIES.some(cat => f.startsWith(cat + '-p')));
+
+  let totalMoviesToProcess = 0;
+  let totalSeriesToProcess = 0;
+
   for (const file of files) {
-    const filePath = path.join(DATA_DIR, `${file}.json`);
+    const filePath = path.join(DATA_DIR, file);
     if (fs.existsSync(filePath)) {
       const items = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      const { seriesMap, movies } = groupItems(items);
-      totalMovies += movies.length;
-      totalSeries += seriesMap.size;
+      const missing = items.filter(i => !i.tmdb);
+      totalMoviesToProcess += missing.filter(i => i.type !== 'series').length;
+      totalSeriesToProcess += missing.filter(i => i.type === 'series').length;
     }
   }
-  
-  stats.total = totalMovies + totalSeries;
-  
-  console.log(`📊 Total: ${totalMovies.toLocaleString()} filmes + ${totalSeries.toLocaleString()} séries = ${stats.total.toLocaleString()} itens`);
-  console.log(`⏭️ Pulando: ${SKIP_CATEGORIES.join(', ')}\n`);
-  
+
+  stats.total = totalMoviesToProcess + totalSeriesToProcess;
+
+  console.log(`📊 Itens sem TMDB para processar: ${totalMoviesToProcess.toLocaleString()} filmes + ${totalSeriesToProcess.toLocaleString()} séries = ${stats.total.toLocaleString()} itens`);
+  console.log(`🎯 Categorias Específicas Direcionadas: ${TARGET_CATEGORIES.join(', ')}\n`);
+
   stats.startTime = Date.now();
-  
-  for (const file of files) {
-    await processCategory(file);
+
+  if (stats.total > 0) {
+    for (const file of files) {
+      await processCategory(file);
+    }
+  } else {
+    console.log("Nenhum item novo para enriquecer nestas categorias!");
   }
-  
+
   const totalTime = (Date.now() - stats.startTime) / 1000;
-  
+
   console.log('\n\n═══════════════════════════════════════');
   console.log('📊 RESULTADO FINAL');
   console.log('═══════════════════════════════════════');
@@ -671,7 +552,6 @@ async function main() {
   console.log(`📺 Séries: ${stats.series.toLocaleString()}`);
   console.log(`✅ Encontrados: ${stats.found.toLocaleString()}`);
   console.log(`❌ Não encontrados: ${stats.notFound.toLocaleString()}`);
-  console.log(`🔄 Duplicados ignorados: ${stats.duplicates.toLocaleString()}`);
   console.log(`💾 Cache hits: ${stats.cached.toLocaleString()}`);
   console.log(`⚠️ Erros: ${stats.errors}`);
   console.log(`⏱️ Tempo: ${(totalTime / 60).toFixed(1)} minutos`);

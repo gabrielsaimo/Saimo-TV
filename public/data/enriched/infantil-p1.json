@@ -1,1 +1,454 @@
-[{"id":"m3u-1771693846459-6787","name":"Adult Swim","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/933259","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Adult_Swim_2003_logo.svg/640px-Adult_Swim_2003_logo.svg.png","tmdb":null},{"id":"m3u-1771693846459-5738","name":"Adult Swim HD","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/933258","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Adult_Swim_2003_logo.svg/640px-Adult_Swim_2003_logo.svg.png","tmdb":null},{"id":"m3u-1771693846459-4820","name":"Adult Swim FHD","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/933257","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Adult_Swim_2003_logo.svg/640px-Adult_Swim_2003_logo.svg.png","tmdb":null},{"id":"m3u-1771693846460-5934","name":"Cartoonito","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/901868","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"http://channelart.8b90287dn2.online/images/logos/Cartoonito.png","tmdb":null},{"id":"m3u-1771693846460-8348","name":"Dumdum HD","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/45260","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"https://i.postimg.cc/3xNjwBbp/Dum-Dum-logo-svg.png","tmdb":null},{"id":"m3u-1771693846461-9324","name":"Dumdum","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2293","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"https://i.postimg.cc/3xNjwBbp/Dum-Dum-logo-svg.png","tmdb":null},{"id":"m3u-1771693846461-6874","name":"TV Ra Tim Bum","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2253","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"http://channelart.8b90287dn2.online/images/logos/TV%20Ra%CC%81%20Tim%20Bum.png","tmdb":null},{"id":"m3u-1771693846461-126","name":"Tooncast","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2245","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"http://channelart.8b90287dn2.online/images/logos/Tooncast.png","tmdb":null},{"id":"m3u-1771693846461-120","name":"Gloobinho","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2134","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"http://channelart.8b90287dn2.online/images/logos/Gloobinho.png","tmdb":null},{"id":"m3u-1771693846461-5797","name":"Gloob","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2131","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"http://channelart.8b90287dn2.online/images/logos/Gloob.png","tmdb":null},{"id":"m3u-1771693846461-7822","name":"Discovery Kids","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2087","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"http://channelart.8b90287dn2.online/images/logos/Discovery%20Kids.png","tmdb":null},{"id":"m3u-1771693846461-4425","name":"Cartoon Network'","url":"http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2071","active":true,"category":"INFANTIS","type":"movie","isAdult":false,"logo":"http://channelart.8b90287dn2.online/images/logos/Cartoon%20Network.png","tmdb":null}]
+[
+  {
+    "id": "m3u-1771698261375-1937",
+    "name": "Adult Swim",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/933259",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Adult_Swim_2003_logo.svg/640px-Adult_Swim_2003_logo.svg.png",
+    "tmdb": {
+      "id": 1497017,
+      "imdbId": "tt39088896",
+      "title": "Adult Swim's The Elephant",
+      "originalTitle": "Adult Swim's The Elephant",
+      "tagline": null,
+      "overview": "Contada em três partes por quatro superestrelas da animação sem que cada um soubesse o que os outros estavam fazendo nas suas sessões, The Elephant conta uma história única e humana de autodescoberta através de vários estilos de animação.",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2025-12-19",
+      "year": "2025",
+      "runtime": 23,
+      "rating": 8.7,
+      "voteCount": 12,
+      "popularity": 2,
+      "certification": "16",
+      "genres": [
+        "Animação",
+        "Ficção científica",
+        "Drama"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/vq50QGdUSAiUNC2f0BDdgyhUQGg.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/vq50QGdUSAiUNC2f0BDdgyhUQGg.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w1280/rq6vqu9faBD8e1J3LZz2emshdwS.jpg",
+      "backdropHD": "https://image.tmdb.org/t/p/original/rq6vqu9faBD8e1J3LZz2emshdwS.jpg",
+      "logo": null,
+      "cast": [
+        {
+          "id": 3277765,
+          "name": "Jordan Jensen",
+          "character": "Various characters (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/c3gF0DBnfDqa4FcbjnMk4OpVj9B.jpg"
+        },
+        {
+          "id": 60278,
+          "name": "Maria Bamford",
+          "character": "Various characters (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/iX6QLC4MWVbMIkKN1mL7zKekpfv.jpg"
+        },
+        {
+          "id": 1942233,
+          "name": "SungWon Cho",
+          "character": "Various characters (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/jh5Au9smnPwfLoPNrcJ2VsJnbhU.jpg"
+        }
+      ],
+      "directors": [
+        "Rebecca Sugar",
+        "Ian Jones-Quartey",
+        "Pendleton Ward"
+      ],
+      "writers": [],
+      "keywords": [
+        "philosophical",
+        "introspective",
+        "inspirational"
+      ],
+      "companies": [
+        "Titmouse",
+        "Williams Street"
+      ],
+      "countries": [
+        "US"
+      ],
+      "budget": null,
+      "revenue": null,
+      "collection": null,
+      "recommendations": [],
+      "streaming": [
+        "HBO Max",
+        "HBO Max Amazon Channel",
+        "Adultswim Amazon Channel"
+      ],
+      "imdb": "tt39088896",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "m3u-1771698261375-6905",
+    "name": "Adult Swim HD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/933258",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Adult_Swim_2003_logo.svg/640px-Adult_Swim_2003_logo.svg.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261375-6597",
+    "name": "Adult Swim FHD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/933257",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Adult_Swim_2003_logo.svg/640px-Adult_Swim_2003_logo.svg.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261375-8648",
+    "name": "Cartoonito",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/901868",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Cartoonito.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261375-3572",
+    "name": "Cartoonito HD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/901867",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Cartoonito.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261375-7594",
+    "name": "Cartoonito FHD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/901866",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Cartoonito.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261375-151",
+    "name": "Dumdum HD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/45260",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.postimg.cc/3xNjwBbp/Dum-Dum-logo-svg.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-4383",
+    "name": "Dumdum",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2293",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "https://i.postimg.cc/3xNjwBbp/Dum-Dum-logo-svg.png",
+    "tmdb": {
+      "id": 371574,
+      "imdbId": null,
+      "title": "DumDum Boys: I Dødens Dal",
+      "originalTitle": "DumDum Boys: I Dødens Dal",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "no",
+      "releaseDate": "2004-01-01",
+      "year": "2004",
+      "runtime": null,
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [
+        "Música"
+      ],
+      "poster": "https://image.tmdb.org/t/p/w500/cdLpHEhHVFhN239BKLAigiXyvPo.jpg",
+      "posterHD": "https://image.tmdb.org/t/p/original/cdLpHEhHVFhN239BKLAigiXyvPo.jpg",
+      "backdrop": null,
+      "backdropHD": null,
+      "logo": null,
+      "cast": [
+        {
+          "id": 1545954,
+          "name": "Per Øivind Houmb",
+          "character": "Vocals",
+          "photo": "https://image.tmdb.org/t/p/w185/7J8Nyjiocpf0kYQkmfQkij81Ft7.jpg"
+        },
+        {
+          "id": 1545955,
+          "name": "Kjartan Kristiansen",
+          "character": "Guitar",
+          "photo": null
+        },
+        {
+          "id": 1545958,
+          "name": "Aslak Dørum",
+          "character": "Bass",
+          "photo": null
+        },
+        {
+          "id": 1545959,
+          "name": "Sola Jonsen",
+          "character": "Drums",
+          "photo": null
+        }
+      ],
+      "directors": [],
+      "writers": [],
+      "keywords": [
+        "concert",
+        "rock 'n' roll"
+      ],
+      "companies": [
+        "Oh Yeah",
+        "Sony Pictures"
+      ],
+      "countries": [
+        "NO"
+      ],
+      "budget": null,
+      "revenue": null,
+      "collection": null,
+      "recommendations": [],
+      "streaming": [],
+      "imdb": "",
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "m3u-1771698261376-2262",
+    "name": "TV Ra Tim Bum HD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2254",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/TV%20Ra%CC%81%20Tim%20Bum.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-7310",
+    "name": "TV Ra Tim Bum",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2253",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/TV%20Ra%CC%81%20Tim%20Bum.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-2939",
+    "name": "Tooncast",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2245",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Tooncast.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-4455",
+    "name": "Gloobinho",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2134",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Gloobinho.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-8563",
+    "name": "Gloobinho HD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2133",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Gloobinho.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-6321",
+    "name": "Gloob HD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2132",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Gloob.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-2905",
+    "name": "Gloob",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2131",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Gloob.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-9625",
+    "name": "Discovery Kids HD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2088",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Discovery%20Kids%20HD.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-5442",
+    "name": "Discovery Kids",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2087",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Discovery%20Kids.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-9598",
+    "name": "Cartoon Network HD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2072",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Cartoon%20Network%20HD.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261376-1787",
+    "name": "Cartoon Network'",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/2071",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Cartoon%20Network.png",
+    "tmdb": {
+      "id": 1365319,
+      "imdbId": null,
+      "title": "Cartoon Network's Greatest Musical Moments",
+      "originalTitle": "Cartoon Network's Greatest Musical Moments",
+      "tagline": null,
+      "overview": "",
+      "status": "Released",
+      "language": "en",
+      "releaseDate": "2003-03-07",
+      "year": "2003",
+      "runtime": 44,
+      "rating": 0,
+      "voteCount": 0,
+      "popularity": 0,
+      "certification": null,
+      "genres": [],
+      "poster": null,
+      "posterHD": null,
+      "backdrop": null,
+      "backdropHD": null,
+      "logo": null,
+      "cast": [],
+      "directors": [],
+      "writers": [],
+      "keywords": [],
+      "companies": [
+        "Cartoon Network Productions"
+      ],
+      "countries": [],
+      "budget": null,
+      "revenue": null,
+      "collection": null,
+      "recommendations": [],
+      "streaming": [],
+      "imdb": null,
+      "facebook": null,
+      "instagram": null,
+      "twitter": null
+    }
+  },
+  {
+    "id": "m3u-1771698261377-9712",
+    "name": "Gloob FHD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1889",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Gloob.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261377-3231",
+    "name": "TV Ra Tim Bum FHD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1871",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/TV%20Ra%CC%81%20Tim%20Bum.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261377-6591",
+    "name": "Gloobinho FHD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1836",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Gloobinho.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261377-6199",
+    "name": "Discovery Kids FHD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1821",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Discovery%20Kids%20HD.png",
+    "tmdb": null
+  },
+  {
+    "id": "m3u-1771698261377-9013",
+    "name": "Cartoon Network FHD",
+    "url": "http://site.poupadefrutas.shop:80/cleberson24/24danbury888BBB/1815",
+    "active": true,
+    "category": "INFANTIS",
+    "type": "movie",
+    "isAdult": false,
+    "logo": "http://channelart.8b90287dn2.online/images/logos/Cartoon%20Network%20HD.png",
+    "tmdb": null
+  }
+]
