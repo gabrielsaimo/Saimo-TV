@@ -286,7 +286,7 @@ function mapGroupToFile(group: string): string | null {
     return slug || null;
 }
 
-function parseEpisodeName(name: string): { seriesName: string, season: string, episode: string } | null {
+function parseEpisodeName(name: string, group?: string): { seriesName: string, season: string, episode: string } | null {
     // 1. Standard format: Name S01 E01 or Name S01E01 or Name S01 Ep 01
     // Also matches "A Casa do Dragão S02 Ep 01"
     let match = name.match(/(.+?)\s+S(\d+)\s*(?:E|Ep|Epis[óo]dio)\s*(\d+)$/i);
@@ -302,6 +302,27 @@ function parseEpisodeName(name: string): { seriesName: string, season: string, e
     // 3. Bare number: Jujutsu Kaisen S02 20
     match = name.match(/(.+?)\s+S(\d+)\s+(\d+)$/i);
     if (match) return { seriesName: match[1].trim(), season: match[2], episode: match[3] };
+
+    // 4. Temporada X Episódio Y (Portuguese format): Nome Temporada 1 Episódio 2
+    match = name.match(/(.+?)\s+Temporada\s+(\d+)\s+Epis[óo]dio\s+(\d+)$/i);
+    if (match) return { seriesName: match[1].trim(), season: match[2], episode: match[3] };
+
+    // 5. T1 E2 (Short Portuguese format)
+    match = name.match(/(.+?)\s+T(\d+)\s*(?:E|Ep)\s*(\d+)$/i);
+    if (match) return { seriesName: match[1].trim(), season: match[2], episode: match[3] };
+
+    // 6. Generic fallback: Name - 01x02
+    match = name.match(/(.+?)\s*[-:]?\s*(\d+)x(\d+)$/i);
+    if (match) return { seriesName: match[1].trim(), season: match[2], episode: match[3] };
+
+    // 7. Heuristic fallback based on group. If group implies series but regex failed:
+    if (group && (group.toLowerCase().includes('serie') || group.toLowerCase().includes('série') || group.toLowerCase().includes('anime') || group.toLowerCase().includes('dorama') || group.toLowerCase().includes('reelshort'))) {
+        match = name.match(/(.+?)\s+(\d+)$/i);
+        if (match) {
+            // Assuming season 1 if not specified
+            return { seriesName: match[1].trim(), season: '1', episode: match[2] };
+        }
+    }
 
     return null;
 }
@@ -372,7 +393,7 @@ async function main() {
 
     console.log('📦 Indexando episódios do M3U...');
     m3uItems.forEach(item => {
-        const epMatch = parseEpisodeName(item.name);
+        const epMatch = parseEpisodeName(item.name, item.group);
         if (epMatch) {
             const seriesName = epMatch.seriesName;
             const season = epMatch.season;
@@ -519,7 +540,7 @@ async function main() {
         if (existingNames.has(normalizeName(item.name))) return;
 
         // Series Logic
-        const epMatch = parseEpisodeName(item.name);
+        const epMatch = parseEpisodeName(item.name, item.group);
         if (epMatch) {
             const seriesName = epMatch.seriesName;
             if (existingNames.has(normalizeName(seriesName))) return;
@@ -532,7 +553,7 @@ async function main() {
             if (!newItemsByCategory[targetBaseName]) newItemsByCategory[targetBaseName] = [];
             const isAdultContent = targetBaseName.includes('adultos') || item.group.toLowerCase().includes('xxx');
             const tmdbData = existingTMDBMap.get(getCleanName(item.name));
-            const newItem = {
+            const newItem: any = {
                 id: `m3u-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
                 name: item.name,
                 url: item.url,
@@ -540,9 +561,9 @@ async function main() {
                 category: isAdultContent ? '[HOT] Adultos ❌❤️' : item.group,
                 type: 'movie',
                 isAdult: isAdultContent,
-                logo: item.logo,
-                tmdb: tmdbData || null
+                logo: item.logo
             };
+            if (tmdbData) newItem.tmdb = tmdbData;
             if (!tmdbData) missingTmdbList.push(item.name);
             newItemsByCategory[targetBaseName].push(newItem);
             newItemsCount++;
@@ -574,19 +595,19 @@ async function main() {
                 episodesBySeason[sKey].sort((a, b) => parseInt(a.episode) - parseInt(b.episode));
             });
             const tmdbData = existingTMDBMap.get(getCleanName(seriesName));
-            const newSeries = {
+            const newSeries: any = {
                 id: `series-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
                 name: seriesName,
                 active: true,
                 category: data.group,
                 type: 'series',
-                isAdult: false,
+                isAdult: data.group.toLowerCase().includes('adultos') || data.group.toLowerCase().includes('xxx'),
                 logo: data.logo,
                 episodes: episodesBySeason,
                 totalSeasons: Object.keys(episodesBySeason).length,
-                totalEpisodes: data.episodes.length,
-                tmdb: tmdbData || null
+                totalEpisodes: data.episodes.length
             };
+            if (tmdbData) newSeries.tmdb = tmdbData;
             if (!tmdbData) missingTmdbList.push(seriesName);
             newItemsByCategory[targetBaseName].push(newSeries);
             newItemsCount++;

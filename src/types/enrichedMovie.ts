@@ -71,6 +71,7 @@ export interface EnrichedMovie {
   id: string;
   name: string;
   url?: string;
+  active?: boolean;
   category: string;
   type: 'movie' | 'series';
   isAdult?: boolean;
