@@ -1,7 +1,7 @@
 {
   "acao": {
-    "totalParts": 101,
-    "totalItems": 5007
+    "totalParts": 104,
+    "totalItems": 5183
   },
   "amc-plus": {
     "totalParts": 1,
@@ -21,19 +21,19 @@
   },
   "brasil-paralelo": {
     "totalParts": 1,
-    "totalItems": 26
+    "totalItems": 29
   },
   "cinema": {
     "totalParts": 2,
-    "totalItems": 55
+    "totalItems": 83
   },
   "claro-video": {
     "totalParts": 1,
     "totalItems": 13
   },
   "comedia": {
-    "totalParts": 94,
-    "totalItems": 4658
+    "totalParts": 98,
+    "totalItems": 4897
   },
   "crime": {
     "totalParts": 36,
@@ -57,15 +57,15 @@
   },
   "disney": {
     "totalParts": 49,
-    "totalItems": 2404
+    "totalItems": 2405
   },
   "docu": {
     "totalParts": 35,
     "totalItems": 1714
   },
   "documentario": {
-    "totalParts": 13,
-    "totalItems": 626
+    "totalParts": 15,
+    "totalItems": 720
   },
   "doramas": {
     "totalParts": 154,
@@ -84,8 +84,8 @@
     "totalItems": 53
   },
   "esportes": {
-    "totalParts": 4,
-    "totalItems": 187
+    "totalParts": 5,
+    "totalItems": 207
   },
   "familia": {
     "totalParts": 2,
@@ -97,11 +97,11 @@
   },
   "faroeste": {
     "totalParts": 5,
-    "totalItems": 206
+    "totalItems": 240
   },
   "ficcao-cientifica": {
-    "totalParts": 10,
-    "totalItems": 476
+    "totalParts": 12,
+    "totalItems": 567
   },
   "funimation-now": {
     "totalParts": 1,
@@ -125,15 +125,15 @@
   },
   "hot-adultos": {
     "totalParts": 308,
-    "totalItems": 15360
+    "totalItems": 15362
   },
   "lancamentos": {
-    "totalParts": 37,
-    "totalItems": 1834
+    "totalParts": 42,
+    "totalItems": 2091
   },
   "legendadas": {
-    "totalParts": 39,
-    "totalItems": 1914
+    "totalParts": 54,
+    "totalItems": 2689
   },
   "legendados": {
     "totalParts": 253,
@@ -141,11 +141,11 @@
   },
   "lionsgate": {
     "totalParts": 1,
-    "totalItems": 7
+    "totalItems": 8
   },
   "max": {
-    "totalParts": 55,
-    "totalItems": 2720
+    "totalParts": 56,
+    "totalItems": 2771
   },
   "nacionais": {
     "totalParts": 12,
@@ -169,11 +169,11 @@
   },
   "outras-produtoras": {
     "totalParts": 15,
-    "totalItems": 708
+    "totalItems": 712
   },
   "outros": {
-    "totalParts": 10,
-    "totalItems": 462
+    "totalParts": 11,
+    "totalItems": 510
   },
   "outros_filmes": {
     "totalParts": 78,
@@ -181,15 +181,15 @@
   },
   "paramount": {
     "totalParts": 11,
-    "totalItems": 524
+    "totalItems": 532
   },
   "plutotv": {
     "totalParts": 1,
     "totalItems": 3
   },
   "prime-video": {
-    "totalParts": 103,
-    "totalItems": 5120
+    "totalParts": 104,
+    "totalItems": 5174
   },
   "programas-de-tv": {
     "totalParts": 1,
@@ -197,7 +197,7 @@
   },
   "religiosos": {
     "totalParts": 5,
-    "totalItems": 210
+    "totalItems": 212
   },
   "romance": {
     "totalParts": 30,
@@ -205,7 +205,7 @@
   },
   "sbt": {
     "totalParts": 1,
-    "totalItems": 23
+    "totalItems": 49
   },
   "shows": {
     "totalParts": 6,
@@ -232,23 +232,55 @@
     "totalItems": 3120
   },
   "uhd-4k": {
-    "totalParts": 26,
-    "totalItems": 1268
+    "totalParts": 29,
+    "totalItems": 1443
   },
   "univer": {
     "totalParts": 1,
     "totalItems": 12
   },
   "desenhos": {
-    "totalParts": 5,
-    "totalItems": 225
+    "totalParts": 7,
+    "totalItems": 307
   },
   "musicais": {
     "totalParts": 1,
-    "totalItems": 17
+    "totalItems": 28
   },
   "animes": {
-    "totalParts": 78,
-    "totalItems": 3860
+    "totalParts": 79,
+    "totalItems": 3933
+  },
+  "infantil": {
+    "totalParts": 1,
+    "totalItems": 12
+  },
+  "brasileiro": {
+    "totalParts": 2,
+    "totalItems": 86
+  },
+  "sem-categoria": {
+    "totalParts": 1,
+    "totalItems": 33
+  },
+  "marvel-dc": {
+    "totalParts": 1,
+    "totalItems": 10
+  },
+  "universal-plus": {
+    "totalParts": 1,
+    "totalItems": 6
+  },
+  "hulu": {
+    "totalParts": 1,
+    "totalItems": 4
+  },
+  "reality": {
+    "totalParts": 1,
+    "totalItems": 3
+  },
+  "reelshort": {
+    "totalParts": 2,
+    "totalItems": 79
   }
 }

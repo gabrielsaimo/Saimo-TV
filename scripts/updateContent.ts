@@ -3,7 +3,7 @@ import * as path from 'path';
 import { findMatch, getCleanName } from '../src/utils/m3uMatcher';
 import { normalizeName } from '../src/services/m3uService';
 
-const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR04.m3u';
+const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR05.m3u';
 const ENRICHED_DIR = path.join(process.cwd(), 'public/data/enriched');
 const MANIFEST_FILE = path.join(ENRICHED_DIR, '_manifest.json');
 const ITEMS_PER_PART = 50;
@@ -68,7 +68,10 @@ const CATEGORY_FILE_MAP: Record<string, string> = {
     'lionsgate': 'lionsgate',
     'pluto': 'plutotv',
     'plutotv': 'plutotv',
+    'universal': 'universal-plus',
     'univer': 'univer',
+    'hulu': 'hulu',
+    'reelshort': 'reelshort',
     'sbt': 'sbt',
     'brasil paralelo': 'brasil-paralelo',
 
@@ -79,6 +82,10 @@ const CATEGORY_FILE_MAP: Record<string, string> = {
     'oscar': 'oscar-2025',
     'stand-up': 'stand-up-comedy',
     'standup': 'stand-up-comedy',
+    'reality': 'reality',
+    'marvel': 'marvel-dc',
+    'brasileiro': 'brasileiro',
+    'infantis': 'infantil',
     'esporte': 'esportes',
     'esportes': 'esportes',
     'sports': 'esportes',
@@ -235,17 +242,48 @@ async function fetchM3UContent(): Promise<M3UItem[]> {
     return items;
 }
 
+// Padrões de canais de TV ao vivo verificados ANTES do mapa de categorias
+// (esses conflitam com keys genéricas como 'globo', 'show', 'especial', etc.)
+const PRIORITY_TV_EXCLUDES = [
+    '24h',
+    'globo nordeste', 'globo sudeste', 'globo sul', 'globo norte', 'globo centro',
+    'hora do jogo', 'bbb',
+    'nfl game', 'nba league', 'mlb game', 'mls season', 'nhl center',
+    'esportes ppv',
+    'estados unidos',
+    'filmes series',
+    'maratona',
+];
+
+// Padrões de canais de TV verificados APÓS o mapa (para canais que não casam com nenhuma categoria VOD)
+const FALLBACK_TV_EXCLUDES = [
+    'abertos', 'espn', 'premiere', 'telecine',
+    'noticias', 'desporto', 'portugal', 'variedade', 'fitness',
+    'record', 'cine sky', 'hbo', 'filmes 24', 'filmes',
+    'band', 'hora do',
+];
+
 function mapGroupToFile(group: string): string | null {
-    const lower = group.toLowerCase();
+    const normalized = normalizeName(group);
 
+    // 1. Excluir canais ao vivo que conflitam com keys do mapa (ex: GLOBO NORDESTE, 24H)
+    for (const tv of PRIORITY_TV_EXCLUDES) {
+        if (normalized.includes(tv)) return null;
+    }
+
+    // 2. Verificar mapa de categorias VOD conhecidas
     for (const key in CATEGORY_FILE_MAP) {
-        if (lower.includes(key)) return CATEGORY_FILE_MAP[key];
+        if (normalized.includes(key)) return CATEGORY_FILE_MAP[key];
     }
 
-    if (lower.includes('filmes')) {
-        return null;
+    // 3. Excluir canais ao vivo que não casaram com nenhuma categoria
+    for (const tv of FALLBACK_TV_EXCLUDES) {
+        if (normalized.includes(tv)) return null;
     }
-    return null;
+
+    // 4. Auto-slug: gerar categoria automaticamente para grupos desconhecidos
+    const slug = normalized.trim().replace(/\s+/g, '-');
+    return slug || null;
 }
 
 // =============== MAIN ===============
