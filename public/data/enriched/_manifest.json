@@ -1,51 +1,51 @@
 {
   "hot-adultos": {
-    "totalParts": 45,
-    "totalItems": 2243
+    "totalParts": 43,
+    "totalItems": 2104
   },
   "sbt": {
     "totalParts": 1,
-    "totalItems": 26
+    "totalItems": 0
   },
   "max": {
-    "totalParts": 12,
-    "totalItems": 553
+    "totalParts": 11,
+    "totalItems": 516
   },
   "infantil": {
     "totalParts": 1,
-    "totalItems": 24
+    "totalItems": 0
   },
   "prime-video": {
     "totalParts": 12,
-    "totalItems": 576
+    "totalItems": 568
   },
   "disney": {
     "totalParts": 10,
-    "totalItems": 478
+    "totalItems": 465
   },
   "religiosos": {
     "totalParts": 3,
-    "totalItems": 142
+    "totalItems": 122
   },
   "paramount": {
     "totalParts": 5,
-    "totalItems": 221
+    "totalItems": 209
   },
   "legendados": {
     "totalParts": 39,
-    "totalItems": 1933
+    "totalItems": 1913
   },
   "documentario": {
     "totalParts": 17,
-    "totalItems": 846
+    "totalItems": 827
   },
   "esportes": {
     "totalParts": 1,
-    "totalItems": 25
+    "totalItems": 0
   },
   "discovery": {
     "totalParts": 6,
-    "totalItems": 297
+    "totalItems": 269
   },
   "lancamentos": {
     "totalParts": 9,
@@ -65,7 +65,7 @@
   },
   "acao": {
     "totalParts": 63,
-    "totalItems": 3120
+    "totalItems": 3119
   },
   "guerra": {
     "totalParts": 4,
@@ -109,7 +109,7 @@
   },
   "sem-categoria": {
     "totalParts": 1,
-    "totalItems": 35
+    "totalItems": 0
   },
   "faroeste": {
     "totalParts": 4,
