@@ -2,11 +2,13 @@
  * fix-enriched-data.cjs
  *
  * Dois objetivos:
- * 1. PURGE: Remove itens/episódios com URLs que NÃO terminam em .mp4
- * 2. RE-ENRICH: Busca dados TMDB para itens com tmdb=null
+ * 1. PURGE: Remove itens/episódios com URLs que NÃO terminam em .mp4/.mkv/.avi/.m4v
+ * 2. RE-ENRICH: Busca dados TMDB para itens com tmdb=null (SOMENTE títulos sem dados)
  *    - Remove sufixos como (Leg), (Dub), (Dual), [L], etc. antes de buscar
  *    - Usa o ANO quando disponível para distinguir títulos idênticos de anos diferentes
- *    - Processa 200 itens em paralelo por vez
+ *    - Estratégia de busca multi-etapa para maximizar a taxa de acerto
+ *    - Ignora completamente categorias adultas/xxx
+ *    - Processa em paralelo por vez (BATCH_SIZE itens)
  *
  * USO:
  *   node scripts/fix-enriched-data.cjs --purge-only
@@ -14,6 +16,7 @@
  *   node scripts/fix-enriched-data.cjs
  *   node scripts/fix-enriched-data.cjs --category=legendados
  *   node scripts/fix-enriched-data.cjs --limit=500
+ *   node scripts/fix-enriched-data.cjs --dry-run   (mostra o que faria, sem salvar)
  */
 
 'use strict';
@@ -27,17 +30,26 @@ const TMDB_API_KEY = '15d2ea6d0dc1d476efbca3eba2b9bbfb';
 const TMDB_BASE = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';
 const ITEMS_PER_PART = 50;
-const BATCH_SIZE = 200;      // parallel requests per batch
-const DELAY_BETWEEN_BATCHES = 1500; // ms between batches
+const BATCH_SIZE = 50;             // parallel requests per batch (reduced for stability)
+const DELAY_BETWEEN_BATCHES = 2000; // ms between batches
 
-// Categories excluded from TMDB enrichment (adult content not catalogued on TMDB)
-const SKIP_ENRICHMENT_CATEGORIES = new Set([
-    'hot-adultos', 'hot-adultos-bella-da-semana', 'hot-adultos-legendado'
-]);
+// ============================================================
+// FILTRO DE CATEGORIAS ADULTAS (amplo - garante não processar)
+// ============================================================
+function isAdultCategory(baseName) {
+    const lower = baseName.toLowerCase();
+    return lower.includes('adulto') ||
+        lower.includes('adultos') ||
+        lower.includes('xxx') ||
+        lower.includes('hot-adulto') ||
+        lower.includes('bella-da-semana') ||
+        lower.includes('erotic') ||
+        lower.includes('porn');
+}
 
-// ============================================
+// ============================================================
 // HELPERS
-// ============================================
+// ============================================================
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -91,9 +103,9 @@ function isValidMediaUrl(url) {
     return lower.endsWith('.mp4') || lower.endsWith('.mkv') || lower.endsWith('.avi') || lower.endsWith('.m4v');
 }
 
-// ============================================
-// STEP 1: PURGE non-.mp4 URLs
-// ============================================
+// ============================================================
+// STEP 1: PURGE non-media URLs
+// ============================================================
 
 function purgeNonMp4(items) {
     let removedMovies = 0;
@@ -127,9 +139,9 @@ function purgeNonMp4(items) {
     return { filtered, removedMovies, removedEpisodes };
 }
 
-// ============================================
-// STEP 2: TMDB Re-enrichment
-// ============================================
+// ============================================================
+// STEP 2: TMDB Re-enrichment (melhorado)
+// ============================================================
 
 function buildImageUrl(imgPath, size = 'w500') {
     if (!imgPath) return null;
@@ -137,19 +149,20 @@ function buildImageUrl(imgPath, size = 'w500') {
 }
 
 /**
- * Extracts the search title and year from a raw item name.
- * Strips language tags: (Leg), (Dub), (Dual), [L], etc.
- * Keeps year for accuracy when distinguishing same-named films.
+ * Extrai título e ano do nome bruto do item.
+ * Remove sufixos de idioma/qualidade, retorna { title, year }.
  */
 function extractTitleAndYear(name) {
     let title = name;
 
-    // Remove language/quality suffixes (Leg), (Dub), (Dual), (Dua) typo — anywhere in string, multiple times
+    // Remove language/quality suffixes: (Leg), (Dub), (Dual), etc.
     title = title.replace(/\s*\((Leg|Dub|Dual|Dua|LEG|DUB|DUAL|leg|dub)\)/gi, '');
-    // Remove bracketed tags: [L], [Leg], [Dub], [Dual], [HD], [4K], [CAM], [CINEMA], [UHD], [BluRay], etc.
-    title = title.replace(/\s*\[(?:L|Leg|Dub|Dual|HD|4K|CAM|CINEMA|UHD|BluRay|BDRip|WEB|WEBRip)\]/gi, '');
-    // Remove quality tags in parens: (4k), (4K), (UHD), (HD), (CAM), (CINEMA), (BDRip), (WEB)
+    // Remove bracketed tags: [L], [Leg], [Dub], [Dual], [HD], [4K], etc.
+    title = title.replace(/\s*\[(?:L|Leg|Dub|Dual|HD|4K|4k|CAM|CINEMA|UHD|BluRay|BDRip|WEB|WEBRip)\]/gi, '');
+    // Remove quality tags in parens: (4k), (4K), (UHD), (HD), etc.
     title = title.replace(/\s*\((?:4[kK]|UHD|HD|CAM|CINEMA|BluRay|BDRip|WEB|WEBRip|SDR|HDR)\)/gi, '');
+    // Remove bare quality tags at end of string (sem parênteses): "Inception 4K", "Matrix UHD"
+    title = title.replace(/\s+(?:4[kK]|UHD|SDR|HDR|CAM|WEB|WEBRip|BluRay|BDRip|CINEMA)\s*$/gi, '');
     // Remove trailing: "- Dublado", "- Legendado", "- Dual Áudio"
     title = title.replace(/\s*-\s*(Dublado|Legendado|Dual Áudio)\s*$/i, '');
     // Remove DUB / LEG / DUAL at end of string
@@ -157,17 +170,16 @@ function extractTitleAndYear(name) {
     // Remove series episode markers
     title = title.replace(/\s+S\d+\s*E\d+.*$/i, '');
 
-    // Extract year BEFORE removing it from title (keep for search accuracy)
-    // Match "(2022)" or "(2016 " (malformed, no closing paren) or "- 2022"
+    // Extrai o ANO da string (antes de remover os parênteses)
     const yearMatch = title.match(/\((\d{4})\)/) || title.match(/\((\d{4})\s/) || title.match(/[-–]\s*(\d{4})\s*(?:\(|$)/);
     const year = yearMatch ? parseInt(yearMatch[1], 10) : null;
 
-    // Clean remaining noise
+    // Remove o ano e outros ruídos restantes
     title = title
-        .replace(/\s*\(\d{4}\)\s*/g, '')          // remove year in parens
-        .replace(/\s*[-–]\s*\d{4}\s*$/g, '')      // remove trailing "- YYYY"
-        .replace(/\s*\[.*?\]/g, '')               // remove any remaining brackets
-        .replace(/\s*\([^)]*\)\s*$/g, '')         // remove any remaining parens at end
+        .replace(/\s*\(\d{4}\)\s*/g, '')       // remove year in parens
+        .replace(/\s*[-–]\s*\d{4}\s*$/g, '')   // remove trailing "- YYYY"
+        .replace(/\s*\[.*?\]/g, '')             // remove any remaining brackets
+        .replace(/\s*\([^)]*\)\s*$/g, '')       // remove any remaining parens at end
         .replace(/[_]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
@@ -176,78 +188,214 @@ function extractTitleAndYear(name) {
 }
 
 function normalizeForComparison(str) {
-    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+    return str.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 }
 
+/**
+ * Remove artigos iniciais comuns (pt-BR, en, es) para tentar variações de busca.
+ * Ex: "A Origem" → "Origem", "The Dark Knight" → "Dark Knight"
+ */
+function removeLeadingArticle(title) {
+    return title.replace(/^(o\s+|a\s+|os\s+|as\s+|the\s+|el\s+|la\s+|los\s+|las\s+|um\s+|uma\s+)/i, '').trim();
+}
+
+/**
+ * Gera variações do título para aumentar as chances de match na API.
+ */
+function getTitleVariants(title) {
+    const variants = new Set();
+    variants.add(title);
+
+    // Sem artigo inicial
+    const noArticle = removeLeadingArticle(title);
+    if (noArticle !== title) variants.add(noArticle);
+
+    // Sem ":" e tudo depois (sequelas com subtítulo)
+    const noColon = title.replace(/\s*:.*$/, '').trim();
+    if (noColon !== title && noColon.length > 2) variants.add(noColon);
+
+    // Texto antes do " - "
+    const noDash = title.replace(/\s+-\s+.*$/, '').trim();
+    if (noDash !== title && noDash.length > 2) variants.add(noDash);
+
+    // Troca "ç" → "c", "ã" → "a" etc para busca mais simples
+    const ascii = title
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
+    if (ascii !== title) variants.add(ascii);
+
+    return [...variants];
+}
+
+/**
+ * Pontua o quão bom é um resultado TMDB para o título e ano buscados.
+ */
+function scoreMatch(result, searchTitle, targetYear) {
+    const norm = normalizeForComparison(searchTitle);
+    const titleNorm = normalizeForComparison(result.title || result.name || '');
+    const origNorm = normalizeForComparison(result.original_title || result.original_name || '');
+
+    let score = 0;
+
+    // Correspondência de título (mais rigorosa)
+    if (titleNorm === norm || origNorm === norm) {
+        score += 100;
+    } else if (titleNorm.startsWith(norm) || origNorm.startsWith(norm)) {
+        score += 60;
+    } else if (norm.startsWith(titleNorm) || norm.startsWith(origNorm)) {
+        score += 40;
+    } else if (titleNorm.includes(norm) || origNorm.includes(norm)) {
+        score += 25;
+    } else if (norm.includes(titleNorm) || norm.includes(origNorm)) {
+        score += 15;
+    }
+
+    // Correspondência de ano — CRÍTICA para evitar o filme errado
+    const resultDateStr = result.release_date || result.first_air_date || '';
+    const resultYear = resultDateStr ? parseInt(resultDateStr.substring(0, 4)) : null;
+
+    if (targetYear && resultYear) {
+        if (resultYear === targetYear) {
+            score += 120; // Bônus forte por ano exato
+        } else if (Math.abs(resultYear - targetYear) === 1) {
+            score += 15;  // Lançamentos que cruzaram o ano
+        } else if (Math.abs(resultYear - targetYear) <= 2) {
+            score += 5;
+        } else {
+            score -= 60;  // Penalidade forte para anos muito diferentes
+        }
+    }
+
+    // Popularidade / voto como desempate
+    const votes = result.vote_count || 0;
+    if (votes > 5000) score += 10;
+    else if (votes > 1000) score += 6;
+    else if (votes > 100) score += 3;
+
+    return score;
+}
+
+/**
+ * Escolhe o melhor resultado de uma lista TMDB.
+ * Retorna null se nenhum resultado tiver score > 0 (sem título matching).
+ */
 function findBestMatch(results, searchTitle, targetYear) {
     if (!results || results.length === 0) return null;
-    const norm = normalizeForComparison(searchTitle);
 
     let best = null;
     let bestScore = -Infinity;
 
     for (const r of results) {
-        const title = normalizeForComparison(r.title || r.name || '');
-        const original = normalizeForComparison(r.original_title || r.original_name || '');
-        let score = 0;
-
-        // Title matching
-        if (title === norm || original === norm) score += 80;
-        else if (title.startsWith(norm) || original.startsWith(norm)) score += 50;
-        else if (title.includes(norm) || original.includes(norm)) score += 25;
-
-        // Year matching — CRITICAL for distinguishing same-named movies of different years
-        const resultDateStr = r.release_date || r.first_air_date || '';
-        const resultYear = resultDateStr ? parseInt(resultDateStr.substring(0, 4)) : null;
-
-        if (targetYear && resultYear) {
-            if (resultYear === targetYear) score += 100; // Strong bonus for exact year match
-            else if (Math.abs(resultYear - targetYear) === 1) score += 20;
-            else if (Math.abs(resultYear - targetYear) > 3) score -= 50; // Strong penalty for wrong year
+        const s = scoreMatch(r, searchTitle, targetYear);
+        if (s > bestScore) {
+            best = r;
+            bestScore = s;
         }
-
-        if ((r.vote_count || 0) > 100) score += 3;
-        if ((r.vote_count || 0) > 1000) score += 5;
-
-        if (score > bestScore) { best = r; bestScore = score; }
     }
 
-    // Only return if we have at least a partial title match
-    return bestScore > 0 ? best : (results.find(r => r.poster_path) || results[0]);
+    // Só retorna se tiver alguma correspondência de título
+    return bestScore >= 15 ? best : null;
 }
 
+/**
+ * Faz uma única requisição TMDB e retorna o melhor match (ou null).
+ */
+async function fetchTMDBSearch(endpoint, query, year, language) {
+    try {
+        let url = `${TMDB_BASE}/${endpoint}?api_key=${TMDB_API_KEY}&language=${language}&query=${encodeURIComponent(query)}`;
+        if (year) url += `&primary_release_year=${year}`;
+
+        const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+        if (!res.ok) return null;
+        const data = await res.json();
+        return data.results || [];
+    } catch (e) {
+        return null;
+    }
+}
+
+/**
+ * Estratégia de busca multi-etapa para maximizar a taxa de acerto.
+ *
+ * Ordem de tentativas:
+ * 1. Título limpo + ano + pt-BR (endpoint correto)
+ * 2. Título limpo + ano + en-US (endpoint correto)
+ * 3. Título limpo SEM ano + pt-BR (para casos sem ano no nome)
+ * 4. Título limpo SEM ano + en-US
+ * 5. Sem artigo inicial + sem ano + pt-BR
+ * 6. Sem artigo inicial + sem ano + en-US
+ * 7. Todas as variant sem ano + en-US (endpoint alternativo movie↔tv)
+ *
+ * Para cada etapa, testa tipo original E tipo alternativo.
+ */
 async function searchTMDB(cleanedTitle, year, type) {
     if (!cleanedTitle || cleanedTitle.length < 2) return null;
-    const endpoint = type === 'series' ? 'search/tv' : 'search/movie';
 
-    for (const lang of ['pt-BR', 'en-US']) {
-        try {
-            const url = `${TMDB_BASE}/${endpoint}?api_key=${TMDB_API_KEY}&language=${lang}&query=${encodeURIComponent(cleanedTitle)}`;
-            const res = await fetch(url);
-            if (!res.ok) continue;
-            const data = await res.json();
-            if (data.results && data.results.length > 0) {
-                const match = findBestMatch(data.results, cleanedTitle, year);
+    const endpoints = {
+        primary: type === 'series' ? 'search/tv' : 'search/movie',
+        fallback: type === 'series' ? 'search/movie' : 'search/tv',
+        altType: type === 'series' ? 'movie' : 'series',
+    };
+
+    const titleVariants = getTitleVariants(cleanedTitle);
+    const languages = ['pt-BR', 'en-US'];
+
+    // ---- Etapa 1: Título original + ano (mais preciso)
+    if (year) {
+        for (const lang of languages) {
+            const results = await fetchTMDBSearch(endpoints.primary, cleanedTitle, year, lang);
+            if (results && results.length > 0) {
+                const match = findBestMatch(results, cleanedTitle, year);
                 if (match) return { match, foundType: type };
             }
-        } catch (e) {
-            // ignore fetch error
         }
     }
 
-    // Try alternate type (movie ↔ series)
-    const altEndpoint = type === 'series' ? 'search/movie' : 'search/tv';
-    try {
-        const url = `${TMDB_BASE}/${altEndpoint}?api_key=${TMDB_API_KEY}&language=pt-BR&query=${encodeURIComponent(cleanedTitle)}`;
-        const res = await fetch(url);
-        if (res.ok) {
-            const data = await res.json();
-            if (data.results && data.results.length > 0) {
-                const match = findBestMatch(data.results, cleanedTitle, year);
-                if (match) return { match, foundType: type === 'series' ? 'movie' : 'series' };
+    // ---- Etapa 2: Título original sem ano (pode achar mesmo assim)
+    for (const lang of languages) {
+        const results = await fetchTMDBSearch(endpoints.primary, cleanedTitle, null, lang);
+        if (results && results.length > 0) {
+            const match = findBestMatch(results, cleanedTitle, year);
+            if (match) return { match, foundType: type };
+        }
+    }
+
+    // ---- Etapa 3: Variações do título (sem artigo, sem subtítulo, ASCII)
+    for (const variant of titleVariants) {
+        if (variant === cleanedTitle) continue; // já tentamos
+        for (const lang of languages) {
+            const results = await fetchTMDBSearch(endpoints.primary, variant, year || null, lang);
+            if (results && results.length > 0) {
+                const match = findBestMatch(results, cleanedTitle, year);
+                if (match) return { match, foundType: type };
             }
         }
-    } catch (e) { /* ignore */ }
+    }
+
+    // ---- Etapa 4: Tipo alternativo (movie ↔ tv) com título original
+    for (const lang of languages) {
+        const results = await fetchTMDBSearch(endpoints.fallback, cleanedTitle, year || null, lang);
+        if (results && results.length > 0) {
+            const match = findBestMatch(results, cleanedTitle, year);
+            if (match) return { match, foundType: endpoints.altType };
+        }
+    }
+
+    // ---- Etapa 5: Variações + tipo alternativo
+    for (const variant of titleVariants) {
+        if (variant === cleanedTitle) continue;
+        const results = await fetchTMDBSearch(endpoints.fallback, variant, year || null, 'en-US');
+        if (results && results.length > 0) {
+            const match = findBestMatch(results, cleanedTitle, year);
+            if (match) return { match, foundType: endpoints.altType };
+        }
+    }
 
     return null;
 }
@@ -261,7 +409,7 @@ async function fetchTMDBDetails(tmdbId, type) {
     ].join(',');
     try {
         const url = `${TMDB_BASE}/${endpoint}/${tmdbId}?api_key=${TMDB_API_KEY}&language=pt-BR&append_to_response=${appendList}`;
-        const res = await fetch(url);
+        const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
         if (!res.ok) return null;
         return await res.json();
     } catch (e) {
@@ -295,8 +443,11 @@ function buildTmdbObject(details, type) {
         photo: p.profile_path ? buildImageUrl(p.profile_path, 'w185') : null
     }));
     const directors = (details.credits?.crew || []).filter(p => p.job === 'Director').map(p => p.name);
-    const writers = (details.credits?.crew || []).filter(p => ['Writer', 'Screenplay', 'Story'].includes(p.job)).map(p => p.name);
-    const keywords = (details.keywords?.keywords || details.keywords?.results || []).slice(0, 10).map(k => k.name);
+    const writers = (details.credits?.crew || [])
+        .filter(p => ['Writer', 'Screenplay', 'Story'].includes(p.job))
+        .map(p => p.name);
+    const keywords = (details.keywords?.keywords || details.keywords?.results || [])
+        .slice(0, 10).map(k => k.name);
     const companies = (details.production_companies || []).map(c => c.name);
     const countries = (details.production_countries || []).map(c => c.iso_3166_1);
     const recommendations = (details.recommendations?.results || []).slice(0, 10).map(r => ({
@@ -345,7 +496,9 @@ function buildTmdbObject(details, type) {
         collection: details.belongs_to_collection ? {
             id: details.belongs_to_collection.id,
             name: details.belongs_to_collection.name,
-            poster: details.belongs_to_collection.poster_path ? buildImageUrl(details.belongs_to_collection.poster_path, 'w185') : null
+            poster: details.belongs_to_collection.poster_path
+                ? buildImageUrl(details.belongs_to_collection.poster_path, 'w185')
+                : null
         } : null,
         recommendations,
         streaming,
@@ -354,45 +507,56 @@ function buildTmdbObject(details, type) {
 }
 
 /**
- * Enrich a single item, returns { success, title }
+ * Enriquece um único item. Retorna { success, foundTitle }.
  */
 async function enrichItem(item) {
     const { title, year } = extractTitleAndYear(item.name);
-    if (!title || title.length < 2) return { success: false };
+    if (!title || title.length < 2) return { success: false, reason: 'titulo_curto' };
 
     const searchResult = await searchTMDB(title, year, item.type);
-    if (!searchResult) return { success: false };
+    if (!searchResult) return { success: false, reason: 'nao_encontrado' };
 
     const { match, foundType } = searchResult;
     const details = await fetchTMDBDetails(match.id, foundType);
-    if (!details) return { success: false };
+    if (!details) return { success: false, reason: 'detalhes_falhou' };
 
     item.tmdb = buildTmdbObject(details, foundType);
-    return { success: true, title: item.tmdb.title };
+    return { success: true, foundTitle: item.tmdb.title };
 }
 
-// ============================================
+// ============================================================
 // MAIN
-// ============================================
+// ============================================================
 
 async function main() {
     const args = process.argv.slice(2);
     const doPurge = !args.includes('--enrich-only');
     const doEnrich = !args.includes('--purge-only');
+    const isDryRun = args.includes('--dry-run');
     const categoryFilter = args.find(a => a.startsWith('--category='))?.split('=')[1] || null;
     const limitArg = args.find(a => a.startsWith('--limit='));
     const enrichLimit = limitArg ? parseInt(limitArg.split('=')[1]) : Infinity;
 
+    if (isDryRun) console.log('🔍 MODO DRY-RUN: nenhum arquivo será modificado.\n');
+
     const manifest = readManifest();
     const categories = categoryFilter ? [categoryFilter] : Object.keys(manifest);
+
+    // Filtrar categorias adultas
+    const nonAdultCategories = categories.filter(c => !isAdultCategory(c));
+    const skippedAdult = categories.length - nonAdultCategories.length;
+    if (skippedAdult > 0) {
+        console.log(`⏭️  ${skippedAdult} categorias adultas/xxx ignoradas.`);
+    }
 
     let totalPurgedMovies = 0;
     let totalPurgedEpisodes = 0;
     let totalEnriched = 0;
     let totalFailed = 0;
     let enrichCount = 0;
+    const failedItems = [];
 
-    for (const baseName of categories) {
+    for (const baseName of nonAdultCategories) {
         if (!manifest[baseName]) {
             console.log(`⚠️  Categoria "${baseName}" não encontrada no manifesto.`);
             continue;
@@ -403,11 +567,11 @@ async function main() {
         let items = readCategoryParts(baseName, manifest);
         let changed = false;
 
-        // STEP 1: PURGE
+        // ---- STEP 1: PURGE
         if (doPurge) {
             const { filtered, removedMovies, removedEpisodes } = purgeNonMp4(items);
             if (removedMovies > 0 || removedEpisodes > 0) {
-                console.log(`  🗑️  Removidos: ${removedMovies} itens sem .mp4, ${removedEpisodes} episódios sem .mp4`);
+                console.log(`  🗑️  Removidos: ${removedMovies} itens sem URL válida, ${removedEpisodes} episódios`);
                 totalPurgedMovies += removedMovies;
                 totalPurgedEpisodes += removedEpisodes;
                 items = filtered;
@@ -415,72 +579,89 @@ async function main() {
             }
         }
 
-        // STEP 2: RE-ENRICH (parallel, BATCH_SIZE at a time)
+        // ---- STEP 2: RE-ENRICH (só itens sem tmdb)
         if (doEnrich && enrichCount < enrichLimit) {
-            if (SKIP_ENRICHMENT_CATEGORIES.has(baseName)) {
-                console.log(`  ⏭️  Pulando enriquecimento TMDB (categoria adulta).`);
-            } else {
-                const missing = items.filter(i => !i.tmdb || !i.tmdb.id);
-                if (missing.length > 0) {
-                    const toProcess = missing.slice(0, enrichLimit - enrichCount);
-                    console.log(`  🔍 ${toProcess.length} itens sem TMDB, processando em lotes de ${BATCH_SIZE}...`);
+            const missing = items.filter(i => !i.tmdb || !i.tmdb.id);
 
-                    let batchEnriched = 0;
-                    let batchFailed = 0;
+            if (missing.length > 0) {
+                const toProcess = missing.slice(0, enrichLimit - enrichCount);
+                console.log(`  🔍 ${toProcess.length} itens sem TMDB → processando em lotes de ${BATCH_SIZE}...`);
 
-                    for (let batchStart = 0; batchStart < toProcess.length; batchStart += BATCH_SIZE) {
-                        const batch = toProcess.slice(batchStart, batchStart + BATCH_SIZE);
-                        const batchNum = Math.floor(batchStart / BATCH_SIZE) + 1;
-                        const totalBatches = Math.ceil(toProcess.length / BATCH_SIZE);
-                        process.stdout.write(`    🔄 Lote ${batchNum}/${totalBatches} (${batch.length} itens em paralelo)... `);
+                let batchEnriched = 0;
+                let batchFailed = 0;
 
-                        const results = await Promise.allSettled(
-                            batch.map(item => enrichItem(item))
-                        );
+                for (let batchStart = 0; batchStart < toProcess.length; batchStart += BATCH_SIZE) {
+                    const batch = toProcess.slice(batchStart, batchStart + BATCH_SIZE);
+                    const batchNum = Math.floor(batchStart / BATCH_SIZE) + 1;
+                    const totalBatches = Math.ceil(toProcess.length / BATCH_SIZE);
+                    process.stdout.write(`    🔄 Lote ${batchNum}/${totalBatches} (${batch.length} itens)... `);
 
-                        let ok = 0, fail = 0;
-                        for (const result of results) {
-                            if (result.status === 'fulfilled' && result.value.success) {
-                                ok++;
-                                batchEnriched++;
-                                changed = true;
-                            } else {
-                                fail++;
-                                batchFailed++;
-                            }
-                        }
-                        console.log(`✅ ${ok} encontrados, ❌ ${fail} não encontrados`);
-                        enrichCount += batch.length;
+                    const results = await Promise.allSettled(batch.map(item => enrichItem(item)));
 
-                        // Small delay between batches so we don't hammer the API
-                        if (batchStart + BATCH_SIZE < toProcess.length) {
-                            await sleep(DELAY_BETWEEN_BATCHES);
+                    let ok = 0, fail = 0;
+                    for (let i = 0; i < results.length; i++) {
+                        const result = results[i];
+                        if (result.status === 'fulfilled' && result.value.success) {
+                            ok++;
+                            batchEnriched++;
+                            changed = true;
+                        } else {
+                            fail++;
+                            batchFailed++;
+                            const reason = result.status === 'fulfilled' ? result.value.reason : 'erro';
+                            failedItems.push({ name: batch[i].name, category: baseName, reason });
                         }
                     }
+                    console.log(`✅ ${ok} encontrados, ❌ ${fail} não encontrados`);
+                    enrichCount += batch.length;
 
-                    totalEnriched += batchEnriched;
-                    totalFailed += batchFailed;
-                    console.log(`  📊 Categoria concluída: ${batchEnriched}/${toProcess.length} enriquecidos`);
+                    if (batchStart + BATCH_SIZE < toProcess.length) {
+                        await sleep(DELAY_BETWEEN_BATCHES);
+                    }
                 }
+
+                totalEnriched += batchEnriched;
+                totalFailed += batchFailed;
+                console.log(`  📊 ${batchEnriched}/${toProcess.length} enriquecidos nesta categoria`);
+            } else {
+                console.log(`  ✅ Todos os itens já têm dados TMDB.`);
             }
         }
 
-        if (changed) {
+        if (changed && !isDryRun) {
             writeCategoryParts(baseName, items, manifest);
             console.log(`  💾 Salvo: ${items.length} itens`);
         }
     }
 
-    writeManifest(manifest);
+    if (!isDryRun) writeManifest(manifest);
+
+    // Salvar relatório de falhas
+    if (failedItems.length > 0) {
+        const reportPath = path.join(__dirname, '../missing_tmdb_report.txt');
+        const lines = failedItems.map(f => `[${f.category}] ${f.name} (razão: ${f.reason})`);
+        if (!isDryRun) {
+            fs.writeFileSync(reportPath, lines.join('\n'), 'utf-8');
+            console.log(`\n📄 Relatório de falhas salvo em: missing_tmdb_report.txt`);
+        } else {
+            console.log('\n📄 Falhas que seriam salvas (dry-run):');
+            lines.slice(0, 20).forEach(l => console.log('  ', l));
+            if (lines.length > 20) console.log(`  ... e mais ${lines.length - 20} itens`);
+        }
+    }
 
     console.log('\n════════════════════════════════════');
     console.log('✅ CONCLUÍDO');
     if (doPurge) {
-        console.log(`  🗑️  Removidos (sem .mp4): ${totalPurgedMovies} itens, ${totalPurgedEpisodes} eps`);
+        console.log(`  🗑️  Removidos (URL inválida): ${totalPurgedMovies} itens, ${totalPurgedEpisodes} episódios`);
     }
     if (doEnrich) {
         console.log(`  ✨ Enriquecidos com TMDB: ${totalEnriched}`);
         console.log(`  ❌ Não encontrados: ${totalFailed}`);
+        if (totalEnriched + totalFailed > 0) {
+            const rate = Math.round(totalEnriched / (totalEnriched + totalFailed) * 100);
+            console.log(`  📈 Taxa de acerto: ${rate}%`);
+        }
     }
     console.log('════════════════════════════════════');
 }
