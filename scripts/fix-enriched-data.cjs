@@ -155,6 +155,11 @@ function buildImageUrl(imgPath, size = 'w500') {
 function extractTitleAndYear(name) {
     let title = name;
 
+    // Remove prefixos de categorias que ficam no nome: "Series | TV ", "Series | "
+    title = title.replace(/^Series\s*\|\s*TV\s*/i, '');
+    title = title.replace(/^Series\s*\|\s*/i, '');
+    title = title.replace(/^Filmes\s*\|\s*/i, '');
+
     // Remove language/quality suffixes: (Leg), (Dub), (Dual), etc.
     title = title.replace(/\s*\((Leg|Dub|Dual|Dua|LEG|DUB|DUAL|leg|dub)\)/gi, '');
     // Remove bracketed tags: [L], [Leg], [Dub], [Dual], [HD], [4K], etc.
@@ -169,6 +174,11 @@ function extractTitleAndYear(name) {
     title = title.replace(/\s+(DUB|LEG|DUAL)\s*$/i, '');
     // Remove series episode markers
     title = title.replace(/\s+S\d+\s*E\d+.*$/i, '');
+    // Remove sufixo de parte numerada: "Parte 1", "Parte 2", "Part 1" no final
+    title = title.replace(/\s+Parte\s+\d+\s*$/i, '');
+    title = title.replace(/\s+Part\s+\d+\s*$/i, '');
+    // Remove sufixo " aka Outro Nome" (alternativo)
+    title = title.replace(/\s+aka\s+.+$/i, '');
 
     // Extrai o ANO da string (antes de remover os parênteses)
     const yearMatch = title.match(/\((\d{4})\)/) || title.match(/\((\d{4})\s/) || title.match(/[-–]\s*(\d{4})\s*(?:\(|$)/);
