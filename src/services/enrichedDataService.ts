@@ -53,6 +53,7 @@ async function loadManifest(): Promise<Manifest> {
 
 // Lista de categorias disponíveis (sem adulto por padrão)
 const ENRICHED_CATEGORIES: CategoryInfo[] = [
+  // Streaming platforms
   { name: '🎬 Lançamentos', file: 'lancamentos', count: 0, isAdult: false },
   { name: '📺 Netflix', file: 'netflix', count: 0, isAdult: false },
   { name: '📺 Prime Video', file: 'prime-video', count: 0, isAdult: false },
@@ -61,29 +62,44 @@ const ENRICHED_CATEGORIES: CategoryInfo[] = [
   { name: '📺 Globoplay', file: 'globoplay', count: 0, isAdult: false },
   { name: '📺 Apple TV+', file: 'apple-tv', count: 0, isAdult: false },
   { name: '📺 Paramount+', file: 'paramount', count: 0, isAdult: false },
-  { name: '📺 Star+', file: 'star', count: 0, isAdult: false },
   { name: '📺 Crunchyroll', file: 'crunchyroll', count: 0, isAdult: false },
-  { name: '📺 Funimation', file: 'funimation-now', count: 0, isAdult: false },
   { name: '📺 Discovery+', file: 'discovery', count: 0, isAdult: false },
+  { name: '📺 Hulu', file: 'hulu', count: 0, isAdult: false },
+  { name: '📺 Universal+', file: 'universal-plus', count: 0, isAdult: false },
+  { name: '📺 DirectTV', file: 'directv', count: 0, isAdult: false },
+  { name: '📺 Lionsgate+', file: 'lionsgate', count: 0, isAdult: false },
+  // Genres
   { name: '🎬 4K UHD', file: 'uhd-4k', count: 0, isAdult: false },
   { name: '🎬 Ação', file: 'acao', count: 0, isAdult: false },
   { name: '🎬 Comédia', file: 'comedia', count: 0, isAdult: false },
   { name: '🎬 Drama', file: 'drama', count: 0, isAdult: false },
   { name: '🎬 Terror', file: 'terror', count: 0, isAdult: false },
   { name: '🎬 Ficção Científica', file: 'ficcao-cientifica', count: 0, isAdult: false },
-  { name: '🎬 Animação', file: 'animacao', count: 0, isAdult: false },
   { name: '🎬 Fantasia', file: 'fantasia', count: 0, isAdult: false },
   { name: '🎬 Aventura', file: 'aventura', count: 0, isAdult: false },
   { name: '🎬 Romance', file: 'romance', count: 0, isAdult: false },
   { name: '🎬 Suspense', file: 'suspense', count: 0, isAdult: false },
-  { name: '🎬 Crime', file: 'crime', count: 0, isAdult: false },
+  { name: '🎬 Guerra', file: 'guerra', count: 0, isAdult: false },
+  { name: '🎬 Faroeste', file: 'faroeste', count: 0, isAdult: false },
   { name: '🎬 Documentário', file: 'documentario', count: 0, isAdult: false },
-  { name: '📺 Doramas', file: 'doramas', count: 0, isAdult: false },
-  { name: '📺 Novelas', file: 'novelas', count: 0, isAdult: false },
+  { name: '🎬 Musicais', file: 'musicais', count: 0, isAdult: false },
+  { name: '🎬 Shows', file: 'shows', count: 0, isAdult: false },
+  { name: '🎬 Cinema', file: 'cinema', count: 0, isAdult: false },
+  { name: '🎬 Reality', file: 'reality', count: 0, isAdult: false },
+  { name: '🎬 Marvel / DC', file: 'marvel-dc', count: 0, isAdult: false },
+  // Special
   { name: '🎬 Legendados', file: 'legendados', count: 0, isAdult: false },
   { name: '📺 Legendadas', file: 'legendadas', count: 0, isAdult: false },
+  { name: '📺 Doramas', file: 'doramas', count: 0, isAdult: false },
+  { name: '📺 Animes', file: 'animes', count: 0, isAdult: false },
+  { name: '📺 Novelas', file: 'novelas', count: 0, isAdult: false },
   { name: '🎬 Nacionais', file: 'nacionais', count: 0, isAdult: false },
+  { name: '🇧🇷 Brasileiro', file: 'brasileiro', count: 0, isAdult: false },
   { name: '🇧🇷 Brasil Paralelo', file: 'brasil-paralelo', count: 0, isAdult: false },
+  { name: '📺 ReelShort', file: 'reelshort', count: 0, isAdult: false },
+  { name: '📺 Univer Video', file: 'univer', count: 0, isAdult: false },
+  { name: '🎬 Outras Produtoras', file: 'outras-produtoras', count: 0, isAdult: false },
+  { name: '🎬 Outros', file: 'outros', count: 0, isAdult: false },
 ];
 
 // Categorias de conteúdo adulto (só exibir quando desbloqueado)
@@ -97,17 +113,23 @@ const ADULT_CATEGORIES: CategoryInfo[] = [
 export const STREAMING_CATEGORIES = [
   '🎬 Lançamentos',
   '📺 Netflix',
-  '📺 Apple TV+',
   '📺 Prime Video',
   '📺 Disney+',
   '📺 Max',
+  '📺 Globoplay',
+  '📺 Apple TV+',
+  '📺 Paramount+',
   '📺 Crunchyroll',
   '📺 Discovery+',
-  '📺 Globoplay',
+  '📺 Hulu',
+  '📺 Universal+',
+  '📺 DirectTV',
+  '📺 Lionsgate+',
   '🎬 Legendados',
   '📺 Legendadas',
-  '📺 Paramount+',
-  '📺 Star+',
+  '📺 Doramas',
+  '📺 Animes',
+  '📺 Novelas',
 ];
 
 // Categorias de gênero
@@ -117,13 +139,18 @@ export const GENRE_CATEGORIES = [
   '🎬 Drama',
   '🎬 Terror',
   '🎬 Ficção Científica',
-  '🎬 Animação',
   '🎬 Fantasia',
   '🎬 Aventura',
   '🎬 Romance',
   '🎬 Suspense',
-  '🎬 Crime',
+  '🎬 Guerra',
+  '🎬 Faroeste',
   '🎬 Documentário',
+  '🎬 Musicais',
+  '🎬 Shows',
+  '🎬 Cinema',
+  '🎬 Reality',
+  '🎬 Marvel / DC',
 ];
 
 // Exporta categorias adultas para uso externo
@@ -385,10 +412,10 @@ export async function initializeEnrichedData(): Promise<void> {
     const startTime = Date.now();
 
     // Carrega manifesto e M3U em paralelo
-    await Promise.all([loadManifest(), fetchM3UData()]);
+    const mf = await Promise.all([loadManifest(), fetchM3UData()]).then(([m]) => m);
     console.log(`📋 Manifesto carregado em ${Date.now() - startTime}ms`);
 
-    // Carrega categorias principais em paralelo
+    // Carrega categorias prioritárias primeiro (para a UI ficar disponível rapidamente)
     const priorityCategories = [
       '🎬 Lançamentos',
       '📺 Netflix',
@@ -402,18 +429,38 @@ export async function initializeEnrichedData(): Promise<void> {
     isInitialized = true;
     console.log(`✅ Dados enriched inicializados em ${Date.now() - startTime}ms`);
 
-    // Carrega resto em background
+    // Carrega TODAS as categorias em background (incluindo as não na lista hardcoded)
+    // Combina lista hardcoded + qualquer categoria do manifesto com itens
+    const allKnownFiles = new Set(ENRICHED_CATEGORIES.map(c => c.file));
+    const manifestFiles = Object.keys(mf).filter(k =>
+      mf[k].totalItems > 0 &&
+      !ADULT_CATEGORIES.some(a => a.file === k) // exclui adulto
+    );
+
+    // Adiciona categorias do manifesto que não estão na lista hardcoded como entradas dinâmicas
+    for (const file of manifestFiles) {
+      if (!allKnownFiles.has(file)) {
+        ENRICHED_CATEGORIES.push({
+          name: `🎬 ${file.charAt(0).toUpperCase() + file.slice(1).replace(/-/g, ' ')}`,
+          file,
+          count: 0,
+          isAdult: false
+        });
+        allKnownFiles.add(file);
+      }
+    }
+
+    // Carrega tudo em lotes de 8 em background
     const otherCategories = ENRICHED_CATEGORIES
       .filter(c => !priorityCategories.includes(c.name))
       .map(c => c.name);
 
-    // Carrega em lotes de 5 (partes são pequenas agora, podemos ser mais agressivos)
-    for (let i = 0; i < otherCategories.length; i += 5) {
-      const batch = otherCategories.slice(i, i + 5);
+    for (let i = 0; i < otherCategories.length; i += 8) {
+      const batch = otherCategories.slice(i, i + 8);
       await Promise.all(batch.map(cat => loadEnrichedCategory(cat)));
     }
 
-    console.log(`✅ Todas as categorias carregadas!`);
+    console.log(`✅ Todas as categorias carregadas! Total: ${ENRICHED_CATEGORIES.length} categorias`);
   })();
 
   return initPromise;
