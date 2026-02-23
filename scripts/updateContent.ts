@@ -3,7 +3,12 @@ import * as path from 'path';
 import { findMatch, getCleanName } from '../src/utils/m3uMatcher';
 import { normalizeName } from '../src/services/m3uService';
 
-const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR05.m3u';
+const M3U_URLS = [
+    'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR05.m3u',
+    'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR04.m3u',
+    // Adicione mais URLs aqui:
+    // 'https://exemplo.com/outro.m3u',
+];
 const ENRICHED_DIR = path.join(process.cwd(), 'public/data/enriched');
 const MANIFEST_FILE = path.join(ENRICHED_DIR, '_manifest.json');
 const ITEMS_PER_PART = 50;
@@ -202,13 +207,18 @@ function writeCategoryParts(baseName: string, items: any[], manifest: Manifest):
 
 // =============== M3U FUNCTIONS ===============
 
-async function fetchM3UContent(): Promise<M3UItem[]> {
-    console.log('🔄 Baixando M3U...');
-    const response = await fetch(M3U_URL);
-    if (!response.ok) throw new Error('Falha no download do M3U');
-    const text = await response.text();
-    const lines = text.split('\n');
+function isMediaFile(url: string): boolean {
+    const lower = url.toLowerCase().split('?')[0];
+    return (
+        lower.endsWith('.mp4') ||
+        lower.endsWith('.mkv') ||
+        lower.endsWith('.avi') ||
+        lower.endsWith('.m4v')
+    );
+}
 
+function parseM3UText(text: string, seenNames: Set<string>): M3UItem[] {
+    const lines = text.split('\n');
     const items: M3UItem[] = [];
     let currentInfo: Partial<M3UItem> = {};
 
@@ -229,17 +239,45 @@ async function fetchM3UContent(): Promise<M3UItem[]> {
             };
         } else if (trimmed && !trimmed.startsWith('#')) {
             if (currentInfo.name) {
-                items.push({
-                    name: currentInfo.name,
-                    logo: currentInfo.logo,
-                    group: currentInfo.group || 'Outros',
-                    url: trimmed
-                });
+                // Ignora canais de TV ao vivo (URLs sem extensão de mídia)
+                if (isMediaFile(trimmed)) {
+                    const normalizedName = currentInfo.name.toLowerCase().trim();
+                    if (!seenNames.has(normalizedName)) {
+                        seenNames.add(normalizedName);
+                        items.push({
+                            name: currentInfo.name,
+                            logo: currentInfo.logo,
+                            group: currentInfo.group || 'Outros',
+                            url: trimmed
+                        });
+                    }
+                }
                 currentInfo = {};
             }
         }
     }
     return items;
+}
+
+async function fetchM3UContent(): Promise<M3UItem[]> {
+    const allItems: M3UItem[] = [];
+    const seenNames = new Set<string>();
+
+    for (let i = 0; i < M3U_URLS.length; i++) {
+        const url = M3U_URLS[i];
+        console.log(`🔄 Baixando M3U [${i + 1}/${M3U_URLS.length}]: ${url}`);
+        const response = await fetch(url);
+        if (!response.ok) {
+            console.warn(`⚠️ Falha ao baixar M3U [${i + 1}]: HTTP ${response.status} — pulando.`);
+            continue;
+        }
+        const text = await response.text();
+        const items = parseM3UText(text, seenNames);
+        console.log(`   ↳ ${items.length} itens únicos obtidos (${seenNames.size} total acumulado).`);
+        allItems.push(...items);
+    }
+
+    return allItems;
 }
 
 // Padrões de canais de TV ao vivo verificados ANTES do mapa de categorias

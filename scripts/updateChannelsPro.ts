@@ -14,7 +14,12 @@ import * as path from 'path';
  *   bun run scripts/updateChannelsPro.ts
  */
 
-const M3U_URL = 'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR05.m3u';
+const M3U_URLS = [
+    'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR05.m3u',
+    'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR04.m3u',
+    // Adicione mais URLs aqui:
+    // 'https://exemplo.com/outro.m3u',
+];
 const OUTPUT_FILE = path.join(process.cwd(), 'public/data/lista_pro.json');
 
 interface ProChannel {
@@ -53,10 +58,10 @@ async function fetchM3U(url: string): Promise<string> {
     return res.text();
 }
 
-function parseChannels(m3uContent: string): ProChannel[] {
+function parseChannels(m3uContent: string, seenNames: Set<string>, startNumber: number): ProChannel[] {
     const lines = m3uContent.split('\n').map(l => l.trim());
     const channels: ProChannel[] = [];
-    let channelNumber = 1;
+    let channelNumber = startNumber;
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
@@ -83,9 +88,13 @@ function parseChannels(m3uContent: string): ProChannel[] {
         }
 
         // Extrai metadados do #EXTINF
-        // Formato: #EXTINF:-1 tvg-id="..." tvg-name="..." tvg-logo="...' group-title="...",Nome do Canal
         const nameMatch = line.match(/,(.+)$/);
         const name = nameMatch ? nameMatch[1].trim() : `Canal ${channelNumber}`;
+
+        // Deduplica pelo nome (case-insensitive)
+        const normalizedName = name.toLowerCase().trim();
+        if (seenNames.has(normalizedName)) continue;
+        seenNames.add(normalizedName);
 
         const logoMatch = line.match(/tvg-logo="([^"]+)"/);
         const logo = logoMatch ? logoMatch[1] : '';
@@ -113,8 +122,22 @@ function parseChannels(m3uContent: string): ProChannel[] {
 async function main() {
     console.log('📺 Atualizando lista PRO de canais...\n');
 
-    const m3u = await fetchM3U(M3U_URL);
-    const channels = parseChannels(m3u);
+    const allChannels: ProChannel[] = [];
+    const seenNames = new Set<string>();
+
+    for (let i = 0; i < M3U_URLS.length; i++) {
+        const url = M3U_URLS[i];
+        try {
+            const m3u = await fetchM3U(url);
+            const channels = parseChannels(m3u, seenNames, allChannels.length + 1);
+            console.log(`   ↳ ${channels.length} canais únicos obtidos desta fonte (${seenNames.size} total acumulado).\n`);
+            allChannels.push(...channels);
+        } catch (err) {
+            console.warn(`⚠️ Falha ao processar URL [${i + 1}]: ${err}`);
+        }
+    }
+
+    const channels = allChannels;
 
     if (channels.length === 0) {
         console.error('❌ Nenhum canal encontrado! Verifique o formato do M3U.');

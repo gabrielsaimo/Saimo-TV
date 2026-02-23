@@ -1,43 +1,43 @@
 {
   "hot-adultos": {
-    "totalParts": 43,
-    "totalItems": 2104
+    "totalParts": 87,
+    "totalItems": 4325
   },
   "sbt": {
     "totalParts": 1,
     "totalItems": 0
   },
   "max": {
-    "totalParts": 11,
-    "totalItems": 516
+    "totalParts": 13,
+    "totalItems": 643
   },
   "infantil": {
     "totalParts": 1,
     "totalItems": 0
   },
   "prime-video": {
-    "totalParts": 12,
-    "totalItems": 568
+    "totalParts": 20,
+    "totalItems": 982
   },
   "disney": {
-    "totalParts": 10,
-    "totalItems": 465
+    "totalParts": 16,
+    "totalItems": 766
   },
   "religiosos": {
     "totalParts": 3,
-    "totalItems": 122
+    "totalItems": 126
   },
   "paramount": {
     "totalParts": 5,
-    "totalItems": 209
+    "totalItems": 215
   },
   "legendados": {
-    "totalParts": 39,
-    "totalItems": 1913
+    "totalParts": 71,
+    "totalItems": 3529
   },
   "documentario": {
-    "totalParts": 17,
-    "totalItems": 827
+    "totalParts": 24,
+    "totalItems": 1200
   },
   "esportes": {
     "totalParts": 1,
@@ -48,84 +48,84 @@
     "totalItems": 269
   },
   "lancamentos": {
-    "totalParts": 9,
-    "totalItems": 434
+    "totalParts": 30,
+    "totalItems": 1469
   },
   "suspense": {
-    "totalParts": 20,
-    "totalItems": 955
+    "totalParts": 24,
+    "totalItems": 1164
   },
   "drama": {
-    "totalParts": 53,
-    "totalItems": 2635
+    "totalParts": 70,
+    "totalItems": 3475
   },
   "romance": {
-    "totalParts": 16,
-    "totalItems": 769
+    "totalParts": 19,
+    "totalItems": 909
   },
   "acao": {
-    "totalParts": 63,
-    "totalItems": 3119
+    "totalParts": 79,
+    "totalItems": 3908
   },
   "guerra": {
-    "totalParts": 4,
-    "totalItems": 174
+    "totalParts": 5,
+    "totalItems": 223
   },
   "fantasia": {
-    "totalParts": 9,
-    "totalItems": 434
+    "totalParts": 10,
+    "totalItems": 471
   },
   "musicais": {
-    "totalParts": 1,
-    "totalItems": 43
+    "totalParts": 2,
+    "totalItems": 61
   },
   "uhd-4k": {
-    "totalParts": 24,
-    "totalItems": 1172
+    "totalParts": 25,
+    "totalItems": 1210
   },
   "terror": {
-    "totalParts": 31,
-    "totalItems": 1550
+    "totalParts": 37,
+    "totalItems": 1826
   },
   "cinema": {
-    "totalParts": 1,
-    "totalItems": 29
+    "totalParts": 2,
+    "totalItems": 99
   },
   "comedia": {
-    "totalParts": 45,
-    "totalItems": 2233
+    "totalParts": 54,
+    "totalItems": 2689
   },
   "ficcao-cientifica": {
-    "totalParts": 8,
-    "totalItems": 391
+    "totalParts": 10,
+    "totalItems": 497
   },
   "brasileiro": {
     "totalParts": 12,
     "totalItems": 560
   },
   "aventura": {
-    "totalParts": 7,
-    "totalItems": 312
+    "totalParts": 9,
+    "totalItems": 449
   },
   "sem-categoria": {
     "totalParts": 1,
     "totalItems": 0
   },
   "faroeste": {
-    "totalParts": 4,
-    "totalItems": 176
+    "totalParts": 5,
+    "totalItems": 222
   },
   "shows": {
     "totalParts": 3,
-    "totalItems": 104
+    "totalItems": 117
   },
   "marvel-dc": {
     "totalParts": 3,
     "totalItems": 114
   },
   "netflix": {
-    "totalParts": 26,
-    "totalItems": 1291
+    "totalParts": 61,
+    "totalItems": 3047
   },
   "crunchyroll": {
     "totalParts": 3,
@@ -140,16 +140,16 @@
     "totalItems": 29
   },
   "reality": {
-    "totalParts": 2,
-    "totalItems": 90
+    "totalParts": 3,
+    "totalItems": 116
   },
   "apple-tv": {
-    "totalParts": 5,
-    "totalItems": 230
+    "totalParts": 16,
+    "totalItems": 751
   },
   "novelas": {
-    "totalParts": 7,
-    "totalItems": 324
+    "totalParts": 9,
+    "totalItems": 443
   },
   "outros": {
     "totalParts": 3,
@@ -160,12 +160,12 @@
     "totalItems": 31
   },
   "animes": {
-    "totalParts": 5,
-    "totalItems": 216
+    "totalParts": 17,
+    "totalItems": 825
   },
   "globoplay": {
-    "totalParts": 8,
-    "totalItems": 355
+    "totalParts": 10,
+    "totalItems": 461
   },
   "hulu": {
     "totalParts": 1,
@@ -176,8 +176,8 @@
     "totalItems": 303
   },
   "doramas": {
-    "totalParts": 5,
-    "totalItems": 236
+    "totalParts": 16,
+    "totalItems": 780
   },
   "brasil-paralelo": {
     "totalParts": 1,
@@ -188,8 +188,8 @@
     "totalItems": 8
   },
   "legendadas": {
-    "totalParts": 16,
-    "totalItems": 781
+    "totalParts": 20,
+    "totalItems": 961
   },
   "outras-produtoras": {
     "totalParts": 11,
@@ -202,5 +202,77 @@
   "reelshort": {
     "totalParts": 3,
     "totalItems": 107
+  },
+  "animacao": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "24-horas-premium": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "canais-libertadoressulamericana": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "radios": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "canais-sportv": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "24-horas-series": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "crime": {
+    "totalParts": 3,
+    "totalItems": 104
+  },
+  "stand-up-comedy": {
+    "totalParts": 1,
+    "totalItems": 15
+  },
+  "star": {
+    "totalParts": 3,
+    "totalItems": 104
+  },
+  "classicos-trapalhoes": {
+    "totalParts": 1,
+    "totalItems": 5
+  },
+  "classicos-mazzaropi": {
+    "totalParts": 1,
+    "totalItems": 32
+  },
+  "fm": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "ritmos": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "sp": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "internacionais": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "canais-usa": {
+    "totalParts": 1,
+    "totalItems": 0
+  },
+  "misterio": {
+    "totalParts": 1,
+    "totalItems": 16
+  },
+  "novelas-turcas": {
+    "totalParts": 1,
+    "totalItems": 16
   }
 }
