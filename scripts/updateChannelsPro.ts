@@ -80,10 +80,9 @@ function parseChannels(m3uContent: string, seenNames: Set<string>, startNumber: 
 
         if (!urlLine) continue;
 
-        // Se a URL for um arquivo de mídia (.mp4, .mkv, etc.) → parar análise
+        // Se a URL for um arquivo de mídia (.mp4, .mkv, etc.) → pular (é filme/série)
         if (isMediaFile(urlLine)) {
-            console.log(`\n🛑 Encontrado arquivo .mp4, parando análise: ${urlLine.substring(0, 80)}`);
-            break;
+            continue;
         }
 
         // Extrai metadados do #EXTINF

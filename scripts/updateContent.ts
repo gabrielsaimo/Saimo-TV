@@ -483,10 +483,8 @@ async function main() {
                 if (m3uUrl) {
                     movie.active = true;
                     usedM3UUrls.add(m3uUrl);
-                    if (movie.url !== m3uUrl) {
-                        movie.url = m3uUrl;
-                        updatedCount++;
-                    }
+                    movie.url = m3uUrl;
+                    updatedCount++;
                 }
 
                 // Para séries, processar episódios
@@ -506,10 +504,8 @@ async function main() {
                             if (epUrl) {
                                 seriesHasM3uUrl = true;
                                 usedM3UUrls.add(epUrl);
-                                if (ep.url !== epUrl) {
-                                    ep.url = epUrl;
-                                    updatedCount++;
-                                }
+                                ep.url = epUrl;
+                                updatedCount++;
                             }
                         });
                     });
