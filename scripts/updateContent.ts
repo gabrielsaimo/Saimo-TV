@@ -4,7 +4,6 @@ import { findMatch, getCleanName } from '../src/utils/m3uMatcher';
 import { normalizeName } from '../src/services/m3uService';
 
 const M3U_URLS = [
-    'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR05.m3u',
     'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR04.m3u',
     // Adicione mais URLs aqui:
     // 'https://exemplo.com/outro.m3u',
@@ -274,7 +273,7 @@ async function fetchM3UContent(): Promise<M3UItem[]> {
         const text = await response.text();
         const items = parseM3UText(text, seenNames);
         console.log(`   ↳ ${items.length} itens únicos obtidos (${seenNames.size} total acumulado).`);
-        allItems.push(...items);
+        for (const item of items) allItems.push(item);
     }
 
     return allItems;
