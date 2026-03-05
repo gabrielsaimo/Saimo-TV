@@ -1,165 +1,133 @@
 /**
  * Serviço de Favoritos
- * 
+ *
  * Gerencia os favoritos do usuário salvos no localStorage.
- * Permite adicionar, remover e listar itens favoritados.
+ * Armazena também os dados slim do item para exibição sem precisar de
+ * um índice local (compatível com a nova abordagem via API Supabase).
  */
 
 import type { EnrichedMovie } from '../types/enrichedMovie';
-import { findById } from './enrichedDataService';
 
-// Chave do localStorage
 const FAVORITES_KEY = 'tv-saimo-favorites';
+const FAVORITES_DATA_KEY = 'tv-saimo-favorites-data';
 
-// Interface para item favorito salvo
 interface FavoriteItem {
   id: string;
-  addedAt: number; // timestamp
+  addedAt: number;
 }
 
-/**
- * Obtém a lista de IDs favoritos do localStorage
- */
 function getFavoriteIds(): FavoriteItem[] {
   try {
     const stored = localStorage.getItem(FAVORITES_KEY);
     if (!stored) return [];
     return JSON.parse(stored);
-  } catch (error) {
-    console.error('Erro ao ler favoritos do localStorage:', error);
+  } catch {
     return [];
   }
 }
 
-/**
- * Salva a lista de favoritos no localStorage
- */
 function saveFavorites(favorites: FavoriteItem[]): void {
   try {
     localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
   } catch (error) {
-    console.error('Erro ao salvar favoritos no localStorage:', error);
+    console.error('Erro ao salvar favoritos:', error);
   }
 }
 
-/**
- * Verifica se um item está nos favoritos
- */
-export function isFavorite(itemId: string): boolean {
-  const favorites = getFavoriteIds();
-  return favorites.some(f => f.id === itemId);
+function getDataStore(): Record<string, EnrichedMovie> {
+  try {
+    const stored = localStorage.getItem(FAVORITES_DATA_KEY);
+    if (!stored) return {};
+    return JSON.parse(stored);
+  } catch {
+    return {};
+  }
 }
 
-/**
- * Adiciona um item aos favoritos
- */
+function saveDataStore(store: Record<string, EnrichedMovie>): void {
+  try {
+    localStorage.setItem(FAVORITES_DATA_KEY, JSON.stringify(store));
+  } catch {
+    // Se exceder quota, ignora silenciosamente
+  }
+}
+
+/** Armazena dados slim de um item (para exibição nos favoritos) */
+export function storeItemData(item: EnrichedMovie): void {
+  const store = getDataStore();
+  // Guarda apenas dados slim (sem episódios completos para economizar espaço)
+  store[item.id] = {
+    id: item.id,
+    name: item.name,
+    type: item.type,
+    category: item.category,
+    isAdult: item.isAdult,
+    tmdb: item.tmdb
+      ? {
+          ...item.tmdb,
+          cast: [],       // sem elenco
+          keywords: [],   // sem keywords
+          companies: [],
+          countries: [],
+          recommendations: [],
+          overview: '',   // sem sinopse (economiza espaço)
+        }
+      : undefined,
+  };
+  saveDataStore(store);
+}
+
+export function isFavorite(itemId: string): boolean {
+  return getFavoriteIds().some(f => f.id === itemId);
+}
+
 export function addToFavorites(itemId: string): void {
   const favorites = getFavoriteIds();
-  
-  // Evita duplicatas
-  if (favorites.some(f => f.id === itemId)) {
-    return;
-  }
-  
-  favorites.unshift({
-    id: itemId,
-    addedAt: Date.now()
-  });
-  
+  if (favorites.some(f => f.id === itemId)) return;
+
+  favorites.unshift({ id: itemId, addedAt: Date.now() });
   saveFavorites(favorites);
-  
-  // Dispara evento para notificar mudanças
-  window.dispatchEvent(new CustomEvent('favorites-changed', { 
-    detail: { action: 'add', itemId } 
-  }));
+
+  window.dispatchEvent(new CustomEvent('favorites-changed', { detail: { action: 'add', itemId } }));
 }
 
-/**
- * Remove um item dos favoritos
- */
 export function removeFromFavorites(itemId: string): void {
-  const favorites = getFavoriteIds();
-  const filtered = favorites.filter(f => f.id !== itemId);
-  
-  saveFavorites(filtered);
-  
-  // Dispara evento para notificar mudanças
-  window.dispatchEvent(new CustomEvent('favorites-changed', { 
-    detail: { action: 'remove', itemId } 
-  }));
+  const favorites = getFavoriteIds().filter(f => f.id !== itemId);
+  saveFavorites(favorites);
+
+  // Remove dados cached também
+  const store = getDataStore();
+  delete store[itemId];
+  saveDataStore(store);
+
+  window.dispatchEvent(new CustomEvent('favorites-changed', { detail: { action: 'remove', itemId } }));
 }
 
-/**
- * Alterna o estado de favorito de um item
- */
-export function toggleFavorite(itemId: string): boolean {
+/** Alterna favorito. Passe `item` para armazenar dados slim para exibição. */
+export function toggleFavorite(itemId: string, item?: EnrichedMovie): boolean {
   if (isFavorite(itemId)) {
     removeFromFavorites(itemId);
     return false;
   } else {
     addToFavorites(itemId);
+    if (item) storeItemData(item);
     return true;
   }
 }
 
-/**
- * Obtém todos os itens favoritos (com dados completos)
- */
+/** Retorna os itens favoritos com dados slim do localStorage */
 export function getFavorites(): EnrichedMovie[] {
-  const favoriteIds = getFavoriteIds();
-  const items: EnrichedMovie[] = [];
-  
-  for (const fav of favoriteIds) {
-    const item = findById(fav.id);
-    if (item) {
-      items.push(item);
-    }
-  }
-  
-  return items;
+  const ids = getFavoriteIds();
+  const store = getDataStore();
+  return ids.map(f => store[f.id]).filter(Boolean);
 }
 
-/**
- * Obtém a quantidade de favoritos
- */
 export function getFavoritesCount(): number {
   return getFavoriteIds().length;
 }
 
-/**
- * Limpa todos os favoritos
- */
 export function clearAllFavorites(): void {
   localStorage.removeItem(FAVORITES_KEY);
-  
-  window.dispatchEvent(new CustomEvent('favorites-changed', { 
-    detail: { action: 'clear' } 
-  }));
-}
-
-/**
- * Exporta favoritos como JSON (para backup)
- */
-export function exportFavorites(): string {
-  const favorites = getFavoriteIds();
-  return JSON.stringify(favorites, null, 2);
-}
-
-/**
- * Importa favoritos de JSON (para restaurar backup)
- */
-export function importFavorites(json: string): boolean {
-  try {
-    const favorites = JSON.parse(json);
-    if (Array.isArray(favorites)) {
-      saveFavorites(favorites);
-      window.dispatchEvent(new CustomEvent('favorites-changed', { 
-        detail: { action: 'import' } 
-      }));
-      return true;
-    }
-    return false;
-  } catch {
-    return false;
-  }
+  localStorage.removeItem(FAVORITES_DATA_KEY);
+  window.dispatchEvent(new CustomEvent('favorites-changed', { detail: { action: 'clear' } }));
 }

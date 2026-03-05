@@ -1,42 +1,27 @@
 /**
  * MovieCatalog V2 - Catálogo de Filmes e Séries
- * 
- * Usa dados enriched pré-carregados do TMDB.
- * Features:
- * - Filtros avançados (gênero, ano, rating, classificação)
- * - Busca por texto, ator, keyword
- * - Modal detalhado com elenco clicável
- * - Recomendações e similares navegáveis
- * - Página de ator com filmografia
+ *
+ * Dados carregados via API Supabase (ver API.md):
+ * - get_home: carousels da tela inicial
+ * - get_catalog: busca e filtros paginados server-side
+ * - get_item: detalhe completo (elenco, episódios, URL)
+ * - get_filmography: filmografia de ator
+ * - get_categories: categorias disponíveis para filtros
  */
 
-import { useState, useEffect, useMemo, useCallback, useRef, memo } from 'react';
-import type { 
-  EnrichedMovie, 
-  EnrichedSeries, 
-  EnrichedCastMember,
-  FilterOptions
-} from '../types/enrichedMovie';
+import { useState, useEffect, useCallback, useRef, memo } from 'react';
+import type { EnrichedMovie, EnrichedSeries, EnrichedCastMember } from '../types/enrichedMovie';
 import {
-  loadEnrichedCategory,
-  initializeEnrichedData,
-  getAvailableGenres,
-  getAvailableYears,
-  getAvailableCertifications,
-  getAvailableStreaming,
-  searchContent,
-  filterContent,
-  filterAllContent,
-  getActorFilmography,
-  searchActors,
-  getAvailableRecommendations,
-  getSimilarByGenre,
-  getRecentReleases,
-  STREAMING_CATEGORIES,
-  GENRE_CATEGORIES,
-  ADULT_CATEGORIES
-} from '../services/enrichedDataService';
-import { getTrendingToday, getTrendingWeek } from '../services/trendingService';
+  getHome,
+  getCatalog,
+  getItem,
+  getFilmography,
+  getCategoriesCached,
+  type HomeCategory,
+  type CatalogOrderBy,
+  type ApiCategories,
+} from '../services/supabaseService';
+import { getTrendingToday } from '../services/trendingService';
 import { isFavorite, toggleFavorite, getFavorites } from '../services/favoritesService';
 import './MovieCatalogV2.css';
 
@@ -50,24 +35,25 @@ interface MovieCatalogV2Props {
   isAdultUnlocked?: boolean;
 }
 
-interface ModalState {
-  type: 'movie' | 'series' | 'actor' | null;
-  data: EnrichedMovie | EnrichedSeries | EnrichedCastMember | null;
+interface CatalogFilters {
+  type: 'all' | 'movie' | 'series';
+  category: string | null;
+  categoryLabel: string | null;
+  sortBy: CatalogOrderBy;
 }
 
 // ============================================================
 // COMPONENTES AUXILIARES
 // ============================================================
 
-// Lazy Image com fallback
-const LazyImage = memo(function LazyImage({ 
-  src, 
-  alt, 
+const LazyImage = memo(function LazyImage({
+  src,
+  alt,
   className = '',
-  fallback
-}: { 
-  src?: string | null; 
-  alt: string; 
+  fallback,
+}: {
+  src?: string | null;
+  alt: string;
   className?: string;
   fallback?: string;
 }) {
@@ -84,13 +70,9 @@ const LazyImage = memo(function LazyImage({
           observer.disconnect();
         }
       },
-      { rootMargin: '200px' }
+      { rootMargin: '200px' },
     );
-
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
-    }
-
+    if (imgRef.current) observer.observe(imgRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -108,7 +90,7 @@ const LazyImage = memo(function LazyImage({
     <div className={`lazy-image ${className}`} ref={imgRef}>
       {!loaded && <div className="image-skeleton" />}
       {isVisible && (
-        <img 
+        <img
           src={src}
           alt={alt}
           onLoad={() => setLoaded(true)}
@@ -120,33 +102,23 @@ const LazyImage = memo(function LazyImage({
   );
 });
 
-// Badge de Rating
 const RatingBadge = memo(function RatingBadge({ rating }: { rating: number }) {
   if (!rating || rating <= 0) return null;
-  
   const level = rating >= 7.5 ? 'high' : rating >= 6 ? 'medium' : 'low';
-  
   return (
     <div className={`rating-badge ${level}`}>
       <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
       </svg>
       <span>{rating.toFixed(1)}</span>
     </div>
   );
 });
 
-// Badge de Certificação
 const CertificationBadge = memo(function CertificationBadge({ cert }: { cert: string | null | undefined }) {
   if (!cert) return null;
-  
   const certClass = `cert-${cert.replace('+', '').toLowerCase()}`;
-  
-  return (
-    <div className={`certification-badge ${certClass}`}>
-      {cert}
-    </div>
-  );
+  return <div className={`certification-badge ${certClass}`}>{cert}</div>;
 });
 
 // ============================================================
@@ -156,22 +128,20 @@ const CertificationBadge = memo(function CertificationBadge({ cert }: { cert: st
 const ContentCard = memo(function ContentCard({
   item,
   onSelect,
-  size = 'normal'
+  size = 'normal',
 }: {
   item: EnrichedMovie;
   onSelect: (item: EnrichedMovie) => void;
   size?: 'normal' | 'large' | 'small';
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  
   const isSeries = item.type === 'series';
   const tmdb = item.tmdb;
-  
   const seasonCount = isSeries && 'totalSeasons' in item ? (item as EnrichedSeries).totalSeasons : 0;
   const episodeCount = isSeries && 'totalEpisodes' in item ? (item as EnrichedSeries).totalEpisodes : 0;
 
   return (
-    <div 
+    <div
       className={`content-card ${size} ${isHovered ? 'hovered' : ''}`}
       onClick={() => onSelect(item)}
       onMouseEnter={() => setIsHovered(true)}
@@ -179,55 +149,37 @@ const ContentCard = memo(function ContentCard({
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onSelect(item);
-        }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(item); }
       }}
     >
       <div className="card-poster">
-        <LazyImage 
-          src={tmdb?.poster} 
-          alt={tmdb?.title || item.name}
-          fallback={item.name.substring(0, 2)}
-        />
-        
+        <LazyImage src={tmdb?.poster} alt={tmdb?.title || item.name} fallback={item.name.substring(0, 2)} />
         {tmdb?.rating && <RatingBadge rating={tmdb.rating} />}
-        
         <CertificationBadge cert={tmdb?.certification} />
-        
-        {/* Type indicator */}
         <div className={`type-indicator ${isSeries ? 'series' : 'movie'}`}>
           {isSeries ? (
             <>
               <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-                <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/>
+                <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z" />
               </svg>
               {seasonCount && <span>{seasonCount}T</span>}
             </>
           ) : (
             <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-              <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+              <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z" />
             </svg>
           )}
         </div>
-        
-        {/* Hover overlay */}
         <div className="card-overlay">
           <div className="overlay-info">
             {tmdb?.year && <span className="year">{tmdb.year}</span>}
-            {isSeries && episodeCount && (
-              <span className="episodes">{episodeCount} eps</span>
-            )}
+            {isSeries && episodeCount && <span className="episodes">{episodeCount} eps</span>}
           </div>
           <button className="play-btn">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
           </button>
         </div>
       </div>
-      
       <div className="card-info">
         <h4 className="card-title">{tmdb?.title || item.name}</h4>
         {tmdb?.genres && tmdb.genres.length > 0 && (
@@ -244,333 +196,154 @@ const ContentCard = memo(function ContentCard({
 
 const ActorCard = memo(function ActorCard({
   actor,
-  onSelect
+  onSelect,
 }: {
   actor: EnrichedCastMember;
   onSelect: (actor: EnrichedCastMember) => void;
 }) {
   return (
-    <div 
+    <div
       className="actor-card"
       onClick={() => onSelect(actor)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onSelect(actor);
-        }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(actor); }
       }}
     >
       <div className="actor-photo">
-        <LazyImage 
-          src={actor.photo} 
-          alt={actor.name}
-          fallback={actor.name.substring(0, 2)}
-        />
+        <LazyImage src={actor.photo} alt={actor.name} fallback={actor.name.substring(0, 2)} />
       </div>
       <div className="actor-info">
         <h5 className="actor-name">{actor.name}</h5>
-        {actor.character && (
-          <p className="actor-character">{actor.character}</p>
-        )}
+        {actor.character && <p className="actor-character">{actor.character}</p>}
       </div>
     </div>
   );
 });
 
 // ============================================================
-// FILTROS AVANÇADOS
+// FILTROS
 // ============================================================
 
-const AdvancedFilters = memo(function AdvancedFilters({
+const CatalogFiltersBar = memo(function CatalogFiltersBar({
   filters,
+  categories,
   onChange,
-  availableGenres,
-  availableYears,
-  availableCertifications,
-  availableStreaming,
-  onClear
+  onClear,
+  isAdultUnlocked,
 }: {
-  filters: Partial<FilterOptions>;
-  onChange: (filters: Partial<FilterOptions>) => void;
-  availableGenres: string[];
-  availableYears: string[];
-  availableCertifications: string[];
-  availableStreaming: string[];
+  filters: CatalogFilters;
+  categories: ApiCategories | null;
+  onChange: (f: CatalogFilters) => void;
   onClear: () => void;
+  isAdultUnlocked: boolean;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  
-  const hasActiveFilters = Boolean(
-    filters.genres?.length || 
-    filters.years?.length || 
-    filters.certifications?.length ||
-    filters.streaming?.length ||
-    filters.ratings?.length ||
+
+  const hasActiveFilters =
+    filters.category !== null ||
     filters.type !== 'all' ||
-    filters.sortBy !== 'popularity'
-  );
+    filters.sortBy !== 'rating';
 
-  const toggleGenre = (genre: string) => {
-    const current = filters.genres || [];
-    const updated = current.includes(genre)
-      ? current.filter(g => g !== genre)
-      : [...current, genre];
-    onChange({ ...filters, genres: updated });
-  };
-
-  const toggleYear = (year: string) => {
-    const current = filters.years || [];
-    const updated = current.includes(year)
-      ? current.filter(y => y !== year)
-      : [...current, year];
-    onChange({ ...filters, years: updated });
-  };
-
-  const toggleCertification = (cert: string) => {
-    const current = filters.certifications || [];
-    const updated = current.includes(cert)
-      ? current.filter(c => c !== cert)
-      : [...current, cert];
-    onChange({ ...filters, certifications: updated });
-  };
-
-  const toggleStreaming = (streaming: string) => {
-    const current = filters.streaming || [];
-    const updated = current.includes(streaming)
-      ? current.filter(s => s !== streaming)
-      : [...current, streaming];
-    onChange({ ...filters, streaming: updated });
-  };
-
-  // Função para obter o ícone do streaming (usando nomes normalizados)
-  const getStreamingIcon = (name: string): string => {
-    const nameLower = name.toLowerCase();
-    if (nameLower === 'netflix') return '🔴';
-    if (nameLower === 'amazon prime video') return '📦';
-    if (nameLower === 'disney+') return '🏰';
-    if (nameLower === 'max') return '💜';
-    if (nameLower === 'globoplay') return '🟢';
-    if (nameLower === 'apple tv+') return '🍎';
-    if (nameLower === 'paramount+') return '⛰️';
-    if (nameLower === 'star+') return '⭐';
-    if (nameLower === 'crunchyroll') return '🍥';
-    if (nameLower === 'discovery+') return '🌍';
-    if (nameLower === 'telecine') return '🎬';
-    if (nameLower === 'claro video') return '📺';
-    if (nameLower === 'looke') return '👁️';
-    if (nameLower === 'mubi') return '🎭';
-    if (nameLower === 'mgm+') return '🦁';
-    if (nameLower === 'lionsgate+') return '🦁';
-    if (nameLower === 'universal+') return '🌐';
-    if (nameLower === 'sony') return '📀';
-    if (nameLower === 'oldflix') return '📽️';
-    if (nameLower === 'filmbox+') return '📼';
-    if (nameLower === 'univer video') return '⛪';
-    if (nameLower === 'adult swim') return '🌊';
-    return '📡';
-  };
+  // Categorias disponíveis de acordo com o tipo selecionado
+  const availableCategories = categories
+    ? filters.type === 'series'
+      ? categories.series
+      : filters.type === 'movie'
+        ? [...categories.movies].filter(c => isAdultUnlocked || c.id !== 'hot-adultos')
+        : [
+            ...categories.movies.filter(c => isAdultUnlocked || c.id !== 'hot-adultos'),
+            ...categories.series,
+          ]
+    : [];
 
   return (
     <div className={`advanced-filters ${isExpanded ? 'expanded' : ''}`}>
       <div className="filters-header">
-        <button 
+        <button
           className={`filters-toggle ${hasActiveFilters ? 'has-filters' : ''}`}
           onClick={() => setIsExpanded(!isExpanded)}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
+            <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
           </svg>
           <span>Filtros</span>
-          {hasActiveFilters && <span className="filter-count">{
-            (filters.genres?.length || 0) + 
-            (filters.years?.length || 0) + 
-            (filters.certifications?.length || 0) +
-            (filters.streaming?.length || 0) +
-            (filters.ratings?.length || 0)
-          }</span>}
+          {hasActiveFilters && (
+            <span className="filter-count">
+              {(filters.category ? 1 : 0) + (filters.type !== 'all' ? 1 : 0) + (filters.sortBy !== 'rating' ? 1 : 0)}
+            </span>
+          )}
           <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="M6 9l6 6 6-6" />
           </svg>
         </button>
-        
+
         {hasActiveFilters && (
           <button className="clear-filters" onClick={onClear}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 6L6 18M6 6l12 12"/>
+              <path d="M18 6L6 18M6 6l12 12" />
             </svg>
             Limpar
           </button>
         )}
       </div>
-      
+
       {isExpanded && (
         <div className="filters-content">
           {/* Tipo */}
           <div className="filter-group">
             <h4>Tipo</h4>
             <div className="filter-options type-options">
-              {(['all', 'movie', 'series'] as const).map(type => (
+              {(['all', 'movie', 'series'] as const).map(t => (
                 <button
-                  key={type}
-                  className={`filter-chip ${filters.type === type ? 'active' : ''}`}
-                  onClick={() => onChange({ ...filters, type })}
+                  key={t}
+                  className={`filter-chip ${filters.type === t ? 'active' : ''}`}
+                  onClick={() => onChange({ ...filters, type: t, category: null, categoryLabel: null })}
                 >
-                  {type === 'all' ? 'Todos' : type === 'movie' ? 'Filmes' : 'Séries'}
+                  {t === 'all' ? 'Todos' : t === 'movie' ? 'Filmes' : 'Séries'}
                 </button>
               ))}
             </div>
           </div>
-          
-          {/* Gêneros */}
-          <div className="filter-group">
-            <h4>Gêneros</h4>
-            <div className="filter-options genre-options">
-              {availableGenres.map(genre => (
-                <button
-                  key={genre}
-                  className={`filter-chip ${filters.genres?.includes(genre) ? 'active' : ''}`}
-                  onClick={() => toggleGenre(genre)}
-                >
-                  {genre}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Anos */}
-          <div className="filter-group">
-            <h4>Ano</h4>
-            <div className="filter-options year-options">
-              {availableYears.slice(0, 20).map(year => (
-                <button
-                  key={year}
-                  className={`filter-chip ${filters.years?.includes(year) ? 'active' : ''}`}
-                  onClick={() => toggleYear(year)}
-                >
-                  {year}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Classificação */}
-          <div className="filter-group">
-            <h4>Classificação Indicativa</h4>
-            <div className="filter-options cert-options">
-              {availableCertifications.map(cert => (
-                <button
-                  key={cert}
-                  className={`filter-chip cert-chip cert-${cert.replace('+', '').toLowerCase()} ${
-                    filters.certifications?.includes(cert) ? 'active' : ''
-                  }`}
-                  onClick={() => toggleCertification(cert)}
-                >
-                  {cert}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Streaming/Plataformas */}
-          {availableStreaming.length > 0 && (
+
+          {/* Categoria */}
+          {availableCategories.length > 0 && (
             <div className="filter-group">
-              <h4>Onde Assistir</h4>
-              <div className="filter-options streaming-options">
-                {availableStreaming.map(streaming => (
+              <h4>Categoria</h4>
+              <div className="filter-options genre-options">
+                {availableCategories.map(cat => (
                   <button
-                    key={streaming}
-                    className={`filter-chip streaming-chip ${
-                      filters.streaming?.includes(streaming) ? 'active' : ''
-                    }`}
-                    onClick={() => toggleStreaming(streaming)}
-                    title={streaming}
+                    key={cat.id}
+                    className={`filter-chip ${filters.category === cat.id ? 'active' : ''}`}
+                    onClick={() =>
+                      onChange({
+                        ...filters,
+                        category: filters.category === cat.id ? null : cat.id,
+                        categoryLabel: filters.category === cat.id ? null : cat.label,
+                      })
+                    }
                   >
-                    <span className="streaming-icon">{getStreamingIcon(streaming)}</span>
-                    <span className="streaming-name">{streaming}</span>
+                    {cat.label}
+                    <span style={{ fontSize: '10px', opacity: 0.6, marginLeft: '4px' }}>({cat.count})</span>
                   </button>
                 ))}
               </div>
             </div>
           )}
-          
-          {/* Filtro por Nota */}
-          <div className="filter-group">
-            <h4>Avaliação</h4>
-            <div className="filter-options rating-filter-options">
-              <button
-                className={`filter-chip rating-chip rating-excellent ${filters.ratings?.includes('9-10') ? 'active' : ''}`}
-                onClick={() => {
-                  const current = filters.ratings || [];
-                  const updated = current.includes('9-10')
-                    ? current.filter(r => r !== '9-10')
-                    : [...current, '9-10'];
-                  onChange({ ...filters, ratings: updated });
-                }}
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
-                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-                9+
-              </button>
-              <button
-                className={`filter-chip rating-chip rating-great ${filters.ratings?.includes('7-8') ? 'active' : ''}`}
-                onClick={() => {
-                  const current = filters.ratings || [];
-                  const updated = current.includes('7-8')
-                    ? current.filter(r => r !== '7-8')
-                    : [...current, '7-8'];
-                  onChange({ ...filters, ratings: updated });
-                }}
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
-                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-                7-8
-              </button>
-              <button
-                className={`filter-chip rating-chip rating-good ${filters.ratings?.includes('5-6') ? 'active' : ''}`}
-                onClick={() => {
-                  const current = filters.ratings || [];
-                  const updated = current.includes('5-6')
-                    ? current.filter(r => r !== '5-6')
-                    : [...current, '5-6'];
-                  onChange({ ...filters, ratings: updated });
-                }}
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
-                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-                5-6
-              </button>
-            </div>
-          </div>
-          
+
           {/* Ordenação */}
           <div className="filter-group">
             <h4>Ordenar por</h4>
             <div className="filter-options sort-options">
-              <select 
-                value={filters.sortBy || 'popularity'}
-                onChange={(e) => onChange({ ...filters, sortBy: e.target.value as FilterOptions['sortBy'] })}
+              <select
+                value={filters.sortBy}
+                onChange={(e) => onChange({ ...filters, sortBy: e.target.value as CatalogOrderBy })}
               >
-                <option value="popularity">Popularidade</option>
                 <option value="rating">Avaliação</option>
-                <option value="year">Ano</option>
-                <option value="name">Nome</option>
+                <option value="new">Mais Recentes</option>
+                <option value="name">Nome (A-Z)</option>
               </select>
-              <button
-                className={`sort-order ${filters.sortOrder === 'asc' ? 'asc' : 'desc'}`}
-                onClick={() => onChange({ 
-                  ...filters, 
-                  sortOrder: filters.sortOrder === 'asc' ? 'desc' : 'asc' 
-                })}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 5v14M19 12l-7 7-7-7"/>
-                </svg>
-              </button>
             </div>
           </div>
         </div>
@@ -586,88 +359,34 @@ const AdvancedFilters = memo(function AdvancedFilters({
 const SearchBar = memo(function SearchBar({
   value,
   onChange,
-  onActorSelect,
-  placeholder = "Buscar filmes, séries, atores..."
+  placeholder = 'Buscar filmes, séries...',
 }: {
   value: string;
   onChange: (value: string) => void;
-  onActorSelect?: (actor: EnrichedCastMember) => void;
   placeholder?: string;
 }) {
   const [isFocused, setIsFocused] = useState(false);
-  const [actorSuggestions, setActorSuggestions] = useState<EnrichedCastMember[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const debounceRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (debounceRef.current !== null) {
-      clearTimeout(debounceRef.current);
-    }
-    
-    if (value.length >= 2) {
-      debounceRef.current = window.setTimeout(() => {
-        const actors = searchActors(value);
-        setActorSuggestions(actors.slice(0, 5));
-      }, 300);
-    } else {
-      setActorSuggestions([]);
-    }
-    
-    return () => {
-      if (debounceRef.current !== null) {
-        clearTimeout(debounceRef.current);
-      }
-    };
-  }, [value]);
-
-  const handleActorClick = (actor: EnrichedCastMember) => {
-    setActorSuggestions([]);
-    onChange('');
-    onActorSelect?.(actor);
-  };
 
   return (
     <div className={`search-bar ${isFocused ? 'focused' : ''}`}>
       <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="11" cy="11" r="8"/>
-        <path d="M21 21l-4.35-4.35"/>
+        <circle cx="11" cy="11" r="8" />
+        <path d="M21 21l-4.35-4.35" />
       </svg>
-      
       <input
-        ref={inputRef}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+        onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
       />
-      
       {value && (
         <button className="clear-search" onClick={() => onChange('')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6L6 18M6 6l12 12"/>
+            <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         </button>
-      )}
-      
-      {/* Sugestões de atores */}
-      {actorSuggestions.length > 0 && isFocused && (
-        <div className="actor-suggestions">
-          <p className="suggestions-title">Atores encontrados:</p>
-          {actorSuggestions.map(actor => (
-            <button
-              key={actor.id}
-              className="actor-suggestion"
-              onMouseDown={() => handleActorClick(actor)}
-            >
-              <div className="suggestion-photo">
-                <LazyImage src={actor.photo} alt={actor.name} />
-              </div>
-              <span>{actor.name}</span>
-            </button>
-          ))}
-        </div>
       )}
     </div>
   );
@@ -682,7 +401,7 @@ const CategoryCarousel = memo(function CategoryCarousel({
   items,
   onSelect,
   onSeeAll,
-  loading = false
+  loading = false,
 }: {
   title: string;
   items: EnrichedMovie[];
@@ -713,10 +432,9 @@ const CategoryCarousel = memo(function CategoryCarousel({
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
-      const scrollAmount = carouselRef.current.clientWidth * 0.8;
       carouselRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
+        left: direction === 'left' ? -carouselRef.current.clientWidth * 0.8 : carouselRef.current.clientWidth * 0.8,
+        behavior: 'smooth',
       });
     }
   };
@@ -724,14 +442,10 @@ const CategoryCarousel = memo(function CategoryCarousel({
   if (loading) {
     return (
       <section className="category-carousel-section">
-        <div className="carousel-header">
-          <h3>{title}</h3>
-        </div>
+        <div className="carousel-header"><h3>{title}</h3></div>
         <div className="carousel-skeleton">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="skeleton-card">
-              <div className="skeleton-shimmer" />
-            </div>
+            <div key={i} className="skeleton-card"><div className="skeleton-shimmer" /></div>
           ))}
         </div>
       </section>
@@ -748,35 +462,28 @@ const CategoryCarousel = memo(function CategoryCarousel({
           <button className="see-all-btn" onClick={onSeeAll}>
             Ver todos
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18l6-6-6-6"/>
+              <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
         )}
       </div>
-      
       <div className="carousel-wrapper">
         {canScrollLeft && (
           <button className="carousel-nav prev" onClick={() => scroll('left')}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6"/>
+              <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
         )}
-        
         <div className="carousel-track" ref={carouselRef}>
           {items.map(item => (
-            <ContentCard
-              key={item.id}
-              item={item}
-              onSelect={onSelect}
-            />
+            <ContentCard key={item.id} item={item} onSelect={onSelect} />
           ))}
         </div>
-        
         {canScrollRight && (
           <button className="carousel-nav next" onClick={() => scroll('right')}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18l6-6-6-6"/>
+              <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
         )}
@@ -791,7 +498,7 @@ const CategoryCarousel = memo(function CategoryCarousel({
 
 const HeroBanner = memo(function HeroBanner({
   items,
-  onSelect
+  onSelect,
 }: {
   items: EnrichedMovie[];
   onSelect: (item: EnrichedMovie) => void;
@@ -801,11 +508,9 @@ const HeroBanner = memo(function HeroBanner({
 
   useEffect(() => {
     if (items.length <= 1 || isPaused) return;
-    
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev + 1) % items.length);
     }, 8000);
-    
     return () => clearInterval(interval);
   }, [items.length, isPaused]);
 
@@ -815,87 +520,50 @@ const HeroBanner = memo(function HeroBanner({
   const tmdb = current.tmdb;
 
   return (
-    <div 
+    <div
       className="hero-banner"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="hero-backdrop">
         {tmdb?.backdrop ? (
-          <img 
-            src={tmdb.backdropHD || tmdb.backdrop} 
-            alt={tmdb.title}
-            className="hero-image"
-          />
+          <img src={tmdb.backdropHD || tmdb.backdrop} alt={tmdb.title} className="hero-image" />
         ) : tmdb?.poster ? (
-          <img 
-            src={tmdb.posterHD || tmdb.poster} 
-            alt={tmdb.title}
-            className="hero-image poster-fallback"
-          />
+          <img src={tmdb.posterHD || tmdb.poster} alt={tmdb.title} className="hero-image poster-fallback" />
         ) : null}
         <div className="hero-gradient" />
       </div>
-      
       <div className="hero-content">
         <div className="hero-badge">
           {current.type === 'series' ? '📺 Série em Destaque' : '🎬 Filme em Destaque'}
         </div>
-        
         <h1 className="hero-title">{tmdb?.title || current.name}</h1>
-        
         <div className="hero-meta">
           {tmdb?.rating && tmdb.rating > 0 && (
             <span className={`hero-rating ${tmdb.rating >= 7 ? 'high' : tmdb.rating >= 5 ? 'medium' : 'low'}`}>
               <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
               </svg>
               {tmdb.rating.toFixed(1)}
             </span>
           )}
-          
           <CertificationBadge cert={tmdb?.certification} />
-          
           {tmdb?.year && <span className="hero-year">{tmdb.year}</span>}
-          
-          {tmdb?.runtime && (
-            <span className="hero-runtime">
-              {Math.floor(tmdb.runtime / 60)}h {tmdb.runtime % 60}min
-            </span>
-          )}
-          
-          {tmdb?.genres && (
-            <span className="hero-genres">{tmdb.genres.slice(0, 6).join(' • ')}</span>
-          )}
         </div>
-        
-        {tmdb?.overview && (
-          <p className="hero-overview">
-            {tmdb.overview.length > 250 
-              ? tmdb.overview.substring(0, 250) + '...'
-              : tmdb.overview
-            }
-          </p>
-        )}
-        
         <div className="hero-actions">
           <button className="hero-play-btn" onClick={() => onSelect(current)}>
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
             Assistir
           </button>
           <button className="hero-info-btn" onClick={() => onSelect(current)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 16v-4M12 8h.01"/>
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4M12 8h.01" />
             </svg>
             Mais Info
           </button>
         </div>
       </div>
-      
-      {/* Indicadores */}
       {items.length > 1 && (
         <div className="hero-indicators">
           {items.map((_, idx) => (
@@ -907,24 +575,22 @@ const HeroBanner = memo(function HeroBanner({
           ))}
         </div>
       )}
-      
-      {/* Navegação */}
       {items.length > 1 && (
         <>
-          <button 
+          <button
             className="hero-nav prev"
-            onClick={() => setCurrentIndex(prev => prev === 0 ? items.length - 1 : prev - 1)}
+            onClick={() => setCurrentIndex(prev => (prev === 0 ? items.length - 1 : prev - 1))}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6"/>
+              <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
-          <button 
+          <button
             className="hero-nav next"
             onClick={() => setCurrentIndex(prev => (prev + 1) % items.length)}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18l6-6-6-6"/>
+              <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
         </>
@@ -938,55 +604,47 @@ const HeroBanner = memo(function HeroBanner({
 // ============================================================
 
 const MovieDetailsModal = memo(function MovieDetailsModal({
-  item,
+  slim,
+  full,
+  loading,
   onClose,
   onPlay,
   onActorClick,
-  onRecommendationClick,
-  onFavoriteChange
+  onFavoriteChange,
 }: {
-  item: EnrichedMovie;
+  slim: EnrichedMovie;
+  full: EnrichedMovie | null;
+  loading: boolean;
   onClose: () => void;
   onPlay: (item: EnrichedMovie, episodeUrl?: string) => void;
   onActorClick: (actor: EnrichedCastMember) => void;
-  onRecommendationClick: (item: EnrichedMovie) => void;
   onFavoriteChange?: () => void;
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [selectedSeason, setSelectedSeason] = useState<string | null>(null);
-  const [isFav, setIsFav] = useState(() => isFavorite(item.id));
-  
-  const tmdb = item.tmdb;
-  const isSeries = item.type === 'series' && 'episodes' in item;
-  const seriesItem = isSeries ? item as EnrichedSeries : null;
-  
-  // Obter recomendações disponíveis
-  const recommendations = useMemo(() => getAvailableRecommendations(item), [item]);
-  const similar = useMemo(() => getSimilarByGenre(item, 6), [item]);
+  const [isFav, setIsFav] = useState(() => isFavorite(slim.id));
 
-  // Ordena temporadas
-  const seasons = useMemo(() => {
-    if (!seriesItem?.episodes) return [];
-    return Object.keys(seriesItem.episodes).sort((a, b) => parseInt(a) - parseInt(b));
-  }, [seriesItem]);
+  // Usa full se disponível, caso contrário usa slim
+  const item = full ?? slim;
+  const tmdb = item.tmdb;
+  const isSeries = item.type === 'series' && 'episodes' in item && Object.keys((item as EnrichedSeries).episodes).length > 0;
+  const seriesItem = isSeries ? (item as EnrichedSeries) : null;
+
+  const seasons = seriesItem
+    ? Object.keys(seriesItem.episodes).sort((a, b) => parseInt(a) - parseInt(b))
+    : [];
 
   useEffect(() => {
-    if (seasons.length > 0 && !selectedSeason) {
-      setSelectedSeason(seasons[0]);
-    }
+    if (seasons.length > 0 && !selectedSeason) setSelectedSeason(seasons[0]);
   }, [seasons, selectedSeason]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => { document.body.style.overflow = ''; };
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
@@ -996,18 +654,13 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
   };
 
   const formatRuntime = (minutes: number) => {
-    if (!minutes) return '';
     const h = Math.floor(minutes / 60);
     const m = minutes % 60;
     return h > 0 ? `${h}h ${m}min` : `${m}min`;
   };
 
-  const playEpisode = (episode: { url: string }) => {
-    onPlay(item, episode.url);
-  };
-
   const handleToggleFavorite = () => {
-    const newState = toggleFavorite(item.id);
+    const newState = toggleFavorite(slim.id, full ?? slim);
     setIsFav(newState);
     onFavoriteChange?.();
   };
@@ -1015,91 +668,77 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
   return (
     <div className="movie-modal-backdrop" ref={modalRef} onClick={handleBackdropClick}>
       <div className="movie-modal">
-        {/* Backdrop */}
         {tmdb?.backdrop && (
           <div className="modal-backdrop">
             <img src={tmdb.backdropHD || tmdb.backdrop} alt="" />
             <div className="modal-backdrop-gradient" />
           </div>
         )}
-        
-        {/* Modal top buttons */}
+
         <div className="modal-top-buttons">
-          {/* Favorite button */}
-          <button 
-            className={`modal-favorite ${isFav ? 'active' : ''}`} 
+          <button
+            className={`modal-favorite ${isFav ? 'active' : ''}`}
             onClick={handleToggleFavorite}
             title={isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
           >
             <svg viewBox="0 0 24 24" fill={isFav ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
             </svg>
           </button>
-          
-          {/* Close button */}
           <button className="modal-close" onClick={onClose}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 6L6 18M6 6l12 12"/>
+              <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
         </div>
-        
+
         <div className="modal-content">
-          {/* Header com poster e info */}
           <div className="modal-header">
             <div className="modal-poster">
-              <LazyImage 
-                src={tmdb?.posterHD || tmdb?.poster} 
-                alt={tmdb?.title || item.name}
-              />
-              {tmdb?.certification && (
-                <CertificationBadge cert={tmdb.certification} />
-              )}
+              <LazyImage src={tmdb?.posterHD || tmdb?.poster} alt={tmdb?.title || item.name} />
+              {tmdb?.certification && <CertificationBadge cert={tmdb.certification} />}
             </div>
-            
+
             <div className="modal-info">
               <h1 className="modal-title">{tmdb?.title || item.name}</h1>
-              
+
               {tmdb?.originalTitle && tmdb.originalTitle !== tmdb.title && (
                 <p className="modal-original-title">{tmdb.originalTitle}</p>
               )}
-              
-              {tmdb?.tagline && (
-                <p className="modal-tagline">"{tmdb.tagline}"</p>
-              )}
-              
+
               <div className="modal-meta">
                 {tmdb?.rating && tmdb.rating > 0 && (
                   <div className={`rating-large ${tmdb.rating >= 7 ? 'high' : tmdb.rating >= 5 ? 'medium' : 'low'}`}>
                     <svg viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                     </svg>
                     <span className="rating-value">{tmdb.rating.toFixed(1)}</span>
-                    <span className="rating-votes">({tmdb.voteCount?.toLocaleString('pt-BR')} votos)</span>
+                    {tmdb.voteCount > 0 && (
+                      <span className="rating-votes">({tmdb.voteCount.toLocaleString('pt-BR')} votos)</span>
+                    )}
                   </div>
                 )}
-                
                 {tmdb?.year && <span className="meta-item">{tmdb.year}</span>}
-                
-                {tmdb?.runtime && (
-                  <span className="meta-item">{formatRuntime(tmdb.runtime)}</span>
-                )}
-                
+                {tmdb?.runtime && <span className="meta-item">{formatRuntime(tmdb.runtime)}</span>}
                 {seriesItem && (
                   <span className="meta-item">
                     {seriesItem.totalSeasons} Temporada{(seriesItem.totalSeasons || 0) > 1 ? 's' : ''}
                   </span>
                 )}
               </div>
-              
+
               {/* Sinopse */}
-              {tmdb?.overview && (
+              {loading ? (
+                <div className="modal-overview">
+                  <div className="skeleton-text" style={{ height: '80px', borderRadius: '8px' }} />
+                </div>
+              ) : tmdb?.overview ? (
                 <div className="modal-overview">
                   <h3>Sinopse</h3>
                   <p>{tmdb.overview}</p>
                 </div>
-              )}
-              
+              ) : null}
+
               {/* Gêneros */}
               {tmdb?.genres && tmdb.genres.length > 0 && (
                 <div className="modal-genres">
@@ -1108,26 +747,23 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
                   ))}
                 </div>
               )}
-              
-              {/* Botão de play para filmes */}
-              {!isSeries && (
+
+              {/* Botão play para filmes */}
+              {!item.type.includes('series') && (
                 <div className="modal-actions">
                   <button className="play-btn-large" onClick={() => onPlay(item)}>
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
                     Assistir Agora
                   </button>
                 </div>
               )}
             </div>
           </div>
-          
-          {/* Episódios (para séries) */}
+
+          {/* Episódios */}
           {isSeries && seriesItem && seasons.length > 0 && (
             <div className="modal-episodes">
               <h3>Episódios</h3>
-              
               <div className="season-tabs">
                 {seasons.map(season => (
                   <button
@@ -1136,31 +772,24 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
                     onClick={() => setSelectedSeason(season)}
                   >
                     Temporada {season}
-                    <span className="episode-count">
-                      {seriesItem.episodes[season]?.length || 0} eps
-                    </span>
+                    <span className="episode-count">{seriesItem.episodes[season]?.length || 0} eps</span>
                   </button>
                 ))}
               </div>
-              
               {selectedSeason && seriesItem.episodes[selectedSeason] && (
                 <div className="episodes-list">
                   {seriesItem.episodes[selectedSeason].map((episode, idx) => (
                     <button
                       key={episode.id || idx}
                       className="episode-item"
-                      onClick={() => playEpisode(episode)}
+                      onClick={() => onPlay(item, episode.url)}
                     >
-                      <div className="episode-number">
-                        <span>{episode.episode || idx + 1}</span>
-                      </div>
+                      <div className="episode-number"><span>{episode.episode || idx + 1}</span></div>
                       <div className="episode-info">
-                        <span className="episode-title">Episódio {episode.episode || idx + 1}</span>
+                        <span className="episode-title">{episode.name || `Episódio ${episode.episode || idx + 1}`}</span>
                       </div>
                       <div className="episode-play">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M8 5v14l11-7z"/>
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
                       </div>
                     </button>
                   ))}
@@ -1168,76 +797,26 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
               )}
             </div>
           )}
-          
+
+          {/* Loading spinner quando carregando detalhes */}
+          {loading && (
+            <div className="modal-loading">
+              <div className="loading-spinner" />
+              <p>Carregando detalhes...</p>
+            </div>
+          )}
+
           {/* Elenco */}
-          {tmdb?.cast && tmdb.cast.length > 0 && (
+          {!loading && tmdb?.cast && tmdb.cast.length > 0 && (
             <div className="modal-cast">
               <h3>Elenco</h3>
               <div className="cast-grid">
                 {tmdb.cast.slice(0, 30).map(actor => (
-                  <ActorCard
-                    key={actor.id}
-                    actor={actor}
-                    onSelect={onActorClick}
-                  />
+                  <ActorCard key={actor.id} actor={actor} onSelect={onActorClick} />
                 ))}
               </div>
             </div>
           )}
-          
-          {/* Recomendações */}
-          {recommendations.length > 0 && (
-            <div className="modal-recommendations">
-              <h3>Também pode gostar</h3>
-              <div className="recommendations-grid">
-                {recommendations.map(rec => (
-                  <ContentCard
-                    key={rec.id}
-                    item={rec}
-                    onSelect={onRecommendationClick}
-                    size="small"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {/* Similares por gênero */}
-          {similar.length > 0 && (
-            <div className="modal-similar">
-              <h3>Títulos Similares</h3>
-              <div className="similar-grid">
-                {similar.map(sim => (
-                  <ContentCard
-                    key={sim.id}
-                    item={sim}
-                    onSelect={onRecommendationClick}
-                    size="small"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {/* Info adicional */}
-          <div className="modal-extra-info">
-            {tmdb?.companies && tmdb.companies.length > 0 && (
-              <p><strong>Produção:</strong> {tmdb.companies.join(', ')}</p>
-            )}
-            {tmdb?.countries && tmdb.countries.length > 0 && (
-              <p><strong>País:</strong> {tmdb.countries.join(', ')}</p>
-            )}
-            {tmdb?.keywords && tmdb.keywords.length > 0 && (
-              <div className="keywords">
-                <strong>Tags:</strong>
-                <div className="keyword-list">
-                  {tmdb.keywords.slice(0, 20).map(kw => (
-                    <span key={kw} className="keyword">{kw}</span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
@@ -1251,26 +830,47 @@ const MovieDetailsModal = memo(function MovieDetailsModal({
 const ActorModal = memo(function ActorModal({
   actor,
   onClose,
-  onSelectItem
+  onSelectItem,
 }: {
   actor: EnrichedCastMember;
   onClose: () => void;
   onSelectItem: (item: EnrichedMovie) => void;
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
-  const filmography = useMemo(() => getActorFilmography(actor.id), [actor.id]);
+  const [items, setItems] = useState<EnrichedMovie[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    getFilmography(actor.id, undefined, 1)
+      .then(res => {
+        setItems(res.items);
+        setTotal(res.total);
+        setPage(res.page);
+        setTotalPages(res.totalPages);
+      })
+      .catch(err => console.error('Filmografia:', err))
+      .finally(() => setLoading(false));
+  }, [actor.id]);
+
+  const loadMore = useCallback(() => {
+    const nextPage = page + 1;
+    getFilmography(actor.id, undefined, nextPage).then(res => {
+      setItems(prev => [...prev, ...res.items]);
+      setPage(res.page);
+    });
+  }, [actor.id, page]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => { document.body.style.overflow = ''; };
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
@@ -1279,180 +879,53 @@ const ActorModal = memo(function ActorModal({
     if (e.target === modalRef.current) onClose();
   };
 
-  if (!filmography) {
-    return (
-      <div className="actor-modal-backdrop" ref={modalRef} onClick={handleBackdropClick}>
-        <div className="actor-modal">
-          <button className="modal-close" onClick={onClose}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 6L6 18M6 6l12 12"/>
-            </svg>
-          </button>
-          <div className="actor-modal-empty">
-            <p>Nenhum conteúdo encontrado para este ator.</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const totalWorks = filmography.movies.length + filmography.series.length;
-
   return (
     <div className="actor-modal-backdrop" ref={modalRef} onClick={handleBackdropClick}>
       <div className="actor-modal">
         <button className="modal-close" onClick={onClose}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6L6 18M6 6l12 12"/>
+            <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         </button>
-        
-        <div className="actor-modal-content">
-          <div className="actor-modal-header">
-            <div className="actor-modal-photo">
-              <LazyImage 
-                src={actor.photo} 
-                alt={actor.name}
-                fallback={actor.name.substring(0, 2)}
-              />
-            </div>
-            <div className="actor-modal-info">
-              <h1>{actor.name}</h1>
-              <p className="actor-works-count">
-                {totalWorks} título{totalWorks > 1 ? 's' : ''} no catálogo
-              </p>
-            </div>
+
+        <div className="actor-modal-header">
+          <div className="actor-modal-photo">
+            <LazyImage src={actor.photo} alt={actor.name} fallback={actor.name.substring(0, 2)} />
           </div>
-          
-          {filmography.movies.length > 0 && (
-            <div className="actor-filmography-section">
-              <h3>Filmes ({filmography.movies.length})</h3>
-              <div className="filmography-grid">
-                {filmography.movies.map(movie => (
-                  <ContentCard
-                    key={movie.id}
-                    item={movie}
-                    onSelect={onSelectItem}
-                    size="small"
-                  />
-                ))}
+          <div>
+            <h2>{actor.name}</h2>
+            {!loading && <p>{total} título{total !== 1 ? 's' : ''}</p>}
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="actor-modal-loading">
+            <div className="loading-spinner" />
+          </div>
+        ) : items.length === 0 ? (
+          <div className="actor-modal-empty">
+            <p>Nenhum conteúdo encontrado para este ator.</p>
+          </div>
+        ) : (
+          <div className="actor-modal-content">
+            <div className="filmography-grid">
+              {items.map(item => (
+                <ContentCard key={item.id} item={item} onSelect={onSelectItem} size="small" />
+              ))}
+            </div>
+            {page < totalPages && (
+              <div className="load-more">
+                <button onClick={loadMore}>
+                  Carregar mais
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
               </div>
-            </div>
-          )}
-          
-          {filmography.series.length > 0 && (
-            <div className="actor-filmography-section">
-              <h3>Séries ({filmography.series.length})</h3>
-              <div className="filmography-grid">
-                {filmography.series.map(series => (
-                  <ContentCard
-                    key={series.id}
-                    item={series}
-                    onSelect={onSelectItem}
-                    size="small"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
-    </div>
-  );
-});
-
-// ============================================================
-// GRID DE CATEGORIA
-// ============================================================
-
-const CategoryGrid = memo(function CategoryGrid({
-  categoryName,
-  filters,
-  onSelect,
-  onBack
-}: {
-  categoryName: string;
-  filters: Partial<FilterOptions>;
-  onSelect: (item: EnrichedMovie) => void;
-  onBack: () => void;
-}) {
-  const [items, setItems] = useState<EnrichedMovie[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const ITEMS_PER_PAGE = 30;
-
-  useEffect(() => {
-    setLoading(true);
-    loadEnrichedCategory(categoryName).then(data => {
-      const filtered = filterContent(categoryName, filters);
-      setItems(filtered.length > 0 ? filtered : data);
-      setLoading(false);
-    });
-  }, [categoryName, filters]);
-
-  const displayedItems = items.slice(0, page * ITEMS_PER_PAGE);
-  const hasMore = displayedItems.length < items.length;
-
-  const loadMore = () => {
-    setPage(p => p + 1);
-  };
-
-  if (loading) {
-    return (
-      <div className="category-grid-page">
-        <div className="grid-header">
-          <button className="back-btn" onClick={onBack}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Voltar
-          </button>
-          <h2>{categoryName}</h2>
-        </div>
-        <div className="grid-skeleton">
-          {[...Array(12)].map((_, i) => (
-            <div key={i} className="skeleton-card">
-              <div className="skeleton-shimmer" />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="category-grid-page">
-      <div className="grid-header">
-        <button className="back-btn" onClick={onBack}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-          Voltar
-        </button>
-        <h2>{categoryName}</h2>
-        <span className="items-count">{items.length} títulos</span>
-      </div>
-      
-      <div className="content-grid">
-        {displayedItems.map(item => (
-          <ContentCard
-            key={item.id}
-            item={item}
-            onSelect={onSelect}
-          />
-        ))}
-      </div>
-      
-      {hasMore && (
-        <div className="load-more">
-          <button onClick={loadMore}>
-            Carregar mais
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M6 9l6 6 6-6"/>
-            </svg>
-          </button>
-        </div>
-      )}
     </div>
   );
 });
@@ -1462,444 +935,356 @@ const CategoryGrid = memo(function CategoryGrid({
 // ============================================================
 
 export function MovieCatalogV2({ onSelectMovie, onBack, isAdultUnlocked = false }: MovieCatalogV2Props) {
-  // Estados
-  const [isInitialized, setIsInitialized] = useState(false);
+  // Filtros
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<EnrichedMovie[]>([]);
-  const [searchPage, setSearchPage] = useState(1);
-  const [filters, setFilters] = useState<Partial<FilterOptions>>({
+  const [filters, setFilters] = useState<CatalogFilters>({
     type: 'all',
-    sortBy: 'popularity',
-    sortOrder: 'desc'
+    category: null,
+    categoryLabel: null,
+    sortBy: 'rating',
   });
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [modalState, setModalState] = useState<ModalState>({ type: null, data: null });
-  
-  // Dados
-  const [categoryData, setCategoryData] = useState<Map<string, EnrichedMovie[]>>(new Map());
-  const [availableGenres, setAvailableGenres] = useState<string[]>([]);
-  const [availableYears, setAvailableYears] = useState<string[]>([]);
-  const [availableCertifications, setAvailableCertifications] = useState<string[]>([]);
-  const [availableStreaming, setAvailableStreaming] = useState<string[]>([]);
-  
-  // Tendências TMDB
-  const [trendingToday, setTrendingToday] = useState<EnrichedMovie[]>([]);
-  const [trendingWeek, setTrendingWeek] = useState<EnrichedMovie[]>([]);
-  const [trendingLoading, setTrendingLoading] = useState(true);
-  
+
+  // Home
+  const [homeCategories, setHomeCategories] = useState<HomeCategory[]>([]);
+  const [homeLoading, setHomeLoading] = useState(true);
+
+  // Categorias disponíveis para filtros
+  const [apiCategories, setApiCategories] = useState<ApiCategories | null>(null);
+
+  // Catalog (search / filtro ativo)
+  const [catalogItems, setCatalogItems] = useState<EnrichedMovie[]>([]);
+  const [catalogTotal, setCatalogTotal] = useState(0);
+  const [catalogPage, setCatalogPage] = useState(1);
+  const [catalogTotalPages, setCatalogTotalPages] = useState(0);
+  const [catalogLoading, setCatalogLoading] = useState(false);
+
+  // Modal de detalhe
+  const [modalSlim, setModalSlim] = useState<EnrichedMovie | null>(null);
+  const [modalFull, setModalFull] = useState<EnrichedMovie | null>(null);
+  const [modalLoading, setModalLoading] = useState(false);
+
+  // Modal de ator
+  const [selectedActor, setSelectedActor] = useState<EnrichedCastMember | null>(null);
+
   // Favoritos
   const [favorites, setFavorites] = useState<EnrichedMovie[]>([]);
 
-  // Função para atualizar favoritos
-  const refreshFavorites = useCallback(() => {
+  // Hero (trending)
+  const [heroItems, setHeroItems] = useState<EnrichedMovie[]>([]);
+  const [heroLoading, setHeroLoading] = useState(true);
+
+  // Debounce ref para busca
+  const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Determina se está em modo busca/filtro
+  const isSearchMode = searchQuery.length >= 2 || filters.category !== null || filters.type !== 'all';
+
+  // ---- Inicialização: home + categories + hero ----
+  useEffect(() => {
+    // Home carousels
+    setHomeLoading(true);
+    getHome(null, 20, 'rating')
+      .then(async cats => {
+        if (cats.length > 0) {
+          setHomeCategories(cats);
+        } else {
+          // Fallback: carrega algumas categorias-chave via getCatalog
+          console.warn('get_home retornou vazio — usando fallback por categoria');
+          const fallbackCategories = [
+            { id: 'netflix', label: 'Netflix', type: 'series' as const },
+            { id: 'acao', label: 'Ação', type: 'movie' as const },
+            { id: 'lancamentos', label: 'Lançamentos', type: 'movie' as const },
+            { id: 'disney', label: 'Disney+', type: 'series' as const },
+            { id: 'max', label: 'Max', type: 'series' as const },
+          ];
+          const results = await Promise.allSettled(
+            fallbackCategories.map(fc =>
+              getCatalog({ category: fc.id, orderBy: 'rating', page: 1 }).then(res => ({
+                ...fc,
+                items: res.items,
+              })),
+            ),
+          );
+          const loaded = results
+            .filter((r): r is PromiseFulfilledResult<HomeCategory> => r.status === 'fulfilled')
+            .map(r => r.value)
+            .filter(c => c.items.length > 0);
+          setHomeCategories(loaded);
+        }
+      })
+      .catch(err => console.error('get_home:', err))
+      .finally(() => setHomeLoading(false));
+
+    // Categorias para filtros
+    getCategoriesCached()
+      .then(cats => setApiCategories(cats))
+      .catch(err => console.error('get_categories:', err));
+
+    // Hero: trending ou primeiros da home
+    setHeroLoading(true);
+    getTrendingToday()
+      .then(items => setHeroItems(items.slice(0, 10) as EnrichedMovie[]))
+      .catch(() => {/* hero sem trending é OK */})
+      .finally(() => setHeroLoading(false));
+
+    // Favoritos
     setFavorites(getFavorites());
   }, []);
 
-  // Inicialização
+  // Listener de favoritos de outras abas
   useEffect(() => {
-    initializeEnrichedData().then(() => {
-      setIsInitialized(true);
-      
-      // Carrega dados iniciais
-      setAvailableGenres(getAvailableGenres());
-      setAvailableYears(getAvailableYears());
-      setAvailableCertifications(getAvailableCertifications());
-      setAvailableStreaming(getAvailableStreaming());
-      
-      // Carrega categorias principais
-      STREAMING_CATEGORIES.forEach(cat => {
-        loadEnrichedCategory(cat).then(data => {
-          setCategoryData(prev => new Map(prev).set(cat, data));
-        });
-      });
-      
-      // Carrega tendências do TMDB
-      setTrendingLoading(true);
-      Promise.all([getTrendingToday(), getTrendingWeek()])
-        .then(([today, week]) => {
-          setTrendingToday(today);
-          setTrendingWeek(week);
-        })
-        .catch(err => {
-          console.error('Erro ao carregar tendências:', err);
-        })
-        .finally(() => {
-          setTrendingLoading(false);
-        });
-      
-      // Carrega favoritos
-      refreshFavorites();
-    });
-  }, [refreshFavorites]);
+    const handler = () => setFavorites(getFavorites());
+    window.addEventListener('favorites-changed', handler);
+    return () => window.removeEventListener('favorites-changed', handler);
+  }, []);
 
-  // Listener para mudanças nos favoritos (de outras abas ou componentes)
+  // ---- Busca / Filtro → get_catalog ----
   useEffect(() => {
-    const handleFavoritesChange = () => {
-      refreshFavorites();
-    };
-    
-    window.addEventListener('favorites-changed', handleFavoritesChange);
-    return () => window.removeEventListener('favorites-changed', handleFavoritesChange);
-  }, [refreshFavorites]);
-
-  // Verifica se há filtros ativos (além dos padrões)
-  const hasActiveFilters = useMemo(() => {
-    return Boolean(
-      filters.genres?.length || 
-      filters.years?.length || 
-      filters.certifications?.length ||
-      filters.streaming?.length ||
-      filters.ratings?.length ||
-      (filters.type && filters.type !== 'all')
-    );
-  }, [filters]);
-
-  // Busca e filtragem
-  useEffect(() => {
-    setSearchPage(1); // Reset page ao mudar busca/filtros
-    if (searchQuery.length >= 2) {
-      // Busca por texto com filtros
-      const results = searchContent(searchQuery, filters);
-      setSearchResults(results);
-    } else if (hasActiveFilters) {
-      // Só filtros ativos, sem texto de busca
-      const results = filterAllContent(filters);
-      setSearchResults(results);
-    } else {
-      setSearchResults([]);
+    if (!isSearchMode) {
+      setCatalogItems([]);
+      return;
     }
-  }, [searchQuery, filters, hasActiveFilters]);
 
-  // Handlers
+    // Cancela debounce anterior
+    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+
+    searchDebounceRef.current = setTimeout(() => {
+      setCatalogLoading(true);
+      setCatalogPage(1);
+
+      getCatalog({
+        type: filters.type !== 'all' ? filters.type : null,
+        category: filters.category,
+        search: searchQuery.length >= 2 ? searchQuery : null,
+        orderBy: filters.sortBy,
+        isAdult: isAdultUnlocked,
+        page: 1,
+      })
+        .then(res => {
+          setCatalogItems(res.items);
+          setCatalogTotal(res.total);
+          setCatalogTotalPages(res.totalPages);
+          setCatalogPage(1);
+        })
+        .catch(err => console.error('get_catalog:', err))
+        .finally(() => setCatalogLoading(false));
+    }, 400);
+
+    return () => {
+      if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+    };
+  }, [searchQuery, filters, isSearchMode, isAdultUnlocked]);
+
+  // ---- Carrega mais páginas ----
+  const loadMoreCatalog = useCallback(() => {
+    const nextPage = catalogPage + 1;
+    setCatalogLoading(true);
+
+    getCatalog({
+      type: filters.type !== 'all' ? filters.type : null,
+      category: filters.category,
+      search: searchQuery.length >= 2 ? searchQuery : null,
+      orderBy: filters.sortBy,
+      isAdult: isAdultUnlocked,
+      page: nextPage,
+    })
+      .then(res => {
+        setCatalogItems(prev => [...prev, ...res.items]);
+        setCatalogPage(res.page);
+      })
+      .catch(err => console.error('get_catalog page:', err))
+      .finally(() => setCatalogLoading(false));
+  }, [catalogPage, filters, searchQuery, isAdultUnlocked]);
+
+  // ---- Abre modal + carrega detalhes ----
   const handleSelectItem = useCallback((item: EnrichedMovie) => {
-    setModalState({ type: item.type, data: item });
+    setModalSlim(item);
+    setModalFull(null);
+    setModalLoading(true);
+
+    getItem(item.id)
+      .then(full => setModalFull(full))
+      .catch(err => console.error('get_item:', err))
+      .finally(() => setModalLoading(false));
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setModalSlim(null);
+    setModalFull(null);
   }, []);
 
   const handlePlay = useCallback((item: EnrichedMovie, episodeUrl?: string) => {
-    setModalState({ type: null, data: null });
+    setModalSlim(null);
+    setModalFull(null);
     onSelectMovie(item, episodeUrl);
   }, [onSelectMovie]);
 
   const handleActorClick = useCallback((actor: EnrichedCastMember) => {
-    setModalState({ type: 'actor', data: actor });
+    setSelectedActor(actor);
   }, []);
 
-  const handleRecommendationClick = useCallback((item: EnrichedMovie) => {
-    setModalState({ type: item.type, data: item });
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    setModalState({ type: null, data: null });
-  }, []);
+  const handleCloseActor = useCallback(() => setSelectedActor(null), []);
 
   const handleClearFilters = useCallback(() => {
-    setFilters({
-      type: 'all',
-      sortBy: 'popularity',
-      sortOrder: 'desc'
-    });
+    setFilters({ type: 'all', category: null, categoryLabel: null, sortBy: 'rating' });
+    setSearchQuery('');
   }, []);
 
-  const handleSeeAll = useCallback((category: string) => {
-    setSelectedCategory(category);
-  }, []);
+  const refreshFavorites = useCallback(() => setFavorites(getFavorites()), []);
 
-  const handleBackFromCategory = useCallback(() => {
-    setSelectedCategory(null);
-  }, []);
+  // Hero items: usa trending ou fallback para primeiros itens da home
+  const heroData = heroItems.length > 0
+    ? heroItems
+    : homeCategories.flatMap(c => c.items.slice(0, 3)).slice(0, 10);
 
-  const handleLoadMoreResults = useCallback(() => {
-    setSearchPage(p => p + 1);
-  }, []);
-
-  // Calcular itens de busca exibidos com paginação
-  const SEARCH_ITEMS_PER_PAGE = 60;
-  const displayedSearchResults = useMemo(() => {
-    return searchResults.slice(0, searchPage * SEARCH_ITEMS_PER_PAGE);
-  }, [searchResults, searchPage]);
-  
-  const hasMoreSearchResults = displayedSearchResults.length < searchResults.length;
-
-  // Infinite scroll observer
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    if (!hasMoreSearchResults || !loadMoreRef.current) return;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          handleLoadMoreResults();
-        }
-      },
-      { threshold: 0.1, rootMargin: '100px' }
-    );
-    
-    observer.observe(loadMoreRef.current);
-    
-    return () => observer.disconnect();
-  }, [hasMoreSearchResults, handleLoadMoreResults]);
-
-  // Loading state
-  if (!isInitialized) {
+  // Loading inicial
+  if (homeLoading && homeCategories.length === 0) {
     return (
       <div className="catalog-loading">
         <div className="loading-content">
           <div className="loading-spinner" />
           <h2>Carregando catálogo...</h2>
-          <p>Preparando sua experiência de streaming</p>
+          <p>Conectando ao servidor...</p>
         </div>
       </div>
     );
   }
 
-  // Tela de categoria específica
-  if (selectedCategory) {
-    return (
-      <div className="movie-catalog-v2">
-        <CategoryGrid
-          categoryName={selectedCategory}
-          filters={filters}
-          onSelect={handleSelectItem}
-          onBack={handleBackFromCategory}
-        />
-        
-        {/* Modais */}
-        {modalState.type === 'movie' || modalState.type === 'series' ? (
-          <MovieDetailsModal
-            item={modalState.data as EnrichedMovie}
-            onClose={handleCloseModal}
-            onPlay={handlePlay}
-            onActorClick={handleActorClick}
-            onRecommendationClick={handleRecommendationClick}
-            onFavoriteChange={refreshFavorites}
-          />
-        ) : modalState.type === 'actor' ? (
-          <ActorModal
-            actor={modalState.data as EnrichedCastMember}
-            onClose={handleCloseModal}
-            onSelectItem={handleSelectItem}
-          />
-        ) : null}
-      </div>
-    );
-  }
-
-  // Tela principal
   return (
     <div className="movie-catalog-v2">
       {/* Header */}
       <header className="catalog-header">
         <button className="back-btn" onClick={onBack}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
+            <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
         </button>
-        
-        <SearchBar
-          value={searchQuery}
-          onChange={setSearchQuery}
-          onActorSelect={handleActorClick}
-        />
-        
-        <AdvancedFilters
+
+        <SearchBar value={searchQuery} onChange={setSearchQuery} />
+
+        <CatalogFiltersBar
           filters={filters}
+          categories={apiCategories}
           onChange={setFilters}
-          availableGenres={availableGenres}
-          availableYears={availableYears}
-          availableCertifications={availableCertifications}
-          availableStreaming={availableStreaming}
           onClear={handleClearFilters}
+          isAdultUnlocked={isAdultUnlocked}
         />
       </header>
-      
-      {/* Conteúdo principal */}
+
       <main className="catalog-main">
-        {/* Resultados de busca/filtros */}
-        {searchResults.length > 0 ? (
-          <section className="search-results">
-            <h2>
-              {searchQuery.length >= 2 
-                ? `Resultados para "${searchQuery}"` 
-                : 'Conteúdo Filtrado'}
-            </h2>
-            <p className="results-count">
-              {searchResults.length} {searchResults.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
-              {hasActiveFilters && (
-                <span className="filter-info">
-                  {' • '}
-                  {filters.type !== 'all' && (filters.type === 'movie' ? 'Filmes' : 'Séries')}
-                  {filters.genres?.length ? ` • ${filters.genres.join(', ')}` : ''}
-                  {filters.years?.length ? ` • ${filters.years.join(', ')}` : ''}
-                </span>
-              )}
-            </p>
-            <div className="content-grid">
-              {displayedSearchResults.map(item => (
-                <ContentCard
-                  key={item.id}
-                  item={item}
-                  onSelect={handleSelectItem}
-                />
-              ))}
-            </div>
-            {hasMoreSearchResults && (
-              <>
-                <div ref={loadMoreRef} style={{ height: '1px', margin: '20px 0' }} />
-                <div className="load-more">
-                  <button onClick={handleLoadMoreResults}>
-                    Carregar mais ({searchResults.length - displayedSearchResults.length} restantes)
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M6 9l6 6 6-6"/>
-                    </svg>
+        {/* ---- Modo busca/filtro ---- */}
+        {isSearchMode ? (
+          <>
+            {catalogLoading && catalogItems.length === 0 ? (
+              <div className="grid-skeleton">
+                {[...Array(12)].map((_, i) => (
+                  <div key={i} className="skeleton-card"><div className="skeleton-shimmer" /></div>
+                ))}
+              </div>
+            ) : catalogItems.length === 0 ? (
+              <section className="no-results">
+                <div className="no-results-content">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                  </svg>
+                  <h3>Nenhum resultado encontrado</h3>
+                  <p>Tente ajustar os filtros ou buscar por outro termo.</p>
+                  <button className="clear-filters-btn" onClick={handleClearFilters}>
+                    Limpar Filtros
                   </button>
                 </div>
-              </>
+              </section>
+            ) : (
+              <section className="search-results">
+                <h2>
+                  {searchQuery.length >= 2
+                    ? `Resultados para "${searchQuery}"`
+                    : filters.categoryLabel || (filters.type !== 'all' ? (filters.type === 'movie' ? 'Filmes' : 'Séries') : 'Catálogo')}
+                </h2>
+                <p className="results-count">
+                  {catalogTotal} {catalogTotal === 1 ? 'título encontrado' : 'títulos encontrados'}
+                </p>
+                <div className="content-grid">
+                  {catalogItems.map(item => (
+                    <ContentCard key={item.id} item={item} onSelect={handleSelectItem} />
+                  ))}
+                </div>
+                {catalogPage < catalogTotalPages && (
+                  <div className="load-more">
+                    <button onClick={loadMoreCatalog} disabled={catalogLoading}>
+                      {catalogLoading ? 'Carregando...' : `Carregar mais (${catalogTotal - catalogItems.length} restantes)`}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </section>
             )}
-          </section>
-        ) : (searchQuery.length > 0 || hasActiveFilters) ? (
-          <section className="no-results">
-            <div className="no-results-content">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="M21 21l-4.35-4.35"/>
-              </svg>
-              <h3>Nenhum resultado encontrado</h3>
-              <p>
-                {hasActiveFilters 
-                  ? 'Tente ajustar os filtros ou limpar a seleção.'
-                  : 'Tente buscar por outro termo.'}
-              </p>
-              {hasActiveFilters && (
-                <button className="clear-filters-btn" onClick={handleClearFilters}>
-                  Limpar Filtros
-                </button>
-              )}
-            </div>
-          </section>
+          </>
         ) : (
           <>
-            {/* Hero Banner - Tendências de Hoje */}
-            <HeroBanner
-              items={trendingToday.slice(0, 20)}
-              onSelect={handleSelectItem}
-            />
-            
-            {/* Favoritos - Aparece primeiro se houver */}
+            {/* Hero Banner */}
+            {!heroLoading && heroData.length > 0 && (
+              <HeroBanner items={heroData} onSelect={handleSelectItem} />
+            )}
+
+            {/* Favoritos */}
             {favorites.length > 0 && (
               <CategoryCarousel
-                title="❤️ Meus Favoritos"
+                title="Meus Favoritos"
                 items={favorites.slice(0, 50)}
                 onSelect={handleSelectItem}
               />
             )}
-            
-            {/* Tendências de Hoje */}
-            {(trendingLoading || trendingToday.length > 0) && (
-              <CategoryCarousel
-                title="🔥 Tendências de Hoje"
-                items={trendingToday}
-                onSelect={handleSelectItem}
-                loading={trendingLoading}
-              />
-            )}
-            
-            {/* Tendências da Semana */}
-            {(trendingLoading || trendingWeek.length > 0) && (
-              <CategoryCarousel
-                title="📅 Tendências da Semana"
-                items={trendingWeek}
-                onSelect={handleSelectItem}
-                loading={trendingLoading}
-              />
-            )}
-            
-            {/* Categorias de Streaming */}
-            {STREAMING_CATEGORIES.map(cat => {
-              const data = categoryData.get(cat) || [];
-              return (
-                <CategoryCarousel
-                  key={cat}
-                  title={cat}
-                  items={data.slice(0, 30)}
-                  onSelect={handleSelectItem}
-                  onSeeAll={() => handleSeeAll(cat)}
-                  loading={!categoryData.has(cat)}
-                />
-              );
-            })}
-            
-            {/* Lançamentos */}
-            <CategoryCarousel
-              title="🎬 Lançamentos"
-              items={getRecentReleases(20)}
-              onSelect={handleSelectItem}
-              onSeeAll={() => handleSeeAll('🎬 Lançamentos')}
-            />
-            
-            {/* Mais categorias */}
-            {GENRE_CATEGORIES.map(cat => {
-              const data = categoryData.get(cat) || [];
-              if (!categoryData.has(cat)) {
-                loadEnrichedCategory(cat).then(d => {
-                  setCategoryData(prev => new Map(prev).set(cat, d));
-                });
-              }
-              return (
-                <CategoryCarousel
-                  key={cat}
-                  title={cat}
-                  items={data.slice(0, 30)}
-                  onSelect={handleSelectItem}
-                  onSeeAll={() => handleSeeAll(cat)}
-                  loading={!categoryData.has(cat)}
-                />
-              );
-            })}
-            
-            {/* Categorias Adultas - só aparecem quando desbloqueado */}
-            {isAdultUnlocked && ADULT_CATEGORIES.map(cat => {
-              const catName = cat.name;
-              const data = categoryData.get(catName) || [];
-              if (!categoryData.has(catName)) {
-                loadEnrichedCategory(catName).then(d => {
-                  setCategoryData(prev => new Map(prev).set(catName, d));
-                });
-              }
-              return (
-                <CategoryCarousel
-                  key={catName}
-                  title={catName}
-                  items={data.slice(0, 30)}
-                  onSelect={handleSelectItem}
-                  onSeeAll={() => handleSeeAll(catName)}
-                  loading={!categoryData.has(catName)}
-                />
-              );
-            })}
+
+            {/* Carousels da home (get_home) */}
+            {homeLoading
+              ? [1, 2, 3].map(i => (
+                  <CategoryCarousel key={i} title="" items={[]} onSelect={() => {}} loading />
+                ))
+              : homeCategories.map(cat => (
+                  <CategoryCarousel
+                    key={cat.id}
+                    title={cat.label}
+                    items={cat.items}
+                    onSelect={handleSelectItem}
+                    onSeeAll={() =>
+                      setFilters(prev => ({
+                        ...prev,
+                        category: cat.id,
+                        categoryLabel: cat.label,
+                        type: cat.type,
+                      }))
+                    }
+                  />
+                ))}
           </>
         )}
       </main>
-      
-      {/* Modais */}
-      {modalState.type === 'movie' || modalState.type === 'series' ? (
+
+      {/* Modal de detalhe */}
+      {modalSlim && (
         <MovieDetailsModal
-          item={modalState.data as EnrichedMovie}
+          slim={modalSlim}
+          full={modalFull}
+          loading={modalLoading}
           onClose={handleCloseModal}
           onPlay={handlePlay}
           onActorClick={handleActorClick}
-          onRecommendationClick={handleRecommendationClick}
           onFavoriteChange={refreshFavorites}
         />
-      ) : modalState.type === 'actor' ? (
+      )}
+
+      {/* Modal de ator */}
+      {selectedActor && (
         <ActorModal
-          actor={modalState.data as EnrichedCastMember}
-          onClose={handleCloseModal}
+          actor={selectedActor}
+          onClose={handleCloseActor}
           onSelectItem={handleSelectItem}
         />
-      ) : null}
+      )}
     </div>
   );
 }
-
-export default MovieCatalogV2;

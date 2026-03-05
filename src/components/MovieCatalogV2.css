@@ -2200,3 +2200,45 @@
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.25); }
 }
+
+/* ============================================================
+   ESTADOS ADICIONAIS (API-driven)
+   ============================================================ */
+
+/* Loading dentro do modal */
+.modal-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+}
+
+/* Skeleton de texto */
+.skeleton-text {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.06) 25%,
+    rgba(255,255,255,0.12) 50%,
+    rgba(255,255,255,0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* Actor modal loading */
+.actor-modal-loading {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+/* Grid skeleton na busca */
+.grid-skeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  padding: 20px;
+}

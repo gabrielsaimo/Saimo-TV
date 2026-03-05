@@ -234,43 +234,19 @@ function TVPage() {
 
           {/* Desktop Sidebar */}
           <div className={`sidebar-wrapper desktop-only ${isMobileMenuOpen ? 'open' : ''}`}>
-            {/* Toggle Lite / PRO */}
-            <div className="channel-mode-toggle" style={{
-              display: 'flex', alignItems: 'center', gap: '8px',
-              padding: '8px 12px', background: 'rgba(255,255,255,0.04)',
-              borderBottom: '1px solid rgba(255,255,255,0.08)', fontSize: '13px'
-            }}>
-              <span style={{ color: !isProMode ? '#fff' : 'rgba(255,255,255,0.4)', fontWeight: 600 }}>Lite</span>
-              <button
-                onClick={() => { setIsProMode(p => !p); setSelectedChannel(null); }}
-                style={{
-                  width: '44px', height: '24px', borderRadius: '12px', border: 'none', cursor: 'pointer',
-                  background: isProMode ? '#e50914' : 'rgba(255,255,255,0.15)',
-                  position: 'relative', transition: 'background 0.25s', flexShrink: 0
-                }}
-                aria-label="Alternar entre Lite e PRO"
-              >
-                <span style={{
-                  position: 'absolute', top: '3px',
-                  left: isProMode ? '23px' : '3px',
-                  width: '18px', height: '18px', borderRadius: '50%',
-                  background: '#fff', transition: 'left 0.25s'
-                }} />
-              </button>
-              <span style={{ color: isProMode ? '#e50914' : 'rgba(255,255,255,0.4)', fontWeight: 600 }}>
-                {isLoadingPro ? '⏳' : 'PRO'}
-                {isProMode && proChannels.length > 0 && <span style={{ fontSize: '10px', opacity: 0.7 }}> {proChannels.length}</span>}
-              </span>
-            </div>
             <Sidebar
               channels={channels}
               activeChannelId={selectedChannel?.id || null}
-            favorites={favorites}
-            onSelectChannel={handleSelectChannel}
-            onToggleFavorite={handleToggleFavorite}
-            isCollapsed={isSidebarCollapsed}
-            onToggleCollapse={handleToggleSidebar}
-          />
+              favorites={favorites}
+              onSelectChannel={handleSelectChannel}
+              onToggleFavorite={handleToggleFavorite}
+              isCollapsed={isSidebarCollapsed}
+              onToggleCollapse={handleToggleSidebar}
+              isProMode={isProMode}
+              isLoadingPro={isLoadingPro}
+              proChannelsCount={proChannels.length}
+              onToggleProMode={() => { setIsProMode(p => !p); setSelectedChannel(null); }}
+            />
         </div>
 
         {isMobileMenuOpen && (
