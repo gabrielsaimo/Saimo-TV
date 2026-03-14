@@ -15,7 +15,7 @@ import * as path from 'path';
  */
 
 const M3U_URLS = [
-    'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR04.m3u',
+    'https://raw.githubusercontent.com/Ramys/Iptv-Brasil-2026/refs/heads/master/CanaisBR01.m3u8',
     // Adicione mais URLs aqui:
     // 'https://exemplo.com/outro.m3u',
 ];
