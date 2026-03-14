@@ -90,8 +90,13 @@ export const Sidebar = memo(function Sidebar({
       groups[category].push(channel);
     });
     
+    // Coleta categorias extras (ex: PRO) que não estão em categoryOrder
+    const extraCategories = Object.keys(groups)
+      .filter(cat => !categoryOrder.includes(cat) && groups[cat].length > 0)
+      .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
     // Remove categorias vazias e retorna como array
-    return categoryOrder
+    return [...categoryOrder, ...extraCategories]
       .filter(cat => groups[cat] && groups[cat].length > 0)
       .map(cat => ({ category: cat, channels: groups[cat] }));
   }, [filteredChannels]);
