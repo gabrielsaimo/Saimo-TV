@@ -306,6 +306,24 @@ export const onRequest = async ({ request }: { request: Request }): Promise<Resp
       });
     }
 
+    /*
+     * Origem que não respondeu a tempo: repete antes de devolver erro.
+     *
+     * A borda da Cloudflare responde 5xx quando o CDN de origem engasga, e isso
+     * acontece de vez em quando com os segmentos DASH da UOL. Uma segunda
+     * tentativa costuma passar; sem ela o player descia para outra fonte por
+     * causa de um soluço de dois segundos.
+     */
+    for (let i = 0; finalResponse.status >= 500 && i < 2; i++) {
+      try { await finalResponse.body?.cancel(); } catch { /* corpo já descartado */ }
+      await new Promise((pronto) => setTimeout(pronto, 300));
+      try {
+        finalResponse = await fetch(currentUrl, { method: 'GET', headers: clientHeaders });
+      } catch {
+        break;
+      }
+    }
+
     // Fallback para 403/404: tenta com outros cabeçalhos antes de desistir.
     if (finalResponse.status === 403 || finalResponse.status === 404) {
       const strategies: Array<Record<string, string>> = [
