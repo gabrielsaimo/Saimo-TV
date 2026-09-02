@@ -213,6 +213,37 @@
   height: 20px;
 }
 
+/* Atalhos para a comunidade e para a lista publicada. */
+.header-link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-link-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.header-link-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.header-link-btn.discord:hover {
+  color: #7189da;
+  border-color: rgba(113, 137, 218, 0.45);
+}
+
 /* ========================================
    RESPONSIVE - Tablet
    ======================================== */
@@ -286,12 +317,14 @@
   }
 
   .header-back-btn,
+  .header-link-btn,
   .header-home-btn {
     width: 36px;
     height: 36px;
   }
 
   .header-back-btn svg,
+  .header-link-btn svg,
   .header-home-btn svg {
     width: 18px;
     height: 18px;

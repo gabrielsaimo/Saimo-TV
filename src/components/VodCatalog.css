@@ -217,3 +217,26 @@
 .vod-sentinela {
   height: 1px;
 }
+
+.vod-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.vod-link svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.vod-link:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
