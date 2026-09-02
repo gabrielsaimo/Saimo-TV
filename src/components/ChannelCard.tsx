@@ -1,4 +1,5 @@
 import { memo, useState, useCallback, useEffect, useRef } from 'react';
+import { getCurrentProgram, onEPGUpdate } from '../services/epgService';
 import './ChannelCard.css';
 
 interface ChannelCardProps {
@@ -16,6 +17,7 @@ interface ChannelCardProps {
 type ImageState = 'loading' | 'loaded' | 'error';
 
 export const ChannelCard = memo(function ChannelCard({
+  id,
   name,
   category,
   logo,
@@ -29,6 +31,26 @@ export const ChannelCard = memo(function ChannelCard({
   const [isFocused, setIsFocused] = useState(false);
   const [showSuccessIndicator, setShowSuccessIndicator] = useState(false);
   const prevLogoRef = useRef<string | undefined>(logo);
+  const [agora, setAgora] = useState<string | null>(() => getCurrentProgram(id)?.current?.title ?? null);
+
+  /*
+   * O que está passando agora, igual ao app e ao Mac. Reage a três coisas: o
+   * guia chegou (listener), o programa acabou e o próximo começou (relógio de
+   * minuto em minuto) e o cartão virou de um canal para outro (o id mudou).
+   */
+  useEffect(() => {
+    const atualizar = () => setAgora(getCurrentProgram(id)?.current?.title ?? null);
+    atualizar();
+    // O evento não recorta por canal aqui: comparar a chave normalizada do
+    // guia com este id (que pode ter sufixo de desempate, "-2") custaria mais
+    // do que a própria consulta, que já é um Map.get.
+    const unsubscribe = onEPGUpdate(atualizar);
+    const relogio = window.setInterval(atualizar, 60_000);
+    return () => {
+      unsubscribe();
+      window.clearInterval(relogio);
+    };
+  }, [id]);
 
   const initials = name
     .split(' ')
@@ -125,7 +147,9 @@ export const ChannelCard = memo(function ChannelCard({
       
       <div className="channel-info">
         <h3 className="channel-name" title={name}>{name}</h3>
-        {category && <span className="channel-category">{category}</span>}
+        {agora
+          ? <span className="channel-now" title={agora}>{agora}</span>
+          : category && <span className="channel-category">{category}</span>}
       </div>
       
       <button

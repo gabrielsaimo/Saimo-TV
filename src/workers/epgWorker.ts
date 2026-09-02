@@ -114,6 +114,22 @@ const CODES: Record<string, string> = {
   'tv gazeta': 'GAZ',
 };
 
+/**
+ * Nome normalizado do canal -> slug do guiadetv.com, para o que o meuguia não
+ * cobre. Levantado varrendo as sete categorias do site (`/categorias/*.html`)
+ * e cruzando com os canais do catálogo sem programação nenhuma; o resto do
+ * catálogo — CazéTV, Globoplay Novelas, IMPD, AMC Séries, Boomerang, ESPN
+ * Extra — não tem página lá nem em lugar nenhum público encontrado.
+ */
+const GUIADETV_CODES: Record<string, string> = {
+  'sony movies': 'sony-movies',
+  'sbt news': 'sbt-news',
+  'terra viva': 'terra-viva',
+  'box kids tv': 'box-kids',
+  'x sports': 'xsports',
+  'n sports': 'nsports',
+};
+
 export interface WorkerProgramme {
   title: string;
   category: string;
@@ -252,6 +268,52 @@ export function parseMeuGuia(html: string): WorkerProgramme[] {
     category: generos[indice],
     start: inicios[indice],
     stop: posicao + 1 < ordem.length ? inicios[ordem[posicao + 1]] : inicios[indice] + 3_600_000,
+  }));
+}
+
+// ============================================================
+// GUIADETV
+// ============================================================
+
+/**
+ * `data-dt="AAAA-MM-DD HH:MM:SS-03:00"` seguido, em algum ponto adiante, de
+ * um link `/programa/...` cujo texto é o título. O fim também não é
+ * publicado; mesma regra do meuguia — vai até o próximo começar.
+ */
+export function parseGuiaDeTv(html: string): WorkerProgramme[] {
+  const linha = /data-dt="(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})[^"]*"[\s\S]*?<a[^>]*href="[^"]*programa\/[^"]+"[^>]*>[\s\S]*?([A-Za-zÀ-ÿ0-9][^<]{2,150})/g;
+
+  const inicios: number[] = [];
+  const titulos: string[] = [];
+
+  for (const m of html.matchAll(linha)) {
+    const [dataParte, horaParte] = m[1].split(' ');
+    const [ano, mes, dia] = dataParte.split('-').map(Number);
+    const [hora, minuto] = horaParte.split(':').map(Number);
+    const titulo = decodeEntities(m[2]).trim().replace(/\s+/g, ' ');
+    if (!titulo || titulo.length < 2) continue;
+
+    inicios.push(deSaoPaulo(ano, mes, dia, hora, minuto));
+    titulos.push(titulo);
+  }
+
+  // O mesmo instante pode aparecer mais de uma vez na página (o link do
+  // programa carrega alguns metadados extras que também casam com a regex).
+  const vistos = new Set<string>();
+  const unicos: Array<{ start: number; title: string }> = [];
+  for (let i = 0; i < inicios.length; i++) {
+    const chave = `${inicios[i]}-${titulos[i]}`;
+    if (vistos.has(chave)) continue;
+    vistos.add(chave);
+    unicos.push({ start: inicios[i], title: titulos[i] });
+  }
+  unicos.sort((a, b) => a.start - b.start);
+
+  return unicos.map((item, posicao) => ({
+    title: item.title,
+    category: '',
+    start: item.start,
+    stop: posicao + 1 < unicos.length ? unicos[posicao + 1].start : item.start + 3_600_000,
   }));
 }
 
@@ -534,6 +596,36 @@ async function montar({ names, origin }: Pedido): Promise<void> {
   for (const [name, lista] of paginas) if (lista.length) grade[name] = lista;
   console.log(`[EPG] meuguia cobriu ${Object.keys(grade).length} de ${comCodigo.length} canais`);
   if (Object.keys(grade).length) publicar(true);
+
+  /*
+   * O resto: canais que o meuguia não lista, mas o guiadetv sim — Sony
+   * Movies é o caso que veio faltando, e a mesma varredura achou mais cinco.
+   * Só entra quem o meuguia já não cobriu.
+   */
+  const comGuiaDeTv = names
+    .filter((name) => !grade[name])
+    .map((name) => [name, GUIADETV_CODES[normalise(name)]] as const)
+    .filter((par): par is readonly [string, string] => Boolean(par[1]));
+
+  const baixarGuiaDeTv = async ([name, slug]: readonly [string, string]):
+    Promise<readonly [string, WorkerProgramme[]]> => {
+    try {
+      const alvo = `https://www.guiadetv.com/canal/${slug}`;
+      const r = await fetch(`${origin}/api/proxy?url=${encodeURIComponent(alvo)}`);
+      if (!r.ok) return [name, []];
+      const lista = parseGuiaDeTv(await r.text()).filter((p) => p.stop > de && p.start < ate);
+      return [name, lista];
+    } catch {
+      return [name, []];
+    }
+  };
+
+  if (comGuiaDeTv.length) {
+    const extras = await comLimite(comGuiaDeTv, 6, baixarGuiaDeTv);
+    for (const [name, lista] of extras) if (lista.length) grade[name] = lista;
+    console.log(`[EPG] guiadetv cobriu ${extras.filter(([, l]) => l.length).length} de ${comGuiaDeTv.length} canais`);
+    if (extras.some(([, l]) => l.length)) publicar(true);
+  }
 
   const porTitulo = new Map<string, WorkerProgramme>();
   for (const url of FEEDS) {

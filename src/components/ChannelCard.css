@@ -241,6 +241,15 @@
   gap: 6px;
 }
 
+/* O que está passando agora, no lugar da categoria — igual ao app e ao Mac. */
+.channel-now {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ========================================
    LIVE INDICATOR
    ======================================== */
