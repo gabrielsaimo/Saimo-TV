@@ -830,6 +830,16 @@
   background: rgba(255, 255, 255, 0.02);
 }
 
+/* A fonte em uso, no seletor de fontes do canal. */
+.cast-option.active {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: #8b5cf6;
+}
+
+.cast-option.active svg {
+  color: #a78bfa;
+}
+
 .cast-modal-back {
   width: 100%;
   margin-top: 12px;

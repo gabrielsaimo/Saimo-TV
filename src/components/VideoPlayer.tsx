@@ -62,6 +62,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const [showCastModal, setShowCastModal] = useState(false);
   const [castMessage, setCastMessage] = useState<string | null>(null);
   const [showExternalPlayers, setShowExternalPlayers] = useState(false);
+  const [showSources, setShowSources] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showControls, setShowControls] = useState(true);
@@ -86,6 +87,36 @@ export const VideoPlayer = memo(function VideoPlayer({
 
   const [sourceIndex, setSourceIndex] = useState(0);
   const [reloadTick, setReloadTick] = useState(0);
+
+  /*
+   * Uma linha por fonte publicada, não por tentativa: cada fonte rende até
+   * duas entradas em `attempts` (direta e via proxy), e quem escolhe manualmente
+   * quer ver "as fontes do canal", não os bastidores de como cada uma é tentada.
+   */
+  const fontes = useMemo(() => {
+    const vistas = new Set<string>();
+    const out: { source: Attempt['source']; indiceTentativa: number }[] = [];
+    attempts.forEach((a, indiceTentativa) => {
+      if (vistas.has(a.source.url)) return;
+      vistas.add(a.source.url);
+      out.push({ source: a.source, indiceTentativa });
+    });
+    return out;
+  }, [attempts]);
+
+  // A tentativa ativa pode estar no meio do fallback proxy de uma fonte; a
+  // fonte "ativa" é a última cujo bloco já começou.
+  const fontePos = fontes.reduce(
+    (melhor, f, i) => (f.indiceTentativa <= sourceIndex ? i : melhor), 0,
+  );
+
+  const escolherFonte = useCallback((pos: number) => {
+    const alvo = fontes[pos];
+    if (!alvo) return;
+    setSourceIndex(alvo.indiceTentativa);
+    setReloadTick((t) => t + 1);
+    setShowSources(false);
+  }, [fontes]);
 
   // Trocar de canal recomeça pela fonte preferida, não pela que sobrou da última.
   useEffect(() => {
@@ -771,6 +802,23 @@ export const VideoPlayer = memo(function VideoPlayer({
             </div>
 
             <div className="controls-right">
+              {fontes.length > 1 && (
+                <button
+                  className={`control-btn ${showSources ? 'active' : ''}`}
+                  onClick={() => { resetControlsTimeout(); setShowSources((v) => !v); }}
+                  title={`Fontes do canal (${fontes.length} publicadas)`}
+                  data-focusable="true"
+                  data-focus-key="btn-sources"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                  </svg>
+                </button>
+              )}
+
               <button
                 className={`control-btn ${isMirrored ? 'active' : ''}`}
                 onClick={() => { resetControlsTimeout(); toggleMirror(); }}
@@ -862,6 +910,49 @@ export const VideoPlayer = memo(function VideoPlayer({
               </svg>
               <span>Transmitindo para {castState.deviceName}</span>
               <button onClick={() => castService.stopCasting()}>Parar</button>
+            </div>
+          )}
+
+          {/* Fontes publicadas para este canal */}
+          {showSources && (
+            <div className="cast-modal-overlay" onClick={() => setShowSources(false)}>
+              <div className="cast-modal" onClick={(e) => e.stopPropagation()}>
+                <h3>Fontes de "{channel.name}"</h3>
+                <p>
+                  {fontes.length} publicadas no catálogo, na ordem em que o player tenta.
+                  Escolha uma para forçar o canal a tocar por ela.
+                </p>
+
+                <div className="cast-options">
+                  {fontes.map((f, pos) => {
+                    let host = f.source.url;
+                    try { host = new URL(f.source.url).hostname; } catch { /* mantém a url crua */ }
+                    const extras = [
+                      f.source.keyId ? 'DRM' : null,
+                      f.source.referer ? 'com Referer' : null,
+                      f.source.url.startsWith('http://') ? 'HTTP' : null,
+                    ].filter(Boolean).join(' · ');
+                    return (
+                      <button
+                        key={f.source.url}
+                        className={`cast-option ${pos === fontePos ? 'active' : ''}`}
+                        onClick={() => escolherFonte(pos)}
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="2" y="3" width="20" height="14" rx="2" />
+                          <path d="M8 21h8M12 17v4" />
+                        </svg>
+                        <span>Fonte {pos + 1}{pos === fontePos ? ' (em uso)' : ''}</span>
+                        <small>{host}{extras ? ` · ${extras}` : ''}</small>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button className="cast-modal-close" onClick={() => setShowSources(false)}>
+                  Fechar
+                </button>
+              </div>
             </div>
           )}
 
