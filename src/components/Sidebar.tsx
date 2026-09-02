@@ -13,10 +13,6 @@ interface SidebarProps {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
   isMobileView?: boolean;
-  isProMode?: boolean;
-  isLoadingPro?: boolean;
-  proChannelsCount?: number;
-  onToggleProMode?: () => void;
 }
 
 type FilterType = 'all' | 'favorites';
@@ -30,10 +26,6 @@ export const Sidebar = memo(function Sidebar({
   isCollapsed,
   onToggleCollapse,
   isMobileView = false,
-  isProMode = false,
-  isLoadingPro = false,
-  proChannelsCount = 0,
-  onToggleProMode,
 }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<FilterType>('all');
@@ -230,36 +222,6 @@ export const Sidebar = memo(function Sidebar({
       </div>
 
       <div className="sidebar-footer">
-        {onToggleProMode && (
-          <div className={`pro-mode-toggle ${isCollapsed ? 'collapsed' : ''}`}>
-            {isCollapsed ? (
-              <button
-                className={`pro-toggle-compact ${isProMode ? 'pro-active' : ''}`}
-                onClick={onToggleProMode}
-                title={isProMode ? 'Modo PRO ativo' : 'Ativar PRO'}
-              >
-                {isLoadingPro ? '⏳' : isProMode ? 'P' : 'L'}
-              </button>
-            ) : (
-              <div className="pro-toggle-row">
-                <span className={`pro-label lite ${!isProMode ? 'active' : ''}`}>Lite</span>
-                <button
-                  className={`pro-toggle-switch ${isProMode ? 'on' : ''}`}
-                  onClick={onToggleProMode}
-                  aria-label="Alternar entre Lite e PRO"
-                >
-                  <span className="pro-toggle-thumb" />
-                </button>
-                <span className={`pro-label pro ${isProMode ? 'active' : ''}`}>
-                  {isLoadingPro ? '⏳' : 'PRO'}
-                  {isProMode && proChannelsCount > 0 && (
-                    <span className="pro-count">{proChannelsCount}</span>
-                  )}
-                </span>
-              </div>
-            )}
-          </div>
-        )}
         {!isCollapsed && (
           <div className="shortcuts-hint">
             <span>F: tela cheia • M: mudo • T: teatro</span>

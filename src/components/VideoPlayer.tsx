@@ -1,10 +1,12 @@
-import { useRef, useEffect, useState, useCallback, memo } from 'react';
+import { useRef, useEffect, useState, useCallback, useMemo, memo } from 'react';
 import Hls from 'hls.js';
 import mpegts from 'mpegts.js';
-import type { Channel } from '../types/channel';
+import type { Channel, ChannelSource } from '../types/channel';
 import { ProgramInfo } from './ProgramInfo';
 import castService, { type CastMethod, type CastState } from '../services/castService';
-import { getProxiedUrl } from '../utils/proxyUrl';
+import { buildAttempts, isDash, isMpegTs, type Attempt } from '../utils/streamUrl';
+import { makeNestedPathLoader } from '../utils/hlsLoader';
+import { playDash, type DashHandle } from '../services/dashPlayer';
 import './VideoPlayer.css';
 
 interface VideoPlayerProps {
@@ -24,6 +26,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const containerRef = useRef<HTMLDivElement>(null);
   const hlsRef = useRef<Hls | null>(null);
   const mpegtsRef = useRef<mpegts.Player | null>(null);
+  const dashRef = useRef<DashHandle | null>(null);
   const intentionalPauseRef = useRef(false);
   
   const [isPlaying, setIsPlaying] = useState(true);
@@ -68,221 +71,171 @@ export const VideoPlayer = memo(function VideoPlayer({
   const recoveryAttemptsRef = useRef(0);
   const maxRecoveryAttempts = 3;
 
-  // Initialize HLS
+  /*
+   * As fontes do canal, na ordem publicada. Um canal antigo, guardado antes de
+   * o site ler o catálogo com várias fontes, ainda chega só com `url` — daí a
+   * lista de uma fonte só como piso.
+   */
+  const attempts = useMemo<Attempt[]>(() => {
+    if (!channel) return [];
+    const sources: ChannelSource[] = channel.sources?.length
+      ? channel.sources
+      : channel.url ? [{ url: channel.url }] : [];
+    return buildAttempts(sources);
+  }, [channel]);
+
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const [reloadTick, setReloadTick] = useState(0);
+
+  // Trocar de canal recomeça pela fonte preferida, não pela que sobrou da última.
+  useEffect(() => {
+    setSourceIndex(0);
+  }, [channel?.id]);
+
+  /*
+   * Reprodução do canal, uma fonte por vez.
+   *
+   * O catálogo publica várias fontes por canal em ordem de preferência, e é essa
+   * descida que faz um canal continuar no ar quando o primeiro servidor cai —
+   * exatamente o que o aplicativo faz. Cada tipo de fonte pede um caminho: DASH
+   * cifrado vai para o Shaka com a chave do catálogo, playlist HLS para o
+   * hls.js, e fluxo MPEG-TS cru para o mpegts.js, que é o único que abre vídeo
+   * sem playlist nenhuma.
+   */
   useEffect(() => {
     if (!channel || !videoRef.current) return;
 
     const video = videoRef.current;
+    const attempt = attempts[sourceIndex];
+    if (!attempt) {
+      setError('Nenhuma fonte disponível para este canal.');
+      setIsLoading(false);
+      return;
+    }
+    const { source, url, viaProxy } = attempt;
+
+    let cancelado = false;
     setIsLoading(true);
     setError(null);
-    intentionalPauseRef.current = false; // Reset pausa intencional ao trocar de canal
-    recoveryAttemptsRef.current = 0; // Reset tentativas de recuperação ao trocar de canal
+    intentionalPauseRef.current = false;
+    recoveryAttemptsRef.current = 0;
 
-    // Cleanup previous instance
-    if (hlsRef.current) {
-      hlsRef.current.destroy();
-      hlsRef.current = null;
-    }
-    if (mpegtsRef.current) {
-      mpegtsRef.current.destroy();
-      mpegtsRef.current = null;
-    }
+    const limpar = () => {
+      if (hlsRef.current) { hlsRef.current.destroy(); hlsRef.current = null; }
+      if (mpegtsRef.current) { mpegtsRef.current.destroy(); mpegtsRef.current = null; }
+      if (dashRef.current) { dashRef.current.destroy(); dashRef.current = null; }
+    };
+    limpar();
 
-    // Check for MPEG-TS (.ts)
-    if (channel.url.endsWith('.ts') || channel.url.includes('.ts?')) {
-      if (mpegts.isSupported()) {
-        const rawUrl = channel.url.trim();
-        console.log('[VideoPlayer] Initializing MPEGTS player for:', rawUrl);
-
-        const player = mpegts.createPlayer({
-            type: 'mpegts',
-            isLive: true,
-            url: rawUrl, // Usar URL direta sem proxy para garantir compatibilidade com mpegts.js
-            cors: true,
-        }, {
-            enableWorker: true,
-            lazyLoadMaxDuration: 3 * 60,
-            seekType: 'range',
-        });
-
-        player.attachMediaElement(video);
-        player.load();
-        
-        // Helper para tentar reproduzir com fallback de mudo
-        const attemptPlay = () => {
-            if (!videoRef.current) return;
-            const vid = videoRef.current;
-            console.log('[VideoPlayer] Attempting play...');
-            
-            vid.play()
-                .then(() => {
-                    console.log('[VideoPlayer] Play success!');
-                    setIsPlaying(true);
-                    setError(null);
-                })
-                .catch((e) => {
-                    console.log('[VideoPlayer] Play failed (autoplay?), trying muted...', e);
-                    vid.muted = true;
-                    setIsMuted(true);
-                    setPendingUnmute(true);
-                    vid.play()
-                        .then(() => {
-                             console.log('[VideoPlayer] Play success (muted)!');
-                             setIsPlaying(true);
-                             setError(null);
-                        })
-                        .catch((e2) => {
-                             console.error('[VideoPlayer] Play failed completely:', e2);
-                             // Não define erro aqui para dar chance ao usuário interagir
-                        });
-                });
-        };
-
-        player.on(mpegts.Events.ERROR, (type, details) => {
-            console.error(`MPEGTS Error: ${type} - ${details}`);
-             if (type === mpegts.ErrorTypes.NETWORK_ERROR) {
-                  recoveryAttemptsRef.current++;
-                  if (recoveryAttemptsRef.current > maxRecoveryAttempts) {
-                     setError(`Erro de rede: ${details}`);
-                     setIsLoading(false);
-                  } else {
-                     player.load(); // Tenta recarregar
-                  }
-             } else {
-                  setError(`Erro de reprodução: ${details}`);
-                  setIsLoading(false);
-             }
-        });
-
-        player.on(mpegts.Events.LOADING_COMPLETE, () => {
-            setIsLoading(false);
-        });
-        
-        // Quando começar a tocar/bufferizar dados suficientes
-        video.addEventListener('canplay', () => {
-             setIsLoading(false);
-             video.volume = volumeRef.current;
-             // Tenta manter o estado de mute atual se já foi setado pelo autoplay fallback
-             if (!video.muted) {
-                 video.muted = isMutedRef.current; 
-             }
-             attemptPlay();
-        }, { once: true });
-
-        mpegtsRef.current = player;
-        
-        // Tenta iniciar imediatamente assim como no StreamTester
-        attemptPlay();
-         
-        // Return early since we handled TS
-        return () => {
-             if (mpegtsRef.current) {
-                 mpegtsRef.current.destroy();
-                 mpegtsRef.current = null;
-             }
-        };
-      } else {
-         setError('Navegador não suporta mpegts.js');
-         setIsLoading(false);
-         return; 
+    /** Desce para a fonte seguinte; só vira erro quando acabaram todas. */
+    const falhar = (motivo: string) => {
+      if (cancelado) return;
+      if (sourceIndex + 1 < attempts.length) {
+        console.warn(`[VideoPlayer] tentativa ${sourceIndex + 1}/${attempts.length} falhou (${motivo}), indo para a próxima`);
+        setSourceIndex((i) => i + 1);
+        return;
       }
-    }
+      setError('Erro ao carregar o canal. Tente novamente.');
+      setIsLoading(false);
+    };
 
-    if (Hls.isSupported()) {
+    const tocar = () => {
+      if (cancelado || !videoRef.current) return;
+      const vid = videoRef.current;
+      vid.volume = volumeRef.current;
+      vid.play().catch(() => {
+        // Autoplay com som é bloqueado até a pessoa interagir com a página;
+        // começar mudo e desmutar no primeiro clique é melhor que não começar.
+        vid.muted = true;
+        setIsMuted(true);
+        setPendingUnmute(true);
+        vid.play().catch(() => { /* aguarda interação */ });
+      });
+    };
+
+    if (isDash(source.url)) {
+      playDash(video, url, source, falhar)
+        .then((handle) => {
+          if (cancelado) { handle.destroy(); return; }
+          dashRef.current = handle;
+          setIsLoading(false);
+          tocar();
+        })
+        .catch((e) => falhar(e instanceof Error ? e.message : 'dash'));
+    } else if (isMpegTs(source.url) && mpegts.isSupported()) {
+      const player = mpegts.createPlayer(
+        { type: 'mpegts', isLive: true, url, cors: true },
+        { enableWorker: true, lazyLoadMaxDuration: 3 * 60, seekType: 'range' },
+      );
+      player.attachMediaElement(video);
+      player.load();
+      player.on(mpegts.Events.ERROR, (type, details) => {
+        if (type === mpegts.ErrorTypes.NETWORK_ERROR) {
+          recoveryAttemptsRef.current++;
+          if (recoveryAttemptsRef.current > maxRecoveryAttempts) falhar(`rede: ${details}`);
+          else player.load();
+        } else {
+          falhar(`mpegts: ${details}`);
+        }
+      });
+      video.addEventListener('canplay', () => { setIsLoading(false); tocar(); }, { once: true });
+      mpegtsRef.current = player;
+      tocar();
+    } else if (Hls.isSupported()) {
       const hls = new Hls({
         enableWorker: true,
         lowLatencyMode: true,
         backBufferLength: 90,
+        // Pela origem, quem monta o endereço do segmento é o hls.js, e alguns
+        // canais guardam os segmentos noutra pasta. Passando pelo proxy a
+        // correção já veio feita no manifesto.
+        ...(viaProxy ? {} : { loader: makeNestedPathLoader(url) }),
       });
-
-      hls.loadSource(getProxiedUrl(channel.url));
+      hls.loadSource(url);
       hls.attachMedia(video);
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         setIsLoading(false);
-        recoveryAttemptsRef.current = 0; // Reset tentativas quando manifest carregou com sucesso
-        video.volume = volumeRef.current;
+        recoveryAttemptsRef.current = 0;
         video.muted = false;
-        
-        // Tenta primeiro com som
-        video.play().catch(() => {
-          // Se falhar, inicia mutado e agenda desmutar na primeira interação
-          video.muted = true;
-          setIsMuted(true);
-          setPendingUnmute(true);
-          video.play().catch(() => {});
-        });
+        tocar();
       });
 
       hls.on(Hls.Events.ERROR, (_, data) => {
-        if (data.fatal) {
-          recoveryAttemptsRef.current++;
-          
-          // Se excedeu tentativas de recuperação, mostra erro
-          if (recoveryAttemptsRef.current > maxRecoveryAttempts) {
-            setError('Erro ao carregar o canal. Tente novamente.');
-            setIsLoading(false);
-            return;
-          }
-          
-          // Tenta recuperar primeiro, só mostra erro se falhar múltiplas vezes
-          if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
-            // Tenta recuperar erro de rede
-            hls.startLoad();
-          } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
-            // Tenta recuperar erro de mídia
-            hls.recoverMediaError();
-          } else {
-            // Erro irrecuperável
-            setError('Erro ao carregar o canal. Tente novamente.');
-            setIsLoading(false);
-          }
+        if (!data.fatal) return;
+        recoveryAttemptsRef.current++;
+        if (recoveryAttemptsRef.current > maxRecoveryAttempts) {
+          falhar(`hls: ${data.details}`);
+          return;
         }
+        if (data.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad();
+        else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError();
+        else falhar(`hls: ${data.details}`);
       });
 
-      // Listener para detectar quando recuperou com sucesso após erro
-      hls.on(Hls.Events.FRAG_LOADED, () => {
-        // Se fragmento carregou, limpa qualquer erro anterior e reseta tentativas
-        setError(null);
-        recoveryAttemptsRef.current = 0;
-      });
-
-      hls.on(Hls.Events.LEVEL_LOADED, () => {
-        // Se nível carregou, limpa qualquer erro anterior e reseta tentativas
-        setError(null);
-        recoveryAttemptsRef.current = 0;
-      });
+      // Um fragmento que chegou apaga o erro anterior: a recuperação funcionou.
+      hls.on(Hls.Events.FRAG_LOADED, () => { setError(null); recoveryAttemptsRef.current = 0; });
+      hls.on(Hls.Events.LEVEL_LOADED, () => { setError(null); recoveryAttemptsRef.current = 0; });
 
       hlsRef.current = hls;
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // Safari native HLS support
-      video.src = getProxiedUrl(channel.url);
+      video.src = url;
       video.addEventListener('loadedmetadata', () => {
         setIsLoading(false);
-        video.volume = volumeRef.current;
         video.muted = false;
-        
-        // Tenta primeiro com som
-        video.play().catch(() => {
-          // Se falhar, inicia mutado e agenda desmutar na primeira interação
-          video.muted = true;
-          setIsMuted(true);
-          setPendingUnmute(true);
-          video.play().catch(() => {});
-        });
-      });
+        tocar();
+      }, { once: true });
+      video.addEventListener('error', () => falhar('safari'), { once: true });
     } else {
-      setError('Seu navegador não suporta reprodução de vídeo HLS.');
+      setError('Seu navegador não suporta reprodução de vídeo.');
       setIsLoading(false);
     }
 
     return () => {
-      if (hlsRef.current) {
-        hlsRef.current.destroy();
-        hlsRef.current = null;
-      }
+      cancelado = true;
+      limpar();
     };
-  }, [channel]);
+  }, [channel, attempts, sourceIndex, reloadTick]);
 
   // Volume sync
   useEffect(() => {
@@ -580,11 +533,13 @@ export const VideoPlayer = memo(function VideoPlayer({
   }, []);
 
   const retryLoad = useCallback(() => {
-    if (hlsRef.current && channel) {
-      setError(null);
-      setIsLoading(true);
-      hlsRef.current.loadSource(channel.url);
-    }
+    if (!channel) return;
+    setError(null);
+    setIsLoading(true);
+    // Recomeça pela fonte preferida: a que falhou pode ter voltado, e o tique
+    // garante o recarregamento mesmo quando o índice já era zero.
+    setSourceIndex(0);
+    setReloadTick((t) => t + 1);
   }, [channel]);
 
   // Mantém ref atualizada para usar no timeout

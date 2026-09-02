@@ -14,7 +14,8 @@
     "mpegts.js": "^1.8.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-router-dom": "^7.13.1"
+    "react-router-dom": "^7.13.1",
+    "shaka-player": "^4.15.9"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

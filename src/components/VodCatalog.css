@@ -1,0 +1,219 @@
+.vod-catalog {
+  min-height: 100vh;
+  padding: 1rem 1.25rem 3rem;
+  background: var(--bg-primary, #0a0a0a);
+  color: var(--text-primary, #fff);
+}
+
+.vod-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  background: linear-gradient(180deg, var(--bg-primary, #0a0a0a) 70%, transparent);
+  flex-wrap: wrap;
+}
+
+.vod-voltar {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.vod-abas {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.vod-abas button,
+.vod-letras button,
+.vod-temporadas button {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.vod-abas button.ativa,
+.vod-letras button.ativa,
+.vod-temporadas button.ativa {
+  background: var(--accent, #e50914);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.vod-letras button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.vod-busca {
+  flex: 1 1 14rem;
+  min-width: 10rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  font-size: 0.9rem;
+}
+
+.vod-letras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.vod-letras button {
+  min-width: 2.1rem;
+  padding: 0.3rem 0.5rem;
+  text-align: center;
+}
+
+.vod-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.vod-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.vod-poster {
+  aspect-ratio: 2 / 3;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vod-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vod-poster-vazio {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.vod-card-titulo {
+  font-size: 0.78rem;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.vod-card:hover .vod-poster,
+.vod-card:focus-visible .vod-poster {
+  outline: 2px solid var(--accent, #e50914);
+}
+
+.vod-aviso,
+.vod-erro {
+  padding: 1rem 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+.vod-erro {
+  color: #ff8080;
+}
+
+.vod-serie {
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.vod-serie-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.vod-serie-topo h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.vod-serie-topo button {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: none;
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.vod-temporadas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.75rem 0;
+}
+
+.vod-episodios {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.5rem;
+}
+
+.vod-episodios button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+
+.vod-ep-versao {
+  opacity: 0.6;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.vod-sentinela {
+  height: 1px;
+}

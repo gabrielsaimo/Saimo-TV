@@ -2,7 +2,9 @@ import { useState, useCallback, useEffect, createContext, useContext, lazy, Susp
 import { HashRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AppHeader } from './components/AppHeader';
 import { Toast } from './components/Toast';
-import { getAllChannels } from './data/channels';
+import { getAllChannels, adultChannels } from './data/channels';
+import { fetchChannels, cachedChannels, cacheIsStale } from './services/catalogService';
+import { registerChannels, fetchRealEPG } from './services/epgService';
 import type { Channel } from './types/channel';
 import type { Movie } from './types/movie';
 import { useLocalStorage } from './hooks/useLocalStorage';
@@ -15,7 +17,7 @@ const Sidebar = lazy(() => import('./components/Sidebar').then(m => ({ default: 
 const VideoPlayer = lazy(() => import('./components/VideoPlayer').then(m => ({ default: m.VideoPlayer })));
 const MoviePlayer = lazy(() => import('./components/MoviePlayer').then(m => ({ default: m.MoviePlayer })));
 const ProgramGuide = lazy(() => import('./components/ProgramGuide').then(m => ({ default: m.ProgramGuide })));
-const MovieCatalogV2 = lazy(() => import('./components/MovieCatalogV2').then(m => ({ default: m.MovieCatalogV2 })));
+const VodCatalog = lazy(() => import('./components/VodCatalog').then(m => ({ default: m.VodCatalog })));
 const HomeSelector = lazy(() => import('./components/HomeSelector').then(m => ({ default: m.HomeSelector })));
 const StreamTester = lazy(() => import('./components/StreamTester').then(m => ({ default: m.StreamTester })));
 const AppDownload = lazy(() => import('./components/AppDownload').then(m => ({ default: m.AppDownload })));
@@ -90,23 +92,43 @@ function TVPage() {
   const [toast, setToast] = useState<ToastState | null>(null);
   const [mobileTab, setMobileTab] = useState<MobileTab>('player');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [isProMode, setIsProMode] = useLocalStorage<boolean>('tv-pro-mode', false);
-  const [proChannels, setProChannels] = useState<Channel[]>([]);
-  const [isLoadingPro, setIsLoadingPro] = useState(false);
+  const [remoteChannels, setRemoteChannels] = useState<Channel[] | null>(() => cachedChannels());
 
-  const liteChannels = getAllChannels(isAdultUnlocked);
-  const channels = isProMode ? proChannels : liteChannels;
+  /*
+   * A grade vem do mesmo repositório que o aplicativo lê, para que um link
+   * corrigido lá valha aqui sem publicar o site de novo. A lista compilada fica
+   * de piso: se a rede falhar na primeira visita, ainda há canais na tela.
+   */
+  const channels = remoteChannels
+    ? (isAdultUnlocked ? [...remoteChannels, ...adultChannels] : remoteChannels)
+    : getAllChannels(isAdultUnlocked);
 
-  // Carrega lista_pro.json quando ativa modo PRO
   useEffect(() => {
-    if (!isProMode || proChannels.length > 0) return;
-    setIsLoadingPro(true);
-    fetch(`${import.meta.env.BASE_URL}data/lista_pro.json`)
-      .then(r => r.json())
-      .then((data: Channel[]) => setProChannels(data))
-      .catch(err => console.error('Erro ao carregar lista PRO:', err))
-      .finally(() => setIsLoadingPro(false));
-  }, [isProMode]);
+    // O que veio da visita anterior já está na tela; só vale rebuscar quando
+    // envelheceu, e mesmo assim sem apagar nada se o download falhar.
+    if (remoteChannels && !cacheIsStale()) return;
+    let vivo = true;
+    fetchChannels()
+      .then((lista) => { if (vivo && lista) setRemoteChannels(lista); })
+      .catch((err) => console.error('Erro ao carregar catálogo remoto:', err));
+    return () => { vivo = false; };
+    // Uma vez por montagem: a lista não muda enquanto a pessoa assiste.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /*
+   * O guia procura a programação pelo nome do canal, então ele só pode começar
+   * depois de a grade existir. Registrar e disparar aqui é o que garante que
+   * um canal recém-chegado ao catálogo já entre com programação.
+   */
+  useEffect(() => {
+    if (!channels.length) return;
+    registerChannels(channels);
+    // Só o catálogo publicado vale a montagem: a lista compilada é um piso
+    // provisório, e montar o guia por ela gastaria dezoito megabytes com nomes
+    // que a tela não vai mostrar.
+    if (remoteChannels) void fetchRealEPG();
+  }, [channels, remoteChannels]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -115,11 +137,12 @@ function TVPage() {
   }, []);
 
   useEffect(() => {
-    if (lastChannelId) {
-      const channel = channels.find((ch) => ch.id === lastChannelId);
-      if (channel) setSelectedChannel(channel);
-    }
-  }, [lastChannelId]);
+    // Só reabre o último canal quando não há nada tocando: a lista chega depois
+    // do primeiro quadro (vem da rede) e não pode trocar o canal escolhido.
+    if (!lastChannelId || selectedChannel) return;
+    const channel = channels.find((ch) => ch.id === lastChannelId);
+    if (channel) setSelectedChannel(channel);
+  }, [lastChannelId, channels, selectedChannel]);
 
   const showToast = useCallback((message: string, type: ToastState['type'] = 'info') => {
     setToast({ message, type, id: Date.now() });
@@ -242,10 +265,6 @@ function TVPage() {
               onToggleFavorite={handleToggleFavorite}
               isCollapsed={isSidebarCollapsed}
               onToggleCollapse={handleToggleSidebar}
-              isProMode={isProMode}
-              isLoadingPro={isLoadingPro}
-              proChannelsCount={proChannels.length}
-              onToggleProMode={() => { setIsProMode(p => !p); setSelectedChannel(null); }}
             />
         </div>
 
@@ -329,20 +348,9 @@ function MoviesPage() {
     setTimeout(() => setToast(null), 3000);
   }, []);
 
-  const handleSelectMovie = useCallback((movie: any, episodeUrl?: string) => {
-    // Converte EnrichedMovie para Movie para o player
-    const movieForPlayer: Movie = {
-      id: movie.id,
-      name: movie.tmdb?.title || movie.name,
-      url: episodeUrl || movie.url || '',
-      logo: movie.tmdb?.poster || undefined,
-      category: movie.category,
-      type: movie.type,
-      rating: movie.tmdb?.rating
-    };
-    
-    setSelectedMovie(movieForPlayer);
-    showToast(`Assistindo: ${movieForPlayer.name}`, 'info');
+  const handleSelectMovie = useCallback((movie: Movie) => {
+    setSelectedMovie(movie);
+    showToast(`Assistindo: ${movie.name}`, 'info');
   }, [showToast]);
 
   const handleBackFromMovie = useCallback(() => {
@@ -367,13 +375,12 @@ function MoviesPage() {
         />
       )}
       
-      {/* Novo Catálogo V2 */}
+      {/* Catálogo lido do repositório, o mesmo que o aplicativo usa */}
       <Suspense fallback={<LoadingFallback />}>
         <div className={`catalog-container ${selectedMovie ? 'hidden-catalog' : ''}`}>
-          <MovieCatalogV2
+          <VodCatalog
             onSelectMovie={handleSelectMovie}
             onBack={handleBackFromCatalog}
-            isAdultUnlocked={isAdultUnlocked}
           />
         </div>
       </Suspense>

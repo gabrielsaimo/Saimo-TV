@@ -1,49 +1,22 @@
 /**
- * Converte URLs HTTP para usar o proxy da Vercel em produção
- * Isso resolve o problema de Mixed Content (HTTP em páginas HTTPS)
+ * Compatibilidade: a decisão de proxy mora em `streamUrl`.
+ *
+ * Este módulo existia antes com uma regra própria — proxy só em produção, só
+ * para HTTP — que deixava o desenvolvimento tocando por um caminho diferente do
+ * que o visitante vê. Agora ele só reexporta a regra única, para que o que
+ * funciona aqui funcione lá.
  */
 
-const isProduction = import.meta.env.PROD;
+import { needsProxy as sourceNeedsProxy, playableUrl } from './streamUrl';
 
-/**
- * Retorna a URL do proxy para vídeos HTTP quando em produção
- * Em desenvolvimento, retorna a URL original para facilitar debugging
- */
 export function getProxiedUrl(url: string): string {
-  // Em desenvolvimento, retorna a URL original para facilitar debug
-  if (!isProduction) {
-    console.log('[DEV] Usando URL original (proxy desabilitado):', url);
-    return url;
-  }
-
-  // Se já for HTTPS, não precisa de proxy
-  if (url.startsWith('https://')) {
-    return url;
-  }
-
-  // Se for HTTP, usa o proxy apenas em produção
-  if (url.startsWith('http://')) {
-    const encodedUrl = encodeURIComponent(url);
-    // Usa window.location.origin para funcionar em qualquer ambiente (produção, preview, staging)
-    const proxiedUrl = `${window.location.origin}/api/proxy?url=${encodedUrl}`;
-    console.log('[PROD] Usando proxy:', { original: url, proxied: proxiedUrl });
-    return proxiedUrl;
-  }
-
-  // URLs relativas ou outros protocolos, retorna como está
-  return url;
+  return playableUrl({ url });
 }
 
-/**
- * Verifica se a URL precisa de proxy
- */
 export function needsProxy(url: string): boolean {
-  return isProduction && url.startsWith('http://');
+  return sourceNeedsProxy({ url });
 }
 
-/**
- * Verifica se o ambiente é produção
- */
 export function isProd(): boolean {
-  return isProduction;
+  return import.meta.env.PROD;
 }
