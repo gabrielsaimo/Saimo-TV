@@ -23,7 +23,6 @@
 
 .program-info.expanded {
   background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(20px);
 }
 
 /* Barra de progresso */
@@ -60,8 +59,6 @@
   align-items: flex-start;
   gap: 24px;
   padding: 20px 24px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 /* Programa atual */
@@ -227,8 +224,6 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .program-btn:hover {

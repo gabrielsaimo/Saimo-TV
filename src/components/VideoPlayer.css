@@ -34,10 +34,17 @@
   /* Garante que o vídeo não seja afetado por overlays */
   position: relative;
   z-index: 1;
+  /*
+   * O vídeo fica sempre na própria camada de composição. Sem isso o navegador
+   * tira o quadro da camada de overlay assim que um overlay aparece por cima e
+   * volta a desenhá-lo por textura, o que desloca a imagem em alguns pixels.
+   */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .video-element.mirrored {
-  transform: scaleX(-1);
+  transform: scaleX(-1) translateZ(0);
 }
 
 /* No channel state */
@@ -106,8 +113,6 @@
   justify-content: center;
   z-index: 50;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   opacity: 0.85;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
@@ -246,8 +251,6 @@
   z-index: 100;
   pointer-events: none;
   will-change: opacity, transform;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   /* Garantir visibilidade em Smart TVs */
   min-height: 80px;
 }
@@ -289,8 +292,6 @@
   height: 48px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   cursor: pointer;
   display: flex;
