@@ -7,12 +7,16 @@
  * modo que nenhum download passa de uns cem quilobytes. Como a tela também
  * navega por letra, o download acompanha o dedo em vez de contrariá-lo.
  *
- * As capas não existem na origem e vêm do Cinemeta, que é público, libera CORS e
- * não pede chave — a mesma fonte que o aplicativo usa.
+ * As capas não existem na origem e vêm do TMDB, buscadas e pontuadas com o
+ * mesmo algoritmo do `api-saimo-tv` — o gerador que alimenta o catálogo do
+ * Supabase. Pegar só o primeiro resultado (como este site fazia antes, via
+ * Cinemeta) errava a capa com frequência; pontuar por título e ano é o que
+ * torna a busca confiável o bastante para usar sem checagem manual.
  */
 
+import { melhorMatch, posterUrl, type TmdbTipo } from './tmdbService';
+
 const BASE = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/vod/';
-const CINEMETA = 'https://v3-cinemeta.strem.io/catalog';
 
 export const LETRAS = [
   '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -280,20 +284,6 @@ export async function serie(achado: Achado): Promise<Serie | null> {
 // CAPAS
 // ============================================================
 
-const RUIDO = /\b(4k|uhd|fhd|hd|sd|h265|hevc|hdr|dv|dual|remux|legendado|dublado|leg|dub)\b/gi;
-const COLCHETES = /\[[^\]]*]/g;
-const PARENTESES_SEM_ANO = /\((?!(?:19|20)\d{2}\))[^)]*\)/g;
-
-/** Mantém o ano: é ele que separa a capa de uma refilmagem da outra. */
-export function limparTitulo(titulo: string): string {
-  return titulo
-    .replace(COLCHETES, ' ')
-    .replace(PARENTESES_SEM_ANO, ' ')
-    .replace(RUIDO, ' ')
-    .replace(/\s{2,}/g, ' ')
-    .trim();
-}
-
 /// Título -> capa. Vazio quer dizer procurado e não achado, e é guardado
 /// também: sem isso a mesma busca infrutífera se repetiria a cada rolagem.
 const capasEmMemoria = new Map<string, Promise<string | null>>();
@@ -303,16 +293,9 @@ export function capa(titulo: string, serieBool: boolean): Promise<string | null>
   const existente = capasEmMemoria.get(chave);
   if (existente) return existente;
 
-  const busca = limparTitulo(titulo);
-  if (busca.length < 2) return Promise.resolve(null);
-
-  const tipo = serieBool ? 'series' : 'movie';
-  const promessa = fetch(`${CINEMETA}/${tipo}/top/search=${encodeURIComponent(busca)}.json`)
-    .then((r) => (r.ok ? r.json() : null))
-    // Fica o primeiro resultado, sem conferir o nome: o índice conhece os
-    // títulos em português — "A 13ª Emenda" é "13th" — e nenhuma comparação de
-    // palavras aceitaria isso. O preço é uma capa errada de vez em quando.
-    .then((json) => (json?.metas?.[0]?.poster as string | undefined) || null)
+  const tipo: TmdbTipo = serieBool ? 'tv' : 'movie';
+  const promessa = melhorMatch(titulo, tipo)
+    .then((match) => posterUrl(match?.resultado.poster_path))
     .catch(() => null);
 
   capasEmMemoria.set(chave, promessa);
