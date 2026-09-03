@@ -27,7 +27,7 @@ import {
 } from '../services/vodService';
 import './VodCatalog.css';
 
-type Aba = 'filmes' | 'series';
+type Aba = 'filmes' | 'series' | 'extra';
 
 /** Quantos cartões entram por vez ao rolar. */
 const PAGINA = 120;
@@ -35,6 +35,10 @@ const PAGINA = 120;
 interface VodCatalogProps {
   onSelectMovie: (movie: Movie) => void;
   onBack: () => void;
+  /// Mesma trava de 18+ dos canais — sem ela a aba nem aparece, e é o que
+  /// faltava aqui: o app já esconde/mostra "extra" junto com o desbloqueio,
+  /// o site nunca recebia esse estado.
+  isAdultUnlocked: boolean;
 }
 
 interface Item {
@@ -83,8 +87,13 @@ function Poster({ titulo, serie }: { titulo: string; serie: boolean }) {
   );
 }
 
-export function VodCatalog({ onSelectMovie, onBack }: VodCatalogProps) {
+export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalogProps) {
   const [aba, setAba] = useState<Aba>('filmes');
+
+  // Se travar de novo com a aba extra aberta, ela não pode continuar visível.
+  useEffect(() => {
+    if (!isAdultUnlocked && aba === 'extra') setAba('filmes');
+  }, [isAdultUnlocked, aba]);
   const [letra, setLetra] = useState('A');
   const [gavetas, setGavetas] = useState<Gaveta[]>([]);
   const [itens, setItens] = useState<Item[]>([]);
@@ -118,29 +127,31 @@ export function VodCatalog({ onSelectMovie, onBack }: VodCatalogProps) {
     return mapa;
   }, [gavetas]);
 
-  // Lista da letra escolhida. A busca, quando ativa, manda na tela.
+  // Lista da letra escolhida. A busca, quando ativa, manda na tela — exceto
+  // no extra, que fica fora do índice de busca geral de propósito, do mesmo
+  // jeito que no app: título reservado não vaza pra fora da aba dele.
   useEffect(() => {
-    if (busca) return;
+    if (busca && aba !== 'extra') return;
     let vivo = true;
     setCarregando(true);
     setErro(null);
 
-    const trabalho = aba === 'filmes'
-      ? listarFilmes(letra).then((lista) => lista.map<Item>((f) => ({
-        chave: `f:${f.titulo}`,
-        titulo: f.titulo,
-        rotulo: f.titulo,
-        serie: false,
-        letra,
-        filme: f,
-      })))
-      : listarSeries(letra).then((lista) => lista.map<Item>((s) => ({
+    const trabalho = aba === 'series'
+      ? listarSeries(letra).then((lista) => lista.map<Item>((s) => ({
         chave: `s:${s.titulo}:${s.ano}`,
         titulo: s.titulo,
         rotulo: s.nomeCompleto,
         serie: true,
         letra,
         dados: s,
+      })))
+      : listarFilmes(letra, aba === 'extra').then((lista) => lista.map<Item>((f) => ({
+        chave: `${aba === 'extra' ? 'x' : 'f'}:${f.titulo}`,
+        titulo: f.titulo,
+        rotulo: f.titulo,
+        serie: false,
+        letra,
+        filme: f,
       })));
 
     trabalho
@@ -166,9 +177,9 @@ export function VodCatalog({ onSelectMovie, onBack }: VodCatalogProps) {
   }, [termo]);
 
   const resultados = useMemo<Item[]>(() => {
-    if (!busca) return itens;
+    if (!busca || aba === 'extra') return itens;
     return busca
-      .filter((a) => (aba === 'filmes' ? !a.serie : a.serie))
+      .filter((a) => (aba === 'series' ? a.serie : !a.serie))
       .map((a) => ({
         chave: `${a.serie ? 's' : 'f'}:${a.titulo}:${a.ano}`,
         titulo: a.titulo,
@@ -258,14 +269,24 @@ export function VodCatalog({ onSelectMovie, onBack }: VodCatalogProps) {
           >
             Séries
           </button>
+          {isAdultUnlocked && (
+            <button
+              className={aba === 'extra' ? 'ativa' : ''}
+              onClick={() => { setAba('extra'); setAberto(null); setTermo(''); }}
+            >
+              18+
+            </button>
+          )}
         </div>
-        <input
-          className="vod-busca"
-          type="search"
-          placeholder="Buscar em todo o acervo…"
-          value={termo}
-          onChange={(e) => setTermo(e.target.value)}
-        />
+        {aba !== 'extra' && (
+          <input
+            className="vod-busca"
+            type="search"
+            placeholder="Buscar em todo o acervo…"
+            value={termo}
+            onChange={(e) => setTermo(e.target.value)}
+          />
+        )}
         {/* Esta tela não usa o cabeçalho do site, e é onde se passa mais tempo:
             os mesmos dois atalhos precisam estar aqui também. */}
         <a
@@ -294,11 +315,13 @@ export function VodCatalog({ onSelectMovie, onBack }: VodCatalogProps) {
         </a>
       </header>
 
-      {!busca && (
+      {(!busca || aba === 'extra') && (
         <nav className="vod-letras">
           {LETRAS.map((l) => {
             const g = contagem.get(l);
-            const quantos = aba === 'filmes' ? g?.filmes ?? 0 : g?.series ?? 0;
+            const quantos = aba === 'series' ? g?.series ?? 0
+              : aba === 'extra' ? g?.reservados ?? 0
+              : g?.filmes ?? 0;
             return (
               <button
                 key={l}

@@ -381,6 +381,7 @@ function MoviesPage() {
           <VodCatalog
             onSelectMovie={handleSelectMovie}
             onBack={handleBackFromCatalog}
+            isAdultUnlocked={isAdultUnlocked}
           />
         </div>
       </Suspense>
