@@ -51,6 +51,10 @@ interface Item {
   dados?: Serie;
 }
 
+function normalizar(texto: string): string {
+  return texto.normalize('NFD').replace(/\p{Mn}+/gu, '').toLowerCase();
+}
+
 /** Capa buscada só quando o cartão aparece: são vinte na tela, não trinta mil. */
 function Poster({ titulo, serie }: { titulo: string; serie: boolean }) {
   const [src, setSrc] = useState<string | null>(null);
@@ -100,6 +104,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
   const [carregando, setCarregando] = useState(true);
   const [termo, setTermo] = useState('');
   const [busca, setBusca] = useState<Achado[] | null>(null);
+  const [buscaExtra, setBuscaExtra] = useState<Item[] | null>(null);
   const [aberto, setAberto] = useState<Item | null>(null);
   const [episodiosAbertos, setEpisodiosAbertos] = useState<Episodio[] | null>(null);
   const [temporada, setTemporada] = useState(1);
@@ -127,11 +132,14 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
     return mapa;
   }, [gavetas]);
 
-  // Lista da letra escolhida. A busca, quando ativa, manda na tela — exceto
-  // no extra, que fica fora do índice de busca geral de propósito, do mesmo
-  // jeito que no app: título reservado não vaza pra fora da aba dele.
+  // Termo em busca dentro do próprio 18+ — não usa o índice geral (ver
+  // abaixo), então tem letra própria de "buscando".
+  const buscandoExtra = aba === 'extra' && termo.trim().length >= 2;
+  const buscaAtiva = aba === 'extra' ? buscandoExtra : !!busca;
+
+  // Lista da letra escolhida. A busca, quando ativa, manda na tela.
   useEffect(() => {
-    if (busca && aba !== 'extra') return;
+    if (buscaAtiva) return;
     let vivo = true;
     setCarregando(true);
     setErro(null);
@@ -160,12 +168,14 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
       .finally(() => { if (vivo) setCarregando(false); });
 
     return () => { vivo = false; };
-  }, [aba, letra, busca]);
+  }, [aba, letra, buscaAtiva]);
 
-  // Busca no acervo inteiro, com folga para quem ainda está digitando.
+  // Busca no acervo inteiro, com folga para quem ainda está digitando. Fica
+  // de fora quando a aba é o 18+ — o índice geral nunca traz título
+  // reservado (ver gerar_vod.py), então essa chamada não acharia nada lá.
   useEffect(() => {
     const alvo = termo.trim();
-    if (alvo.length < 2) { setBusca(null); return; }
+    if (alvo.length < 2 || aba === 'extra') { setBusca(null); return; }
     const tempo = window.setTimeout(() => {
       setCarregando(true);
       buscar(alvo)
@@ -174,10 +184,42 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
         .finally(() => setCarregando(false));
     }, 350);
     return () => window.clearTimeout(tempo);
-  }, [termo]);
+  }, [termo, aba]);
+
+  /// Busca dentro do 18+: como o título reservado não está no índice geral,
+  /// aqui é o próprio acervo reservado (pequeno: nove mil títulos) que é
+  /// vasculhado, uma letra de cada vez, só nas letras que têm alguma.
+  useEffect(() => {
+    if (!buscandoExtra) { setBuscaExtra(null); return; }
+    const alvo = normalizar(termo.trim());
+    let vivo = true;
+    const tempo = window.setTimeout(() => {
+      setCarregando(true);
+      const letras = gavetas.filter((g) => g.reservados > 0).map((g) => g.letra);
+      Promise.all(letras.map((l) => listarFilmes(l, true).then((lista) => ({ letra: l, lista }))))
+        .then((porLetra) => {
+          if (!vivo) return;
+          const achados = porLetra.flatMap(({ letra: l, lista }) => lista
+            .filter((f) => normalizar(f.titulo).includes(alvo))
+            .map<Item>((f) => ({
+              chave: `x:${f.titulo}`,
+              titulo: f.titulo,
+              rotulo: f.titulo,
+              serie: false,
+              letra: l,
+              filme: f,
+            })));
+          setBuscaExtra(achados);
+        })
+        .catch(() => { if (vivo) setBuscaExtra([]); })
+        .finally(() => { if (vivo) setCarregando(false); });
+    }, 350);
+    return () => { vivo = false; window.clearTimeout(tempo); };
+  }, [buscandoExtra, termo, gavetas]);
 
   const resultados = useMemo<Item[]>(() => {
-    if (!busca || aba === 'extra') return itens;
+    if (aba === 'extra') return buscandoExtra ? buscaExtra ?? [] : itens;
+    if (!busca) return itens;
     return busca
       .filter((a) => (aba === 'series' ? a.serie : !a.serie))
       .map((a) => ({
@@ -187,7 +229,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
         serie: a.serie,
         letra: a.letra,
       }));
-  }, [busca, itens, aba]);
+  }, [busca, buscaExtra, buscandoExtra, itens, aba]);
 
   const tocar = useCallback((titulo: string, url: string, tipo: 'movie' | 'series') => {
     onSelectMovie({
@@ -228,7 +270,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
     return [...new Set(episodiosAbertos.map((e) => e.temporada))].sort((a, b) => a - b);
   }, [episodiosAbertos]);
 
-  const listaAtual = busca ? `busca:${termo.trim()}:${aba}` : `${aba}:${letra}`;
+  const listaAtual = buscaAtiva ? `busca:${termo.trim()}:${aba}` : `${aba}:${letra}`;
   const visiveis = pagina.lista === listaAtual ? pagina.quantos : PAGINA;
 
   useEffect(() => {
@@ -278,15 +320,13 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
             </button>
           )}
         </div>
-        {aba !== 'extra' && (
-          <input
-            className="vod-busca"
-            type="search"
-            placeholder="Buscar em todo o acervo…"
-            value={termo}
-            onChange={(e) => setTermo(e.target.value)}
-          />
-        )}
+        <input
+          className="vod-busca"
+          type="search"
+          placeholder={aba === 'extra' ? 'Buscar no 18+…' : 'Buscar em todo o acervo…'}
+          value={termo}
+          onChange={(e) => setTermo(e.target.value)}
+        />
         {/* Esta tela não usa o cabeçalho do site, e é onde se passa mais tempo:
             os mesmos dois atalhos precisam estar aqui também. */}
         <a
@@ -315,7 +355,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
         </a>
       </header>
 
-      {(!busca || aba === 'extra') && (
+      {!buscaAtiva && (
         <nav className="vod-letras">
           {LETRAS.map((l) => {
             const g = contagem.get(l);
