@@ -16,6 +16,9 @@ import {
   buscar,
   todos as listarTudo,
   capaDaFicha,
+  semAno,
+  idDaFicha,
+  tituloDoId,
   colecao,
   destaques,
   episodios,
@@ -35,6 +38,8 @@ import {
   type Serie,
   type SerieColecao,
 } from '../services/vodService';
+import { ficha as buscarFicha, fichaVazia, creditosDe } from '../services/tmdbService';
+import type { Ficha, Pessoa } from '../services/tmdbService';
 import './VodCatalog.css';
 
 type Aba = 'inicio' | 'filmes' | 'series' | 'animes' | 'doramas' | 'extra';
@@ -206,6 +211,12 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
   const [modalCarregando, setModalCarregando] = useState(false);
   const [erroModal, setErroModal] = useState<string | null>(null);
   const [temporada, setTemporada] = useState(1);
+  /** A ficha do título aberto: sinopse, duração, gêneros e elenco. */
+  const [ficha, setFicha] = useState<Ficha | null>(null);
+  const [fichaCarregando, setFichaCarregando] = useState(false);
+  /** O ator aberto dentro da ficha, e o que ele tem no acervo. */
+  const [ator, setAtor] = useState<Pessoa | null>(null);
+  const [filmografia, setFilmografia] = useState<Item[] | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const abertura = useRef(0);
   /*
@@ -364,7 +375,77 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
     setFontesAbertas(null);
     setErroModal(null);
     setModalCarregando(false);
+    setFicha(null);
+    setAtor(null);
+    setFilmografia(null);
   }, []);
+
+  /**
+   * A ficha do título aberto: sinopse, duração, classificação e elenco.
+   *
+   * O arquivo de fichas já diz o id do TMDB de cada título do acervo, então
+   * não há busca por nome nem desempate — pergunta-se direto pelo número
+   * certo, e um pedido por título aberto não pesa como um por título listado.
+   */
+  useEffect(() => {
+    if (!aberto || !generos) { setFicha(null); return; }
+    const id = idDaFicha(generos, aberto.titulo, aberto.serie);
+    if (!id) { setFicha(null); setFichaCarregando(false); return; }
+    let vivo = true;
+    setFichaCarregando(true);
+    buscarFicha(id, aberto.serie)
+      .then((achada) => { if (vivo) setFicha(achada); })
+      .finally(() => { if (vivo) setFichaCarregando(false); });
+    return () => { vivo = false; };
+  }, [aberto, generos]);
+
+  /**
+   * O que um ator fez **e que existe neste acervo**.
+   *
+   * A filmografia inteira do TMDB não serve de dentro do site: listar oitenta
+   * títulos dos quais setenta não abrem é uma lista que frustra. O cruzamento
+   * é pelo id do TMDB — nome igual não engana, refilmagem não vira o original.
+   */
+  useEffect(() => {
+    if (!ator || !generos) { setFilmografia(null); return; }
+    let vivo = true;
+    setFilmografia(null);
+    (async () => {
+      const creditos = await creditosDe(ator.id);
+      const [comFilmes, comSeries] = await Promise.all([
+        listarTudo(false),
+        listarTudo(true),
+      ]);
+      if (!vivo) return;
+      const porNome = new Map<string, Achado>();
+      for (const achado of [...comFilmes, ...comSeries]) {
+        porNome.set(`${achado.serie ? 's' : 'f'}|${achado.titulo}`, achado);
+      }
+      const vistos = new Set<string>();
+      const saida: Item[] = [];
+      for (const credito of creditos) {
+        const titulo = tituloDoId(generos, credito.id, credito.serie);
+        if (!titulo) continue;
+        const marca = credito.serie ? 's' : 'f';
+        const achado = porNome.get(`${marca}|${titulo}`)
+          ?? porNome.get(`${marca}|${semAno(titulo)}`);
+        if (!achado) continue;
+        const chave = `${marca}:${achado.letra}:${achado.titulo}`;
+        if (vistos.has(chave)) continue;
+        vistos.add(chave);
+        saida.push({
+          chave,
+          titulo: achado.titulo,
+          rotulo: achado.nomeCompleto || achado.titulo,
+          serie: achado.serie,
+          letra: achado.letra,
+          ano: achado.ano,
+        });
+      }
+      setFilmografia(saida);
+    })();
+    return () => { vivo = false; };
+  }, [ator, generos]);
 
   /**
    * Abre o título no player, levando todas as fontes.
@@ -692,8 +773,90 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
             <button className="vod-modal-fechar" onClick={fecharModal} aria-label="Fechar">×</button>
           </div>
 
-          {modalCarregando && <p className="vod-aviso">Carregando opções…</p>}
-          {erroModal && <p className="vod-erro">{erroModal}</p>}
+          {ator ? (
+            <div className="vod-ficha-ator">
+              <button className="vod-ficha-voltar" onClick={() => setAtor(null)}>
+                ‹ Voltar à ficha
+              </button>
+              <h3>{ator.nome}</h3>
+              {filmografia === null && <p className="vod-aviso">Procurando no acervo…</p>}
+              {filmografia?.length === 0 && (
+                <>
+                  <p className="vod-aviso">Nada desta pessoa no acervo.</p>
+                  <p className="vod-ficha-nota">
+                    A filmografia mostra só o que dá para abrir daqui.
+                  </p>
+                </>
+              )}
+              {!!filmografia?.length && (
+                <ul className="vod-ficha-filmografia">
+                  {filmografia.map((item) => (
+                    <li key={item.chave}>
+                      <button onClick={() => { setAtor(null); abrir(item); }}>
+                        <span>{item.rotulo}</span>
+                        <small>{item.serie ? 'Série' : 'Filme'}</small>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ) : (
+            <>
+              {fichaCarregando && !ficha && <p className="vod-aviso">Buscando a ficha…</p>}
+              {ficha && !fichaVazia(ficha) && (
+                <div className="vod-ficha">
+                  <div className="vod-ficha-numeros">
+                    {!!ficha.ano && <span>{ficha.ano}</span>}
+                    {!!ficha.duracao && (
+                      <span>{ficha.duracao} min{aberto.serie ? '/ep' : ''}</span>
+                    )}
+                    {!!ficha.classificacao && (
+                      <span className="vod-ficha-classificacao">{ficha.classificacao}</span>
+                    )}
+                    {ficha.nota > 0 && <span>★ {ficha.nota.toFixed(1)}</span>}
+                  </div>
+                  {!!ficha.generos.length && (
+                    <p className="vod-ficha-generos">{ficha.generos.join(' · ')}</p>
+                  )}
+                  {!!ficha.frase && <p className="vod-ficha-frase">{ficha.frase}</p>}
+                  {!!ficha.sinopse && <p className="vod-ficha-sinopse">{ficha.sinopse}</p>}
+                  <dl className="vod-ficha-creditos">
+                    {!!ficha.assinatura && (
+                      <>
+                        <dt>{aberto.serie ? 'Criação' : 'Direção'}</dt>
+                        <dd>{ficha.assinatura}</dd>
+                      </>
+                    )}
+                    {!!ficha.roteiro && (<><dt>Roteiro</dt><dd>{ficha.roteiro}</dd></>)}
+                    {!!ficha.produtora && (<><dt>Produção</dt><dd>{ficha.produtora}</dd></>)}
+                  </dl>
+                  {!!ficha.elenco.length && (
+                    <div className="vod-ficha-elenco">
+                      <h3>Elenco</h3>
+                      <ul>
+                        {ficha.elenco.map((pessoa) => (
+                          <li key={pessoa.id}>
+                            <button
+                              onClick={() => setAtor(pessoa)}
+                              title={`Ver o que ${pessoa.nome} tem no acervo`}
+                            >
+                              {pessoa.foto
+                                ? <img src={pessoa.foto} alt="" loading="lazy" />
+                                : <span className="vod-ficha-sem-foto" aria-hidden="true" />}
+                              <strong>{pessoa.nome}</strong>
+                              <small>{pessoa.papel}</small>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {modalCarregando && <p className="vod-aviso">Carregando opções…</p>}
+              {erroModal && <p className="vod-erro">{erroModal}</p>}
 
           {!aberto.serie && fontesAbertas && fontesAbertas.length > 0 && (
             <div className="vod-fontes">
@@ -745,6 +908,8 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
                   </li>
                 ))}
               </ul>
+            </>
+          )}
             </>
           )}
         </section>

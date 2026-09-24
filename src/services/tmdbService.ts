@@ -208,3 +208,146 @@ export async function melhorMatch(nome: string, tipoPrincipal: TmdbTipo): Promis
 export function posterUrl(path: string | null | undefined, largura: 'w185' | 'w342' | 'w500' = 'w342'): string | null {
   return path ? `https://image.tmdb.org/t/p/${largura}${path}` : null;
 }
+
+// ── Ficha completa ─────────────────────────────────────────────────────────
+//
+// A busca do TMDB devolve pouco: título, capa e pouco mais. Sinopse inteira,
+// duração, classificação indicativa, elenco, direção e produtora só existem no
+// endereço do próprio título — e é um pedido por título aberto, não por título
+// listado. Com o id vindo do arquivo de fichas não há busca nem desempate:
+// pergunta-se direto pelo número certo.
+//
+// Os mesmos campos, com os mesmos nomes, são o que o celular, o Mac, a TV Box e
+// o Windows mostram.
+
+export interface Pessoa {
+  id: number;
+  nome: string;
+  papel: string;
+  foto: string | null;
+}
+
+export interface Ficha {
+  titulo: string;
+  sinopse: string;
+  frase: string;
+  /** Minutos: do filme, ou de um episódio da série. */
+  duracao: number | null;
+  classificacao: string | null;
+  nota: number;
+  ano: string;
+  generos: string[];
+  /** Quem dirigiu o filme, ou quem criou a série. */
+  assinatura: string;
+  roteiro: string;
+  produtora: string;
+  elenco: Pessoa[];
+  capa: string | null;
+  fundo: string | null;
+}
+
+export function fichaVazia(ficha: Ficha): boolean {
+  return !ficha.sinopse && !ficha.elenco.length && !ficha.generos.length && ficha.duracao == null;
+}
+
+/** A classificação indicativa brasileira, quando o TMDB a conhece. */
+function certificacaoBR(json: any, serie: boolean): string | null {
+  if (serie) {
+    const br = json?.content_ratings?.results?.find((r: any) => r.iso_3166_1 === 'BR');
+    return br?.rating || null;
+  }
+  const br = json?.release_dates?.results?.find((r: any) => r.iso_3166_1 === 'BR');
+  const comNota = br?.release_dates?.find((d: any) => d.certification);
+  return comNota?.certification || null;
+}
+
+const fichasEmMemoria = new Map<string, Promise<Ficha | null>>();
+
+export function ficha(id: number, serie: boolean): Promise<Ficha | null> {
+  const chave = `${serie ? 'tv' : 'movie'}:${id}`;
+  const existente = fichasEmMemoria.get(chave);
+  if (existente) return existente;
+
+  const promessa = (async (): Promise<Ficha | null> => {
+    const tipo = serie ? 'tv' : 'movie';
+    const extras = serie ? 'credits,content_ratings' : 'credits,release_dates';
+    try {
+      const resposta = await fetch(
+        `${TMDB_BASE}/${tipo}/${id}?api_key=${TMDB_API_KEY}&language=pt-BR` +
+        `&append_to_response=${extras}`,
+      );
+      if (!resposta.ok) return null;
+      const json = await resposta.json();
+
+      const equipe: any[] = json?.credits?.crew ?? [];
+      const direcao = equipe.filter((p) => p.job === 'Director').map((p) => p.name);
+      const roteiro = equipe
+        .filter((p) => p.job === 'Screenplay' || p.job === 'Writer' || p.job === 'Story')
+        .map((p) => p.name);
+      // Série não tem diretor único: quem a assina é quem a criou.
+      const criadores: string[] = (json?.created_by ?? []).map((p: any) => p.name);
+      const assinatura = (direcao.length ? direcao : criadores).slice(0, 2).join(', ');
+      const data = (serie ? json?.first_air_date : json?.release_date) ?? '';
+
+      return {
+        titulo: (serie ? json?.name : json?.title) ?? '',
+        sinopse: json?.overview ?? '',
+        frase: json?.tagline ?? '',
+        duracao: (serie ? json?.episode_run_time?.[0] : json?.runtime) || null,
+        classificacao: certificacaoBR(json, serie),
+        nota: json?.vote_average ?? 0,
+        ano: String(data).slice(0, 4),
+        generos: (json?.genres ?? []).map((g: any) => g.name).filter(Boolean),
+        assinatura,
+        roteiro: [...new Set(roteiro)].slice(0, 2).join(', '),
+        produtora: json?.production_companies?.[0]?.name ?? '',
+        elenco: (json?.credits?.cast ?? []).slice(0, 20).map((p: any) => ({
+          id: p.id,
+          nome: p.name,
+          papel: p.character ?? '',
+          foto: posterUrl(p.profile_path, 'w185'),
+        })),
+        capa: posterUrl(json?.poster_path, 'w342'),
+        fundo: json?.backdrop_path
+          ? `https://image.tmdb.org/t/p/w780${json.backdrop_path}`
+          : null,
+      };
+    } catch {
+      return null;
+    }
+  })();
+
+  fichasEmMemoria.set(chave, promessa);
+  return promessa;
+}
+
+/**
+ * Os trabalhos de um ator, como o TMDB os devolve: id e se é série, em ordem
+ * de popularidade. O cruzamento com o acervo é feito por quem chama, que é
+ * quem tem o índice — a lista inteira do TMDB não serve de dentro do site.
+ */
+export async function creditosDe(ator: number): Promise<{ id: number; serie: boolean }[]> {
+  try {
+    const resposta = await fetch(
+      `${TMDB_BASE}/person/${ator}/combined_credits?api_key=${TMDB_API_KEY}&language=pt-BR`,
+    );
+    if (!resposta.ok) return [];
+    const json = await resposta.json();
+    const trabalhos: any[] = [...(json?.cast ?? []), ...(json?.crew ?? [])];
+    trabalhos.sort((a, b) => (b?.popularity ?? 0) - (a?.popularity ?? 0));
+    const vistos = new Set<string>();
+    const saida: { id: number; serie: boolean }[] = [];
+    for (const trabalho of trabalhos) {
+      const id = Number(trabalho?.id);
+      if (!Number.isFinite(id) || id <= 0) continue;
+      const serie = trabalho?.media_type === 'tv';
+      const marca = `${serie ? 's' : 'f'}:${id}`;
+      if (vistos.has(marca)) continue;
+      vistos.add(marca);
+      saida.push({ id, serie });
+    }
+    return saida;
+  } catch {
+    return [];
+  }
+}

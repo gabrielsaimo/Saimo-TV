@@ -494,6 +494,18 @@ export interface Generos {
   mapa: Map<string, string[]>;
   /** "f|Nome" ou "s|Nome" -> o endereço do pôster, quando o TMDB conhece. */
   capas: Map<string, string>;
+  /**
+   * "f|Nome" ou "s|Nome" -> o id do TMDB. Com ele, a ficha completa de um
+   * título é um pedido só, sem busca por nome nem desempate.
+   */
+  ids: Map<string, number>;
+  /**
+   * O caminho inverso: id do TMDB -> título do acervo. É assim que a
+   * filmografia de um ator vira uma lista clicável — só entra o que existe
+   * aqui dentro. Série entra com o id negativo, para não colidir com o filme
+   * de mesmo número.
+   */
+  porId: Map<number, string>;
   /** Todos os que aparecem no acervo, em ordem. */
   todos: string[];
 }
@@ -505,6 +517,8 @@ export async function generos(): Promise<Generos> {
   const texto = await arquivo('fichas.txt');
   const mapa = new Map<string, string[]>();
   const capas = new Map<string, string>();
+  const ids = new Map<string, number>();
+  const porId = new Map<number, string>();
   const vistos = new Set<string>();
   let base = '';
   // tipo \t título \t id do TMDB \t pôster \t gêneros
@@ -516,12 +530,23 @@ export async function generos(): Promise<Generos> {
     if (campos.length < 5) continue;
     const chave = `${campos[0]}|${campos[1]}`;
     if (campos[3]) capas.set(chave, base + campos[3]);
+    const id = Number(campos[2]);
+    if (Number.isFinite(id) && id > 0) {
+      ids.set(chave, id);
+      const marca = campos[0] === 's' ? -id : id;
+      // Um mesmo id pode aparecer duas vezes no acervo (o mesmo filme em duas
+      // grafias); o primeiro basta.
+      if (!porId.has(marca)) porId.set(marca, campos[1]);
+    }
     const lista = campos[4].split(',').map((g) => g.trim()).filter(Boolean);
     if (!lista.length) continue;
     mapa.set(chave, lista);
     lista.forEach((g) => vistos.add(g));
   }
-  generosEmMemoria = { mapa, capas, todos: [...vistos].sort((a, b) => a.localeCompare(b, 'pt-BR')) };
+  generosEmMemoria = {
+    mapa, capas, ids, porId,
+    todos: [...vistos].sort((a, b) => a.localeCompare(b, 'pt-BR')),
+  };
   return generosEmMemoria;
 }
 
@@ -546,6 +571,17 @@ export function semAno(titulo: string): string {
 export function capaDaFicha(g: Generos, titulo: string, serie: boolean): string | null {
   const marca = serie ? 's' : 'f';
   return g.capas.get(`${marca}|${titulo}`) ?? g.capas.get(`${marca}|${semAno(titulo)}`) ?? null;
+}
+
+/** O id do TMDB de um título, quando o gerador o resolveu. */
+export function idDaFicha(g: Generos, titulo: string, serie: boolean): number | null {
+  const marca = serie ? 's' : 'f';
+  return g.ids.get(`${marca}|${titulo}`) ?? g.ids.get(`${marca}|${semAno(titulo)}`) ?? null;
+}
+
+/** O título do acervo que corresponde a um id do TMDB, se houver. */
+export function tituloDoId(g: Generos, id: number, serie: boolean): string | null {
+  return g.porId.get(serie ? -id : id) ?? null;
 }
 
 export function temGenero(g: Generos, titulo: string, serie: boolean, genero: string): boolean {
