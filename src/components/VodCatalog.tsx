@@ -8,6 +8,7 @@
  */
 
 import * as telemetria from '../services/telemetria';
+import { lista as listaAndamento } from '../services/continuar';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { Movie, MovieSource, SeriesEpisodeInfo } from '../types/movie';
@@ -234,6 +235,18 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   const [aba, setAba] = useState<Aba>('inicio');
   const [filas, setFilas] = useState<FilaDestaque[]>([]);
   const [generos, setGeneros] = useState<Generos | null>(null);
+  // Refeita ao voltar do player: a fileira do que a pessoa estava vendo.
+  const filasComContinuar = useMemo<FilaDestaque[]>(() => {
+    const andamento = listaAndamento();
+    if (!andamento.length || playerOpen) return filas;
+    return [{
+      titulo: 'Continue assistindo',
+      itens: andamento.map((a) => ({
+        ...a.origem,
+        capa: a.origem.capa || (generos ? capaDaFicha(generos, a.origem.titulo, a.origem.tipo !== 'f') ?? '' : ''),
+      })),
+    }, ...filas];
+  }, [filas, generos, playerOpen]);
   const [genero, setGenero] = useState('');
 
   // Se travar de novo com a aba extra aberta, ela não pode continuar visível.
@@ -509,10 +522,29 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
    * Abre um filme no player sem destruir o modal. O modal fica apenas oculto
    * atrás do player, então voltar traz a ficha de volta no mesmo lugar.
    */
+  /** Id do TMDB do título aberto: o da coleção, ou o do arquivo de fichas. */
+  /** O título aberto no formato dos destaques, para o "Continue assistindo". */
+  const origemDe = useCallback((item: Item | null) => {
+    if (!item) return undefined;
+    const tipo = item.chave.startsWith('animes') ? 'a' : item.chave.startsWith('doramas') ? 'd'
+      : item.serie ? 's' : 'f';
+    const capa = (generos && capaDaFicha(generos, item.titulo, item.serie)) || '';
+    return { tipo, titulo: item.titulo, letra: item.letra, ano: item.ano ?? '', capa };
+  }, [generos]);
+
+  const idDoAberto = useCallback((item: Item | null): number | undefined => {
+    if (!item) return undefined;
+    const daChave = Number(item.chave.split(':')[1]);
+    if (daChave > 0) return daChave;
+    return (generos && idDaFicha(generos, item.titulo, !!item.serie)) || undefined;
+  }, [generos]);
+
   const tocarFilme = useCallback((titulo: string, fontes: MovieSource[]) => {
     const primeira = fontes[0]?.url;
     if (!primeira) return;
     onSelectMovie({
+      tmdbId: (generos && idDaFicha(generos, titulo, false)) || undefined,
+      origem: aberto ? origemDe(aberto) : undefined,
       id: `movie-${titulo}-${primeira}`.slice(0, 200),
       name: titulo,
       url: primeira,
@@ -520,7 +552,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
       category: 'Filmes',
       type: 'movie',
     }, null);
-  }, [onSelectMovie]);
+  }, [onSelectMovie, generos, aberto, origemDe]);
 
 
   useEffect(() => {
@@ -658,8 +690,10 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
       seriesName: aberto.rotulo,
       seasonNumber: e.temporada,
       episodeNumber: e.numero,
+      tmdbId: idDoAberto(aberto),
+      origem: origemDe(aberto),
     })).filter((movie) => !!movie.url);
-  }, [aberto, episodiosAgrupados]);
+  }, [aberto, episodiosAgrupados, idDoAberto, origemDe]);
 
   const tocarEpisodio = useCallback((episodio: EpisodioAgrupado) => {
     if (!aberto) return;
@@ -837,7 +871,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
       {aba !== 'inicio' && carregando && <p className="vod-aviso">Carregando…</p>}
 
       {aba === 'inicio' ? (
-        <Fileiras filas={filas} termo={termo} aoAbrir={abrirDestaque} />
+        <Fileiras filas={filasComContinuar} termo={termo} aoAbrir={abrirDestaque} />
       ) : (
       <div className="vod-grade">
         {resultadosPorGenero.slice(0, visiveis).map((item) => (

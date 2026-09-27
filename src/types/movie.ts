@@ -25,6 +25,10 @@ export interface Movie {
   seriesName?: string;
   seasonNumber?: number;
   episodeNumber?: number;
+  /** Id do TMDB: é por ele que o TheIntroDB diz onde pular a abertura. */
+  tmdbId?: number;
+  /** Onde o título mora no acervo — é o que o "Continue assistindo" reabre. */
+  origem?: import('../services/vodService').ItemDestaque;
 }
 
 /**

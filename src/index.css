@@ -153,3 +153,14 @@ ol {
     height: 36px;
   }
 }
+
+/* Ajuda de atalhos (tecla ?) */
+.atalhos-fundo { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 16px; }
+.atalhos-caixa { background: #14161c; color: #fff; border: 1px solid #2a2d36; border-radius: 16px; padding: 24px 28px; width: min(520px, 100%); max-height: 90vh; overflow: auto; }
+.atalhos-caixa h2 { margin: 0 0 16px; font-size: 20px; }
+.atalhos-caixa dl { margin: 0; }
+.atalhos-linha { display: flex; gap: 16px; padding: 8px 0; border-bottom: 1px solid #22252d; }
+.atalhos-linha dt { min-width: 96px; }
+.atalhos-linha dd { margin: 0; color: #b8c0cc; }
+.atalhos-caixa kbd { background: #2a2d36; border-radius: 6px; padding: 2px 8px; font-family: inherit; font-size: 13px; }
+.atalhos-caixa button { margin-top: 18px; background: #fff; color: #000; border: 0; border-radius: 8px; padding: 10px 18px; font-weight: 600; cursor: pointer; }

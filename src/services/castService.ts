@@ -193,6 +193,18 @@ class CastService {
     // Se já estiver carregado
     if (window.cast?.framework) {
       this.setupGoogleCast();
+      return;
+    }
+
+    // O SDK saiu do index.html: eram ~100 KB baixados em toda visita, mesmo
+    // de quem nunca transmite. Agora vem quando o player (quem importa este
+    // serviço) abre pela primeira vez.
+    if (!document.querySelector('script[data-cast-sdk]')) {
+      const script = document.createElement('script');
+      script.src = 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1';
+      script.async = true;
+      script.dataset.castSdk = '1';
+      document.head.appendChild(script);
     }
   }
 

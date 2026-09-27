@@ -1,4 +1,8 @@
 import { useRef, useEffect, useState, useCallback, memo, useMemo } from 'react';
+import { rota } from '../utils/rotas';
+import { useMediaSession } from '../hooks/useMediaSession';
+import { registrar as registrarAndamento } from '../services/continuar';
+import { buscarPulos, trechoEm, inicioDosCreditos, rotuloTrecho, type Trecho } from '../services/pulos';
 import Hls from 'hls.js';
 import type { Movie, SeriesEpisodeInfo } from '../types/movie';
 import { getProxiedUrl, needsProxy } from '../utils/proxyUrl';
@@ -58,7 +62,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     return saved ? parseInt(saved) : 10;
   });
   const [brightness, setBrightness] = useState(100);
-  const [showSkipIntro, setShowSkipIntro] = useState(false);
+  const [trechos, setTrechos] = useState<Trecho[]>([]);
+  const [trechoPulado, setTrechoPulado] = useState<Trecho | null>(null);
   const [aspectRatio, setAspectRatio] = useState<'auto' | '16:9' | '4:3' | '21:9'>('auto');
   const [videoResolution, setVideoResolution] = useState<string | null>(null);
   const [qualityLevels, setQualityLevels] = useState<Array<{ id: number; label: string }>>([]);
@@ -145,6 +150,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       const progresso = (tempo / duracao) * 100;
       if (progresso < 95) localStorage.setItem(`movie-progress-${movie.id}`, String(tempo));
       else localStorage.removeItem(`movie-progress-${movie.id}`);
+      if (movie.origem) registrarAndamento(movie.origem, movie.name, tempo, duracao);
     };
 
     const carregarProgresso = () => {
@@ -486,13 +492,14 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   useEffect(() => {
     if (!nextEpisode || !duration) return;
     
-    const timeRemaining = duration - currentTime;
-    if (timeRemaining <= 30 && timeRemaining > 0) {
+    // Sobe quando os créditos começam (TheIntroDB); sem marca, 30 s antes do fim.
+    const creditos = inicioDosCreditos(trechos, duration) ?? (duration - 30);
+    if (currentTime >= creditos && currentTime < duration) {
       setShowNextEpisodeButton(true);
-    } else if (currentTime < duration - 35) {
+    } else if (currentTime < creditos - 5) {
       setShowNextEpisodeButton(false);
     }
-  }, [currentTime, duration, nextEpisode]);
+  }, [currentTime, duration, nextEpisode, trechos]);
 
   const trocarEpisodio = useCallback((episode: Movie | null) => {
     if (!episode || !onEpisodeChange) return;
@@ -582,14 +589,16 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     };
   }, []);
 
-  // Skip intro detection (show button in first 5 minutes)
+  // Abertura, recapitulação e créditos marcados no TheIntroDB, pelo id do
+  // TMDB. Sem marca para o título, o botão não aparece.
   useEffect(() => {
-    if (currentTime > 30 && currentTime < 300 && seriesInfo) {
-      setShowSkipIntro(true);
-    } else {
-      setShowSkipIntro(false);
-    }
-  }, [currentTime, seriesInfo]);
+    let vivo = true;
+    buscarPulos(movie?.tmdbId, movie?.seasonNumber ?? 0, movie?.episodeNumber ?? 0)
+      .then((t) => { if (vivo) setTrechos(t); });
+    return () => { vivo = false; };
+  }, [movie?.tmdbId, movie?.seasonNumber, movie?.episodeNumber]);
+  const trechoAtual = trechoEm(trechos, currentTime, duration);
+  const showSkipIntro = !!trechoAtual && trechoAtual !== trechoPulado;
 
   // Save skip time preference
   useEffect(() => {
@@ -739,13 +748,25 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     setShowCastModal(false);
   }, []);
 
-  // Skip intro (30 seconds forward)
+  // Pula até o fim do trecho marcado (abertura, recapitulação ou prévia).
   const skipIntro = useCallback(() => {
     const video = videoRef.current;
-    if (!video) return;
-    video.currentTime = Math.min(video.duration, video.currentTime + 30);
-    setShowSkipIntro(false);
-  }, []);
+    if (!video || !trechoAtual) return;
+    video.currentTime = Math.min(video.duration, trechoAtual.fim ?? video.duration);
+    setTrechoPulado(trechoAtual);
+  }, [trechoAtual]);
+
+  useMediaSession({
+    titulo: movie?.name,
+    subtitulo: seriesInfo?.seriesName ?? 'Saimo TV',
+    capa: movie?.origem?.capa || undefined,
+    aoTocar: () => { void videoRef.current?.play(); },
+    aoPausar: () => videoRef.current?.pause(),
+    aoVoltar: () => seek(-10),
+    aoAvancar: () => seek(10),
+    aoProximo: nextEpisode ? handleNextEpisode : undefined,
+    aoAnterior: previousEpisode ? handlePreviousEpisode : undefined,
+  });
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -1029,7 +1050,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
           <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
             <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
           </svg>
-          Pular Intro
+          {trechoAtual ? rotuloTrecho[trechoAtual.tipo] : 'Pular abertura'}
         </button>
       )}
 
@@ -1081,7 +1102,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                     qualquer fonte, sem essa volta — e os filmes em 4K tocam na maior resolução.
                   </span>
                 </div>
-                <a href="#/app" className="aviso-app-botao" data-focusable="true">
+                <a href={rota('/app')} className="aviso-app-botao" data-focusable="true">
                   Baixar o aplicativo
                 </a>
               </div>

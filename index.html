@@ -2,16 +2,27 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="vite.svg" />
+    <link rel="icon" type="image/png" href="%BASE_URL%favicon.png" />
+    <link rel="apple-touch-icon" href="%BASE_URL%icons/apple-touch-icon.png" />
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Saimo TV - Assista seus canais favoritos" />
+    <meta name="description" content="Saimo TV: canais ao vivo, filmes e séries — no navegador, na TV, no celular e no computador." />
+    <!-- Prévia do link no WhatsApp e redes sociais. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Saimo TV" />
+    <meta property="og:title" content="Saimo TV" />
+    <meta property="og:description" content="Canais ao vivo, filmes e séries — no navegador, na TV, no celular e no computador." />
+    <meta property="og:image" content="%BASE_URL%icons/icon-512.png" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary" />
     <meta name="theme-color" content="#0a0a0a" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Google Cast SDK for Chromecast support -->
-    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
-    <title>Saimo TV - Streaming de Canais</title>
+    <!-- Fonte sem travar a primeira pintura: carrega por trás e troca quando chega. -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <!-- O SDK do Chromecast só é baixado quando alguém usa o player (castService). -->
+    <title>Saimo TV</title>
   </head>
   <body>
     <div id="root"></div>

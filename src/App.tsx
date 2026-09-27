@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect, createContext, useContext, lazy, Suspense } from 'react';
-import { HashRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AppHeader } from './components/AppHeader';
 import { Toast } from './components/Toast';
+import { AtalhosAjuda } from './components/AtalhosAjuda';
 import { getAllChannels, adultChannels } from './data/channels';
 import { fetchChannels, cachedChannels } from './services/catalogService';
 import { atualizar as atualizarFontesDesativadas, VALIDADE_MS as FONTES_MS } from './services/fontesDesativadas';
@@ -456,11 +457,14 @@ function AppLayout() {
           <AppDownload />
         </Suspense>
       } />
-      <Route path="/teste" element={
-        <Suspense fallback={<LoadingFallback />}>
-          <StreamTester />
-        </Suspense>
-      } />
+      {/* Ferramenta interna: só para quem ligou o modo de testes no navegador. */}
+      {localStorage.getItem('saimo-dev') === '1' && (
+        <Route path="/teste" element={
+          <Suspense fallback={<LoadingFallback />}>
+            <StreamTester />
+          </Suspense>
+        } />
+      )}
     </Routes>
   );
 }
@@ -492,15 +496,27 @@ function AdultModeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+/*
+ * No site as páginas têm endereço limpo (/tv, /movies, /app), que dá para
+ * mandar a alguém. No app de desktop (tauri://, sem raiz de site) continua o
+ * endereço com #. Um link antigo com # que chega ao site é convertido.
+ */
+const noSite = import.meta.env.BASE_URL === '/';
+if (noSite && window.location.hash.startsWith('#/')) {
+  window.history.replaceState(null, '', window.location.hash.slice(1));
+}
+const Roteador = noSite ? BrowserRouter : HashRouter;
+
 function App() {
   return (
-    <HashRouter>
+    <Roteador>
       <DpadNavigationProvider>
         <AdultModeProvider>
           <AppLayout />
+          <AtalhosAjuda />
         </AdultModeProvider>
       </DpadNavigationProvider>
-    </HashRouter>
+    </Roteador>
   );
 }
 

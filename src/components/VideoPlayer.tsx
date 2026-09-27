@@ -1,4 +1,6 @@
 import { useRef, useEffect, useState, useCallback, useMemo, memo } from 'react';
+import { rota } from '../utils/rotas';
+import { useMediaSession } from '../hooks/useMediaSession';
 import Hls from 'hls.js';
 import mpegts from 'mpegts.js';
 import type { Channel, ChannelSource } from '../types/channel';
@@ -656,6 +658,14 @@ export const VideoPlayer = memo(function VideoPlayer({
     }
   }, []);
 
+  useMediaSession({
+    titulo: channel?.name,
+    subtitulo: 'Ao vivo · Saimo TV',
+    capa: channel?.logo,
+    aoTocar: () => { void videoRef.current?.play(); },
+    aoPausar: () => videoRef.current?.pause(),
+  });
+
   const toggleMute = useCallback(() => {
     // Se o usuário manualmente mutar/desmutar, cancela o pendingUnmute
     setPendingUnmute(false);
@@ -966,7 +976,7 @@ export const VideoPlayer = memo(function VideoPlayer({
                     canal, então não esbarra no bloqueio que existe aqui dentro do navegador.
                   </span>
                 </div>
-                <a href="#/app" className="aviso-app-botao" data-focusable="true">
+                <a href={rota('/app')} className="aviso-app-botao" data-focusable="true">
                   Baixar o aplicativo
                 </a>
               </div>
