@@ -1,113 +1,68 @@
-# 📺 TV Saimo - Plataforma de Streaming Web
+# Saimo TV — site
 
-Bem-vindo ao **TV Saimo**, uma aplicação web de alta performance para streaming de canais de TV ao vivo (IPTV), filmes e séries. Este projeto foi desenvolvido utilizando as tecnologias mais modernas do ecossistema React para garantir uma experiência de usuário fluida, rápida e responsiva.
+Canais ao vivo, guia de programação, filmes e séries no navegador:
+**<https://saimo-tv.pages.dev>**. Versão atual: **2.0.0**.
 
----
+Mesma lista de canais e mesmo acervo dos apps de TV Box, celular, Windows e Mac,
+lidos direto do repositório
+[SaimoPlayer](https://github.com/gabrielsaimo/SaimoPlayer) (`catalogo.txt` e
+`vod/`). Nada de lista própria para manter aqui.
 
-## 🚀 Tecnologias Utilizadas
+## O que tem
 
-O projeto é construído sobre uma base sólida e moderna:
+- TV ao vivo com HLS (hls.js), MPEG-TS (mpegts.js) e DASH; troca de fonte quando
+  uma cai
+- Guia de programação (meuguia.tv, guiadetv, Pluto TV e XMLTV)
+- Filmes e séries com ficha, episódios e favoritos
+- Pular abertura e créditos com os tempos do [TheIntroDB](https://theintrodb.org)
+- Continuar assistindo, com a fileira na tela do acervo
+- Controles do sistema e da tela de bloqueio (Media Session)
+- Chromecast (SDK carregado só quando alguém usa)
+- Instalável como app (PWA, com `manifest.webmanifest` e service worker)
+- Atalhos de teclado: aperte **?** para ver todos
+- Prévia de link com imagem ao compartilhar (Open Graph)
 
-- **[React 19](https://react.dev/)**: A biblioteca JavaScript mais popular para construção de interfaces de usuário.
-- **[TypeScript](https://www.typescriptlang.org/)**: JavaScript com superpoderes, garantindo maior segurança e manutenibilidade do código.
-- **[Vite](https://vitejs.dev/)**: Build tool de próxima geração, ultra-rápido para desenvolvimento e build.
-- **[Hls.js](https://github.com/video-dev/hls.js/)** & **[mpegts.js](https://github.com/xqq/mpegts.js)**: Motores de reprodução de vídeo robustos para suportar diversos formatos de streaming.
-- **TailwindCSS** (via index.css/styles): Estilização moderna e responsiva.
+## Rodar
 
----
-
-## ✨ Funcionalidades
-
-- **TV Ao Vivo**: Suporte a listas IPTV com reprodução instantânea.
-- **Catálogo VOD**: Filmes e Séries organizados automaticamente por categorias.
-- **Player Moderno**: Controles avançados, suporte a áudio.
-- **Performance**: Carregamento otimizado e navegação suave.
-- **Design Premium**: Interface elegante e intuitiva, inspirada nas grandes plataformas de streaming.
-
----
-
-## 🛠️ Instalação e Configuração
-
-Siga os passos abaixo para rodar o projeto localmente:
-
-### Pré-requisitos
-- [Node.js](https://nodejs.org/) (versão 18 ou superior recomendada)
-- Gerenciador de pacotes npm, yarn ou pnpm.
-
-### Passo a Passo
-
-1. **Clone o repositório** (se ainda não o fez):
-   ```bash
-   git clone <url-do-repositorio>
-   cd free-tv
-   ```
-
-2. **Instale as dependências**:
-   ```bash
-   npm install
-   ```
-
-3. **Inicie o servidor de desenvolvimento**:
-   ```bash
-   npm run dev
-   ```
-   
-4. **Acesse**: Abra seu navegador em `http://localhost:5173` (ou a porta indicada no terminal).
-
----
-
-## 🔄 Como Atualizar Filmes e Séries
-
-Este é o coração do gerenciamento de conteúdo do TV Saimo. O sistema utiliza um script automatizado inteligente para atualizar o catálogo de filmes e séries a partir de uma lista M3U.
-
-O script responsável é o `scripts/updateContent.ts`. Ele baixa a lista, processa os dados, busca informações no TMDB (capas, sinopses) e organiza tudo em arquivos JSON otimizados.
-
-### ⚠️ Importante: Atualizando a Lista M3U
-
-Para atualizar as URLs dos filmes e séries (por exemplo, quando os links expiram ou você tem uma nova lista), siga este procedimento:
-
-1. **Abra o arquivo do script**:
-   Localize e abra o arquivo:
-   `scripts/updateContent.ts`
-
-2. **Atualize a URL da Lista**:
-   Nas primeiras linhas do arquivo, você encontrará a constante `M3U_URL`. Substitua o link existente pelo link da sua nova lista M3U8 atualizada.
-
-   ```typescript
-   // scripts/updateContent.ts
-   
-   // 👇 COLOQUE SEU NOVO LINK AQUI
-   const M3U_URL = 'https://exemplo.com/sua-lista-nova-atualizada.m3u8';
-   ```
-
-3. **Execute o Script de Atualização**:
-   Abra o terminal na raiz do projeto e rode o seguinte comando:
-
-   ```bash
-   npx tsx scripts/updateContent.ts
-   ```
-
-### O que o script fará:
-1.  **Baixar** a nova lista M3U.
-2.  **Mapear** os filmes e séries para as categorias corretas (Ação, Comédia, Lançamentos, etc.).
-3.  **Enriquecer** os dados buscando informações no TMDB se necessário.
-4.  **Atualizar** as URLs dos conteúdos já existentes e **Adicionar** novos conteúdos encontrados.
-5.  **Gerar** os arquivos JSON na pasta `public/data/enriched`.
-
-Após a execução, basta recarregar a página da aplicação e o novo conteúdo estará disponível!
-
----
-
-## 📦 Build para Produção
-
-Para gerar a versão otimizada para publicação (deploy):
+Com [Bun](https://bun.sh) (ou npm):
 
 ```bash
-npm run build
+bun install
+bun run dev        # http://localhost:5173
+bun run build      # gera dist/
+bun run lint
 ```
 
-Os arquivos estáticos serão gerados na pasta `dist`, prontos para serem hospedados na Vercel, Netlify ou qualquer servidor web.
+## Publicar
 
----
+Push em `main` publica. O site no ar é servido pelo Cloudflare Pages
+(`saimo-tv.pages.dev`); `_redirects` em `public/` cuida das rotas, e `/baixar`
+leva para a página de download dos apps.
 
-Desenvolvido para oferecer a melhor experiência de streaming gratuito. 🎬🍿
+As rotas usam endereços normais (`/filmes`, `/canal/...`) no navegador e `#` no
+app de desktop, que abre o mesmo `index.html`. Endereços antigos com `#` são
+convertidos na abertura.
+
+## App de desktop (Tauri)
+
+O mesmo site empacotado como programa, em `desktop/`:
+
+```bash
+bun run desktop          # desenvolvimento
+bun run desktop:build    # instalador
+```
+
+O workflow `Build Windows Desktop` gera MSI e NSIS ao receber uma tag
+`desktop-v*`. O app de Windows principal, nativo e mais leve, é o
+[SaimoWin](https://github.com/gabrielsaimo/SaimoWin).
+
+## Estrutura
+
+| Pasta | Conteúdo |
+|---|---|
+| `src/components` | telas: player ao vivo, player de filmes, acervo, guia, barra lateral |
+| `src/services` | catálogo, acervo, guia, TMDB, TheIntroDB (`pulos.ts`), continuar, Chromecast, telemetria |
+| `src/hooks` | Media Session e outros |
+| `functions/`, `api/` | proxy para fontes sem CORS |
+| `public/` | ícones, manifest, service worker, redirecionamentos |
+| `desktop/` | configuração do Tauri |
