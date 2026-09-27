@@ -244,6 +244,8 @@ export interface Ficha {
   elenco: Pessoa[];
   capa: string | null;
   fundo: string | null;
+  /** Quantas temporadas a série tem, segundo o TMDB. */
+  temporadas: number | null;
 }
 
 export function fichaVazia(ficha: Ficha): boolean {
@@ -307,10 +309,13 @@ export function ficha(id: number, serie: boolean): Promise<Ficha | null> {
           papel: p.character ?? '',
           foto: posterUrl(p.profile_path, 'w185'),
         })),
-        capa: posterUrl(json?.poster_path, 'w342'),
+        capa: posterUrl(json?.poster_path, 'w500'),
+        // w1280: o fundo ocupa a largura inteira do modal, e em tela de alta
+        // densidade o w780 aparecia borrado.
         fundo: json?.backdrop_path
-          ? `https://image.tmdb.org/t/p/w780${json.backdrop_path}`
+          ? `https://image.tmdb.org/t/p/w1280${json.backdrop_path}`
           : null,
+        temporadas: serie ? (json?.number_of_seasons || null) : null,
       };
     } catch {
       return null;
@@ -321,12 +326,21 @@ export function ficha(id: number, serie: boolean): Promise<Ficha | null> {
   return promessa;
 }
 
+/** Um trabalho de uma pessoa, como o TMDB o devolve, com a capa junto. */
+export interface Credito {
+  id: number;
+  serie: boolean;
+  /** A capa que o TMDB já manda — a do arquivo de fichas falta para boa parte. */
+  capa: string | null;
+  papel: string;
+}
+
 /**
- * Os trabalhos de um ator, como o TMDB os devolve: id e se é série, em ordem
- * de popularidade. O cruzamento com o acervo é feito por quem chama, que é
- * quem tem o índice — a lista inteira do TMDB não serve de dentro do site.
+ * Os trabalhos de um ator, em ordem de popularidade. O cruzamento com o
+ * acervo é feito por quem chama, que é quem tem o índice — a lista inteira do
+ * TMDB não serve de dentro do site.
  */
-export async function creditosDe(ator: number): Promise<{ id: number; serie: boolean }[]> {
+export async function creditosDe(ator: number): Promise<Credito[]> {
   try {
     const resposta = await fetch(
       `${TMDB_BASE}/person/${ator}/combined_credits?api_key=${TMDB_API_KEY}&language=pt-BR`,
@@ -336,7 +350,7 @@ export async function creditosDe(ator: number): Promise<{ id: number; serie: boo
     const trabalhos: any[] = [...(json?.cast ?? []), ...(json?.crew ?? [])];
     trabalhos.sort((a, b) => (b?.popularity ?? 0) - (a?.popularity ?? 0));
     const vistos = new Set<string>();
-    const saida: { id: number; serie: boolean }[] = [];
+    const saida: Credito[] = [];
     for (const trabalho of trabalhos) {
       const id = Number(trabalho?.id);
       if (!Number.isFinite(id) || id <= 0) continue;
@@ -344,10 +358,69 @@ export async function creditosDe(ator: number): Promise<{ id: number; serie: boo
       const marca = `${serie ? 's' : 'f'}:${id}`;
       if (vistos.has(marca)) continue;
       vistos.add(marca);
-      saida.push({ id, serie });
+      saida.push({
+        id,
+        serie,
+        capa: posterUrl(trabalho?.poster_path, 'w342'),
+        papel: trabalho?.character || trabalho?.job || '',
+      });
     }
     return saida;
   } catch {
     return [];
   }
+}
+
+/** Quem é a pessoa: foto grande, biografia, de onde é. */
+export interface Perfil {
+  nome: string;
+  foto: string | null;
+  biografia: string;
+  /** "Atuação  ·  1956 · 70 anos  ·  Concord, California, USA" */
+  dados: string;
+}
+
+const perfisEmMemoria = new Map<number, Promise<Perfil | null>>();
+
+/**
+ * A biografia em português falta para quase todo mundo que não é
+ * brasileiro; sem ela vale a em inglês — melhor que um vazio sob a foto.
+ */
+export function perfil(id: number): Promise<Perfil | null> {
+  const existente = perfisEmMemoria.get(id);
+  if (existente) return existente;
+  const promessa = (async (): Promise<Perfil | null> => {
+    try {
+      const pedir = async (idioma: string) => {
+        const r = await fetch(`${TMDB_BASE}/person/${id}?api_key=${TMDB_API_KEY}&language=${idioma}`);
+        return r.ok ? r.json() : null;
+      };
+      const json = await pedir('pt-BR');
+      if (!json) return null;
+      let biografia: string = json.biography ?? '';
+      if (!biografia) biografia = (await pedir('en-US'))?.biography ?? '';
+      const partes: string[] = [];
+      const conhecida = ({
+        Acting: 'Atuação', Directing: 'Direção', Writing: 'Roteiro',
+        Production: 'Produção', Sound: 'Música',
+      } as Record<string, string>)[json.known_for_department] ?? '';
+      if (conhecida) partes.push(conhecida);
+      const nasceu = Number(String(json.birthday ?? '').slice(0, 4));
+      const morreu = Number(String(json.deathday ?? '').slice(0, 4));
+      if (nasceu) {
+        partes.push(morreu ? `${nasceu} – ${morreu}` : `${nasceu} · ${new Date().getFullYear() - nasceu} anos`);
+      }
+      if (json.place_of_birth) partes.push(json.place_of_birth);
+      return {
+        nome: json.name ?? '',
+        foto: json.profile_path ? `https://image.tmdb.org/t/p/h632${json.profile_path}` : null,
+        biografia,
+        dados: partes.join('  ·  '),
+      };
+    } catch {
+      return null;
+    }
+  })();
+  perfisEmMemoria.set(id, promessa);
+  return promessa;
 }

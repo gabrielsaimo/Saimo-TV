@@ -1033,3 +1033,325 @@
     grid-row: 1;
   }
 }
+
+/* ── Ficha visual (1.8.0) ───────────────────────────────────────────────────
+   O mesmo desenho da TV Box, do Mac e do Windows: a imagem larga do filme ao
+   fundo, escurecendo da esquerda para a direita e de baixo para cima, a capa
+   com sombra, os números em selos e o botão de assistir em destaque. */
+
+.vod-modal {
+  --pad: clamp(1.1rem, 2vw, 1.8rem);
+}
+
+.vod-hero {
+  position: relative;
+  margin: calc(var(--pad) * -1) calc(var(--pad) * -1) 0;
+  padding: calc(var(--pad) + 1.2rem) var(--pad) 1.6rem;
+  min-height: 25rem;
+  overflow: hidden;
+  border-radius: 0.65rem 0.65rem 0 0;
+  isolation: isolate;
+}
+
+.vod-hero-fundo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  animation: vod-hero-aparece 420ms ease-out;
+}
+
+@keyframes vod-hero-aparece {
+  from { opacity: 0; transform: scale(1.03); }
+  to { opacity: 1; transform: none; }
+}
+
+.vod-hero-veu {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(18, 18, 20, 0.97) 0%, rgba(18, 18, 20, 0.86) 42%, rgba(18, 18, 20, 0.25) 100%),
+    linear-gradient(0deg, #181818 0%, rgba(24, 24, 24, 0) 45%);
+}
+
+.vod-hero-fechar {
+  position: absolute !important;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  background: rgba(20, 20, 22, 0.7) !important;
+  backdrop-filter: blur(6px);
+}
+
+.vod-hero-corpo {
+  display: flex;
+  gap: clamp(1.25rem, 3vw, 2.25rem);
+  align-items: flex-start;
+}
+
+.vod-hero-capa {
+  flex: 0 0 auto;
+  width: clamp(8.5rem, 17vw, 13.5rem);
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
+}
+
+.vod-hero-capa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vod-hero-capa span,
+.vod-ator-capa span,
+.vod-ator-foto span {
+  font-size: 3rem;
+  font-weight: 700;
+  color: rgba(229, 9, 20, 0.7);
+}
+
+.vod-hero-info {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 44rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.vod-hero-info h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+}
+
+.vod-hero-info .vod-ficha-numeros span {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.82rem;
+}
+
+.vod-ficha-nota-tmdb {
+  color: #ffd166 !important;
+  border-color: rgba(255, 209, 102, 0.55) !important;
+}
+
+/* As cores da classificação indicativa brasileira, as mesmas do celular. */
+.vod-cl-l { color: #10b981 !important; border-color: rgba(16, 185, 129, 0.6) !important; }
+.vod-cl-10 { color: #3b82f6 !important; border-color: rgba(59, 130, 246, 0.6) !important; }
+.vod-cl-12 { color: #f59e0b !important; border-color: rgba(245, 158, 11, 0.6) !important; }
+.vod-cl-14 { color: #f97316 !important; border-color: rgba(249, 115, 22, 0.6) !important; }
+.vod-cl-16,
+.vod-cl-18 { color: #ef4444 !important; border-color: rgba(239, 68, 68, 0.6) !important; }
+
+.vod-hero-botoes {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0.4rem 0 0.2rem;
+}
+
+.vod-botao-assistir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.9rem;
+  border: 0;
+  border-radius: 0.45rem;
+  background: #fff;
+  color: #111;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.vod-botao-assistir:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.86);
+  transform: scale(1.03);
+}
+
+.vod-botao-assistir:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.vod-hero-info .vod-ficha-sinopse {
+  font-size: 0.98rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.vod-modal-corpo {
+  padding-top: 1.25rem;
+}
+
+/* Elenco: fotos maiores e redondas, como nos aplicativos. */
+.vod-modal-corpo .vod-ficha-elenco img,
+.vod-modal-corpo .vod-ficha-sem-foto {
+  width: 76px;
+  height: 76px;
+}
+
+.vod-ficha-sem-foto {
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.vod-modal-corpo .vod-ficha-elenco li button {
+  width: 96px;
+  transition: transform 120ms ease;
+}
+
+.vod-modal-corpo .vod-ficha-elenco li button:hover {
+  transform: translateY(-3px);
+}
+
+.vod-modal-corpo .vod-ficha-elenco li button:hover img {
+  outline: 3px solid var(--accent, #e50914);
+  outline-offset: 2px;
+}
+
+/* ── Ator ─────────────────────────────────────────────────────────────────── */
+
+.vod-ator-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.vod-ator-topo {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.vod-ator-foto {
+  flex: 0 0 auto;
+  width: 8.5rem;
+  height: 8.5rem;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.5);
+}
+
+.vod-ator-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+}
+
+.vod-ator-quem h2 {
+  margin: 0 0 0.3rem;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: -0.02em;
+}
+
+.vod-ator-dados {
+  margin: 0 0 0.5rem;
+  color: var(--accent, #e50914);
+  font-size: 0.88rem;
+}
+
+.vod-ator-bio {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.vod-ator-contagem {
+  margin: 0 0 0.9rem;
+  font-size: 1.05rem;
+}
+
+.vod-ator-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vod-ator-grade button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vod-ator-capa {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: 0.45rem;
+  background: rgba(255, 255, 255, 0.07);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.vod-ator-capa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vod-ator-grade button:hover .vod-ator-capa {
+  transform: scale(1.04);
+  box-shadow: 0 0 0 3px var(--accent, #e50914), 0 12px 30px rgba(0, 0, 0, 0.55);
+}
+
+.vod-ator-grade strong {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.85rem;
+}
+
+.vod-ator-grade small {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.74rem;
+}
+
+/* Celular: a capa sobe e o texto desce, em coluna. */
+@media (max-width: 640px) {
+  .vod-hero { min-height: 0; }
+  .vod-hero-corpo { flex-direction: column; align-items: center; text-align: center; }
+  .vod-hero-info { align-items: center; }
+  .vod-hero-capa { width: 9rem; }
+  .vod-ficha-numeros, .vod-hero-botoes { justify-content: center; }
+  .vod-ator-topo { flex-direction: column; text-align: center; }
+  .vod-ator-grade { grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr)); }
+}

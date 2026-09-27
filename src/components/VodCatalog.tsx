@@ -38,8 +38,15 @@ import {
   type Serie,
   type SerieColecao,
 } from '../services/vodService';
-import { ficha as buscarFicha, fichaVazia, creditosDe } from '../services/tmdbService';
-import type { Ficha, Pessoa } from '../services/tmdbService';
+import { ficha as buscarFicha, fichaVazia, creditosDe, perfil as buscarPerfil } from '../services/tmdbService';
+import type { Ficha, Pessoa, Perfil } from '../services/tmdbService';
+
+/** Um trabalho de um ator que existe no acervo, com a capa que o TMDB mandou. */
+interface Trabalho {
+  item: Item;
+  capa: string | null;
+  papel: string;
+}
 import './VodCatalog.css';
 
 type Aba = 'inicio' | 'filmes' | 'series' | 'animes' | 'doramas' | 'extra';
@@ -258,7 +265,10 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   const [fichaCarregando, setFichaCarregando] = useState(false);
   /** O ator aberto dentro da ficha, e o que ele tem no acervo. */
   const [ator, setAtor] = useState<Pessoa | null>(null);
-  const [filmografia, setFilmografia] = useState<Item[] | null>(null);
+  const [filmografia, setFilmografia] = useState<Trabalho[] | null>(null);
+  const [perfilDoAtor, setPerfilDoAtor] = useState<Perfil | null>(null);
+  /** Onde "Ver episódios" rola: a lista de temporadas logo abaixo. */
+  const episodiosRef = useRef<HTMLDivElement | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const abertura = useRef(0);
   /*
@@ -449,9 +459,11 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
    * é pelo id do TMDB — nome igual não engana, refilmagem não vira o original.
    */
   useEffect(() => {
-    if (!ator || !generos) { setFilmografia(null); return; }
+    if (!ator || !generos) { setFilmografia(null); setPerfilDoAtor(null); return; }
     let vivo = true;
     setFilmografia(null);
+    setPerfilDoAtor(null);
+    buscarPerfil(ator.id).then((achado) => { if (vivo) setPerfilDoAtor(achado); });
     (async () => {
       const creditos = await creditosDe(ator.id);
       const [comFilmes, comSeries] = await Promise.all([
@@ -464,7 +476,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
         porNome.set(`${achado.serie ? 's' : 'f'}|${achado.titulo}`, achado);
       }
       const vistos = new Set<string>();
-      const saida: Item[] = [];
+      const saida: Trabalho[] = [];
       for (const credito of creditos) {
         const titulo = tituloDoId(generos, credito.id, credito.serie);
         if (!titulo) continue;
@@ -476,12 +488,16 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
         if (vistos.has(chave)) continue;
         vistos.add(chave);
         saida.push({
-          chave,
-          titulo: achado.titulo,
-          rotulo: achado.nomeCompleto || achado.titulo,
-          serie: achado.serie,
-          letra: achado.letra,
-          ano: achado.ano,
+          item: {
+            chave,
+            titulo: achado.titulo,
+            rotulo: achado.nomeCompleto || achado.titulo,
+            serie: achado.serie,
+            letra: achado.letra,
+            ano: achado.ano,
+          },
+          capa: credito.capa ?? capaDaFicha(generos, achado.titulo, achado.serie),
+          papel: credito.papel,
         });
       }
       setFilmografia(saida);
@@ -663,6 +679,11 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
     onSelectMovie(movie, info);
   }, [aberto, filmesDaSerie, onSelectMovie]);
 
+  /** A capa da ficha: a do TMDB em 500 pixels, ou a do arquivo de fichas. */
+  const capaDoAberto = aberto
+    ? (ficha?.capa ?? (generos ? capaDaFicha(generos, aberto.titulo, aberto.serie) : null))
+    : null;
+
   const listaAtual = buscaAtiva ? `busca:${termo.trim()}:${aba}` : aba === 'extra' ? `extra:${letra}` : aba;
   const visiveis = pagina.lista === listaAtual ? pagina.quantos : PAGINA;
 
@@ -843,42 +864,46 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
           aria-labelledby="vod-modal-titulo"
           onMouseDown={(event) => event.stopPropagation()}
         >
-          <div className="vod-serie-topo">
-            <div>
-              <span className="vod-modal-tipo">
-                {aberto.serie
-                  ? (aberto.colecao
-                    ? (aberto.chave.startsWith('animes:') ? 'Anime' : 'Dorama')
-                    : 'Série')
-                  : 'Filme'}
-              </span>
-              <h2 id="vod-modal-titulo">{aberto.rotulo}</h2>
-            </div>
-            <button className="vod-modal-fechar" onClick={fecharModal} aria-label="Fechar">×</button>
-          </div>
-
           {ator ? (
-            <div className="vod-ficha-ator">
-              <button className="vod-ficha-voltar" onClick={() => setAtor(null)}>
-                ‹ Voltar à ficha
-              </button>
-              <h3>{ator.nome}</h3>
-              {filmografia === null && <p className="vod-aviso">Procurando no acervo…</p>}
+            <div className="vod-ator">
+              <div className="vod-ator-barra">
+                <button className="vod-ficha-voltar" onClick={() => setAtor(null)}>
+                  ‹ Voltar à ficha
+                </button>
+                <button className="vod-modal-fechar" onClick={fecharModal} aria-label="Fechar">×</button>
+              </div>
+              <header className="vod-ator-topo">
+                <div className="vod-ator-foto">
+                  {(perfilDoAtor?.foto ?? ator.foto)
+                    ? <img src={perfilDoAtor?.foto ?? ator.foto ?? ''} alt="" />
+                    : <span aria-hidden="true">{ator.nome.charAt(0)}</span>}
+                </div>
+                <div className="vod-ator-quem">
+                  <h2 id="vod-modal-titulo">{perfilDoAtor?.nome || ator.nome}</h2>
+                  {!!perfilDoAtor?.dados && <p className="vod-ator-dados">{perfilDoAtor.dados}</p>}
+                  {!!perfilDoAtor?.biografia && <p className="vod-ator-bio">{perfilDoAtor.biografia}</p>}
+                </div>
+              </header>
+              <h3 className="vod-ator-contagem">
+                {filmografia === null
+                  ? 'Procurando no acervo…'
+                  : filmografia.length === 1 ? '1 título no acervo' : `${filmografia.length} títulos no acervo`}
+              </h3>
               {filmografia?.length === 0 && (
-                <>
-                  <p className="vod-aviso">Nada desta pessoa no acervo.</p>
-                  <p className="vod-ficha-nota">
-                    A filmografia mostra só o que dá para abrir daqui.
-                  </p>
-                </>
+                <p className="vod-ficha-nota">Aparece aqui só o que dá para assistir neste site.</p>
               )}
               {!!filmografia?.length && (
-                <ul className="vod-ficha-filmografia">
-                  {filmografia.map((item) => (
+                <ul className="vod-ator-grade">
+                  {filmografia.map(({ item, capa, papel }) => (
                     <li key={item.chave}>
                       <button onClick={() => { setAtor(null); abrir(item); }}>
-                        <span>{item.rotulo}</span>
-                        <small>{item.serie ? 'Série' : 'Filme'}</small>
+                        <span className="vod-ator-capa">
+                          {capa
+                            ? <img src={capa} alt="" loading="lazy" />
+                            : <span aria-hidden="true">{item.titulo.charAt(0)}</span>}
+                        </span>
+                        <strong>{item.rotulo}</strong>
+                        <small>{papel || (item.serie ? 'Série' : 'Filme')}</small>
                       </button>
                     </li>
                   ))}
@@ -887,55 +912,110 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
             </div>
           ) : (
             <>
-              {fichaCarregando && !ficha && <p className="vod-aviso">Buscando a ficha…</p>}
-              {ficha && !fichaVazia(ficha) && (
-                <div className="vod-ficha">
-                  <div className="vod-ficha-numeros">
-                    {!!ficha.ano && <span>{ficha.ano}</span>}
-                    {!!ficha.duracao && (
-                      <span>{ficha.duracao} min{aberto.serie ? '/ep' : ''}</span>
-                    )}
-                    {!!ficha.classificacao && (
-                      <span className="vod-ficha-classificacao">{ficha.classificacao}</span>
-                    )}
-                    {ficha.nota > 0 && <span>★ {ficha.nota.toFixed(1)}</span>}
+              {/* O topo da ficha: a imagem larga do filme ao fundo, a capa e
+                  os números, como na TV Box, no Mac e no Windows. */}
+              <div className="vod-hero">
+                {ficha?.fundo && <img className="vod-hero-fundo" src={ficha.fundo} alt="" />}
+                <div className="vod-hero-veu" aria-hidden="true" />
+                <button className="vod-modal-fechar vod-hero-fechar" onClick={fecharModal} aria-label="Fechar">×</button>
+                <div className="vod-hero-corpo">
+                  <div className="vod-hero-capa">
+                    {capaDoAberto
+                      ? <img src={capaDoAberto} alt="" />
+                      : <span aria-hidden="true">{aberto.titulo.charAt(0)}</span>}
                   </div>
-                  {!!ficha.generos.length && (
-                    <p className="vod-ficha-generos">{ficha.generos.join(' · ')}</p>
-                  )}
-                  {!!ficha.frase && <p className="vod-ficha-frase">{ficha.frase}</p>}
-                  {!!ficha.sinopse && <p className="vod-ficha-sinopse">{ficha.sinopse}</p>}
-                  <dl className="vod-ficha-creditos">
-                    {!!ficha.assinatura && (
-                      <>
-                        <dt>{aberto.serie ? 'Criação' : 'Direção'}</dt>
-                        <dd>{ficha.assinatura}</dd>
-                      </>
+                  <div className="vod-hero-info">
+                    <span className="vod-modal-tipo">
+                      {aberto.serie
+                        ? (aberto.colecao
+                          ? (aberto.chave.startsWith('animes:') ? 'Anime' : 'Dorama')
+                          : 'Série')
+                        : 'Filme'}
+                    </span>
+                    <h2 id="vod-modal-titulo">{semAno(aberto.titulo)}</h2>
+                    {!!ficha?.frase && <p className="vod-ficha-frase">{ficha.frase}</p>}
+                    {ficha && !fichaVazia(ficha) && (
+                      <div className="vod-ficha-numeros">
+                        {ficha.nota > 0 && <span className="vod-ficha-nota-tmdb">★ {ficha.nota.toFixed(1)}</span>}
+                        {!!ficha.ano && <span>{ficha.ano}</span>}
+                        {!!ficha.duracao && (
+                          <span>
+                            {aberto.serie
+                              ? `${ficha.duracao} min/ep`
+                              : ficha.duracao >= 60
+                                ? `${Math.floor(ficha.duracao / 60)}h ${String(ficha.duracao % 60).padStart(2, '0')}min`
+                                : `${ficha.duracao} min`}
+                          </span>
+                        )}
+                        {!!ficha.temporadas && (
+                          <span>{ficha.temporadas} temporada{ficha.temporadas === 1 ? '' : 's'}</span>
+                        )}
+                        {!!ficha.classificacao && (
+                          <span className={`vod-ficha-classificacao vod-cl-${ficha.classificacao.toLowerCase()}`}>
+                            {ficha.classificacao}
+                          </span>
+                        )}
+                      </div>
                     )}
-                    {!!ficha.roteiro && (<><dt>Roteiro</dt><dd>{ficha.roteiro}</dd></>)}
-                    {!!ficha.produtora && (<><dt>Produção</dt><dd>{ficha.produtora}</dd></>)}
-                  </dl>
-                  {!!ficha.elenco.length && (
-                    <div className="vod-ficha-elenco">
-                      <h3>Elenco</h3>
-                      <ul>
-                        {ficha.elenco.map((pessoa) => (
-                          <li key={pessoa.id}>
-                            <button
-                              onClick={() => setAtor(pessoa)}
-                              title={`Ver o que ${pessoa.nome} tem no acervo`}
-                            >
-                              {pessoa.foto
-                                ? <img src={pessoa.foto} alt="" loading="lazy" />
-                                : <span className="vod-ficha-sem-foto" aria-hidden="true" />}
-                              <strong>{pessoa.nome}</strong>
-                              <small>{pessoa.papel}</small>
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
+                    {!!ficha?.generos.length && (
+                      <p className="vod-ficha-generos">{ficha.generos.join(' · ')}</p>
+                    )}
+                    <div className="vod-hero-botoes">
+                      <button
+                        className="vod-botao-assistir"
+                        disabled={aberto.serie ? !temporadas.length : !fontesAbertas?.length}
+                        onClick={() => {
+                          if (aberto.serie) {
+                            // As temporadas começam fechadas; quem pediu os
+                            // episódios quer ver episódio, não uma sanfona.
+                            setTemporada((atual) => atual || temporadas[0] || 0);
+                            episodiosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          } else if (fontesAbertas?.length) {
+                            tocarFilme(aberto.titulo, fontesAbertas);
+                          }
+                        }}
+                      >
+                        ▶ {aberto.serie ? 'Ver episódios' : 'Assistir'}
+                      </button>
                     </div>
-                  )}
+                    {fichaCarregando && !ficha && <p className="vod-aviso">Buscando a ficha…</p>}
+                    {!!ficha?.sinopse && <p className="vod-ficha-sinopse">{ficha.sinopse}</p>}
+                    {ficha && (
+                      <dl className="vod-ficha-creditos">
+                        {!!ficha.assinatura && (
+                          <>
+                            <dt>{aberto.serie ? 'Criação' : 'Direção'}</dt>
+                            <dd>{ficha.assinatura}</dd>
+                          </>
+                        )}
+                        {!!ficha.roteiro && (<><dt>Roteiro</dt><dd>{ficha.roteiro}</dd></>)}
+                        {!!ficha.produtora && (<><dt>Produção</dt><dd>{ficha.produtora}</dd></>)}
+                      </dl>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="vod-modal-corpo">
+              {!!ficha?.elenco.length && (
+                <div className="vod-ficha-elenco">
+                  <h3>Elenco</h3>
+                  <ul>
+                    {ficha.elenco.map((pessoa) => (
+                      <li key={pessoa.id}>
+                        <button
+                          onClick={() => setAtor(pessoa)}
+                          title={`Ver o que ${pessoa.nome} tem no acervo`}
+                        >
+                          {pessoa.foto
+                            ? <img src={pessoa.foto} alt="" loading="lazy" />
+                            : <span className="vod-ficha-sem-foto" aria-hidden="true">{pessoa.nome.charAt(0)}</span>}
+                          <strong>{pessoa.nome}</strong>
+                          <small>{pessoa.papel}</small>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
 
@@ -964,7 +1044,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
           )}
 
           {aberto.serie && temporadas.length > 0 && (
-            <div className="vod-season-stack">
+            <div className="vod-season-stack" ref={episodiosRef}>
               <div className="vod-episodios-cabecalho">
                 <div>
                   <h3>Episódios</h3>
@@ -1017,6 +1097,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
               })}
             </div>
           )}
+              </div>
             </>
           )}
         </section>
