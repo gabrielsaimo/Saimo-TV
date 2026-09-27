@@ -621,3 +621,415 @@
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.75rem;
 }
+
+/* ========================================================================
+   EXPERIÊNCIA VOD 1.8 — navegação inspirada em apps de streaming
+   ======================================================================== */
+
+.vod-catalog {
+  padding: 0 clamp(1rem, 3vw, 3.5rem) 4rem;
+  background:
+    radial-gradient(circle at 78% -8%, rgba(229, 9, 20, 0.09), transparent 32rem),
+    linear-gradient(180deg, #0b0b0b 0%, #090909 58%, #080808 100%);
+}
+
+.vod-header {
+  min-height: 68px;
+  margin: 0 calc(clamp(1rem, 3vw, 3.5rem) * -1) 1rem;
+  padding: 0.75rem clamp(1rem, 3vw, 3.5rem);
+  gap: 1rem;
+  background: linear-gradient(180deg, rgba(8, 8, 8, 0.98) 0%, rgba(8, 8, 8, 0.92) 75%, rgba(8, 8, 8, 0.72) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.vod-voltar,
+.vod-link {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: rgba(255, 255, 255, 0.08);
+  transition: background 140ms ease, transform 140ms ease;
+}
+
+.vod-voltar:hover,
+.vod-link:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.vod-abas {
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.vod-abas button {
+  position: relative;
+  border: 0;
+  border-radius: 0.35rem;
+  padding: 0.55rem 0.7rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.88rem;
+  transition: color 140ms ease, background 140ms ease;
+}
+
+.vod-abas button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.vod-abas button.ativa {
+  background: transparent;
+  color: #fff;
+  font-weight: 700;
+}
+
+.vod-abas button.ativa::after {
+  content: '';
+  position: absolute;
+  left: 0.65rem;
+  right: 0.65rem;
+  bottom: 0.15rem;
+  height: 2px;
+  border-radius: 99px;
+  background: var(--accent, #e50914);
+}
+
+.vod-busca {
+  max-width: 360px;
+  margin-left: auto;
+  border-radius: 0.35rem;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.54);
+  transition: max-width 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.vod-busca:focus {
+  max-width: 440px;
+  border-color: rgba(255, 255, 255, 0.42);
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.vod-fileiras {
+  gap: 2rem;
+  padding-top: 0.35rem;
+}
+
+.vod-fileira h3 {
+  margin-bottom: 0.7rem;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+
+.vod-fileira-pista {
+  gap: clamp(0.65rem, 1vw, 1rem);
+  margin: 0 calc(clamp(1rem, 3vw, 3.5rem) * -1);
+  padding: 0.35rem clamp(1rem, 3vw, 3.5rem) 1rem;
+  scroll-padding-inline: clamp(1rem, 3vw, 3.5rem);
+}
+
+.vod-fileira-pista .vod-card {
+  flex-basis: clamp(138px, 12vw, 180px);
+}
+
+.vod-card {
+  position: relative;
+  transform: translateZ(0);
+  transition: transform 170ms ease, filter 170ms ease;
+}
+
+.vod-card .vod-poster {
+  border-radius: 0.4rem;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  transition: outline-color 150ms ease, box-shadow 170ms ease;
+}
+
+@media (hover: hover) {
+  .vod-card:hover,
+  .vod-card:focus-visible {
+    z-index: 2;
+    transform: translateY(-4px) scale(1.035);
+  }
+
+  .vod-card:hover .vod-poster,
+  .vod-card:focus-visible .vod-poster {
+    outline: 2px solid rgba(255, 255, 255, 0.72);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.vod-card-titulo {
+  font-size: 0.82rem;
+  font-weight: 560;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.vod-generos {
+  margin-bottom: 0.8rem;
+  padding-block: 0.2rem 0.7rem;
+}
+
+.vod-generos button {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.vod-modal-fundo {
+  padding: clamp(0.65rem, 2vw, 1.5rem);
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* O player fica por cima sem desmontar o modal. Ao voltar, inclusive o scroll
+   interno da ficha/temporada continua exatamente onde estava. */
+.vod-modal-fundo.vod-modal-suspenso {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.vod-modal {
+  width: min(1080px, 100%);
+  max-height: min(92vh, 900px);
+  padding: clamp(1.1rem, 2vw, 1.8rem);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.65rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 11rem),
+    #181818;
+  box-shadow: 0 28px 110px rgba(0, 0, 0, 0.78);
+}
+
+.vod-serie-topo {
+  position: sticky;
+  top: calc(clamp(1.1rem, 2vw, 1.8rem) * -1);
+  z-index: 4;
+  margin: calc(clamp(1.1rem, 2vw, 1.8rem) * -1) calc(clamp(1.1rem, 2vw, 1.8rem) * -1) 1rem;
+  padding: 1.2rem clamp(1.1rem, 2vw, 1.8rem) 0.9rem;
+  background: linear-gradient(180deg, #181818 70%, rgba(24, 24, 24, 0.94));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.vod-serie-topo h2 {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  letter-spacing: -0.025em;
+}
+
+.vod-modal-fechar {
+  background: #2a2a2a !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.vod-modal-fechar:hover {
+  background: #3a3a3a !important;
+}
+
+.vod-season-stack {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+}
+
+.vod-episodios-cabecalho {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.25rem 0 0.3rem;
+}
+
+.vod-episodios-cabecalho h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.vod-episodios-cabecalho p {
+  margin: 0.2rem 0 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.78rem;
+}
+
+.vod-season {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 0.55rem;
+  background: #202020;
+}
+
+.vod-season.aberta {
+  border-color: rgba(255, 255, 255, 0.13);
+  background: #1c1c1c;
+}
+
+.vod-season-toggle {
+  width: 100%;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  color: #fff;
+  text-align: left;
+  transition: background 140ms ease;
+}
+
+.vod-season-toggle:hover {
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.vod-season-toggle > span {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.vod-season-toggle strong {
+  font-size: 0.94rem;
+}
+
+.vod-season-toggle small {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.72rem;
+}
+
+.vod-season-toggle svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  transition: transform 160ms ease;
+}
+
+.vod-season.aberta .vod-season-toggle svg {
+  transform: rotate(180deg);
+}
+
+.vod-episodios {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-height: none;
+  overflow: visible;
+  border-top: 1px solid rgba(255, 255, 255, 0.065);
+}
+
+.vod-episodios li + li {
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.vod-episodios button {
+  display: grid;
+  grid-template-columns: 2rem minmax(90px, 0.75fr) minmax(150px, 1.8fr) auto;
+  align-items: center;
+  min-height: 60px;
+  gap: 0.75rem;
+  padding: 0.72rem 1rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 0.84rem;
+  transition: background 130ms ease;
+}
+
+.vod-episodios button:hover,
+.vod-episodios button:focus-visible {
+  border: 0;
+  background: rgba(255, 255, 255, 0.07);
+  outline: none;
+}
+
+.vod-episodios button.assistindo {
+  background: rgba(229, 9, 20, 0.09);
+  box-shadow: inset 3px 0 0 var(--accent, #e50914);
+}
+
+.vod-ep-play {
+  width: 1.7rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 50%;
+  font-size: 0.58rem;
+  color: #fff;
+}
+
+.vod-ep-numero {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.vod-ep-versao {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: none;
+  font-size: 0.74rem;
+}
+
+.vod-episodios button em {
+  justify-self: end;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(229, 9, 20, 0.16);
+  color: #ff858b;
+  font-size: 0.66rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .vod-catalog {
+    padding-inline: 0.85rem;
+  }
+
+  .vod-header {
+    margin-inline: -0.85rem;
+    padding-inline: 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .vod-abas {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+  }
+
+  .vod-abas button {
+    flex: 0 0 auto;
+  }
+
+  .vod-busca {
+    flex: 1 1 9rem;
+    max-width: none;
+  }
+
+  .vod-fileira-pista {
+    margin-inline: -0.85rem;
+    padding-inline: 0.85rem;
+    scroll-padding-inline: 0.85rem;
+  }
+
+  .vod-modal {
+    max-height: 92dvh;
+    border-radius: 0.8rem 0.8rem 0 0;
+  }
+
+  .vod-episodios button {
+    grid-template-columns: 1.8rem 1fr auto;
+    gap: 0.6rem;
+  }
+
+  .vod-ep-versao {
+    grid-column: 2 / -1;
+    white-space: normal;
+    margin-top: -0.45rem;
+  }
+
+  .vod-episodios button em {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}

@@ -355,21 +355,5 @@
   min-height: 0;
   background: #000;
   overflow: hidden;
-  padding-top: 64px; /* Espaço para o header */
-}
-
-/* Ajuste para quando tem header */
-.movies-page .app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1001;
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .movie-player-overlay .movie-player-container {
-    padding-top: 52px;
-  }
+  padding-top: 0;
 }

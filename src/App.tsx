@@ -7,7 +7,7 @@ import { fetchChannels, cachedChannels } from './services/catalogService';
 import { atualizar as atualizarFontesDesativadas, VALIDADE_MS as FONTES_MS } from './services/fontesDesativadas';
 import { registerChannels, fetchRealEPG } from './services/epgService';
 import type { Channel } from './types/channel';
-import type { Movie } from './types/movie';
+import type { Movie, SeriesEpisodeInfo } from './types/movie';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { DpadNavigationProvider } from './contexts/DpadContext';
@@ -362,8 +362,9 @@ function TVPage() {
 // Componente de Filmes
 function MoviesPage() {
   const navigate = useNavigate();
-  const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
+  const { isAdultUnlocked } = useAdultMode();
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [seriesInfo, setSeriesInfo] = useState<SeriesEpisodeInfo | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
 
   const showToast = useCallback((message: string, type: ToastState['type'] = 'info') => {
@@ -371,13 +372,24 @@ function MoviesPage() {
     setTimeout(() => setToast(null), 3000);
   }, []);
 
-  const handleSelectMovie = useCallback((movie: Movie) => {
+  const handleSelectMovie = useCallback((movie: Movie, info?: SeriesEpisodeInfo | null) => {
     setSelectedMovie(movie);
+    setSeriesInfo(info ?? null);
     showToast(`Assistindo: ${movie.name}`, 'info');
   }, [showToast]);
 
+  const handleEpisodeChange = useCallback((episode: Movie) => {
+    setSelectedMovie(episode);
+    setSeriesInfo((atual) => atual ? {
+      ...atual,
+      currentSeason: episode.seasonNumber ?? atual.currentSeason,
+      currentEpisode: episode.episodeNumber ?? atual.currentEpisode,
+    } : null);
+  }, []);
+
   const handleBackFromMovie = useCallback(() => {
     setSelectedMovie(null);
+    setSeriesInfo(null);
   }, []);
 
   const handleBackFromCatalog = useCallback(() => {
@@ -386,18 +398,8 @@ function MoviesPage() {
 
   return (
     <div className="page-container movies-page">
-      {/* AppHeader só aparece quando está reproduzindo um filme */}
-      {selectedMovie && (
-        <AppHeader 
-          isAdultUnlocked={isAdultUnlocked} 
-          onUnlockAdult={unlockAdult}
-          onLockAdult={lockAdult}
-          showBackButton={true}
-          onBack={handleBackFromMovie}
-          title={selectedMovie?.name}
-        />
-      )}
-      
+      {/* O player tem cabeçalho próprio, como nos apps de streaming: sem uma
+          segunda barra global ocupando espaço e duplicando o botão de voltar. */}
       {/* Catálogo lido do repositório, o mesmo que o aplicativo usa */}
       <Suspense fallback={<LoadingFallback />}>
         <div className={`catalog-container ${selectedMovie ? 'hidden-catalog' : ''}`}>
@@ -405,6 +407,8 @@ function MoviesPage() {
             onSelectMovie={handleSelectMovie}
             onBack={handleBackFromCatalog}
             isAdultUnlocked={isAdultUnlocked}
+            playerOpen={!!selectedMovie}
+            activeMovie={selectedMovie}
           />
         </div>
       </Suspense>
@@ -415,8 +419,11 @@ function MoviesPage() {
           <Suspense fallback={<LoadingFallback />}>
             <div className="movie-player-container">
               <MoviePlayer 
+                key={selectedMovie.id}
                 movie={selectedMovie} 
                 onBack={handleBackFromMovie}
+                seriesInfo={seriesInfo}
+                onEpisodeChange={handleEpisodeChange}
               />
             </div>
           </Suspense>

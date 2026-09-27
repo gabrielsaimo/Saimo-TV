@@ -10,7 +10,7 @@
 import * as telemetria from '../services/telemetria';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import type { Movie, MovieSource } from '../types/movie';
+import type { Movie, MovieSource, SeriesEpisodeInfo } from '../types/movie';
 import {
   LETRAS,
   buscar,
@@ -48,8 +48,12 @@ type Aba = 'inicio' | 'filmes' | 'series' | 'animes' | 'doramas' | 'extra';
 const PAGINA = 120;
 
 interface VodCatalogProps {
-  onSelectMovie: (movie: Movie) => void;
+  onSelectMovie: (movie: Movie, seriesInfo?: SeriesEpisodeInfo | null) => void;
   onBack: () => void;
+  /** Mantém o modal montado, mas invisível, enquanto o player está por cima. */
+  playerOpen?: boolean;
+  /** Episódio atual para manter o destaque sincronizado com trocas feitas no player. */
+  activeMovie?: Movie | null;
   /// Mesma trava de 18+ dos canais — sem ela a aba nem aparece, e é o que
   /// faltava aqui: o app já esconde/mostra "extra" junto com o desbloqueio,
   /// o site nunca recebia esse estado.
@@ -68,6 +72,37 @@ interface Item {
   filme?: Filme;
   dados?: Serie;
   colecao?: SerieColecao;
+}
+
+interface EpisodioAgrupado {
+  temporada: number;
+  numero: number;
+  fontes: MovieSource[];
+  versoes: string[];
+}
+
+/**
+ * O catálogo pode publicar dublado e legendado em linhas separadas para o
+ * mesmo T/E. Na interface isso é um episódio só, com todas as fontes dentro.
+ * Assim "próximo episódio" nunca cai noutra versão do mesmo capítulo.
+ */
+function agruparEpisodios(lista: Episodio[]): EpisodioAgrupado[] {
+  const mapa = new Map<string, EpisodioAgrupado>();
+  for (const episodio of lista) {
+    const chave = `${episodio.temporada}:${episodio.numero}`;
+    let atual = mapa.get(chave);
+    if (!atual) {
+      atual = { temporada: episodio.temporada, numero: episodio.numero, fontes: [], versoes: [] };
+      mapa.set(chave, atual);
+    }
+    if (episodio.versao && !atual.versoes.includes(episodio.versao)) atual.versoes.push(episodio.versao);
+    for (const url of episodio.urls) {
+      if (!atual.fontes.some((fonte) => fonte.url === url)) {
+        atual.fontes.push({ url, versao: episodio.versao });
+      }
+    }
+  }
+  return [...mapa.values()].sort((a, b) => a.temporada - b.temporada || a.numero - b.numero);
 }
 
 const eColecao = (aba: Aba): aba is 'animes' | 'doramas' =>
@@ -188,7 +223,7 @@ function Fileiras({
   );
 }
 
-export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalogProps) {
+export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen = false, activeMovie = null }: VodCatalogProps) {
   const [aba, setAba] = useState<Aba>('inicio');
   const [filas, setFilas] = useState<FilaDestaque[]>([]);
   const [generos, setGeneros] = useState<Generos | null>(null);
@@ -210,7 +245,14 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
   const [fontesAbertas, setFontesAbertas] = useState<MovieSource[] | null>(null);
   const [modalCarregando, setModalCarregando] = useState(false);
   const [erroModal, setErroModal] = useState<string | null>(null);
-  const [temporada, setTemporada] = useState(1);
+  const [temporada, setTemporada] = useState(0);
+  const [ultimoEpisodioId, setUltimoEpisodioId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (activeMovie?.type !== 'series') return;
+    setUltimoEpisodioId(activeMovie.id);
+    if (activeMovie.seasonNumber) setTemporada(activeMovie.seasonNumber);
+  }, [activeMovie]);
   /** A ficha do título aberto: sinopse, duração, gêneros e elenco. */
   const [ficha, setFicha] = useState<Ficha | null>(null);
   const [fichaCarregando, setFichaCarregando] = useState(false);
@@ -448,39 +490,38 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
   }, [ator, generos]);
 
   /**
-   * Abre o título no player, levando todas as fontes.
-   *
-   * A primeira é a preferida — o catálogo já sai com a melhor resolução na
-   * frente. As outras vão junto para a pessoa poder trocar dentro do player,
-   * sem voltar à lista, inclusive quando nenhuma abre no site.
+   * Abre um filme no player sem destruir o modal. O modal fica apenas oculto
+   * atrás do player, então voltar traz a ficha de volta no mesmo lugar.
    */
-  const tocar = useCallback((titulo: string, fontes: MovieSource[], tipo: 'movie' | 'series') => {
+  const tocarFilme = useCallback((titulo: string, fontes: MovieSource[]) => {
     const primeira = fontes[0]?.url;
     if (!primeira) return;
-    fecharModal();
     onSelectMovie({
-      id: `${tipo}-${titulo}-${primeira}`.slice(0, 200),
+      id: `movie-${titulo}-${primeira}`.slice(0, 200),
       name: titulo,
       url: primeira,
       sources: fontes,
-      category: tipo === 'series' ? 'Séries' : 'Filmes',
-      type: tipo,
-    });
-  }, [onSelectMovie, fecharModal]);
+      category: 'Filmes',
+      type: 'movie',
+    }, null);
+  }, [onSelectMovie]);
+
 
   useEffect(() => {
     if (!aberto) return;
     const overflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const aoTeclado = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') fecharModal();
+      // Enquanto o player está por cima, Esc pertence ao player. O modal fica
+      // vivo atrás dele para reaparecer exatamente no mesmo ponto ao voltar.
+      if (!playerOpen && event.key === 'Escape') fecharModal();
     };
     window.addEventListener('keydown', aoTeclado);
     return () => {
       document.body.style.overflow = overflow;
       window.removeEventListener('keydown', aoTeclado);
     };
-  }, [aberto, fecharModal]);
+  }, [aberto, fecharModal, playerOpen]);
 
   /** Todo cartão abre suas opções no modal, sem mover a página para o topo. */
   const abrir = useCallback(async (item: Item) => {
@@ -505,7 +546,9 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
 
       if (item.colecao) {
         setEpisodiosAbertos(item.colecao.episodios);
-        setTemporada(item.colecao.episodios[0]?.temporada ?? 1);
+        // Começa recolhida: os episódios só aparecem quando a pessoa escolhe
+        // uma temporada, evitando a parede de episódios/scroll da versão antiga.
+        setTemporada(0);
         return;
       }
 
@@ -518,7 +561,8 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
       const lista = await episodios(item.letra, dados);
       if (tentativa !== abertura.current) return;
       setEpisodiosAbertos(lista);
-      setTemporada(lista[0]?.temporada ?? 1);
+      // Todas as temporadas começam fechadas; um clique abre somente uma.
+      setTemporada(0);
       if (!lista.length) setErroModal('Nenhum episódio encontrado.');
     } catch {
       if (tentativa === abertura.current) setErroModal(`Não foi possível abrir "${item.rotulo}".`);
@@ -576,10 +620,48 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
     }
   }, [abrir]);
 
-  const temporadas = useMemo(() => {
-    if (!episodiosAbertos) return [];
-    return [...new Set(episodiosAbertos.map((e) => e.temporada))].sort((a, b) => a - b);
-  }, [episodiosAbertos]);
+  const episodiosAgrupados = useMemo(
+    () => agruparEpisodios(episodiosAbertos ?? []),
+    [episodiosAbertos],
+  );
+
+  const temporadas = useMemo(
+    () => [...new Set(episodiosAgrupados.map((e) => e.temporada))].sort((a, b) => a - b),
+    [episodiosAgrupados],
+  );
+
+  const filmesDaSerie = useMemo<Movie[]>(() => {
+    if (!aberto?.serie) return [];
+    return episodiosAgrupados.map((e) => ({
+      id: `series-${aberto.chave}-s${e.temporada}e${e.numero}`,
+      name: `${aberto.rotulo} · T${e.temporada}:E${e.numero}`,
+      url: e.fontes[0]?.url ?? '',
+      sources: e.fontes,
+      category: 'Séries',
+      type: 'series' as const,
+      seriesName: aberto.rotulo,
+      seasonNumber: e.temporada,
+      episodeNumber: e.numero,
+    })).filter((movie) => !!movie.url);
+  }, [aberto, episodiosAgrupados]);
+
+  const tocarEpisodio = useCallback((episodio: EpisodioAgrupado) => {
+    if (!aberto) return;
+    const movie = filmesDaSerie.find(
+      (item) => item.seasonNumber === episodio.temporada && item.episodeNumber === episodio.numero,
+    );
+    if (!movie) return;
+    setTemporada(episodio.temporada);
+    setUltimoEpisodioId(movie.id);
+    const info: SeriesEpisodeInfo = {
+      currentEpisode: episodio.numero,
+      currentSeason: episodio.temporada,
+      totalEpisodes: filmesDaSerie.length,
+      episodes: filmesDaSerie,
+      seriesName: aberto.rotulo,
+    };
+    onSelectMovie(movie, info);
+  }, [aberto, filmesDaSerie, onSelectMovie]);
 
   const listaAtual = buscaAtiva ? `busca:${termo.trim()}:${aba}` : aba === 'extra' ? `extra:${letra}` : aba;
   const visiveis = pagina.lista === listaAtual ? pagina.quantos : PAGINA;
@@ -599,11 +681,13 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
   }, [listaAtual]);
 
   const daTemporada = useMemo(
-    () => (episodiosAbertos ?? [])
-      .filter((e) => e.temporada === temporada)
-      .sort((a, b) => a.numero - b.numero),
-    [episodiosAbertos, temporada],
+    () => episodiosAgrupados.filter((e) => e.temporada === temporada),
+    [episodiosAgrupados, temporada],
   );
+
+  const selecionarTemporada = useCallback((numero: number) => {
+    setTemporada((atual) => atual === numero ? 0 : numero);
+  }, []);
 
   return (
     <>
@@ -751,7 +835,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
       )}
     </div>
     {aberto && createPortal(
-      <div className="vod-modal-fundo" onMouseDown={fecharModal}>
+      <div className={`vod-modal-fundo${playerOpen ? ' vod-modal-suspenso' : ''}`} onMouseDown={playerOpen ? undefined : fecharModal}>
         <section
           className="vod-modal"
           role="dialog"
@@ -864,10 +948,9 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
               {fontesAbertas.map((fonte, indice) => (
                 <button
                   key={`${fonte.url}-${indice}`}
-                  onClick={() => tocar(
+                  onClick={() => tocarFilme(
                     aberto.titulo,
                     [fonte, ...fontesAbertas.filter((_, outro) => outro !== indice)],
-                    'movie',
                   )}
                 >
                   <span>
@@ -880,35 +963,59 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked }: VodCatalo
             </div>
           )}
 
-          {aberto.serie && (
-            <>
-              {temporadas.length > 1 && (
-                <div className="vod-temporadas">
-                  {temporadas.map((t) => (
-                    <button
-                      key={t}
-                      className={t === temporada ? 'ativa' : ''}
-                      onClick={() => setTemporada(t)}
-                    >
-                      T{t}
-                    </button>
-                  ))}
+          {aberto.serie && temporadas.length > 0 && (
+            <div className="vod-season-stack">
+              <div className="vod-episodios-cabecalho">
+                <div>
+                  <h3>Episódios</h3>
+                  <p>{filmesDaSerie.length} episódio{filmesDaSerie.length === 1 ? '' : 's'} · escolha uma temporada</p>
                 </div>
-              )}
-              <ul className="vod-episodios">
-                {daTemporada.map((e) => (
-                  <li key={`${e.temporada}-${e.numero}-${e.versao}`}>
-                    <button onClick={() => tocar(`${aberto.rotulo} — T${e.temporada}E${e.numero}`,
-                                              e.urls.map((url) => ({ url, versao: e.versao })), 'series')}>
-                      <span className="vod-ep-numero">T{e.temporada}E{e.numero}</span>
-                      <span className="vod-ep-versao">
-                        {e.versao === 'leg' ? 'Legendado' : 'Dublado'} · {e.urls.length} fonte{e.urls.length === 1 ? '' : 's'}
+              </div>
+              {temporadas.map((t) => {
+                const aberta = t === temporada;
+                const total = episodiosAgrupados.filter((e) => e.temporada === t).length;
+                return (
+                  <section className={`vod-season${aberta ? ' aberta' : ''}`} key={t}>
+                    <button
+                      className="vod-season-toggle"
+                      onClick={() => selecionarTemporada(t)}
+                      aria-expanded={aberta}
+                    >
+                      <span>
+                        <strong>Temporada {t}</strong>
+                        <small>{total} episódio{total === 1 ? '' : 's'}</small>
                       </span>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
                     </button>
-                  </li>
-                ))}
-              </ul>
-            </>
+                    {aberta && (
+                      <ul className="vod-episodios">
+                        {daTemporada.map((e) => {
+                          const id = `series-${aberto.chave}-s${e.temporada}e${e.numero}`;
+                          const idiomas = e.versoes.map((v) => v === 'leg' ? 'Legendado' : v === 'dub' ? 'Dublado' : v);
+                          return (
+                            <li key={`${e.temporada}-${e.numero}`}>
+                              <button
+                                className={id === ultimoEpisodioId ? 'assistindo' : undefined}
+                                onClick={() => tocarEpisodio(e)}
+                              >
+                                <span className="vod-ep-play" aria-hidden="true">▶</span>
+                                <span className="vod-ep-numero">Episódio {e.numero}</span>
+                                <span className="vod-ep-versao">
+                                  {idiomas.join(' · ')} · {e.fontes.length} fonte{e.fontes.length === 1 ? '' : 's'}
+                                </span>
+                                {id === ultimoEpisodioId && <em>Último</em>}
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </section>
+                );
+              })}
+            </div>
           )}
             </>
           )}

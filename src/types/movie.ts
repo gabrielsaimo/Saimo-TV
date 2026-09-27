@@ -20,6 +20,26 @@ export interface Movie {
   year?: string;
   type: 'movie' | 'series';
   rating?: number; // Nota do TMDB/IMDB (0-10)
+
+  /** Metadados opcionais usados na navegação contínua de séries. */
+  seriesName?: string;
+  seasonNumber?: number;
+  episodeNumber?: number;
+}
+
+/**
+ * Contexto de navegação de uma série durante a reprodução.
+ *
+ * `episodes` contém a série inteira, em ordem, não só a temporada atual. Isso
+ * permite trocar de episódio dentro do player, avançar de uma temporada para
+ * a próxima e voltar ao episódio anterior sem reabrir o catálogo.
+ */
+export interface SeriesEpisodeInfo {
+  currentEpisode: number;
+  currentSeason: number;
+  totalEpisodes: number;
+  episodes: Movie[];
+  seriesName: string;
 }
 
 export interface MovieCategory {

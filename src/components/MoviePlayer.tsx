@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback, memo, useMemo } from 'react';
 import Hls from 'hls.js';
-import type { Movie } from '../types/movie';
+import type { Movie, SeriesEpisodeInfo } from '../types/movie';
 import { getProxiedUrl, needsProxy } from '../utils/proxyUrl';
 import { isHls } from '../utils/streamUrl';
 import castService, { type CastMethod, type CastState } from '../services/castService';
@@ -8,29 +8,20 @@ import * as telemetria from '../services/telemetria';
 import './MoviePlayer.css';
 import './AvisoApp.css';
 
-// Interface para informações de série
-export interface SeriesEpisodeInfo {
-  currentEpisode: number;
-  currentSeason: number;
-  totalEpisodes: number;
-  episodes: Movie[]; // Lista de episódios da temporada atual
-  seriesName: string;
-}
-
 interface MoviePlayerProps {
   movie: Movie | null;
   onBack: () => void;
   seriesInfo?: SeriesEpisodeInfo | null;
-  onNextEpisode?: (episode: Movie) => void;
+  onEpisodeChange?: (episode: Movie) => void;
 }
 
-export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo, onNextEpisode }: MoviePlayerProps) {
-  /** Para o monitor: quando esta abertura começou e se já avisou que tocou. */
-  const aberturaRef = useRef<{ titulo: string; url: string; desde: number; avisado: boolean; falhou: boolean } | null>(null);
+export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo, onEpisodeChange }: MoviePlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<Hls | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+  /** Geração da reprodução: qualquer callback antigo vira no-op ao trocar rápido de episódio/fonte. */
+  const loadGenerationRef = useRef(0);
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [showNextEpisodeButton, setShowNextEpisodeButton] = useState(false);
@@ -58,6 +49,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [showControls, setShowControls] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showExternalMenu, setShowExternalMenu] = useState(false);
+  const [showEpisodeMenu, setShowEpisodeMenu] = useState(false);
+  const [episodeMenuSeason, setEpisodeMenuSeason] = useState<number | null>(null);
   const [isPiP, setIsPiP] = useState(false);
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
   const [skipTime, setSkipTime] = useState(() => {
@@ -115,49 +108,69 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   // Título novo recomeça pela fonte preferida, não pela que sobrou do anterior.
   useEffect(() => { setFonteIdx(0); }, [movie?.id]);
 
-  const soHttp = !!urlAtiva && urlAtiva.startsWith('http://');
+  const noDesktop = !(globalThis as { __SAIMO_DESKTOP__?: boolean }).__SAIMO_DESKTOP__;
+  const soHttp = noDesktop && !!urlAtiva && urlAtiva.startsWith('http://');
 
   /** O servidor de uma fonte, que é o que distingue uma da outra na lista. */
   const servidorDe = (endereco: string) => {
     try { return new URL(endereco).hostname; } catch { return endereco.slice(0, 30); }
   };
 
-  // Carregar vídeo quando movie mudar
+  // Carregar vídeo quando movie/fonte mudar.
+  //
+  // A regra central é "a última escolha vence": cada execução recebe uma
+  // geração. Eventos HLS, fetches e callbacks do vídeo de uma geração anterior
+  // são ignorados. Isso elimina o erro fantasma que aparecia ao clicar E2, E3,
+  // E4 rapidamente e receber depois a falha atrasada do E2.
   useEffect(() => {
-    if (!movie || !videoRef.current) return;
+    if (!movie || !videoRef.current || !urlAtiva) return;
 
-    if (soHttp) {
-      // O vídeo anterior precisa parar, senão os eventos dele limpam o aviso.
-      const anterior = videoRef.current;
-      anterior.pause();
-      anterior.removeAttribute('src');
-      anterior.load();
-      setIsLoading(false);
-      setIsProxyBlocked(true);
-      setError('Este vídeo só existe em http.');
-      return;
-    }
-
+    const geracao = ++loadGenerationRef.current;
+    const atual = () => loadGenerationRef.current === geracao;
     const video = videoRef.current;
-    const url = getProxiedUrl(urlAtiva);
-    // Série agrupa pelo nome dela, e não episódio por episódio.
-    const tituloMonitor = seriesInfo?.seriesName || movie.name;
-    telemetria.comecou('vod', tituloMonitor, urlAtiva, 1);
-    aberturaRef.current = { titulo: tituloMonitor, url: urlAtiva, desde: performance.now(), avisado: false, falhou: false };
-    const avisarFalha = (detalhe: string) => {
-      const a = aberturaRef.current;
-      if (!a || a.falhou) return;
-      a.falhou = true;
-      telemetria.falhou('vod', a.titulo, a.url, 1, detalhe);
-      if (!a.avisado) telemetria.caiu('vod', a.titulo, 1);
+    const abortador = new AbortController();
+    let hlsDaVez: Hls | null = null;
+    let onLoadedMetadata: (() => void) | null = null;
+    let erroNativoLigado = false;
+    let tentouRecuperarMidia = false;
+
+    const seguro = (acao: () => void) => {
+      if (atual()) acao();
     };
 
-    // Resetar estados para o novo vídeo
+    const salvarProgresso = () => {
+      const tempo = video.currentTime;
+      const duracao = video.duration;
+      if (!Number.isFinite(tempo) || !Number.isFinite(duracao) || tempo <= 30 || duracao <= 0) return;
+      const progresso = (tempo / duracao) * 100;
+      if (progresso < 95) localStorage.setItem(`movie-progress-${movie.id}`, String(tempo));
+      else localStorage.removeItem(`movie-progress-${movie.id}`);
+    };
+
+    const carregarProgresso = () => {
+      if (!atual()) return;
+      const salvo = Number(localStorage.getItem(`movie-progress-${movie.id}`));
+      if (Number.isFinite(salvo) && salvo > 0 && Number.isFinite(video.duration) && salvo < video.duration - 5) {
+        video.currentTime = salvo;
+      }
+    };
+
+    // O efeito anterior já salvou seu progresso no cleanup. Agora é seguro
+    // desmontar qualquer mídia que ainda tenha ficado presa ao elemento.
+    if (hlsRef.current) {
+      hlsRef.current.destroy();
+      hlsRef.current = null;
+    }
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+
     setIsLoading(true);
     setError(null);
     setIsProxyBlocked(false);
     setCurrentTime(0);
     setDuration(0);
+    setBuffered(0);
     setIsPlaying(false);
     setShowNextEpisodeButton(false);
     setQualityLevels([]);
@@ -167,100 +180,98 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     setSubtitleTracks([]);
     setSelectedSubtitle(-1);
 
-    // Função para salvar progresso do vídeo anterior (se houver)
-    const savePreviousProgress = () => {
-      const previousMovieId = localStorage.getItem('current-movie-id');
-      const previousTime = video.currentTime;
-      const previousDuration = video.duration;
-
-      if (previousMovieId && previousTime > 30 && previousDuration) {
-        const progress = (previousTime / previousDuration) * 100;
-        if (progress < 95) { // Só salva se não terminou
-          localStorage.setItem(`movie-progress-${previousMovieId}`, previousTime.toString());
-        } else {
-          localStorage.removeItem(`movie-progress-${previousMovieId}`);
-        }
-      }
-    };
-    savePreviousProgress();
     localStorage.setItem('current-movie-id', movie.id);
 
-    // Função para carregar progresso salvo do vídeo atual
-    const loadProgress = () => {
-      const saved = localStorage.getItem(`movie-progress-${movie.id}`);
-      if (saved) {
-        const time = parseFloat(saved);
-        if (!isNaN(time) && time > 0) {
-          video.currentTime = time;
-        }
-      }
-    };
-
-    // Limpeza da instância HLS anterior
-    if (hlsRef.current) {
-      hlsRef.current.destroy();
-      hlsRef.current = null;
+    if (soHttp) {
+      setIsLoading(false);
+      setIsProxyBlocked(true);
+      setError('Este vídeo só existe em http.');
+      return () => {
+        if (atual()) loadGenerationRef.current += 1;
+        abortador.abort();
+        salvarProgresso();
+      };
     }
 
-    const handleAutoplay = () => {
+    const url = getProxiedUrl(urlAtiva);
+    const tituloMonitor = seriesInfo?.seriesName || movie.seriesName || movie.name;
+    telemetria.comecou('vod', tituloMonitor, urlAtiva, 1);
+    const abertura = { titulo: tituloMonitor, url: urlAtiva, desde: performance.now(), avisado: false, falhou: false };
+
+    const avisarFalha = (detalhe: string) => {
+      if (!atual() || abertura.falhou) return;
+      abertura.falhou = true;
+      telemetria.falhou('vod', abertura.titulo, abertura.url, 1, detalhe);
+      if (!abertura.avisado) telemetria.caiu('vod', abertura.titulo, 1);
+    };
+
+    const tentarProximaFonte = (_detalhe: string): boolean => {
+      if (!atual() || fonteIdx >= fontes.length - 1) return false;
+      // Falha de uma origem não derruba o título: tenta a próxima em silêncio.
+      // Só a última fonte esgotada vira erro/telemetria de indisponibilidade.
+      setError(null);
+      setIsProxyBlocked(false);
+      setIsLoading(true);
+      setFonteIdx((indice) => indice === fonteIdx ? indice + 1 : indice);
+      return true;
+    };
+
+    const reproduzir = () => {
+      if (!atual()) return;
       video.play().catch(() => {
+        if (!atual()) return;
         video.muted = true;
         setIsMuted(true);
-        video.play().catch(() => {
-          console.log('Autoplay bloqueado, aguardando interação do usuário');
-        });
+        video.play().catch(() => { /* interação manual continua disponível */ });
       });
     };
 
-    const handleGenericError = (e: Event) => {
-      setIsLoading(false);
-      const videoError = (e.currentTarget as HTMLVideoElement)?.error;
+    const handleGenericError = (event: Event) => {
+      if (!atual()) return;
+      const videoError = (event.currentTarget as HTMLVideoElement)?.error;
       const code = videoError?.code;
+      if (tentarProximaFonte(`vídeo: código ${code ?? '?'}`)) return;
+
+      setIsLoading(false);
       avisarFalha(`código ${code ?? '?'}`);
-      let message = 'Erro ao carregar o vídeo.';
+      let message = 'Não foi possível reproduzir este vídeo nas fontes disponíveis.';
 
       switch (code) {
-        case 1: message = 'Carregamento do vídeo foi cancelado.'; break;
-        case 2: message = 'Erro de rede. Verifique sua conexão.'; break;
-        case 3: message = 'Erro ao decodificar o vídeo.'; break;
+        case 1: message = 'O carregamento foi cancelado.'; break;
+        case 2: message = 'Erro de rede ao carregar as fontes disponíveis.'; break;
+        case 3: message = 'O vídeo não pôde ser decodificado.'; break;
         case 4:
           if (needsProxy(urlAtiva)) {
-            // Tenta verificar se é bloqueio do proxy (403 do servidor de CDN)
-            const proxyUrl = getProxiedUrl(urlAtiva);
-            fetch(proxyUrl, { method: 'HEAD' })
-              .then(r => {
-                if (r.status === 403) {
+            fetch(getProxiedUrl(urlAtiva), { method: 'HEAD', signal: abortador.signal })
+              .then((resposta) => seguro(() => {
+                if (resposta.status === 403) {
                   setIsProxyBlocked(true);
-                  setError('O servidor de CDN está bloqueando o proxy. Use um player externo.');
+                  setError('O servidor recusou esta fonte. Tente outra fonte ou um player externo.');
                 } else {
-                  setError('Vídeo não pôde ser carregado. Tente um player externo.');
+                  setError('Não foi possível reproduzir este vídeo nas fontes disponíveis.');
                 }
-              })
-              .catch(() => {
-                setError('Vídeo não pôde ser carregado. Tente um player externo.');
+              }))
+              .catch((erro: unknown) => {
+                if ((erro as { name?: string })?.name === 'AbortError') return;
+                seguro(() => setError('Não foi possível reproduzir este vídeo nas fontes disponíveis.'));
               });
-            return; // Sai cedo; o state será definido no .then()
+            return;
           }
-          message = 'Formato de vídeo não suportado ou URL inválida.';
+          message = 'Formato de vídeo não suportado ou endereço inválido.';
           break;
       }
-
-      console.log('[MoviePlayer Error]', { code, message, url: urlAtiva });
+      console.log('[MoviePlayer Error]', { code, message, url: urlAtiva, geracao });
       setError(message);
     };
 
-    // Lógica para carregar HLS ou vídeo nativo
     if (isHls(urlAtiva) && Hls.isSupported()) {
-      const hls = new Hls({
-          enableWorker: true,
-          lowLatencyMode: true,
-      });
+      const hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+      hlsDaVez = hls;
       hlsRef.current = hls;
-
       hls.loadSource(url);
       hls.attachMedia(video);
 
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      hls.on(Hls.Events.MANIFEST_PARSED, () => seguro(() => {
         setQualityLevels(hls.levels.map((level, id) => ({
           id,
           label: level.height ? `${level.height}p` : `${Math.round(level.bitrate / 1000)} kbps`,
@@ -273,103 +284,130 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
           id,
           label: track.name || track.lang || `Legenda ${id + 1}`,
         })));
-        setDuration(video.duration);
+        setDuration(Number.isFinite(video.duration) ? video.duration : 0);
         setIsLoading(false);
-        loadProgress();
-        handleAutoplay();
-      });
+        carregarProgresso();
+        reproduzir();
+      }));
 
-      hls.on(Hls.Events.AUDIO_TRACK_SWITCHED, (_event, data) => setSelectedAudio(data.id));
-      hls.on(Hls.Events.SUBTITLE_TRACK_SWITCH, (_event, data) => setSelectedSubtitle(data.id));
+      hls.on(Hls.Events.AUDIO_TRACK_SWITCHED, (_event, data) => seguro(() => setSelectedAudio(data.id)));
+      hls.on(Hls.Events.SUBTITLE_TRACK_SWITCH, (_event, data) => seguro(() => setSelectedSubtitle(data.id)));
 
       hls.on(Hls.Events.ERROR, (_event, data) => {
-        if (data.fatal) {
-          switch (data.type) {
-            case Hls.ErrorTypes.NETWORK_ERROR:
-              console.error('HLS Network error', data);
-              setError('Erro de rede ao carregar o stream.');
-              hls.startLoad(); // Tenta reconectar
-              break;
-            case Hls.ErrorTypes.MEDIA_ERROR:
-              console.error('HLS Media error', data);
-              setError('Erro de mídia no stream, tentando recuperar...');
-              hls.recoverMediaError();
-              break;
-            default:
-              avisarFalha(`hls: ${data.details}`);
-              setError('Ocorreu um erro fatal ao carregar o vídeo.');
+        if (!atual() || !data.fatal) return;
+        switch (data.type) {
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            if (!tentarProximaFonte(`hls rede: ${data.details}`)) {
+              avisarFalha(`hls rede: ${data.details}`);
               setIsLoading(false);
-              hls.destroy();
-              break;
-          }
+              setError('Erro de rede nas fontes disponíveis.');
+            }
+            break;
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            if (!tentouRecuperarMidia) {
+              tentouRecuperarMidia = true;
+              hls.recoverMediaError();
+            } else if (!tentarProximaFonte(`hls mídia: ${data.details}`)) {
+              avisarFalha(`hls mídia: ${data.details}`);
+              setIsLoading(false);
+              setError('Erro de mídia nas fontes disponíveis.');
+            }
+            break;
+          default:
+            if (!tentarProximaFonte(`hls: ${data.details}`)) {
+              avisarFalha(`hls: ${data.details}`);
+              setError('Não foi possível reproduzir este vídeo nas fontes disponíveis.');
+              setIsLoading(false);
+            }
+            break;
         }
       });
     } else {
-      // Fallback para vídeo nativo (MP4, WebM, etc) ou Safari com HLS nativo
       video.src = url;
-      video.load();
-
-      const onLoadedMetadata = () => {
-        setDuration(video.duration);
+      onLoadedMetadata = () => seguro(() => {
+        setDuration(Number.isFinite(video.duration) ? video.duration : 0);
         setIsLoading(false);
-        loadProgress();
-        handleAutoplay();
-      };
+        carregarProgresso();
+        reproduzir();
+      });
       video.addEventListener('loadedmetadata', onLoadedMetadata);
       video.addEventListener('error', handleGenericError);
+      erroNativoLigado = true;
+      video.load();
     }
-    
-    // Listeners gerais
-    const handleWaiting = () => setIsLoading(true);
-    const handlePlaying = () => {
-      const a = aberturaRef.current;
-      if (a && !a.avisado) {
-        a.avisado = true;
-        telemetria.tocou('vod', a.titulo, a.url, 1, performance.now() - a.desde);
+
+    const handleWaiting = () => seguro(() => setIsLoading(true));
+    const handlePlaying = () => seguro(() => {
+      if (!abertura.avisado) {
+        abertura.avisado = true;
+        telemetria.tocou('vod', abertura.titulo, abertura.url, 1, performance.now() - abertura.desde);
       }
       setIsLoading(false);
       setIsPlaying(true);
-    };
-    const handleCanPlay = () => setIsLoading(false);
-    
+    });
+    const handleCanPlay = () => seguro(() => setIsLoading(false));
+
     video.addEventListener('waiting', handleWaiting);
     video.addEventListener('playing', handlePlaying);
     video.addEventListener('canplay', handleCanPlay);
-
-    // Salvar progresso ao sair
-    const saveOnExit = () => savePreviousProgress();
-    window.addEventListener('beforeunload', saveOnExit);
+    window.addEventListener('beforeunload', salvarProgresso);
 
     return () => {
+      // Invalida antes de desmontar: eventos disparados por pause/load/destroy
+      // durante a limpeza já não conseguem mexer no episódio novo.
+      if (atual()) loadGenerationRef.current += 1;
+      abortador.abort();
       telemetria.parou();
-      savePreviousProgress();
-      localStorage.removeItem('current-movie-id');
-      
-      if (hlsRef.current) {
-        hlsRef.current.destroy();
+      salvarProgresso();
+      if (localStorage.getItem('current-movie-id') === movie.id) {
+        localStorage.removeItem('current-movie-id');
       }
-      
-      window.removeEventListener('beforeunload', saveOnExit);
-      video.removeEventListener('error', handleGenericError);
+
+      if (hlsDaVez) hlsDaVez.destroy();
+      if (hlsRef.current === hlsDaVez) hlsRef.current = null;
+      if (onLoadedMetadata) video.removeEventListener('loadedmetadata', onLoadedMetadata);
+      if (erroNativoLigado) video.removeEventListener('error', handleGenericError);
       video.removeEventListener('waiting', handleWaiting);
       video.removeEventListener('playing', handlePlaying);
       video.removeEventListener('canplay', handleCanPlay);
-      // Remove specific listener for native video if it was added
-      // A reference to the function is needed to remove it.
-      // video.removeEventListener('loadedmetadata', onLoadedMetadata);
+      window.removeEventListener('beforeunload', salvarProgresso);
     };
-  }, [movie, soHttp, urlAtiva]);
+  }, [movie, soHttp, urlAtiva, fonteIdx, fontes.length, seriesInfo?.seriesName]);
 
 
-  // Calcula próximo episódio - DEVE vir antes do useEffect que o usa
-  const nextEpisode = useMemo(() => {
-    if (!seriesInfo || !movie) return null;
-    
-    const currentIndex = seriesInfo.episodes.findIndex(ep => ep.id === movie.id);
-    if (currentIndex === -1 || currentIndex >= seriesInfo.episodes.length - 1) return null;
-    
-    return seriesInfo.episodes[currentIndex + 1];
+  const episodeIndex = useMemo(() => {
+    if (!seriesInfo || !movie) return -1;
+    return seriesInfo.episodes.findIndex((ep) => ep.id === movie.id);
   }, [seriesInfo, movie]);
+
+  const previousEpisode = useMemo(() => {
+    if (!seriesInfo || episodeIndex <= 0) return null;
+    return seriesInfo.episodes[episodeIndex - 1] ?? null;
+  }, [seriesInfo, episodeIndex]);
+
+  const nextEpisode = useMemo(() => {
+    if (!seriesInfo || episodeIndex < 0 || episodeIndex >= seriesInfo.episodes.length - 1) return null;
+    return seriesInfo.episodes[episodeIndex + 1] ?? null;
+  }, [seriesInfo, episodeIndex]);
+
+  const episodiosPorTemporada = useMemo(() => {
+    const mapa = new Map<number, Movie[]>();
+    for (const episodio of seriesInfo?.episodes ?? []) {
+      const numero = episodio.seasonNumber ?? 0;
+      if (!mapa.has(numero)) mapa.set(numero, []);
+      mapa.get(numero)!.push(episodio);
+    }
+    return [...mapa.entries()].sort(([a], [b]) => a - b);
+  }, [seriesInfo]);
+
+  useEffect(() => {
+    if (!seriesInfo) {
+      setShowEpisodeMenu(false);
+      setEpisodeMenuSeason(null);
+      return;
+    }
+    setEpisodeMenuSeason(movie?.seasonNumber ?? seriesInfo.currentSeason);
+  }, [seriesInfo, movie?.seasonNumber]);
 
   // Atualizar tempo/buffer
   useEffect(() => {
@@ -442,7 +480,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     if (!movie) return;
     console.log('[openInNewTab] Abrindo:', urlAtiva);
     window.open(urlAtiva, '_blank');
-  }, [movie]);
+  }, [movie, urlAtiva]);
 
   // Mostra botão de próximo episódio quando faltam 30 segundos
   useEffect(() => {
@@ -456,11 +494,15 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     }
   }, [currentTime, duration, nextEpisode]);
 
-  const handleNextEpisode = useCallback(() => {
-    if (nextEpisode && onNextEpisode) {
-      onNextEpisode(nextEpisode);
-    }
-  }, [nextEpisode, onNextEpisode]);
+  const trocarEpisodio = useCallback((episode: Movie | null) => {
+    if (!episode || !onEpisodeChange) return;
+    setShowEpisodeMenu(false);
+    setShowNextEpisodeButton(false);
+    onEpisodeChange(episode);
+  }, [onEpisodeChange]);
+
+  const handleNextEpisode = useCallback(() => trocarEpisodio(nextEpisode), [nextEpisode, trocarEpisodio]);
+  const handlePreviousEpisode = useCallback(() => trocarEpisodio(previousEpisode), [previousEpisode, trocarEpisodio]);
 
   // Volume
   useEffect(() => {
@@ -740,6 +782,24 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
           e.preventDefault();
           toggleFullscreen();
           break;
+        case 'n':
+          if (nextEpisode) {
+            e.preventDefault();
+            handleNextEpisode();
+          }
+          break;
+        case 'b':
+          if (previousEpisode) {
+            e.preventDefault();
+            handlePreviousEpisode();
+          }
+          break;
+        case 'e':
+          if (seriesInfo) {
+            e.preventDefault();
+            setShowEpisodeMenu((aberto) => !aberto);
+          }
+          break;
         case 'p':
           e.preventDefault();
           togglePiP();
@@ -801,7 +861,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
           setPlaybackRate(r => Math.min(3, r + 0.25));
           break;
         case 'Escape':
-          if (isFullscreen) {
+          if (showEpisodeMenu) {
+            setShowEpisodeMenu(false);
+          } else if (isFullscreen) {
             document.exitFullscreen();
           } else {
             onBack();
@@ -812,7 +874,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isFullscreen, onBack, skipTime, togglePiP, toggleCast, skipIntro, togglePlay, seek, toggleFullscreen]);
+  }, [isFullscreen, onBack, skipTime, togglePiP, toggleCast, skipIntro, togglePlay, seek, toggleFullscreen, nextEpisode, previousEpisode, handleNextEpisode, handlePreviousEpisode, seriesInfo, showEpisodeMenu]);
 
   /*
    * Arrastar e clicar na barra.
@@ -1189,6 +1251,51 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
         </div>
       )}
 
+      {showEpisodeMenu && seriesInfo && (
+        <div className="episode-browser-backdrop" onClick={() => setShowEpisodeMenu(false)}>
+          <aside className="episode-browser" onClick={(e) => e.stopPropagation()} aria-label="Escolher episódio">
+            <header className="episode-browser-header">
+              <div>
+                <span>Episódios</span>
+                <h3>{seriesInfo.seriesName}</h3>
+              </div>
+              <button onClick={() => setShowEpisodeMenu(false)} aria-label="Fechar episódios">×</button>
+            </header>
+            <nav className="episode-browser-seasons" aria-label="Temporadas">
+              {episodiosPorTemporada.map(([numero, eps]) => (
+                <button
+                  key={numero}
+                  className={episodeMenuSeason === numero ? 'active' : undefined}
+                  onClick={() => setEpisodeMenuSeason(numero)}
+                >
+                  Temporada {numero} <small>{eps.length}</small>
+                </button>
+              ))}
+            </nav>
+            <div className="episode-browser-list">
+              {(episodiosPorTemporada.find(([numero]) => numero === episodeMenuSeason)?.[1] ?? []).map((episodio) => {
+                const ativo = episodio.id === movie.id;
+                return (
+                  <button
+                    key={episodio.id}
+                    className={ativo ? 'active' : undefined}
+                    onClick={() => trocarEpisodio(episodio)}
+                    disabled={ativo}
+                  >
+                    <span className="episode-browser-play">{ativo ? '●' : '▶'}</span>
+                    <span className="episode-browser-copy">
+                      <strong>Episódio {episodio.episodeNumber ?? '?'}</strong>
+                      <small>{episodio.sources?.length ?? 1} fonte{(episodio.sources?.length ?? 1) === 1 ? '' : 's'}</small>
+                    </span>
+                    {ativo && <em>Reproduzindo</em>}
+                  </button>
+                );
+              })}
+            </div>
+          </aside>
+        </div>
+      )}
+
       {/* Next Episode Overlay - Aparece nos últimos 30 segundos ou quando o vídeo termina */}
       {showNextEpisodeButton && nextEpisode && (
         <div className="next-episode-overlay" onClick={(e) => e.stopPropagation()}>
@@ -1196,11 +1303,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
             <div className="next-episode-info">
               <span className="next-label">Próximo episódio</span>
               <h4>{nextEpisode.name}</h4>
-              {seriesInfo && (
-                <span className="next-episode-number">
-                  T{seriesInfo.currentSeason} E{seriesInfo.currentEpisode + 1}
-                </span>
-              )}
+              <span className="next-episode-number">
+                T{nextEpisode.seasonNumber ?? '?'} · E{nextEpisode.episodeNumber ?? '?'}
+              </span>
             </div>
             <button 
               className="next-episode-btn" 
@@ -1262,10 +1367,28 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
             </svg>
           </button>
           <div className="movie-title-bar">
-            <h2>{movie.name}</h2>
-            <span className="movie-category">{movie.category}</span>
+            <h2>{seriesInfo?.seriesName ?? movie.name}</h2>
+            <span className="movie-category">
+              {seriesInfo
+                ? `Temporada ${movie.seasonNumber ?? seriesInfo.currentSeason} · Episódio ${movie.episodeNumber ?? seriesInfo.currentEpisode}`
+                : movie.category}
+            </span>
           </div>
           <div className="top-actions">
+            {seriesInfo && (
+              <button
+                className={`control-btn episodes-menu-btn${showEpisodeMenu ? ' active' : ''}`}
+                onClick={() => setShowEpisodeMenu((aberto) => !aberto)}
+                title="Episódios (E)"
+                data-focusable="true"
+                data-nav-group="player-top"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="4" width="18" height="16" rx="2" />
+                  <path d="M8 9h8M8 13h8M8 17h5" />
+                </svg>
+              </button>
+            )}
             <div className="external-menu-wrapper">
               <button 
                 className="control-btn" 
@@ -1569,6 +1692,21 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                   <circle cx="2" cy="20" r="2" fill="currentColor" />
                 </svg>
               </button>
+
+              {/* Previous Episode Button */}
+              {previousEpisode && (
+                <button
+                  className="control-btn prev-ep-btn"
+                  onClick={handlePreviousEpisode}
+                  title="Episódio anterior (B)"
+                  data-focusable="true"
+                  data-nav-group="player-controls"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18 6v12l-8.5-6L18 6zM6 6h2v12H6V6z"/>
+                  </svg>
+                </button>
+              )}
 
               {/* Next Episode Button */}
               {nextEpisode && (
