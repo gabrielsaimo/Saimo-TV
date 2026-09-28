@@ -116,6 +116,12 @@
   font-size: 0.9rem;
 }
 
+/* O erro não cobre a barra do topo: o botão de voltar precisa continuar
+   clicável quando nenhuma fonte abre. */
+.player-overlay.error {
+  top: 96px;
+}
+
 .player-overlay.error svg {
   width: 64px;
   height: 64px;
