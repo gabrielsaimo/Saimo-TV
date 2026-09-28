@@ -250,16 +250,20 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   const [genero, setGenero] = useState('');
 
   // Se travar de novo com a aba extra aberta, ela não pode continuar visível.
-  useEffect(() => {
-    if (!isAdultUnlocked && aba === 'extra') setAba('filmes');
-  }, [isAdultUnlocked, aba]);
+  // Ajuste durante o desenho, como o React recomenda para estado que depende
+  // de outro: num efeito, a aba ainda apareceria por um quadro.
+  if (!isAdultUnlocked && aba === 'extra') setAba('filmes');
   const [letra, setLetra] = useState('A');
   const [gavetas, setGavetas] = useState<Gaveta[]>([]);
-  const [itens, setItens] = useState<Item[]>([]);
-  const [carregando, setCarregando] = useState(true);
+  /** A lista da letra ou seção, com a chave de quem a pediu. */
+  const [lista, setLista] = useState<{ chave: string; itens: Item[]; erro: string | null }>(
+    { chave: '', itens: [], erro: null });
+  const itens = lista.itens;
+  /** Busca em andamento (o carregamento da lista sai da chave, lá embaixo). */
+  const [buscando, setBuscando] = useState(false);
   const [termo, setTermo] = useState('');
-  const [busca, setBusca] = useState<Achado[] | null>(null);
-  const [buscaExtra, setBuscaExtra] = useState<Item[] | null>(null);
+  const [buscaAchada, setBusca] = useState<Achado[] | null>(null);
+  const [buscaExtraAchada, setBuscaExtra] = useState<Item[] | null>(null);
   const [aberto, setAberto] = useState<Item | null>(null);
   const [episodiosAbertos, setEpisodiosAbertos] = useState<Episodio[] | null>(null);
   const [fontesAbertas, setFontesAbertas] = useState<MovieSource[] | null>(null);
@@ -268,21 +272,26 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   const [temporada, setTemporada] = useState(0);
   const [ultimoEpisodioId, setUltimoEpisodioId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (activeMovie?.type !== 'series') return;
-    setUltimoEpisodioId(activeMovie.id);
-    if (activeMovie.seasonNumber) setTemporada(activeMovie.seasonNumber);
-  }, [activeMovie]);
+  // O episódio que o player abriu vira o último visto — ajustado durante o
+  // desenho, quando o título muda, e não copiado num efeito.
+  const [episodioNoPlayer, setEpisodioNoPlayer] = useState(activeMovie);
+  if (activeMovie !== episodioNoPlayer) {
+    setEpisodioNoPlayer(activeMovie);
+    if (activeMovie?.type === 'series') {
+      setUltimoEpisodioId(activeMovie.id);
+      if (activeMovie.seasonNumber) setTemporada(activeMovie.seasonNumber);
+    }
+  }
   /** A ficha do título aberto: sinopse, duração, gêneros e elenco. */
-  const [ficha, setFicha] = useState<Ficha | null>(null);
-  const [fichaCarregando, setFichaCarregando] = useState(false);
+  const [fichaAchada, setFicha] = useState<{ chave: string; ficha: Ficha | null } | null>(null);
   /** O ator aberto dentro da ficha, e o que ele tem no acervo. */
   const [ator, setAtor] = useState<Pessoa | null>(null);
-  const [filmografia, setFilmografia] = useState<Trabalho[] | null>(null);
-  const [perfilDoAtor, setPerfilDoAtor] = useState<Perfil | null>(null);
+  const [filmografiaAchada, setFilmografia] = useState<{ ator: number; lista: Trabalho[] } | null>(null);
+  const [perfilAchado, setPerfilDoAtor] = useState<{ ator: number; perfil: Perfil | null } | null>(null);
+  const filmografia = ator && filmografiaAchada?.ator === ator.id ? filmografiaAchada.lista : null;
+  const perfilDoAtor = ator && perfilAchado?.ator === ator.id ? perfilAchado.perfil : null;
   /** Onde "Ver episódios" rola: a lista de temporadas logo abaixo. */
   const episodiosRef = useRef<HTMLDivElement | null>(null);
-  const [erro, setErro] = useState<string | null>(null);
   const abertura = useRef(0);
   /*
    * A letra A traz três mil e quinhentos filmes, e três mil e quinhentos
@@ -313,14 +322,19 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   // abaixo), então tem letra própria de "buscando".
   const buscandoExtra = aba === 'extra' && termo.trim().length >= 2;
   const buscandoColecao = eColecao(aba) && termo.trim().length >= 2;
+  const buscaGeral = termo.trim().length >= 2 && aba !== 'extra' && !eColecao(aba);
+  const busca = buscaGeral ? buscaAchada : null;
   const buscaAtiva = aba === 'extra' ? buscandoExtra : eColecao(aba) ? buscandoColecao : !!busca;
 
   // Lista da letra escolhida. A busca, quando ativa, manda na tela.
+  const chaveLista = `${aba}|${aba === 'extra' ? letra : ''}`;
+  const listaPendente = !(buscaAtiva && !eColecao(aba)) && lista.chave !== chaveLista;
+  const carregando = buscando || listaPendente;
+  const erro = lista.chave === chaveLista ? lista.erro : null;
   useEffect(() => {
     if (buscaAtiva && !eColecao(aba)) return;
     let vivo = true;
-    setCarregando(true);
-    setErro(null);
+    const chave = `${aba}|${aba === 'extra' ? letra : ''}`;
 
     const trabalho = eColecao(aba)
       ? colecao(aba).then((lista) => lista.map<Item>((s) => ({
@@ -350,9 +364,8 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
       })));
 
     trabalho
-      .then((lista) => { if (vivo) setItens(lista); })
-      .catch(() => { if (vivo) { setItens([]); setErro('Não foi possível carregar o acervo.'); } })
-      .finally(() => { if (vivo) setCarregando(false); });
+      .then((achados) => { if (vivo) setLista({ chave, itens: achados, erro: null }); })
+      .catch(() => { if (vivo) setLista({ chave, itens: [], erro: 'Não foi possível carregar o acervo.' }); });
 
     return () => { vivo = false; };
   }, [aba, letra, buscaAtiva, buscandoColecao]);
@@ -362,16 +375,16 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   // reservado (ver gerar_vod.py), então essa chamada não acharia nada lá.
   useEffect(() => {
     const alvo = termo.trim();
-    if (alvo.length < 2 || aba === 'extra' || eColecao(aba)) { setBusca(null); return; }
+    if (alvo.length < 2 || aba === 'extra' || eColecao(aba)) return;
     const tempo = window.setTimeout(() => {
-      setCarregando(true);
+      setBuscando(true);
       buscar(alvo)
         .then((achados) => {
           setBusca(achados);
           telemetria.buscou('vod', alvo, () => achados.length > 0);
         })
         .catch(() => setBusca([]))
-        .finally(() => setCarregando(false));
+        .finally(() => setBuscando(false));
     }, 350);
     return () => window.clearTimeout(tempo);
   }, [termo, aba]);
@@ -379,12 +392,13 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   /// Busca dentro do 18+: como o título reservado não está no índice geral,
   /// aqui é o próprio acervo reservado (pequeno: nove mil títulos) que é
   /// vasculhado, uma letra de cada vez, só nas letras que têm alguma.
+  const buscaExtra = buscandoExtra ? buscaExtraAchada : null;
   useEffect(() => {
-    if (!buscandoExtra) { setBuscaExtra(null); return; }
+    if (!buscandoExtra) return;
     const alvo = normalizar(termo.trim());
     let vivo = true;
     const tempo = window.setTimeout(() => {
-      setCarregando(true);
+      setBuscando(true);
       const letras = gavetas.filter((g) => g.reservados > 0).map((g) => g.letra);
       Promise.all(letras.map((l) => listarFilmes(l, true).then((lista) => ({ letra: l, lista }))))
         .then((porLetra) => {
@@ -402,7 +416,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
           setBuscaExtra(achados);
         })
         .catch(() => { if (vivo) setBuscaExtra([]); })
-        .finally(() => { if (vivo) setCarregando(false); });
+        .finally(() => { if (vivo) setBuscando(false); });
     }, 350);
     return () => { vivo = false; window.clearTimeout(tempo); };
   }, [buscandoExtra, termo, gavetas]);
@@ -440,9 +454,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
     setFontesAbertas(null);
     setErroModal(null);
     setModalCarregando(false);
-    setFicha(null);
     setAtor(null);
-    setFilmografia(null);
   }, []);
 
   /**
@@ -452,17 +464,18 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
    * não há busca por nome nem desempate — pergunta-se direto pelo número
    * certo, e um pedido por título aberto não pesa como um por título listado.
    */
+  const idFicha = aberto && generos ? idDaFicha(generos, aberto.titulo, aberto.serie) : null;
+  const chaveFicha = aberto && idFicha ? `${aberto.serie ? 's' : 'f'}:${idFicha}` : null;
+  const ficha = chaveFicha && fichaAchada?.chave === chaveFicha ? fichaAchada.ficha : null;
+  const fichaCarregando = !!chaveFicha && fichaAchada?.chave !== chaveFicha;
   useEffect(() => {
-    if (!aberto || !generos) { setFicha(null); return; }
-    const id = idDaFicha(generos, aberto.titulo, aberto.serie);
-    if (!id) { setFicha(null); setFichaCarregando(false); return; }
+    if (!aberto || !idFicha || !chaveFicha) return;
     let vivo = true;
-    setFichaCarregando(true);
-    buscarFicha(id, aberto.serie)
-      .then((achada) => { if (vivo) setFicha(achada); })
-      .finally(() => { if (vivo) setFichaCarregando(false); });
+    buscarFicha(idFicha, aberto.serie)
+      .then((achada) => { if (vivo) setFicha({ chave: chaveFicha, ficha: achada }); })
+      .catch(() => { if (vivo) setFicha({ chave: chaveFicha, ficha: null }); });
     return () => { vivo = false; };
-  }, [aberto, generos]);
+  }, [aberto, idFicha, chaveFicha]);
 
   /**
    * O que um ator fez **e que existe neste acervo**.
@@ -472,11 +485,10 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
    * é pelo id do TMDB — nome igual não engana, refilmagem não vira o original.
    */
   useEffect(() => {
-    if (!ator || !generos) { setFilmografia(null); setPerfilDoAtor(null); return; }
+    if (!ator || !generos) return;
     let vivo = true;
-    setFilmografia(null);
-    setPerfilDoAtor(null);
-    buscarPerfil(ator.id).then((achado) => { if (vivo) setPerfilDoAtor(achado); });
+    const idAtor = ator.id;
+    buscarPerfil(idAtor).then((achado) => { if (vivo) setPerfilDoAtor({ ator: idAtor, perfil: achado }); });
     (async () => {
       const creditos = await creditosDe(ator.id);
       const [comFilmes, comSeries] = await Promise.all([
@@ -513,7 +525,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
           papel: credito.papel,
         });
       }
-      setFilmografia(saida);
+      setFilmografia({ ator: idAtor, lista: saida });
     })();
     return () => { vivo = false; };
   }, [ator, generos]);
@@ -573,7 +585,6 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
 
   /** Todo cartão abre suas opções no modal, sem mover a página para o topo. */
   const abrir = useCallback(async (item: Item) => {
-    setErro(null);
     setErroModal(null);
     setAberto(item);
     setEpisodiosAbertos(null);

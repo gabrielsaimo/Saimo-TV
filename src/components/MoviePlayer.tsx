@@ -211,8 +211,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       if (!abertura.avisado) telemetria.caiu('vod', abertura.titulo, 1);
     };
 
-    const tentarProximaFonte = (_detalhe: string): boolean => {
+    const tentarProximaFonte = (detalhe: string): boolean => {
       if (!atual() || fonteIdx >= fontes.length - 1) return false;
+      console.info(`fonte ${fonteIdx + 1} de ${fontes.length} falhou (${detalhe}); tentando a seguinte`);
       // Falha de uma origem não derruba o título: tenta a próxima em silêncio.
       // Só a última fonte esgotada vira erro/telemetria de indisponibilidade.
       setError(null);
@@ -613,14 +614,13 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     const updateResolution = () => {
       if (video.videoWidth && video.videoHeight) {
         const height = video.videoHeight;
-        let label = '';
-        if (height >= 2160) label = '4K';
-        else if (height >= 1440) label = '2K';
-        else if (height >= 1080) label = '1080p';
-        else if (height >= 720) label = '720p';
-        else if (height >= 480) label = '480p';
-        else if (height >= 360) label = '360p';
-        else label = `${height}p`;
+        const label = height >= 2160 ? '4K'
+          : height >= 1440 ? '2K'
+          : height >= 1080 ? '1080p'
+          : height >= 720 ? '720p'
+          : height >= 480 ? '480p'
+          : height >= 360 ? '360p'
+          : `${height}p`;
         setVideoResolution(label);
       } else {
         setVideoResolution(null);
@@ -738,7 +738,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     if (result.success || method === 'copyLink' || method === 'share') {
       setShowCastModal(false);
     }
-  }, [movie]);
+  }, [movie, urlAtiva]);
 
   const handleCastExternalPlayer = useCallback((playerUrl: string) => {
     castService.openInExternalPlayer(playerUrl);
@@ -966,7 +966,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
         video.load();
       }
     }
-  }, [movie]);
+  }, [movie, urlAtiva]);
 
   // Abrir em player externo
   const openInExternalPlayer = useCallback((player: string) => {
@@ -999,7 +999,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     if (url) {
       window.location.href = url;
     }
-  }, [movie]);
+  }, [movie, urlAtiva]);
 
   if (!movie) {
     return (

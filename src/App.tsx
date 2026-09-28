@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, createContext, useContext, lazy, Suspense } from 'react';
+import { useState, useCallback, useEffect, useMemo, createContext, useContext, lazy, Suspense } from 'react';
 import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AppHeader } from './components/AppHeader';
 import { Toast } from './components/Toast';
@@ -62,7 +62,7 @@ const AdultModeContext = createContext<AdultModeContextType>({
   lockAdult: () => {},
 });
 
-export const useAdultMode = () => useContext(AdultModeContext);
+const useAdultMode = () => useContext(AdultModeContext);
 
 // Componente Home
 function HomePage() {
@@ -85,7 +85,7 @@ function TVPage() {
   const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
   const [lastChannelId, setLastChannelId] = useLocalStorage<string | null>('tv-last-channel', null);
-  const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
+  const [canalEscolhido, setSelectedChannel] = useState<Channel | null>(null);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isTheaterMode, setIsTheaterMode] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -101,9 +101,15 @@ function TVPage() {
    * corrigido lá valha aqui sem publicar o site de novo. A lista compilada fica
    * de piso: se a rede falhar na primeira visita, ainda há canais na tela.
    */
-  const channels = remoteChannels
+  const channels = useMemo(() => remoteChannels
     ? (isAdultUnlocked ? [...remoteChannels, ...adultChannels] : remoteChannels)
-    : getAllChannels(isAdultUnlocked);
+    : getAllChannels(isAdultUnlocked), [remoteChannels, isAdultUnlocked]);
+
+  // Sem canal escolhido nesta visita, vale o último da visita anterior — assim
+  // que a lista (que vem da rede) o trouxer. Derivado, e não copiado para o
+  // estado num efeito: a lista chegando depois não troca um canal escolhido.
+  const selectedChannel = canalEscolhido
+    ?? (lastChannelId ? channels.find((ch) => ch.id === lastChannelId) ?? null : null);
 
   useEffect(() => {
     // O que veio da visita anterior já está na tela e fica nela; a lista
@@ -120,7 +126,6 @@ function TVPage() {
       .catch((err) => console.error('Erro ao carregar catálogo remoto:', err));
     return () => { vivo = false; };
     // Uma vez por montagem: a lista não muda enquanto a pessoa assiste.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /*
@@ -159,14 +164,6 @@ function TVPage() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  useEffect(() => {
-    // Só reabre o último canal quando não há nada tocando: a lista chega depois
-    // do primeiro quadro (vem da rede) e não pode trocar o canal escolhido.
-    if (!lastChannelId || selectedChannel) return;
-    const channel = channels.find((ch) => ch.id === lastChannelId);
-    if (channel) setSelectedChannel(channel);
-  }, [lastChannelId, channels, selectedChannel]);
 
   const showToast = useCallback((message: string, type: ToastState['type'] = 'info') => {
     setToast({ message, type, id: Date.now() });

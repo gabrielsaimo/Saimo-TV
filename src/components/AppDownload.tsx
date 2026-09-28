@@ -176,7 +176,7 @@ function Icone({ id }: { id: AppId }) {
 
 export function AppDownload() {
   const navigate = useNavigate();
-  const deteccao = useMemo(detectar, []);
+  const deteccao = useMemo(() => detectar(), []);
   const [aba, setAba] = useState<AppId>(deteccao.recomendado ?? 'tvbox');
   const [lancamento, setLancamento] = useState<Lancamento | null>(null);
 

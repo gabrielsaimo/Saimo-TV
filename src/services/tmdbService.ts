@@ -252,14 +252,57 @@ export function fichaVazia(ficha: Ficha): boolean {
   return !ficha.sinopse && !ficha.elenco.length && !ficha.generos.length && ficha.duracao == null;
 }
 
+// O que o site lê das respostas do TMDB — só os campos usados.
+interface TmdbNome { name?: string }
+interface TmdbPessoa {
+  id: number;
+  name?: string;
+  character?: string;
+  job?: string;
+  profile_path?: string | null;
+}
+interface TmdbPais {
+  iso_3166_1: string;
+  rating?: string;
+  release_dates?: { certification?: string }[];
+}
+interface TmdbDetalhe {
+  name?: string;
+  title?: string;
+  overview?: string;
+  tagline?: string;
+  runtime?: number;
+  episode_run_time?: number[];
+  vote_average?: number;
+  first_air_date?: string;
+  release_date?: string;
+  genres?: TmdbNome[];
+  created_by?: TmdbNome[];
+  production_companies?: TmdbNome[];
+  credits?: { cast?: TmdbPessoa[]; crew?: TmdbPessoa[] };
+  poster_path?: string | null;
+  backdrop_path?: string | null;
+  number_of_seasons?: number;
+  content_ratings?: { results?: TmdbPais[] };
+  release_dates?: { results?: TmdbPais[] };
+}
+interface TmdbTrabalho {
+  id?: number;
+  media_type?: string;
+  popularity?: number;
+  poster_path?: string | null;
+  character?: string;
+  job?: string;
+}
+
 /** A classificação indicativa brasileira, quando o TMDB a conhece. */
-function certificacaoBR(json: any, serie: boolean): string | null {
+function certificacaoBR(json: TmdbDetalhe, serie: boolean): string | null {
   if (serie) {
-    const br = json?.content_ratings?.results?.find((r: any) => r.iso_3166_1 === 'BR');
+    const br = json.content_ratings?.results?.find((r) => r.iso_3166_1 === 'BR');
     return br?.rating || null;
   }
-  const br = json?.release_dates?.results?.find((r: any) => r.iso_3166_1 === 'BR');
-  const comNota = br?.release_dates?.find((d: any) => d.certification);
+  const br = json.release_dates?.results?.find((r) => r.iso_3166_1 === 'BR');
+  const comNota = br?.release_dates?.find((d) => d.certification);
   return comNota?.certification || null;
 }
 
@@ -279,15 +322,15 @@ export function ficha(id: number, serie: boolean): Promise<Ficha | null> {
         `&append_to_response=${extras}`,
       );
       if (!resposta.ok) return null;
-      const json = await resposta.json();
+      const json: TmdbDetalhe = await resposta.json();
 
-      const equipe: any[] = json?.credits?.crew ?? [];
+      const equipe: TmdbPessoa[] = json.credits?.crew ?? [];
       const direcao = equipe.filter((p) => p.job === 'Director').map((p) => p.name);
       const roteiro = equipe
         .filter((p) => p.job === 'Screenplay' || p.job === 'Writer' || p.job === 'Story')
         .map((p) => p.name);
       // Série não tem diretor único: quem a assina é quem a criou.
-      const criadores: string[] = (json?.created_by ?? []).map((p: any) => p.name);
+      const criadores: string[] = (json.created_by ?? []).map((p) => p.name ?? '').filter(Boolean);
       const assinatura = (direcao.length ? direcao : criadores).slice(0, 2).join(', ');
       const data = (serie ? json?.first_air_date : json?.release_date) ?? '';
 
@@ -299,13 +342,13 @@ export function ficha(id: number, serie: boolean): Promise<Ficha | null> {
         classificacao: certificacaoBR(json, serie),
         nota: json?.vote_average ?? 0,
         ano: String(data).slice(0, 4),
-        generos: (json?.genres ?? []).map((g: any) => g.name).filter(Boolean),
+        generos: (json.genres ?? []).map((g) => g.name ?? '').filter(Boolean),
         assinatura,
         roteiro: [...new Set(roteiro)].slice(0, 2).join(', '),
         produtora: json?.production_companies?.[0]?.name ?? '',
-        elenco: (json?.credits?.cast ?? []).slice(0, 20).map((p: any) => ({
+        elenco: (json.credits?.cast ?? []).slice(0, 20).map((p) => ({
           id: p.id,
-          nome: p.name,
+          nome: p.name ?? '',
           papel: p.character ?? '',
           foto: posterUrl(p.profile_path, 'w185'),
         })),
@@ -347,7 +390,7 @@ export async function creditosDe(ator: number): Promise<Credito[]> {
     );
     if (!resposta.ok) return [];
     const json = await resposta.json();
-    const trabalhos: any[] = [...(json?.cast ?? []), ...(json?.crew ?? [])];
+    const trabalhos: TmdbTrabalho[] = [...(json?.cast ?? []), ...(json?.crew ?? [])];
     trabalhos.sort((a, b) => (b?.popularity ?? 0) - (a?.popularity ?? 0));
     const vistos = new Set<string>();
     const saida: Credito[] = [];

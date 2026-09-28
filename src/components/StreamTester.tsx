@@ -367,8 +367,9 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
   useEffect(() => {
     // Desativa para MP4
     const isMp4 = url.endsWith('.mp4');
+    let reinicio: ReturnType<typeof setTimeout> | null = null;
     if (isPlaying && autoRefresh && refreshInterval > 0 && !isMp4) {
-      setCountdown(refreshInterval);
+      reinicio = setTimeout(() => setCountdown(refreshInterval), 0);
       
       // Countdown timer
       countdownIntervalRef.current = setInterval(() => {
@@ -387,6 +388,7 @@ export function StreamTester({ initialUrl = '' }: StreamTesterProps) {
     }
 
     return () => {
+      if (reinicio) clearTimeout(reinicio);
       if (refreshIntervalRef.current) {
         clearInterval(refreshIntervalRef.current);
         refreshIntervalRef.current = null;

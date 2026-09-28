@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDpad } from '../contexts/DpadContext';
+import { useDpad } from '../contexts/dpadContexto';
 import './HomeSelector.css';
 
 interface HomeSelectorProps {

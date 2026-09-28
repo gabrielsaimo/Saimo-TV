@@ -1,31 +1,9 @@
-import React, { createContext, useContext, useCallback, useRef, useState, useEffect } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
+import { DpadContext, type Direction, type DpadContextValue } from './dpadContexto';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 // Tipos
-export type Direction = 'up' | 'down' | 'left' | 'right';
 
-interface DpadContextValue {
-  /** Elemento atualmente focado */
-  focusedElement: HTMLElement | null;
-  /** Define o foco em um elemento */
-  setFocus: (element: HTMLElement | null, scrollIntoView?: boolean) => void;
-  /** Move o foco na direção especificada */
-  moveFocus: (direction: Direction) => boolean;
-  /** Foca no primeiro elemento focável */
-  focusFirst: (containerId?: string) => void;
-  /** Foca em um elemento específico */
-  focusElement: (selector: string, containerId?: string) => boolean;
-  /** Registra um handler de voltar (modal, overlay, etc) */
-  registerBackHandler: (handler: () => boolean | void) => () => void;
-  /** Se a navegação D-pad está habilitada */
-  isEnabled: boolean;
-  /** Habilita/desabilita a navegação */
-  setEnabled: (enabled: boolean) => void;
-  /** Indica se está usando controle/teclado */
-  isUsingDpad: boolean;
-}
-
-const DpadContext = createContext<DpadContextValue | null>(null);
 
 // Seletor para elementos focáveis
 const FOCUSABLE_SELECTOR = '[data-focusable="true"]:not([disabled]):not([data-disabled="true"]):not([aria-hidden="true"])';
@@ -483,7 +461,7 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
         case 'ArrowUp':
         case 'ArrowDown':
         case 'ArrowLeft':
-        case 'ArrowRight':
+        case 'ArrowRight': {
           // Delay para evitar navegação muito rápida
           if (now - lastKeyTime < KEY_DELAY) {
             event.preventDefault();
@@ -494,6 +472,7 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
           const direction = event.key.replace('Arrow', '').toLowerCase() as Direction;
           handled = moveFocus(direction);
           break;
+        }
         case 'Enter':
           if (currentFocusRef.current) {
             // Dispara click no elemento focado
@@ -532,7 +511,7 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
     if (!isEnabled) return;
 
     let animationFrameId: number;
-    let lastButtonStates = new Array(16).fill(false);
+    const lastButtonStates = new Array(16).fill(false);
     let lastNavigationTime = 0;
     const NAVIGATION_DELAY = 150; // Delay entre navegações em ms
 
@@ -762,60 +741,6 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
   );
 }
 
-// Hook para usar o contexto
-export function useDpad() {
-  const context = useContext(DpadContext);
-  if (!context) {
-    throw new Error('useDpad must be used within a DpadNavigationProvider');
-  }
-  return context;
-}
-
-// Hook para tornar um elemento focável
-export function useFocusable(options: {
-  focusKey?: string;
-  disabled?: boolean;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  autoFocus?: boolean;
-} = {}) {
-  const ref = useRef<HTMLElement>(null);
-  const { setFocus, isUsingDpad } = useDpad();
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    // Marca como focável
-    element.setAttribute('data-focusable', options.disabled ? 'false' : 'true');
-    element.setAttribute('tabindex', options.disabled ? '-1' : '0');
-    
-    if (options.focusKey) {
-      element.setAttribute('data-focus-key', options.focusKey);
-    }
-
-    // Auto focus
-    if (options.autoFocus && isUsingDpad && !options.disabled) {
-      setTimeout(() => setFocus(element), 100);
-    }
-
-    // Event listeners
-    const handleFocus = () => options.onFocus?.();
-    const handleBlur = () => options.onBlur?.();
-
-    element.addEventListener('focus', handleFocus);
-    element.addEventListener('blur', handleBlur);
-
-    return () => {
-      element.removeEventListener('focus', handleFocus);
-      element.removeEventListener('blur', handleBlur);
-    };
-  }, [options.focusKey, options.disabled, options.onFocus, options.onBlur, options.autoFocus, setFocus, isUsingDpad]);
-
-  return ref;
-}
-
-// Componente wrapper para tornar filhos focáveis
 export const Focusable = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {

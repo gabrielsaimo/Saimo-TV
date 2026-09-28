@@ -601,14 +601,13 @@ export const VideoPlayer = memo(function VideoPlayer({
     const updateResolution = () => {
       if (video.videoWidth && video.videoHeight) {
         const height = video.videoHeight;
-        let label = '';
-        if (height >= 2160) label = '4K';
-        else if (height >= 1440) label = '2K';
-        else if (height >= 1080) label = '1080p';
-        else if (height >= 720) label = '720p';
-        else if (height >= 480) label = '480p';
-        else if (height >= 360) label = '360p';
-        else label = `${height}p`;
+        const label = height >= 2160 ? '4K'
+          : height >= 1440 ? '2K'
+          : height >= 1080 ? '1080p'
+          : height >= 720 ? '720p'
+          : height >= 480 ? '480p'
+          : height >= 360 ? '360p'
+          : `${height}p`;
         setVideoResolution(label);
       } else {
         setVideoResolution(null);

@@ -245,7 +245,7 @@ export function useDpadNavigation(options: DpadNavigationOptions = {}) {
 
         if (focusableElements.length > 0) {
           const currentIndex = focusableElements.indexOf(currentFocusRef.current);
-          let nextIndex = 0;
+          let nextIndex: number;
 
           if (direction === 'down' || direction === 'right') {
             nextIndex = currentIndex >= focusableElements.length - 1 ? 0 : currentIndex + 1;

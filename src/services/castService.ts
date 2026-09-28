@@ -11,6 +11,12 @@
  */
 
 // Tipos para o Cast Framework do Google
+/** Extensões do Safari para AirPlay, fora do padrão e por isso fora do lib.dom. */
+interface VideoComAirPlay extends HTMLVideoElement {
+  webkitShowPlaybackTargetPicker?: () => void;
+  webkitCurrentPlaybackTargetIsWireless?: boolean;
+}
+
 declare global {
   interface Window {
     __onGCastApiAvailable?: (isAvailable: boolean) => void;
@@ -322,7 +328,7 @@ class CastService {
       remotePlayback: 'remote' in video,
       
       // Presentation API - Chrome, Edge (menos comum)
-      presentation: 'presentation' in navigator && !!(navigator as any).presentation?.defaultRequest,
+      presentation: 'presentation' in navigator && !!(navigator as Navigator & { presentation?: { defaultRequest?: unknown } }).presentation?.defaultRequest,
       
       // Web Share API - Mobile principalmente
       share: 'share' in navigator,
@@ -445,9 +451,9 @@ class CastService {
       });
 
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Erro "cancel" é normal quando usuário fecha o picker
-      if (error?.code !== 'cancel') {
+      if ((error as { code?: string } | null)?.code !== 'cancel') {
         console.error('Erro ao transmitir para Chromecast:', error);
       }
       return false;
@@ -465,11 +471,11 @@ class CastService {
 
     try {
       // Safari/iOS AirPlay
-      (videoElement as any).webkitShowPlaybackTargetPicker();
+      (videoElement as VideoComAirPlay).webkitShowPlaybackTargetPicker?.();
       
       // Monitora se conectou
       const checkConnection = () => {
-        const isPlaying = (videoElement as any).webkitCurrentPlaybackTargetIsWireless;
+        const isPlaying = (videoElement as VideoComAirPlay).webkitCurrentPlaybackTargetIsWireless;
         if (isPlaying) {
           this.updateState({
             isConnected: true,
@@ -481,7 +487,7 @@ class CastService {
 
       // Verifica periodicamente
       videoElement.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
-        const isWireless = (videoElement as any).webkitCurrentPlaybackTargetIsWireless;
+        const isWireless = (videoElement as VideoComAirPlay).webkitCurrentPlaybackTargetIsWireless === true;
         this.updateState({
           isConnected: isWireless,
           deviceName: isWireless ? 'AirPlay' : null,
@@ -507,7 +513,7 @@ class CastService {
     }
 
     try {
-      const remote = (videoElement as any).remote;
+      const remote = videoElement.remote;
       
       // Configura listeners
       remote.addEventListener('connecting', () => {
@@ -533,9 +539,9 @@ class CastService {
       // Mostra picker de dispositivos
       await remote.prompt();
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       // NotFoundError significa que usuário cancelou
-      if (error?.name !== 'NotFoundError') {
+      if ((error as { name?: string } | null)?.name !== 'NotFoundError') {
         console.error('Erro na Remote Playback:', error);
       }
       return false;
@@ -558,9 +564,9 @@ class CastService {
         url: mediaUrl,
       });
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       // AbortError significa que usuário cancelou
-      if (error?.name !== 'AbortError') {
+      if ((error as { name?: string } | null)?.name !== 'AbortError') {
         console.error('Erro ao compartilhar:', error);
       }
       return false;
@@ -671,7 +677,7 @@ class CastService {
   ): Promise<{ success: boolean; message: string }> {
     try {
       switch (method) {
-        case 'chromecast':
+        case 'chromecast': {
           const chromecastSuccess = await this.castToChromecast(mediaUrl, title, imageUrl);
           return {
             success: chromecastSuccess,
@@ -680,7 +686,8 @@ class CastService {
               : 'Não foi possível conectar ao Chromecast',
           };
 
-        case 'airplay':
+        }
+        case 'airplay': {
           if (!videoElement) {
             return { success: false, message: 'Elemento de vídeo necessário para AirPlay' };
           }
@@ -692,7 +699,8 @@ class CastService {
               : 'AirPlay não disponível',
           };
 
-        case 'remotePlayback':
+        }
+        case 'remotePlayback': {
           if (!videoElement) {
             return { success: false, message: 'Elemento de vídeo necessário' };
           }
@@ -704,14 +712,16 @@ class CastService {
               : 'Não foi possível conectar',
           };
 
-        case 'share':
+        }
+        case 'share': {
           const shareSuccess = await this.shareMedia(title, mediaUrl);
           return {
             success: shareSuccess,
             message: shareSuccess ? 'Link compartilhado' : 'Compartilhamento cancelado',
           };
 
-        case 'copyLink':
+        }
+        case 'copyLink': {
           const copySuccess = await this.copyLink(mediaUrl);
           return {
             success: copySuccess,
@@ -720,6 +730,7 @@ class CastService {
               : 'Erro ao copiar link',
           };
 
+        }
         case 'openExternal':
           return {
             success: true,

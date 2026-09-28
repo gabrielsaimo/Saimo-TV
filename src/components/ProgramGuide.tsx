@@ -108,7 +108,7 @@ export const ProgramGuide = memo(function ProgramGuide({
       
       return () => unsubscribe();
     }
-  }, [isOpen]);
+  }, [isOpen, channels]);
 
   // Handler para fechar com Escape
   useEffect(() => {
