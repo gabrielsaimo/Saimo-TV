@@ -34,7 +34,6 @@ export const VideoPlayer = memo(function VideoPlayer({
   /** Para o monitor: qual abertura é esta e se ela já avisou que tocou. */
   const aberturaRef = useRef('');
   const tentativaRef = useRef<{ titulo: string; url: string; fonte: number; desde: number; avisado: boolean } | null>(null);
-  const intentionalPauseRef = useRef(false);
   
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
@@ -273,7 +272,6 @@ export const VideoPlayer = memo(function VideoPlayer({
     };
     setIsLoading(true);
     setError(null);
-    intentionalPauseRef.current = false;
     recoveryAttemptsRef.current = 0;
 
     const limpar = () => {
@@ -468,12 +466,12 @@ export const VideoPlayer = memo(function VideoPlayer({
     const handlePlay = () => {
       setIsPlaying(true);
       setError(null); // Limpa erro quando o vídeo começa a reproduzir
-      intentionalPauseRef.current = false;
     };
     const handlePause = () => {
       setIsPlaying(false);
-      // Auto-resume: se o vídeo pausar e NÃO foi pausa intencional do usuário
-      if (!intentionalPauseRef.current && channel && video.readyState >= 2) {
+      // Ao vivo não fica parado: qualquer pausa (fones, tela de bloqueio,
+      // janela flutuante) volta a tocar.
+      if (channel && video.readyState >= 2) {
         video.play().catch(() => {
           // Se falhar, tenta mutado
           video.muted = true;
@@ -488,7 +486,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       setIsLoading(false);
       setError(null); // Limpa erro quando o vídeo está pronto para reproduzir
       // Quando o vídeo estiver pronto para reproduzir, garante que está em play
-      if (video.paused && channel && !intentionalPauseRef.current) {
+      if (video.paused && channel) {
         video.play().catch(() => {
           // Se falhar, tenta mutado
           video.muted = true;
@@ -644,25 +642,19 @@ export const VideoPlayer = memo(function VideoPlayer({
   }, []);
 
   // Control handlers - declarados antes do useEffect que os usa
-  const togglePlay = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    
-    if (video.paused) {
-      intentionalPauseRef.current = false;
-      video.play();
-    } else {
-      intentionalPauseRef.current = true;
-      video.pause();
-    }
+  // TV ao vivo não pausa: o único comando é voltar a tocar, para quando o
+  // navegador barrou o play automático.
+  const retomar = useCallback(() => {
+    void videoRef.current?.play().catch(() => {});
   }, []);
 
   useMediaSession({
     titulo: channel?.name,
     subtitulo: 'Ao vivo · Saimo TV',
     capa: channel?.logo,
-    aoTocar: () => { void videoRef.current?.play(); },
-    aoPausar: () => videoRef.current?.pause(),
+    aoTocar: retomar,
+    // Pausar pelos fones ou pela tela de bloqueio também não para o ao vivo.
+    aoPausar: retomar,
   });
 
   const toggleMute = useCallback(() => {
@@ -828,7 +820,7 @@ export const VideoPlayer = memo(function VideoPlayer({
     // Global keyboard listener
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [resetControlsTimeout, togglePlay, toggleFullscreen, toggleMute, toggleCast]);
+  }, [resetControlsTimeout, toggleFullscreen, toggleMute, toggleCast]);
 
   // Show controls on initial load
   useEffect(() => {
@@ -906,25 +898,19 @@ export const VideoPlayer = memo(function VideoPlayer({
             onDoubleClick={handleVideoDoubleClick}
           />
 
-          {/* Botão central de play/pause focável via D-pad */}
-          {showControls && !isLoading && !error && (
+          {/* Só aparece se o navegador barrou o play automático: ao vivo
+              não tem pausa. */}
+          {!isPlaying && !isLoading && !error && (
             <button
               className="center-play-btn"
-              onClick={() => { resetControlsTimeout(); togglePlay(); }}
+              onClick={() => { resetControlsTimeout(); retomar(); }}
               data-focusable="true"
               data-focus-key="btn-play-center"
-              aria-label={isPlaying ? 'Pausar vídeo' : 'Reproduzir vídeo'}
+              aria-label="Assistir"
             >
-              {isPlaying ? (
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <rect x="6" y="4" width="4" height="16" rx="1" />
-                  <rect x="14" y="4" width="4" height="16" rx="1" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              )}
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
             </button>
           )}
 

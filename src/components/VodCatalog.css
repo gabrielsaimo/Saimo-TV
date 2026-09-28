@@ -1355,3 +1355,25 @@
   .vod-ator-topo { flex-direction: column; text-align: center; }
   .vod-ator-grade { grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr)); }
 }
+
+/* Celular: Discord e GitHub saem do topo do catálogo; a navegação fica na
+   barra de baixo e a busca ganha a largura toda. */
+@media (max-width: 768px) {
+  .vod-link {
+    display: none !important;
+  }
+}
+
+/* Celular: rola com o dedo, sem trilho cinza aparecendo sob as abas e as
+   fileiras. */
+@media (max-width: 768px) {
+  .vod-page *::-webkit-scrollbar,
+  .vod-catalog *::-webkit-scrollbar {
+    display: none;
+  }
+
+  .vod-page *,
+  .vod-catalog * {
+    scrollbar-width: none;
+  }
+}

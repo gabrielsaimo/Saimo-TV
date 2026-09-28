@@ -592,3 +592,56 @@
   transform: translateY(-1px);
   filter: brightness(1.1);
 }
+
+.card-marca {
+  flex: none;
+  color: #a78bfa;
+}
+
+/* Celular: os dois cartões cabem juntos na tela, sem rolar para achar o
+   segundo; o botão "Baixar app" mora na barra de baixo. */
+@media (max-width: 640px) {
+  .home-download-btn {
+    display: none;
+  }
+
+  .home-main {
+    padding-top: 8px;
+    gap: 12px;
+  }
+
+  .select-title {
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+  }
+
+  .mode-cards {
+    gap: 12px;
+  }
+
+  .mode-divider {
+    display: none;
+  }
+
+  .mode-card .card-content {
+    padding: 18px;
+    gap: 10px;
+  }
+
+  .card-icon svg {
+    width: 44px;
+    height: 44px;
+  }
+
+  .card-features {
+    gap: 4px 10px;
+  }
+
+  .card-features li {
+    font-size: 0.8rem;
+  }
+
+  .home-footer {
+    padding-bottom: 8px;
+  }
+}

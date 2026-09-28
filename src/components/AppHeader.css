@@ -564,3 +564,19 @@
     display: none;
   }
 }
+
+/* Celular: as seções moram na barra de baixo (NavegacaoMobile). O topo fica
+   só com o logo e o título — sem fileira de ícones sem nome. */
+@media (max-width: 768px) {
+  .header-nav,
+  .header-download-btn,
+  .header-link-btn,
+  .header-home-btn {
+    display: none !important;
+  }
+
+  /* Com o topo livre, o nome volta ao lado do logo. */
+  .logo-text {
+    display: inline !important;
+  }
+}

@@ -12,13 +12,20 @@ lidos direto do repositório
 
 - TV ao vivo com HLS (hls.js), MPEG-TS (mpegts.js) e DASH; troca de fonte quando
   uma cai
+- Ao vivo não pausa: sem botão de pausa, e pausa vinda dos fones, da tela de
+  bloqueio ou da janela flutuante volta a tocar sozinha
 - Guia de programação (meuguia.tv, guiadetv, Pluto TV e XMLTV)
 - Filmes e séries com ficha, episódios e favoritos
+- Busca na aba Início procura em todo o acervo (filmes, séries, animes e
+  doramas), com o nome exato primeiro
 - Pular abertura e créditos com os tempos do [TheIntroDB](https://theintrodb.org)
 - Continuar assistindo, com a fileira na tela do acervo
 - Controles do sistema e da tela de bloqueio (Media Session)
 - Chromecast (SDK carregado só quando alguém usa)
 - Instalável como app (PWA, com `manifest.webmanifest` e service worker)
+- No celular: barra de seções embaixo (Início, Ao vivo, Filmes e séries,
+  Baixar app), vídeo em cima e canais embaixo, e o voltar do aparelho fecha a
+  ficha, o ator, o player e o guia em vez de sair da página
 - Atalhos de teclado: aperte **?** para ver todos
 - Prévia de link com imagem ao compartilhar (Open Graph)
 

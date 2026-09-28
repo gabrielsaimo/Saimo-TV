@@ -1,0 +1,75 @@
+/* Barra de baixo: só no celular. */
+.navegacao-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navegacao-mobile {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* A área de gestos do iPhone e do Android fica abaixo dos botões. */
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+    background: rgba(10, 10, 14, 0.94);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .navegacao-mobile-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 52px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.55);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .navegacao-mobile-item svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .navegacao-mobile-item:active {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .navegacao-mobile-item.ativa {
+    color: #fff;
+  }
+
+  .navegacao-mobile-item.ativa svg {
+    color: #a78bfa;
+  }
+
+  /* Espaço para a barra no fim de toda página que rola. */
+  body {
+    padding-bottom: calc(68px + env(safe-area-inset-bottom));
+  }
+
+  /* Vídeo ocupando a tela: a barra sai da frente. */
+  body:has(.movie-player-overlay) .navegacao-mobile,
+  body:has(.tv-page.theater-mode) .navegacao-mobile,
+  body:has(:fullscreen) .navegacao-mobile {
+    display: none;
+  }
+
+  body:has(.movie-player-overlay),
+  body:has(.tv-page.theater-mode) {
+    padding-bottom: 0;
+  }
+}

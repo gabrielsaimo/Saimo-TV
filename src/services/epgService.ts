@@ -104,10 +104,19 @@ function converter(canal: string, lista: WorkerProgramme[]): Program[] {
   }));
 }
 
+/**
+ * "No Data" é o que alguns feeds põem nas horas sem grade. Não é programa:
+ * mostrado, virava "No Data" embaixo do nome do canal.
+ */
+function semInformacao(titulo: string): boolean {
+  const t = titulo.trim().toLowerCase();
+  return !t || t === 'no data' || t === 'sem informação';
+}
+
 function aplicar(grade: Grade): void {
   for (const [canal, lista] of Object.entries(grade)) {
     const id = normalise(canal);
-    const programas = converter(canal, lista);
+    const programas = converter(canal, lista).filter((p) => !semInformacao(p.title));
     porCanal.set(id, programas);
     listeners.forEach((l) => {
       try { l(id, programas); } catch (e) { console.error('[EPG] listener falhou', e); }

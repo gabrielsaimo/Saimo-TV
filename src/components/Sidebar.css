@@ -371,11 +371,9 @@
   margin: 8px -8px 12px;
   position: sticky;
   top: 0;
-  background: linear-gradient(90deg, 
-    rgba(139, 92, 246, 0.08) 0%, 
-    rgba(8, 8, 15, 0.95) 50%,
-    rgba(8, 8, 15, 0.95) 100%
-  );
+  /* Opaco: fixo no topo, os canais passam por baixo e não podem aparecer
+     através dele. */
+  background: linear-gradient(90deg, #120f22 0%, #08080f 50%, #08080f 100%);
   backdrop-filter: blur(10px);
   z-index: 5;
   border-radius: 12px;
@@ -532,6 +530,17 @@
 }
 
 .sidebar.mobile-view .collapse-btn {
+  display: none !important;
+}
+
+/* No celular a lista mora embaixo do vídeo: nada de camada por cima dele nem
+   da barra de baixo, e sem o logo repetido nem atalhos de teclado. */
+.sidebar.mobile-view {
+  z-index: auto !important;
+}
+
+.sidebar.mobile-view .sidebar-header,
+.sidebar.mobile-view .sidebar-footer {
   display: none !important;
 }
 

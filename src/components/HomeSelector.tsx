@@ -142,9 +142,9 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
                 <h3>TV ao Vivo</h3>
                 <p>Canais de TV em tempo real</p>
                 <ul className="card-features">
-                  <li>📺 +150 canais</li>
-                  <li>⚡ Streaming HD</li>
-                  <li>📡 Programação EPG</li>
+                  <li><Marca />Canais abertos, esportes e notícias</li>
+                  <li><Marca />Guia de programação</li>
+                  <li><Marca />Troca de fonte sozinho</li>
                 </ul>
               </div>
               
@@ -206,9 +206,9 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
                 <h3>Filmes e Séries</h3>
                 <p>Catálogo completo sob demanda</p>
                 <ul className="card-features">
-                  <li>🎬 +500.000 títulos</li>
-                  <li>🌟 Lançamentos</li>
-                  <li>📚 Todas as categorias</li>
+                  <li><Marca />Filmes, séries, animes e doramas</li>
+                  <li><Marca />Lançamentos toda semana</li>
+                  <li><Marca />Pula abertura sozinho</li>
                 </ul>
               </div>
               
@@ -227,11 +227,17 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
 
       {/* Footer */}
       <footer className="home-footer">
-        <p>© 2024 SaimoTV • Streaming gratuito de qualidade</p>
-        <div className="footer-links">
-          <span>Feito com ❤️</span>
-        </div>
+        <p>© {new Date().getFullYear()} Saimo TV</p>
       </footer>
     </div>
+  );
+}
+
+/** Marcador das listas dos cartões — no lugar de emoji, que muda de aparelho para aparelho. */
+function Marca() {
+  return (
+    <svg className="card-marca" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+      <path d="M3.5 8.5 6.5 11.5 12.5 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }

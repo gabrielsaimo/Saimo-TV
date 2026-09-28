@@ -48,6 +48,7 @@ interface Trabalho {
   capa: string | null;
   papel: string;
 }
+import { useVoltarFecha } from '../hooks/useVoltarFecha';
 import './VodCatalog.css';
 
 type Aba = 'inicio' | 'filmes' | 'series' | 'animes' | 'doramas' | 'extra';
@@ -321,6 +322,27 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   // Termo em busca dentro do próprio 18+ — não usa o índice geral (ver
   // abaixo), então tem letra própria de "buscando".
   const buscandoExtra = aba === 'extra' && termo.trim().length >= 2;
+  // No Início a busca é na biblioteca inteira: filmes, séries, animes e
+  // doramas — e não só nas fileiras de destaque que estão na tela.
+  const buscandoNoInicio = aba === 'inicio' && termo.trim().length >= 2;
+  /** Animes e doramas para a busca do Início; carregados na primeira busca. */
+  const [colecoesDaBusca, setColecoesDaBusca] = useState<Item[] | null>(null);
+  useEffect(() => {
+    if (!buscandoNoInicio || colecoesDaBusca) return;
+    let vivo = true;
+    Promise.all((['animes', 'doramas'] as const).map((tipo) => colecao(tipo)
+      .then((lista) => lista.map<Item>((serie) => ({
+        chave: `${tipo}:${serie.tmdbId}:${serie.titulo}`,
+        titulo: serie.titulo,
+        rotulo: serie.nomeCompleto,
+        serie: true,
+        letra: letraDe(serie.titulo),
+        colecao: serie,
+      })))
+      .catch(() => [] as Item[])))
+      .then((listas) => { if (vivo) setColecoesDaBusca(listas.flat()); });
+    return () => { vivo = false; };
+  }, [buscandoNoInicio, colecoesDaBusca]);
   const buscandoColecao = eColecao(aba) && termo.trim().length >= 2;
   const buscaGeral = termo.trim().length >= 2 && aba !== 'extra' && !eColecao(aba);
   const busca = buscaGeral ? buscaAchada : null;
@@ -422,6 +444,29 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   }, [buscandoExtra, termo, gavetas]);
 
   const resultados = useMemo<Item[]>(() => {
+    if (aba === 'inicio') {
+      if (!buscandoNoInicio) return [];
+      const alvo = normalizar(termo.trim());
+      const doIndice = (busca ?? []).map<Item>((a) => ({
+        chave: `${a.serie ? 's' : 'f'}:${a.titulo}:${a.ano}`,
+        titulo: a.titulo,
+        rotulo: a.nomeCompleto,
+        serie: a.serie,
+        letra: a.letra,
+        ano: a.ano,
+      }));
+      const dasColecoes = (colecoesDaBusca ?? []).filter((item) => normalizar(item.rotulo).includes(alvo));
+      // Mais parecido primeiro: "breaking bad" traz a série antes do filme
+      // "El Camino: A Breaking Bad Film".
+      const peso = (item: Item) => {
+        const nome = normalizar(item.rotulo.replace(/\s*\(\d{4}\)\s*$/, ''));
+        return nome === alvo ? 0 : nome.startsWith(alvo) ? 1 : 2;
+      };
+      return [...doIndice, ...dasColecoes]
+        .map((item, ordem) => ({ item, ordem, peso: peso(item) }))
+        .sort((a, b) => a.peso - b.peso || a.ordem - b.ordem)
+        .map(({ item }) => item);
+    }
     if (aba === 'extra') return buscandoExtra ? buscaExtra ?? [] : itens;
     if (eColecao(aba)) {
       if (!buscandoColecao) return itens;
@@ -439,13 +484,15 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
         letra: a.letra,
         ano: a.ano,
       }));
-  }, [busca, buscaExtra, buscandoExtra, buscandoColecao, itens, aba, termo]);
+  }, [busca, buscaExtra, buscandoExtra, buscandoColecao, buscandoNoInicio, colecoesDaBusca, itens, aba, termo]);
 
   /// O gênero escolhido peneira o que já estava na tela.
   const resultadosPorGenero = useMemo<Item[]>(() => {
-    if (!genero || !generos) return resultados;
+    // No Início não há régua de gêneros: um gênero escolhido em outra aba
+    // não pode esconder resultado da busca geral.
+    if (!genero || !generos || aba === 'inicio') return resultados;
     return resultados.filter((item) => temGenero(generos, item.titulo, item.serie, genero));
-  }, [resultados, generos, genero]);
+  }, [resultados, generos, genero, aba]);
 
   const fecharModal = useCallback(() => {
     abertura.current += 1;
@@ -456,6 +503,10 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
     setModalCarregando(false);
     setAtor(null);
   }, []);
+  const fecharAtor = useCallback(() => setAtor(null), []);
+  // O voltar do celular fecha o ator e, depois, a ficha — não sai da página.
+  useVoltarFecha(!!aberto, fecharModal);
+  useVoltarFecha(!!ator, fecharAtor);
 
   /**
    * A ficha do título aberto: sinopse, duração, classificação e elenco.
@@ -879,9 +930,9 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
 
       {erro && <p className="vod-erro">{erro}</p>}
 
-      {aba !== 'inicio' && carregando && <p className="vod-aviso">Carregando…</p>}
+      {(aba !== 'inicio' || buscandoNoInicio) && carregando && <p className="vod-aviso">Carregando…</p>}
 
-      {aba === 'inicio' ? (
+      {aba === 'inicio' && !buscandoNoInicio ? (
         <Fileiras filas={filasComContinuar} termo={termo} aoAbrir={abrirDestaque} />
       ) : (
       <div className="vod-grade">
@@ -896,7 +947,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
 
       <div ref={sentinela} className="vod-sentinela" aria-hidden="true" />
 
-      {aba !== 'inicio' && !carregando && resultadosPorGenero.length === 0 && (
+      {(aba !== 'inicio' || buscandoNoInicio) && !carregando && resultadosPorGenero.length === 0 && (
         <p className="vod-aviso">Nada por aqui. Tente outra busca.</p>
       )}
     </div>

@@ -88,77 +88,6 @@
 }
 
 /* ========================================
-   MOBILE TABS - Bottom Navigation
-   ======================================== */
-.mobile-tabs {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(15, 15, 15, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 16px;
-  padding-bottom: max(8px, env(safe-area-inset-bottom));
-  z-index: 1000;
-  gap: 8px;
-}
-
-.mobile-tab {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  color: #888;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.mobile-tab svg {
-  width: 22px;
-  height: 22px;
-}
-
-.mobile-tab:active {
-  transform: scale(0.96);
-}
-
-.mobile-tab.active {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
-  border-color: rgba(139, 92, 246, 0.4);
-  color: #fff;
-}
-
-.mobile-tab.active svg {
-  color: #8b5cf6;
-}
-
-.tab-badge {
-  position: absolute;
-  top: 6px;
-  right: 12px;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 10px;
-  min-width: 18px;
-  text-align: center;
-}
-
-/* ========================================
    MOBILE CONTENT
    ======================================== */
 .mobile-content {
@@ -166,21 +95,6 @@
   flex: 1;
   position: relative;
   min-height: 0;
-}
-
-.mobile-view {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: none;
-  flex-direction: column;
-  background: #0a0a0a;
-}
-
-.mobile-view.active {
-  display: flex;
 }
 
 /* Desktop only class */
@@ -207,25 +121,32 @@
    RESPONSIVE - Mobile
    ======================================== */
 @media (max-width: 768px) {
+  /* A TV ao vivo não rola a página: o vídeo fica fixo no alto e só a lista
+     de canais rola, no espaço entre o topo e a barra de baixo. */
+  body:has(.tv-page) {
+    padding-bottom: 0;
+  }
+
   .tv-page {
     padding-top: 52px;
-    padding-bottom: 76px;
   }
 
   .tv-page.theater-mode {
     padding-top: 0;
-    padding-bottom: 0;
   }
 
   .tv-layout {
+    flex: none;
     flex-direction: column;
-    height: calc(100vh - 52px - 76px);
-    height: calc(100dvh - 52px - 76px);
+    height: calc(100vh - 52px - 65px);
+    height: calc(100dvh - 52px - 65px - env(safe-area-inset-bottom));
+    max-height: none;
   }
 
   .tv-page.theater-mode .tv-layout {
     height: 100vh;
     height: 100dvh;
+    max-height: none;
   }
 
   .movies-page.playing {
@@ -236,31 +157,61 @@
     display: none !important;
   }
 
-  .mobile-tabs {
-    display: flex;
-  }
-
   .mobile-content {
-    display: block;
-    flex: 1;
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
-  .mobile-view {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none !important;
+    display: flex;
     flex-direction: column;
-    background: #0a0a0a;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
   }
 
-  .mobile-view.active {
-    display: flex !important;
+  .mobile-player {
+    position: relative;
+    flex: none;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+
+  .mobile-player > * {
+    height: 100%;
+  }
+
+  /* No vídeo pequeno, só o que cabe: nome do programa, horário e o Guia.
+     Descrição e "a seguir" ficam para a tela cheia e para o guia. */
+  .tv-page:not(.theater-mode) .mobile-player .program-description,
+  .tv-page:not(.theater-mode) .mobile-player .next-program {
+    display: none;
+  }
+
+  .tv-page:not(.theater-mode) .mobile-player .program-content {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .tv-page:not(.theater-mode) .mobile-player .program-actions {
+    width: auto;
+  }
+
+  /* Tela cheia pelo botão: o vídeo toma a tela e a lista sai. */
+  .tv-page.theater-mode .mobile-player {
+    flex: 1;
+    aspect-ratio: auto;
+  }
+
+  .tv-page.theater-mode .mobile-canais {
+    display: none;
+  }
+
+  .mobile-canais {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #0a0a0a;
   }
 
   .mobile-overlay {
@@ -271,7 +222,7 @@
     position: fixed;
     left: 0;
     top: 52px;
-    bottom: 76px;
+    bottom: 65px;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
   }
@@ -283,37 +234,6 @@
   .main-content {
     flex: 1;
     min-height: 0;
-  }
-}
-
-/* ========================================
-   RESPONSIVE - Small Mobile
-   ======================================== */
-@media (max-width: 480px) {
-  .mobile-tabs {
-    padding: 6px 12px;
-    gap: 6px;
-  }
-
-  .mobile-tab {
-    padding: 8px 12px;
-    border-radius: 10px;
-  }
-
-  .mobile-tab svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .mobile-tab span:not(.tab-badge) {
-    font-size: 11px;
-  }
-
-  .tab-badge {
-    font-size: 9px;
-    padding: 1px 5px;
-    top: 4px;
-    right: 8px;
   }
 }
 

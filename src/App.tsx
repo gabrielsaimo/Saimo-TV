@@ -3,6 +3,8 @@ import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation } fr
 import { AppHeader } from './components/AppHeader';
 import { Toast } from './components/Toast';
 import { AtalhosAjuda } from './components/AtalhosAjuda';
+import { NavegacaoMobile } from './components/NavegacaoMobile';
+import { useVoltarFecha } from './hooks/useVoltarFecha';
 import { getAllChannels, adultChannels } from './data/channels';
 import { fetchChannels, cachedChannels } from './services/catalogService';
 import { atualizar as atualizarFontesDesativadas, VALIDADE_MS as FONTES_MS } from './services/fontesDesativadas';
@@ -47,7 +49,6 @@ interface ToastState {
   id: number;
 }
 
-type MobileTab = 'player' | 'channels';
 
 // Contexto para estado adulto global
 interface AdultModeContextType {
@@ -92,7 +93,6 @@ function TVPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [toast, setToast] = useState<ToastState | null>(null);
-  const [mobileTab, setMobileTab] = useState<MobileTab>('player');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [remoteChannels, setRemoteChannels] = useState<Channel[] | null>(() => cachedChannels());
 
@@ -175,7 +175,6 @@ function TVPage() {
     setSelectedMovie(null);
     setLastChannelId(channel.id);
     setIsMobileMenuOpen(false);
-    setMobileTab('player');
     showToast(`Assistindo: ${channel.name}`, 'info');
   }, [setLastChannelId, showToast]);
 
@@ -252,30 +251,6 @@ function TVPage() {
 
       <Suspense fallback={<LoadingFallback />}>
         <div className="tv-layout">
-          {/* Mobile Tab Navigation */}
-          <nav className="mobile-tabs">
-            <button
-              className={`mobile-tab ${mobileTab === 'player' ? 'active' : ''}`}
-              onClick={() => setMobileTab('player')}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="2" y="3" width="20" height="14" rx="2" />
-                <path d="M8 21h8M12 17v4" />
-              </svg>
-              <span>Player</span>
-            </button>
-            <button
-              className={`mobile-tab ${mobileTab === 'channels' ? 'active' : ''}`}
-              onClick={() => setMobileTab('channels')}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-              <span>Canais</span>
-              <span className="tab-badge">{channels.length}</span>
-            </button>
-          </nav>
-
           {/* Desktop Sidebar */}
           <div className={`sidebar-wrapper desktop-only ${isMobileMenuOpen ? 'open' : ''}`}>
             <Sidebar
@@ -293,10 +268,11 @@ function TVPage() {
           <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />
         )}
 
-        {/* Mobile Content */}
+        {/* Celular: o vídeo fica no alto, e a lista de canais rola embaixo
+            dele — trocar de canal não esconde o que está passando. */}
         {isMobile && (
           <div className="mobile-content">
-            <div className={`mobile-view ${mobileTab === 'player' ? 'active' : ''}`}>
+            <div className="mobile-player">
               {selectedMovie ? (
                 <MoviePlayer movie={selectedMovie} onBack={handleBackFromMovie} />
               ) : (
@@ -308,7 +284,7 @@ function TVPage() {
                 />
               )}
             </div>
-            <div className={`mobile-view ${mobileTab === 'channels' ? 'active' : ''}`}>
+            <div className="mobile-canais">
               <Sidebar
                 channels={channels}
                 activeChannelId={selectedChannel?.id || null}
@@ -389,6 +365,8 @@ function MoviesPage() {
     setSelectedMovie(null);
     setSeriesInfo(null);
   }, []);
+  // O voltar do celular fecha o player e volta à ficha.
+  useVoltarFecha(!!selectedMovie, handleBackFromMovie);
 
   const handleBackFromCatalog = useCallback(() => {
     navigate('/');
@@ -445,6 +423,7 @@ function AppLayout() {
   }, [location.pathname]);
 
   return (
+    <>
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/tv" element={<TVPage />} />
@@ -463,6 +442,8 @@ function AppLayout() {
         } />
       )}
     </Routes>
+    <NavegacaoMobile />
+    </>
   );
 }
 

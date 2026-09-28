@@ -3,6 +3,7 @@ import type { Channel } from '../types/channel';
 import type { Program } from '../types/epg';
 import { getChannelEPG, fetchRealEPG, onEPGUpdate } from '../services/epgService';
 import './ProgramGuide.css';
+import { useVoltarFecha } from '../hooks/useVoltarFecha';
 
 const formatTime = (date: Date): string => {
   return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
@@ -63,6 +64,8 @@ export const ProgramGuide = memo(function ProgramGuide({
   onClose,
   isOpen,
 }: ProgramGuideProps) {
+  // O voltar do celular fecha o guia, não a página.
+  useVoltarFecha(isOpen, onClose);
   // Inicializa com a data de hoje às 0h
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date();
