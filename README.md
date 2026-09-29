@@ -1,7 +1,7 @@
 # Saimo TV — site
 
 Canais ao vivo, guia de programação, filmes e séries no navegador:
-**<https://saimo-tv.pages.dev>**. Versão atual: **2.0.3**.
+**<https://saimo-tv.pages.dev>**. Versão atual: **2.0.4**.
 
 Mesma lista de canais e mesmo acervo dos apps de TV Box, celular, Windows e Mac,
 lidos direto do repositório
