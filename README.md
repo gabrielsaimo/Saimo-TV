@@ -19,6 +19,8 @@ lidos direto do repositório
 - Busca na aba Início procura em todo o acervo (filmes, séries, animes e
   doramas), com o nome exato primeiro
 - Pular abertura e créditos com os tempos do [TheIntroDB](https://theintrodb.org)
+- Legendas do OpenSubtitles em filmes e séries (Português do Brasil e de Portugal, inglês, espanhol),
+  com ajuste de sincronia, em `src/services/legendas.ts`; sem chave nem cadastro
 - Continuar assistindo, com a fileira na tela do acervo
 - Controles do sistema e da tela de bloqueio (Media Session)
 - Chromecast (SDK carregado só quando alguém usa)
@@ -69,7 +71,7 @@ O workflow `Build Windows Desktop` gera MSI e NSIS ao receber uma tag
 | Pasta | Conteúdo |
 |---|---|
 | `src/components` | telas: player ao vivo, player de filmes, acervo, guia, barra lateral |
-| `src/services` | catálogo, acervo, guia, TMDB, TheIntroDB (`pulos.ts`), continuar, Chromecast, telemetria |
+| `src/services` | catálogo, acervo, guia, TMDB, TheIntroDB (`pulos.ts`), legendas (`legendas.ts`), continuar, Chromecast, telemetria |
 | `src/hooks` | Media Session e outros |
 | `functions/`, `api/` | proxy para fontes sem CORS |
 | `public/` | ícones, manifest, service worker, redirecionamentos |

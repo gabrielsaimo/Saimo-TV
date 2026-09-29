@@ -3,6 +3,7 @@ import { rota } from '../utils/rotas';
 import { useMediaSession } from '../hooks/useMediaSession';
 import { registrar as registrarAndamento } from '../services/continuar';
 import { buscarPulos, trechoEm, inicioDosCreditos, rotuloTrecho, type Trecho } from '../services/pulos';
+import { buscarLegendas, carregarLegenda, idiomaGuardado, guardarIdioma, type LegendaOpcao, type Fala } from '../services/legendas';
 import Hls from 'hls.js';
 import type { Movie, SeriesEpisodeInfo } from '../types/movie';
 import { getProxiedUrl, needsProxy } from '../utils/proxyUrl';
@@ -72,6 +73,16 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [selectedAudio, setSelectedAudio] = useState(-1);
   const [subtitleTracks, setSubtitleTracks] = useState<Array<{ id: number; label: string }>>([]);
   const [selectedSubtitle, setSelectedSubtitle] = useState(-1);
+  // Legendas do OpenSubtitles (services/legendas.ts), à parte das que vêm no
+  // próprio vídeo. A faixa é do elemento <video>, e as falas ficam na ref para
+  // o ajuste de sincronia refazer as marcações sem baixar o arquivo de novo.
+  const [legendasExt, setLegendasExt] = useState<LegendaOpcao[]>([]);
+  const [legendaExt, setLegendaExt] = useState<string | null>(null);
+  const [legendaAtraso, setLegendaAtraso] = useState(0);
+  const [legendaMsg, setLegendaMsg] = useState<string | null>(null);
+  const faixaExtRef = useRef<TextTrack | null>(null);
+  const falasRef = useRef<Fala[]>([]);
+  const legendaEscolhidaRef = useRef<string | null>(null);
   
   // Cast states
   const [castState, setCastState] = useState<CastState>({ isConnected: false, deviceName: null, method: null });
@@ -589,6 +600,82 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       }
     };
   }, []);
+
+  // --- Legendas externas (OpenSubtitles) ---------------------------------
+  const pintarFalas = useCallback((atraso: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    let faixa = faixaExtRef.current;
+    if (!faixa) {
+      faixa = video.addTextTrack('subtitles', 'Legenda', 'pt');
+      faixaExtRef.current = faixa;
+    }
+    const marcas = faixa.cues;
+    if (marcas) for (let i = marcas.length - 1; i >= 0; i--) faixa.removeCue(marcas[i]);
+    for (const fala of falasRef.current) {
+      const fim = fala.fim + atraso;
+      if (fim <= 0) continue;
+      faixa.addCue(new VTTCue(Math.max(0, fala.inicio + atraso), fim, fala.texto));
+    }
+    faixa.mode = 'showing';
+  }, []);
+
+  const escolherLegendaExterna = useCallback(async (opcao: LegendaOpcao | null, guardar = true) => {
+    legendaEscolhidaRef.current = opcao?.id ?? null;
+    if (!opcao) {
+      falasRef.current = [];
+      if (faixaExtRef.current) {
+        const marcas = faixaExtRef.current.cues;
+        if (marcas) for (let i = marcas.length - 1; i >= 0; i--) faixaExtRef.current.removeCue(marcas[i]);
+        faixaExtRef.current.mode = 'disabled';
+      }
+      setLegendaExt(null);
+      setLegendaMsg(null);
+      if (guardar) guardarIdioma('');
+      return;
+    }
+    setLegendaExt(opcao.id);
+    setLegendaAtraso(0);
+    setLegendaMsg('Baixando a legenda…');
+    // Só uma legenda por vez: a do próprio vídeo, se estava ligada, sai.
+    if (hlsRef.current) hlsRef.current.subtitleDisplay = false;
+    setSelectedSubtitle(-1);
+    try {
+      const falas = await carregarLegenda(opcao);
+      if (legendaEscolhidaRef.current !== opcao.id) return; // a pessoa já trocou
+      falasRef.current = falas;
+      pintarFalas(0);
+      setLegendaMsg(falas.length ? null : 'Legenda vazia — tente outra versão.');
+      if (guardar) guardarIdioma(opcao.idioma);
+    } catch {
+      if (legendaEscolhidaRef.current !== opcao.id) return;
+      setLegendaExt(null);
+      setLegendaMsg('Não foi possível baixar esta legenda. Tente outra versão.');
+    }
+  }, [pintarFalas]);
+
+  // Título novo: busca a lista (uma consulta pequena) e, se a pessoa já tinha
+  // escolhido um idioma antes, liga a primeira versão dele sozinho.
+  useEffect(() => {
+    let vivo = true;
+    void escolherLegendaExterna(null, false);
+    setLegendasExt([]);
+    setLegendaAtraso(0);
+    if (!movie) return;
+    buscarLegendas(movie.tmdbId, movie.type === 'series', movie.seasonNumber ?? 0, movie.episodeNumber ?? 0)
+      .then((lista) => {
+        if (!vivo) return;
+        setLegendasExt(lista);
+        const idioma = idiomaGuardado();
+        const primeira = idioma ? lista.find((l) => l.idioma === idioma) : undefined;
+        if (primeira) void escolherLegendaExterna(primeira, false);
+      });
+    return () => { vivo = false; };
+  }, [movie, escolherLegendaExterna]);
+
+  useEffect(() => {
+    if (legendaExt && falasRef.current.length) pintarFalas(legendaAtraso);
+  }, [legendaAtraso, legendaExt, pintarFalas]);
 
   // Abertura, recapitulação e créditos marcados no TheIntroDB, pelo id do
   // TMDB. Sem marca para o título, o botão não aparece.
@@ -1816,9 +1903,16 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                     <div className="settings-section">
                       <label>Legendas</label>
                       <select
-                        value={selectedSubtitle}
+                        value={legendaExt ? `ext:${legendaExt}` : String(selectedSubtitle)}
                         onChange={(e) => {
-                          const track = Number(e.target.value);
+                          const valor = e.target.value;
+                          if (valor.startsWith('ext:')) {
+                            const opcao = legendasExt.find((l) => `ext:${l.id}` === valor);
+                            if (opcao) void escolherLegendaExterna(opcao);
+                            return;
+                          }
+                          const track = Number(valor);
+                          void escolherLegendaExterna(null, track < 0);
                           setSelectedSubtitle(track);
                           if (hlsRef.current) {
                             hlsRef.current.subtitleDisplay = track >= 0;
@@ -1832,8 +1926,33 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                         {subtitleTracks.map((track) => (
                           <option key={track.id} value={track.id}>{track.label}</option>
                         ))}
+                        {legendasExt.length > 0 && (
+                          <optgroup label="OpenSubtitles">
+                            {legendasExt.map((l) => (
+                              <option key={l.id} value={`ext:${l.id}`}>{l.rotulo}</option>
+                            ))}
+                          </optgroup>
+                        )}
                       </select>
+                      {legendaMsg && <small className="legenda-msg">{legendaMsg}</small>}
                     </div>
+                    {legendaExt && (
+                      <div className="settings-section">
+                        <label>Sincronia da legenda</label>
+                        <select
+                          value={legendaAtraso}
+                          onChange={(e) => setLegendaAtraso(Number(e.target.value))}
+                          data-focusable="true"
+                          data-nav-group="settings-menu"
+                        >
+                          {Array.from({ length: 41 }, (_, i) => (i - 20) / 4).map((seg) => (
+                            <option key={seg} value={seg}>
+                              {seg === 0 ? 'Original' : `${seg > 0 ? 'Atrasar' : 'Adiantar'} ${Math.abs(seg).toString().replace('.', ',')} s`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
                     <div className="settings-section">
                       <label>Velocidade</label>
                       <select 

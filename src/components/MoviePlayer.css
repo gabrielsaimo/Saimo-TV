@@ -1665,3 +1665,20 @@
     font-size: 0.72rem;
   }
 }
+
+/* Legenda do OpenSubtitles: fundo escuro para ler sobre qualquer cena. */
+.movie-video::cue {
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1.25em;
+  line-height: 1.3;
+  text-shadow: none;
+}
+
+.legenda-msg {
+  display: block;
+  margin-top: 6px;
+  color: #a3a3a3;
+  font-size: 12px;
+}
