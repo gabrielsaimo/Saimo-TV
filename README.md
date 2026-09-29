@@ -24,7 +24,8 @@ lidos direto do repositório
 - Chromecast (SDK carregado só quando alguém usa)
 - Instalável como app (PWA, com `manifest.webmanifest` e service worker)
 - No celular: barra de seções embaixo (Início, Ao vivo, Filmes e séries,
-  Baixar app), vídeo em cima e canais embaixo, e o voltar do aparelho fecha a
+  Baixar app), vídeo em cima e canais embaixo (sem canal escolhido, só a
+  lista, ocupando a tela), e o voltar do aparelho fecha a
   ficha, o ator, o player e o guia em vez de sair da página
 - Atalhos de teclado: aperte **?** para ver todos
 - Prévia de link com imagem ao compartilhar (Open Graph)

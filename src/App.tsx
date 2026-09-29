@@ -269,21 +269,26 @@ function TVPage() {
         )}
 
         {/* Celular: o vídeo fica no alto, e a lista de canais rola embaixo
-            dele — trocar de canal não esconde o que está passando. */}
+            dele — trocar de canal não esconde o que está passando. Sem nada
+            passando (primeira visita), não há vídeo: o aviso "Selecione um
+            canal" esticava o bloco a quase metade da tela e sobrava lugar
+            para um canal só. A lista ocupa tudo até a pessoa escolher. */}
         {isMobile && (
           <div className="mobile-content">
-            <div className="mobile-player">
-              {selectedMovie ? (
-                <MoviePlayer movie={selectedMovie} onBack={handleBackFromMovie} />
-              ) : (
-                <VideoPlayer
-                  channel={selectedChannel}
-                  isTheaterMode={isTheaterMode}
-                  onToggleTheater={handleToggleTheater}
-                  onOpenGuide={() => setIsGuideOpen(true)}
-                />
-              )}
-            </div>
+            {(selectedMovie || selectedChannel) && (
+              <div className="mobile-player">
+                {selectedMovie ? (
+                  <MoviePlayer movie={selectedMovie} onBack={handleBackFromMovie} />
+                ) : (
+                  <VideoPlayer
+                    channel={selectedChannel}
+                    isTheaterMode={isTheaterMode}
+                    onToggleTheater={handleToggleTheater}
+                    onOpenGuide={() => setIsGuideOpen(true)}
+                  />
+                )}
+              </div>
+            )}
             <div className="mobile-canais">
               <Sidebar
                 channels={channels}
