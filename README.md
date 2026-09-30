@@ -1,5 +1,9 @@
 # Saimo TV — site
 
+<p align="center">
+  Saimo TV: <a href="https://github.com/gabrielsaimo/SaimoTV-Android">TV Box</a> · <a href="https://github.com/gabrielsaimo/Saimo-Cell-V2">Celular</a> · <a href="https://github.com/gabrielsaimo/SaimoWin">Windows</a> · <a href="https://github.com/gabrielsaimo/SaimoPlayer">Mac e catálogo</a> · <b>Site</b> · <a href="https://github.com/gabrielsaimo">todos os apps</a>
+</p>
+
 Canais ao vivo, guia de programação, filmes e séries no navegador:
 **<https://saimo-tv.pages.dev>**. Versão atual: **2.0.4**.
 
