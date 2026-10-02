@@ -143,6 +143,18 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     try { return new URL(endereco).hostname; } catch { return endereco.slice(0, 30); }
   };
 
+  // Troca de fonte após 8s travado no Carregando
+  useEffect(() => {
+    if (!isLoading || fontes.length <= 1) return;
+
+    const timeout = setTimeout(() => {
+      console.log('Video demorou 8s para carregar, tentando próxima fonte automaticamente...');
+      setFonteIdx((prev) => (prev + 1) % fontes.length);
+    }, 8000);
+
+    return () => clearTimeout(timeout);
+  }, [isLoading, fonteIdx, fontes.length]);
+
   // Carregar vídeo quando movie/fonte mudar.
   //
   // A regra central é "a última escolha vence": cada execução recebe uma
@@ -1153,9 +1165,33 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
       {/* Loading overlay */}
       {isLoading && (
-        <div className="player-overlay loading">
+        <div className="player-overlay loading" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <div className="spinner" />
-          <span>Carregando...</span>
+          <span style={{ marginBottom: fontes.length > 1 ? '20px' : '0' }}>Carregando...</span>
+          
+          {fontes.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setFonteIdx((prev) => (prev + 1) % fontes.length);
+              }}
+              style={{
+                background: 'rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                padding: '10px 20px',
+                color: 'white',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '15px',
+                transition: 'background 0.2s',
+                zIndex: 9999
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'}
+            >
+              Trocar Fonte
+            </button>
+          )}
         </div>
       )}
 
