@@ -79,7 +79,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const maxRecoveryAttempts = 3;
 
   /*
-   * As fontes do canal, na ordem publicada. Um canal antigo, guardado antes de
+   * As fontes do canal, HTTPS primeiro e depois na ordem publicada. Um canal antigo, guardado antes de
    * o site ler o catálogo com várias fontes, ainda chega só com `url` — daí a
    * lista de uma fonte só como piso.
    */

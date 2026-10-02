@@ -11,6 +11,7 @@
  */
 
 import type { ChannelSource } from '../types/channel';
+import { httpsFirst } from './sourceOrder';
 
 export function isDash(url: string): boolean {
   return url.toLowerCase().includes('.mpd');
@@ -122,7 +123,7 @@ function precisaComecarPeloProxy(source: ChannelSource): boolean {
  */
 export function buildAttempts(sources: ChannelSource[]): Attempt[] {
   const out: Attempt[] = [];
-  for (const source of sources) {
+  for (const source of httpsFirst(sources)) {
     if (!needsProxy(source) && !precisaComecarPeloProxy(source)) {
       out.push({ source, url: source.url, viaProxy: false });
     }

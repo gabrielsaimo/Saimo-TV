@@ -15,6 +15,8 @@ export interface Movie {
    * sem voltar para a lista — inclusive quando nenhuma abre aqui dentro.
    */
   sources?: MovieSource[];
+  /** Fonte escolhida explicitamente no modal; não reordena a fila HTTPS. */
+  initialSourceUrl?: string;
   logo?: string;
   category: string;
   year?: string;

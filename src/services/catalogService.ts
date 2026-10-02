@@ -12,6 +12,7 @@
  */
 
 import type { Channel, ChannelSource } from '../types/channel';
+import { httpsFirst } from '../utils/sourceOrder';
 import { channels as localChannels, adultChannels, categoryOrder } from '../data/channels';
 import { restrictedChannels } from '../data/restrictedChannels';
 import { normalise } from '../utils/nomes';
@@ -254,14 +255,15 @@ export function toChannels(parsed: ParsedChannel[]): Channel[] {
     const repetido = usados.get(raiz) ?? 0;
     usados.set(raiz, repetido + 1);
     const id = repetido === 0 ? raiz : `${raiz}-${repetido + 1}`;
+    const sources = httpsFirst(c.sources);
     return {
       id,
       name: c.name,
-      url: c.sources[0].url,
+      url: sources[0].url,
       logo: c.logo,
       category: c.category,
       channelNumber: index + 1,
-      sources: c.sources,
+      sources,
     };
   });
 }

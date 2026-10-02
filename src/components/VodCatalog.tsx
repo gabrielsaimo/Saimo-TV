@@ -8,6 +8,7 @@
  */
 
 import * as telemetria from '../services/telemetria';
+import { httpsFirst } from '../utils/sourceOrder';
 import { lista as listaAndamento } from '../services/continuar';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -111,7 +112,9 @@ function agruparEpisodios(lista: Episodio[]): EpisodioAgrupado[] {
       }
     }
   }
-  return [...mapa.values()].sort((a, b) => a.temporada - b.temporada || a.numero - b.numero);
+  return [...mapa.values()]
+    .map(episodio => ({ ...episodio, fontes: httpsFirst(episodio.fontes) }))
+    .sort((a, b) => a.temporada - b.temporada || a.numero - b.numero);
 }
 
 const eColecao = (aba: Aba): aba is 'animes' | 'doramas' =>
@@ -602,8 +605,9 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
     return (generos && idDaFicha(generos, item.titulo, !!item.serie)) || undefined;
   }, [generos]);
 
-  const tocarFilme = useCallback((titulo: string, fontes: MovieSource[]) => {
-    const primeira = fontes[0]?.url;
+  const tocarFilme = useCallback((titulo: string, fontes: MovieSource[], escolhida?: string) => {
+    const ordenadas = httpsFirst(fontes);
+    const primeira = escolhida ?? ordenadas[0]?.url;
     if (!primeira) return;
     onSelectMovie({
       tmdbId: (generos && idDaFicha(generos, titulo, false)) || undefined,
@@ -611,7 +615,8 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
       id: `movie-${titulo}-${primeira}`.slice(0, 200),
       name: titulo,
       url: primeira,
-      sources: fontes,
+      sources: ordenadas,
+      initialSourceUrl: escolhida,
       category: 'Filmes',
       type: 'movie',
     }, null);
@@ -649,7 +654,7 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
         const fontes: MovieSource[] = Object.entries(dados?.fontes ?? {})
           .flatMap(([versao, urls]) => urls.map((url) => ({ url, versao })));
         if (tentativa !== abertura.current) return;
-        setFontesAbertas(fontes);
+        setFontesAbertas(httpsFirst(fontes));
         if (!fontes.length) setErroModal(`Sem fonte disponível para "${item.titulo}".`);
         return;
       }
@@ -1126,7 +1131,8 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
                   key={`${fonte.url}-${indice}`}
                   onClick={() => tocarFilme(
                     aberto.titulo,
-                    [fonte, ...fontesAbertas.filter((_, outro) => outro !== indice)],
+                    fontesAbertas,
+                    fonte.url,
                   )}
                 >
                   <span>

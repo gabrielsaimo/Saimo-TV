@@ -8,6 +8,7 @@ import Hls from 'hls.js';
 import type { Movie, SeriesEpisodeInfo } from '../types/movie';
 import { getProxiedUrl, needsProxy } from '../utils/proxyUrl';
 import { isHls } from '../utils/streamUrl';
+import { httpsFirst, initialSourceIndex } from '../utils/sourceOrder';
 import castService, { type CastMethod, type CastState } from '../services/castService';
 import * as telemetria from '../services/telemetria';
 import './MoviePlayer.css';
@@ -50,7 +51,10 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
    * que é justamente o que não dá para fazer quando a tela mostra um aviso no
    * lugar do vídeo.
    */
-  const [fonteIdx, setFonteIdx] = useState(0);
+  const [fonteIdx, setFonteIdx] = useState(() => initialSourceIndex(
+    httpsFirst(movie?.sources?.length ? movie.sources : movie ? [{ url: movie.url }] : []),
+    movie?.initialSourceUrl,
+  ));
   const [showControls, setShowControls] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showExternalMenu, setShowExternalMenu] = useState(false);
@@ -116,13 +120,15 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
    */
   const fontes = useMemo(() => {
     if (!movie) return [];
-    return movie.sources?.length ? movie.sources : [{ url: movie.url }];
+    return httpsFirst(movie.sources?.length ? movie.sources : [{ url: movie.url }]);
   }, [movie]);
 
   const urlAtiva = fontes[fonteIdx]?.url ?? movie?.url ?? '';
 
   // Título novo recomeça pela fonte preferida, não pela que sobrou do anterior.
-  useEffect(() => { setFonteIdx(0); }, [movie?.id]);
+  useEffect(() => {
+    setFonteIdx(initialSourceIndex(fontes, movie?.initialSourceUrl));
+  }, [movie?.id, movie?.initialSourceUrl, fontes]);
 
   const noDesktop = !(globalThis as { __SAIMO_DESKTOP__?: boolean }).__SAIMO_DESKTOP__;
   const soHttp = noDesktop && !!urlAtiva && urlAtiva.startsWith('http://');
