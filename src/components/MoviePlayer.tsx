@@ -43,6 +43,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isProxyBlocked, setIsProxyBlocked] = useState(false);
+  // Selecionar um endereço no aviso não deve reiniciar o player/fallback.
+  const [fonteAviso, setFonteAviso] = useState<string | null>(null);
   /*
    * Qual das fontes do título está em uso.
    *
@@ -124,6 +126,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   }, [movie]);
 
   const urlAtiva = fontes[fonteIdx]?.url ?? movie?.url ?? '';
+  const urlExterna = error && isProxyBlocked && fontes.some(fonte => fonte.url === fonteAviso)
+    ? fonteAviso! : urlAtiva;
+  useEffect(() => { setFonteAviso(null); }, [movie?.id, urlAtiva]);
 
   // Título novo recomeça pela fonte preferida, não pela que sobrou do anterior.
   useEffect(() => {
@@ -502,9 +507,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   // Função para abrir em nova aba
   const openInNewTab = useCallback(() => {
     if (!movie) return;
-    console.log('[openInNewTab] Abrindo:', urlAtiva);
-    window.open(urlAtiva, '_blank');
-  }, [movie, urlAtiva]);
+    window.open(urlExterna, '_blank');
+  }, [movie, urlExterna]);
 
   // Mostra botão de próximo episódio quando faltam 30 segundos
   useEffect(() => {
@@ -1068,31 +1072,31 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     let url = '';
     switch (player) {
       case 'vlc':
-        url = `vlc://${urlAtiva}`;
+        url = `vlc://${urlExterna}`;
         break;
       case 'mx':
-        url = `intent:${urlAtiva}#Intent;package=com.mxtech.videoplayer.ad;end`;
+        url = `intent:${urlExterna}#Intent;package=com.mxtech.videoplayer.ad;end`;
         break;
       case 'iina':
-        url = `iina://open?url=${encodeURIComponent(urlAtiva)}`;
+        url = `iina://open?url=${encodeURIComponent(urlExterna)}`;
         break;
       case 'potplayer':
-        url = `potplayer://${urlAtiva}`;
+        url = `potplayer://${urlExterna}`;
         break;
       case 'copy':
-        navigator.clipboard.writeText(urlAtiva).then(() => {
+        navigator.clipboard.writeText(urlExterna).then(() => {
           // Feedback visual poderia ser adicionado aqui
         });
         return;
       case 'newtab':
-        window.open(urlAtiva, '_blank');
+        window.open(urlExterna, '_blank');
         return;
     }
     
     if (url) {
       window.location.href = url;
     }
-  }, [movie, urlAtiva]);
+  }, [movie, urlExterna]);
 
   if (!movie) {
     return (
@@ -1111,7 +1115,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   return (
     <div 
       ref={containerRef}
-      className={`movie-player ${isFullscreen ? 'fullscreen' : ''} ${showControls ? '' : 'hide-cursor'}`}
+      className={`movie-player ${isFullscreen ? 'fullscreen' : ''} ${showControls || isLoading || error ? '' : 'hide-cursor'}`}
       onClick={togglePlay}
     >
       {/* Video Container - com tamanho máximo fixo */}
@@ -1169,7 +1173,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
               </svg>
               <h3>Este vídeo toca numa página separada</h3>
               <p className="aviso-texto">
-                {soHttp
+                {urlExterna.startsWith('http://')
                   ? 'O endereço dele é http, e o navegador não deixa um vídeo assim tocar dentro de uma página segura. Fora daqui ele abre normalmente.'
                   : 'O servidor deste vídeo não aceita o caminho que o site usa. Fora daqui ele abre normalmente.'}
               </p>
@@ -1202,13 +1206,14 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
               {fontes.length > 1 && (
                 <div className="aviso-fontes">
-                  <p>Ou troque a fonte deste título:</p>
+                  <p>Selecione a fonte para copiar ou abrir fora do site:</p>
                   <div className="aviso-fontes-lista">
-                    {fontes.map((fonte, indice) => (
+                    {fontes.map((fonte) => (
                       <button
                         key={fonte.url}
-                        className={indice === fonteIdx ? 'atual' : undefined}
-                        onClick={() => setFonteIdx(indice)}
+                        className={fonte.url === urlExterna ? 'atual' : undefined}
+                        aria-pressed={fonte.url === urlExterna}
+                        onClick={() => setFonteAviso(fonte.url)}
                         data-focusable="true"
                         data-nav-group="aviso-fontes"
                         title={fonte.url}
@@ -1461,7 +1466,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
       {/* Controls */}
       {/* Com erro na tela os controles ficam à vista: é por eles que se volta. */}
-      <div className={`player-controls ${showControls || error ? 'visible' : ''}`} onClick={(e) => e.stopPropagation()}>
+      <div className={`player-controls ${showControls || isLoading || error ? 'visible' : ''}`} onClick={(e) => e.stopPropagation()}>
         {/* Top bar */}
         <div className="controls-top">
           <button 

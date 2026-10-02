@@ -116,9 +116,9 @@
   font-size: 0.9rem;
 }
 
-/* O erro não cobre a barra do topo: o botão de voltar precisa continuar
-   clicável quando nenhuma fonte abre. */
-.player-overlay.error {
+/* Erro e carregamento deixam a barra do topo livre para voltar. */
+.player-overlay.error,
+.player-overlay.loading {
   top: 96px;
 }
 
@@ -232,6 +232,8 @@
 
 /* Top bar */
 .controls-top {
+  position: relative;
+  z-index: 11;
   display: flex;
   align-items: center;
   gap: 16px;
