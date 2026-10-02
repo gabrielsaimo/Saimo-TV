@@ -9,6 +9,7 @@ import type { Movie, SeriesEpisodeInfo } from '../types/movie';
 import { getProxiedUrl, needsProxy } from '../utils/proxyUrl';
 import { isHls } from '../utils/streamUrl';
 import { httpsFirst, initialSourceIndex } from '../utils/sourceOrder';
+import { resolveVodSources } from '../utils/resolveVodSources';
 import castService, { type CastMethod, type CastState } from '../services/castService';
 import * as telemetria from '../services/telemetria';
 import './MoviePlayer.css';
@@ -120,10 +121,29 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
    * catálogo, nenhuma passa — então o caminho é a aba separada, e ela aparece
    * de saída em vez de depois de um minuto de espera.
    */
-  const fontes = useMemo(() => {
+  const fontesOriginais = useMemo(() => {
     if (!movie) return [];
     return httpsFirst(movie.sources?.length ? movie.sources : [{ url: movie.url }]);
   }, [movie]);
+
+  const [resolvidas, setResolvidas] = useState<{ movie: Movie; sources: typeof fontesOriginais } | null>(null);
+  const resolverNoSite = !(globalThis as { __SAIMO_DESKTOP__?: boolean }).__SAIMO_DESKTOP__;
+  const resolvendo = !!movie && resolverNoSite && resolvidas?.movie !== movie;
+  const fontes = resolvidas?.movie === movie ? resolvidas!.sources : fontesOriginais;
+  useEffect(() => {
+    if (!movie || !resolverNoSite) return;
+    const controller = new AbortController();
+    let active = true;
+    const timeout = setTimeout(() => controller.abort(), 6000);
+    setIsLoading(true);
+    setError(null);
+    resolveVodSources(fontesOriginais, controller.signal).then(sources => {
+      if (!active) return;
+      setFonteIdx(initialSourceIndex(sources, movie.initialSourceUrl));
+      setResolvidas({ movie, sources });
+    });
+    return () => { active = false; clearTimeout(timeout); controller.abort(); };
+  }, [movie, fontesOriginais, resolverNoSite]);
 
   const urlAtiva = fontes[fonteIdx]?.url ?? movie?.url ?? '';
   const urlExterna = error && isProxyBlocked && fontes.some(fonte => fonte.url === fonteAviso)
@@ -145,7 +165,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
   // Troca de fonte após 8s travado no Carregando
   useEffect(() => {
-    if (!isLoading || fontes.length <= 1) return;
+    if (resolvendo || !isLoading || fontes.length <= 1) return;
 
     const timeout = setTimeout(() => {
       console.log('Video demorou 8s para carregar, tentando próxima fonte automaticamente...');
@@ -153,7 +173,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     }, 8000);
 
     return () => clearTimeout(timeout);
-  }, [isLoading, fonteIdx, fontes.length]);
+  }, [resolvendo, isLoading, fonteIdx, fontes.length]);
 
   // Carregar vídeo quando movie/fonte mudar.
   //
@@ -162,7 +182,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   // são ignorados. Isso elimina o erro fantasma que aparecia ao clicar E2, E3,
   // E4 rapidamente e receber depois a falha atrasada do E2.
   useEffect(() => {
-    if (!movie || !videoRef.current || !urlAtiva) return;
+    if (resolvendo || !movie || !videoRef.current || !urlAtiva) return;
 
     const geracao = ++loadGenerationRef.current;
     const atual = () => loadGenerationRef.current === geracao;
@@ -413,7 +433,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       video.removeEventListener('canplay', handleCanPlay);
       window.removeEventListener('beforeunload', salvarProgresso);
     };
-  }, [movie, soHttp, urlAtiva, fonteIdx, fontes.length, seriesInfo?.seriesName]);
+  }, [resolvendo, movie, soHttp, urlAtiva, fonteIdx, fontes.length, seriesInfo?.seriesName]);
 
 
   const episodeIndex = useMemo(() => {
