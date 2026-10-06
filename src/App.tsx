@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useMemo, createContext, useContext, lazy, Suspense } from 'react';
-import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { AppHeader } from './components/AppHeader';
 import { Toast } from './components/Toast';
 import { AtalhosAjuda } from './components/AtalhosAjuda';
@@ -82,6 +82,7 @@ function HomePage() {
 
 // Componente de TV
 function TVPage() {
+  const { slug } = useParams<{slug?: string}>();
   const navigate = useNavigate();
   const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
@@ -169,6 +170,17 @@ function TVPage() {
     setToast({ message, type, id: Date.now() });
     setTimeout(() => setToast(null), 3000);
   }, []);
+
+
+  useEffect(() => {
+    if (slug && channels.length > 0) {
+      const channel = channels.find(c => c.id === slug);
+      if (channel && channel.id !== canalEscolhido?.id) {
+        setSelectedChannel(channel);
+        setLastChannelId(channel.id);
+      }
+    }
+  }, [slug, channels, canalEscolhido, setLastChannelId]);
 
   const handleSelectChannel = useCallback((channel: Channel) => {
     setSelectedChannel(channel);
@@ -432,6 +444,7 @@ function AppLayout() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/tv" element={<TVPage />} />
+      <Route path="/tv/:slug" element={<TVPage />} />
             <Route path="/movies" element={<MoviesPage />} />
       <Route path="/app" element={
         <Suspense fallback={<LoadingFallback />}>
