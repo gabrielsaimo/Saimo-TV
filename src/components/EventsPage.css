@@ -1,0 +1,241 @@
+.events-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 20px 100px 20px;
+  background: var(--ground);
+  color: var(--on-ground);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.events-header {
+  text-align: center;
+  margin-bottom: 40px;
+  max-width: 800px;
+}
+
+.events-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #8B5CF6, #EC4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.events-header p {
+  color: var(--on-ground-variant);
+  font-size: 1.1rem;
+}
+
+.events-content {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.events-loading, .events-error, .events-empty {
+  text-align: center;
+  padding: 60px;
+  background: var(--surface);
+  border-radius: 20px;
+  color: var(--on-surface-variant);
+  font-size: 1.2rem;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.event-card {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(139, 92, 246, 0.3);
+  box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.2);
+}
+
+.event-card.is-live {
+  background: linear-gradient(180deg, var(--surface) 0%, rgba(236, 72, 153, 0.05) 100%);
+  border-color: rgba(236, 72, 153, 0.2);
+}
+
+.event-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-league {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+}
+
+.event-league img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 2px;
+}
+
+.event-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.event-badge.live {
+  background: rgba(236, 72, 153, 0.15);
+  color: #f43f5e;
+}
+
+.event-badge.upnext {
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+}
+
+.event-badge.ended {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.pulse {
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: #f43f5e;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(244, 63, 94, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+}
+
+.event-teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  text-align: center;
+}
+
+.team img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.team span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.team-vs {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--on-surface-variant);
+  opacity: 0.5;
+  padding: 0 16px;
+}
+
+.event-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.event-title {
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 0;
+  color: var(--on-surface);
+  opacity: 0.9;
+}
+
+.btn-watch {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #8B5CF6, #6366f1);
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.btn-watch svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-watch:hover:not(.disabled) {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
+
+.btn-watch.disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .events-page {
+    padding: 24px 16px 100px 16px;
+  }
+  .events-header h1 {
+    font-size: 2rem;
+  }
+  .event-card {
+    padding: 20px;
+  }
+  .team img {
+    width: 48px;
+    height: 48px;
+  }
+}

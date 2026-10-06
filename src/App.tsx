@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useMemo, createContext, useContext, lazy, Suspense } from 'react';
+import { EventsPage } from "./components/EventsPage";
 import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AppHeader } from './components/AppHeader';
 import { Toast } from './components/Toast';
@@ -69,7 +70,7 @@ const useAdultMode = () => useContext(AdultModeContext);
 function HomePage() {
   const navigate = useNavigate();
   
-  const handleSelect = (mode: 'tv' | 'movies') => {
+  const handleSelect = (mode: 'tv' | 'movies' | 'events') => {
     navigate(`/${mode}`);
   };
 
@@ -432,6 +433,7 @@ function AppLayout() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/tv" element={<TVPage />} />
+      <Route path="/events" element={<EventsPage />} />
       <Route path="/movies" element={<MoviesPage />} />
       <Route path="/app" element={
         <Suspense fallback={<LoadingFallback />}>
