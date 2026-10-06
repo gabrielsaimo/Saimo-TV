@@ -1,18 +1,67 @@
-.events-page {
-  width: 100%;
-  min-height: 100vh;
-  padding: 40px 20px 100px 20px;
-  background: var(--ground);
-  color: var(--on-ground);
+.events-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.events-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 1300px;
+  height: 95vh;
+  background: var(--ground);
+  border-radius: 24px;
+  overflow-y: auto;
+  padding: 40px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.events-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.events-close-btn:hover {
+  background: rgba(236, 72, 153, 0.2);
+  color: #f43f5e;
+  transform: rotate(90deg);
 }
 
 .events-header {
   text-align: center;
   margin-bottom: 40px;
-  max-width: 800px;
 }
 
 .events-header h1 {
@@ -28,11 +77,6 @@
 .events-header p {
   color: var(--on-ground-variant);
   font-size: 1.1rem;
-}
-
-.events-content {
-  width: 100%;
-  max-width: 1200px;
 }
 
 .events-loading, .events-error, .events-empty {
@@ -225,8 +269,21 @@
 }
 
 @media (max-width: 768px) {
-  .events-page {
-    padding: 24px 16px 100px 16px;
+  .events-modal-overlay {
+    padding: 0;
+  }
+  .events-modal-container {
+    height: 100vh;
+    border-radius: 0;
+    padding: 20px 16px;
+  }
+  .events-close-btn {
+    top: 16px;
+    right: 16px;
+    background: rgba(0,0,0,0.5);
+  }
+  .events-header {
+    margin-top: 40px;
   }
   .events-header h1 {
     font-size: 2rem;

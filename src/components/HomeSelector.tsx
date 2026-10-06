@@ -4,12 +4,12 @@ import { useDpad } from '../contexts/dpadContexto';
 import './HomeSelector.css';
 
 interface HomeSelectorProps {
-  onSelect: (mode: 'tv' | 'movies' | 'events') => void;
+  onSelect: (mode: 'tv' | 'movies') => void;
 }
 
 export function HomeSelector({ onSelect }: HomeSelectorProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState<'tv' | 'movies' | 'events' | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<'tv' | 'movies' | null>(null);
   const { focusFirst, isUsingDpad } = useDpad();
   const navigate = useNavigate();
   
@@ -222,59 +222,6 @@ export function HomeSelector({ onSelect }: HomeSelectorProps) {
             
             <div className="card-glow" />
           </button>
-
-          {/* Divisor */}
-          <div className="mode-divider">
-            <span>ou</span>
-          </div>
-
-          {/* Card Eventos */}
-          <button 
-            className={`mode-card events-card ${hoveredCard === 'events' ? 'hovered' : ''}`}
-            onClick={() => onSelect('events')}
-            onMouseEnter={() => setHoveredCard('events')}
-            onMouseLeave={() => setHoveredCard(null)}
-            data-focusable="true"
-            data-focus-key="events-card"
-          >
-            <div className="card-bg">
-              <div className="card-gradient" style={{ background: 'linear-gradient(135deg, rgba(234, 179, 8, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%)' }} />
-              <div className="card-pattern" />
-            </div>
-            
-            <div className="card-content">
-              <div className="card-icon" style={{ color: '#eab308' }}>
-                <svg viewBox="0 0 64 64" fill="none">
-                  <rect x="8" y="12" width="48" height="40" rx="4" stroke="currentColor" strokeWidth="3" />
-                  <path d="M8 24H56" stroke="currentColor" strokeWidth="3" />
-                  <path d="M16 6V12" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                  <path d="M48 6V12" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                  <circle cx="32" cy="40" r="6" stroke="currentColor" strokeWidth="3" />
-                  <path d="M32 30V34" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                </svg>
-              </div>
-              
-              <div className="card-info">
-                <h3>Eventos</h3>
-                <p>Agenda esportiva ao vivo</p>
-                <ul className="card-features">
-                  <li><Marca />Futebol, basquete, tênis</li>
-                  <li><Marca />Notificações de início</li>
-                  <li><Marca />Acesso direto ao canal</li>
-                </ul>
-              </div>
-              
-              <div className="card-action" style={{ background: 'linear-gradient(135deg, #eab308 0%, #f59e0b 100%)' }}>
-                <span>Ver agenda</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
-            
-            <div className="card-glow" style={{ boxShadow: 'inset 0 0 60px rgba(234, 179, 8, 0.1), 0 0 60px rgba(234, 179, 8, 0.1)' }} />
-          </button>
-
         </div>
       </main>
 

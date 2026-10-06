@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useCallback, useMemo, memo } from 'react';
+import { EventsModal } from "./EventsModal";
 import { rota } from '../utils/rotas';
 import { useMediaSession } from '../hooks/useMediaSession';
 import Hls from 'hls.js';
@@ -66,6 +67,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const [isPiP, setIsPiP] = useState(false);
   const [castState, setCastState] = useState<CastState>({ isConnected: false, deviceName: null, method: null });
   const [showCastModal, setShowCastModal] = useState(false);
+  const [showEventsModal, setShowEventsModal] = useState(false);
   const [castMessage, setCastMessage] = useState<string | null>(null);
   const [showExternalPlayers, setShowExternalPlayers] = useState(false);
   const [showSources, setShowSources] = useState(false);
@@ -887,6 +889,7 @@ export const VideoPlayer = memo(function VideoPlayer({
             channel={channel} 
             isVisible={showControls}
             onOpenGuide={onOpenGuide}
+            onOpenEvents={() => setShowEventsModal(true)}
           />
 
           <video
@@ -1292,6 +1295,23 @@ export const VideoPlayer = memo(function VideoPlayer({
             </div>
           )}
         </>
+      )}
+
+      {showEventsModal && (
+        <EventsModal 
+          onClose={() => setShowEventsModal(false)}
+          onWatch={(slug) => {
+            // Find channel and select it
+            // Wait, we don't have a direct way to select channel from VideoPlayer except if we rely on App/TVPage.
+            // But wait, the previous logic used navigate('/tv') + localStorage.
+            // Since we're ALREADY in /tv, we can just update localStorage and trigger a reload,
+            // or we need to pass a callback to VideoPlayer to change channel.
+            // Actually, setting localStorage and reloading the page is a quick hack,
+            // but TVPage listens to `canalEscolhido`.
+            localStorage.setItem('tv-last-channel', slug);
+            window.location.reload();
+          }}
+        />
       )}
     </div>
   );

@@ -21,12 +21,14 @@ interface ProgramInfoProps {
   channel: Channel;
   isVisible: boolean;
   onOpenGuide: () => void;
+  onOpenEvents?: () => void;
 }
 
 export const ProgramInfo = memo(function ProgramInfo({ 
   channel, 
   isVisible,
-  onOpenGuide 
+  onOpenGuide,
+  onOpenEvents
 }: ProgramInfoProps) {
   const [currentProgram, setCurrentProgram] = useState<CurrentProgram | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -204,6 +206,21 @@ export const ProgramInfo = memo(function ProgramInfo({
             </svg>
           </button>
           
+
+          {onOpenEvents && (
+            <button 
+              className="program-btn events-btn"
+              onClick={onOpenEvents}
+              title="Eventos esportivos ao vivo"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <circle cx="12" cy="13" r="5" />
+                <path d="M12 8v5" />
+              </svg>
+              <span>Eventos</span>
+            </button>
+          )}
           <button 
             className="program-btn guide-btn"
             onClick={onOpenGuide}

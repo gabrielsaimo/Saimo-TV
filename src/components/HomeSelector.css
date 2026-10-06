@@ -190,7 +190,7 @@
   align-items: center;
   gap: 30px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1000px;
   opacity: 0;
   animation: fadeInUp 0.6s ease 0.5s forwards;
 }
