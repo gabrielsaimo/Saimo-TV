@@ -7,11 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "desktop": "tauri dev --config desktop/src-tauri/tauri.conf.json",
-    "desktop:build": "tauri build --config desktop/src-tauri/tauri.conf.json",
-    "desktop:dev:web": "vite --config desktop/vite.config.ts",
-    "desktop:build:web": "vite build --config desktop/vite.config.ts"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.11.1",
