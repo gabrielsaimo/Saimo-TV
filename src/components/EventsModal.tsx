@@ -109,7 +109,7 @@ export function EventsModal({ onClose, onWatch }: EventsModalProps) {
                 <div key={ev.id} className={`event-card ${live ? 'is-live' : ''}`}>
                   <div className="event-card-header">
                     <div className="event-league">
-                      <img src={ev.league.image} alt={ev.league.name} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.src = "https://i.imgur.com/8Qj8X9q.png" }} />
+                      <img src={ev.league.image} alt={ev.league.name} referrerPolicy="no-referrer" onError={(e) => { if (e.currentTarget.src.includes("imgur")) return; e.currentTarget.src = "https://i.imgur.com/8Qj8X9q.png" }} />
                       <span>{ev.league.name}</span>
                     </div>
                     {getStatus(ev.time_start, ev.time_end)}
@@ -117,12 +117,12 @@ export function EventsModal({ onClose, onWatch }: EventsModalProps) {
 
                   <div className="event-teams">
                     <div className="team home">
-                      <img src={ev.teams.home.image} alt={ev.teams.home.name} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(ev.teams.home.name) + "&background=random" }} />
+                      <img src={ev.teams.home.image} alt={ev.teams.home.name} referrerPolicy="no-referrer" onError={(e) => { if (e.currentTarget.src.includes("ui-avatars")) return; e.currentTarget.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(ev.teams.home.name) + "&background=random"; }} />
                       <span>{ev.teams.home.name}</span>
                     </div>
                     <div className="team-vs">X</div>
                     <div className="team away">
-                      <img src={ev.teams.away.image} alt={ev.teams.away.name} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(ev.teams.away.name) + "&background=random" }} />
+                      <img src={ev.teams.away.image} alt={ev.teams.away.name} referrerPolicy="no-referrer" onError={(e) => { if (e.currentTarget.src.includes("ui-avatars")) return; e.currentTarget.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(ev.teams.away.name) + "&background=random"; }} />
                       <span>{ev.teams.away.name}</span>
                     </div>
                   </div>
