@@ -487,12 +487,5 @@
   }
 }
 
-.events-btn {
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.1) 0%, rgba(245, 158, 11, 0.2) 100%);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-}
-.events-btn:hover {
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.2) 0%, rgba(245, 158, 11, 0.3) 100%);
-  color: #fcd34d;
-}
+
+

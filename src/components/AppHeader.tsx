@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { EventsModal } from "./EventsModal";
 import { useState, useEffect, memo, useRef } from 'react';
 import './AppHeader.css';
 
@@ -28,6 +29,7 @@ export const AppHeader = memo(function AppHeader({
   const [lastScrollY, setLastScrollY] = useState(0);
   const [clickCount, setClickCount] = useState(0);
   const [showPinModal, setShowPinModal] = useState(false);
+  const [showEventsModal, setShowEventsModal] = useState(false);
   const [pin, setPin] = useState('');
   const clickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -198,6 +200,22 @@ export const AppHeader = memo(function AppHeader({
             </svg>
             <span>Filmes & Séries</span>
           </button>
+
+          <button 
+            className="nav-link events"
+            onClick={() => setShowEventsModal(true)}
+            data-focusable="true"
+            data-focus-key="nav-events"
+            style={{ color: '#fbbf24' }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <circle cx="12" cy="13" r="5" />
+              <path d="M12 8v5" />
+            </svg>
+            <span>Eventos</span>
+          </button>
+
         </nav>
 
         {/* Ações da Direita */}
@@ -263,6 +281,21 @@ export const AppHeader = memo(function AppHeader({
         </div>
       </div>
     </header>
+
+
+    {showEventsModal && (
+      <EventsModal 
+        onClose={() => setShowEventsModal(false)}
+        onWatch={(slug) => {
+          localStorage.setItem('tv-last-channel', slug);
+          if (location.pathname === '/tv') {
+            window.location.reload();
+          } else {
+            navigate('/tv');
+          }
+        }}
+      />
+    )}
 
     {/* Modal de PIN para adultos */}
     {showPinModal && (
