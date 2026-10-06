@@ -174,7 +174,11 @@ function TVPage() {
 
   useEffect(() => {
     if (slug && channels.length > 0) {
-      const channel = channels.find(c => c.id === slug);
+      const slugLimpo = slug.replace(/-/g, '').toLowerCase();
+      let channel = channels.find(c => c.id.replace(/-/g, '').toLowerCase() === slugLimpo);
+      if (!channel) {
+        channel = channels.find(c => c.name.replace(/[\s-]/g, '').toLowerCase() === slugLimpo);
+      }
       if (channel && channel.id !== canalEscolhido?.id) {
         setSelectedChannel(channel);
         setLastChannelId(channel.id);
