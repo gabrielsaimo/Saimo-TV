@@ -58,7 +58,19 @@ export function EventsModal({ onClose, onWatch }: EventsModalProps) {
       .then(r => r.json())
       .then(data => {
         if (data.error) throw new Error(data.error);
-        setEvents(data);
+        const now = new Date().getTime();
+        const validEvents = data.filter((event: any) => {
+          let fimMs = 0;
+          let inicioMs = 0;
+          if (event.time_end) fimMs = new Date(event.time_end).getTime();
+          if (event.time_start) inicioMs = new Date(event.time_start).getTime();
+          
+          if (!fimMs && inicioMs) {
+              fimMs = inicioMs + (2 * 60 * 60 * 1000);
+          }
+          return isNaN(fimMs) || fimMs > now;
+        });
+        setEvents(validEvents);
         setLoading(false);
       })
       .catch(err => {
