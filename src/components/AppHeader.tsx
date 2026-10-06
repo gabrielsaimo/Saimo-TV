@@ -286,9 +286,7 @@ export const AppHeader = memo(function AppHeader({
     {showEventsModal && (
       <EventsModal 
         onClose={() => setShowEventsModal(false)}
-        onWatch={(slug) => {
-          window.dispatchEvent(new CustomEvent("changeChannel", { detail: slug }));
-        }}
+        onWatch={(slug) => navigate(`/tv/${slug}`)}
       />
     )}
 

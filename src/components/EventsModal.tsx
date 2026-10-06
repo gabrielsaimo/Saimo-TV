@@ -59,7 +59,7 @@ export function EventsModal({ onClose, onWatch }: EventsModalProps) {
       .then(data => {
         if (data.error) throw new Error(data.error);
         const now = new Date().getTime();
-        const validEvents = data.filter((event: any) => {
+        const validEvents = data.filter((event: EventData) => {
           let fimMs = 0;
           let inicioMs = 0;
           if (event.time_end) fimMs = new Date(event.time_end).getTime();
