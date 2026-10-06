@@ -287,7 +287,7 @@ export const AppHeader = memo(function AppHeader({
       <EventsModal 
         onClose={() => setShowEventsModal(false)}
         onWatch={(slug) => {
-          localStorage.setItem('tv-last-channel', slug);
+          localStorage.setItem('tv-last-channel', JSON.stringify(slug));
           if (location.pathname === '/tv') {
             window.location.reload();
           } else {
