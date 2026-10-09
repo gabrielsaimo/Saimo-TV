@@ -74,6 +74,9 @@ export function parseCatalog(text: string): ParsedChannel[] {
       case 'referer':
         if (current?.sources.length) current.sources[current.sources.length - 1].referer = value;
         break;
+      case 'nome':
+        if (current?.sources.length) current.sources[current.sources.length - 1].name = value;
+        break;
       case 'qualidade':
         if (current?.sources.length) current.sources[current.sources.length - 1].quality = value;
         break;

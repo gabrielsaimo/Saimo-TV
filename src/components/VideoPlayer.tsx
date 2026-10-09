@@ -1170,7 +1170,13 @@ export const VideoPlayer = memo(function VideoPlayer({
                           <rect x="2" y="3" width="20" height="14" rx="2" />
                           <path d="M8 21h8M12 17v4" />
                         </svg>
-                        <span>Fonte {pos + 1} · {f.source.quality || 'Qualidade não informada'}{pos === fontePos ? ' (em uso)' : ''}</span>
+                        {/* Como no TV Box: o nome da fonte (a temporada, nos canais 24h) ou o número, e a qualidade quando informada. */}
+                        <span>
+                          {[f.source.name ?? `Fonte ${pos + 1}`,
+                            f.source.quality && f.source.quality !== 'Qualidade não informada' ? f.source.quality : null,
+                          ].filter(Boolean).join(' · ')}
+                          {pos === fontePos ? ' (em uso)' : ''}
+                        </span>
                         <small>{host}{extras ? ` · ${extras}` : ''}</small>
                       </button>
                     );

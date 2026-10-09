@@ -8,6 +8,8 @@
 export interface ChannelSource {
   url: string;
   quality?: string;
+  /** O que diferencia a fonte das outras do canal ("Temporada 3"), quando o catálogo sabe. */
+  name?: string;
   referer?: string;
   userAgent?: string;
   /** KID do ClearKey, em hexadecimal. */

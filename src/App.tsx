@@ -87,7 +87,10 @@ function TVPage() {
   const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
   const [lastChannelId, setLastChannelId] = useLocalStorage<string | null>('tv-last-channel', null);
-  const [canalEscolhido, setSelectedChannel] = useState<Channel | null>(null);
+  // O canal escolhido guarda junto o link (/tv/:slug) em que foi escolhido:
+  // abrir outro link passa a valer o canal dele, e escolher na lista vale até
+  // o link mudar.
+  const [escolha, setEscolha] = useState<{ canal: Channel; slug?: string } | null>(null);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isTheaterMode, setIsTheaterMode] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -109,8 +112,21 @@ function TVPage() {
   // Sem canal escolhido nesta visita, vale o último da visita anterior — assim
   // que a lista (que vem da rede) o trouxer. Derivado, e não copiado para o
   // estado num efeito: a lista chegando depois não troca um canal escolhido.
+  const canalDoLink = useMemo(() => {
+    if (!slug || channels.length === 0) return null;
+    const slugLimpo = slug.replace(/-/g, '').toLowerCase();
+    return channels.find((c) => c.id.replace(/-/g, '').toLowerCase() === slugLimpo)
+      ?? channels.find((c) => c.name.replace(/[\s-]/g, '').toLowerCase() === slugLimpo)
+      ?? null;
+  }, [slug, channels]);
+  const canalEscolhido = escolha && escolha.slug === slug ? escolha.canal : null;
   const selectedChannel = canalEscolhido
+    ?? canalDoLink
+    ?? escolha?.canal
     ?? (lastChannelId ? channels.find((ch) => ch.id === lastChannelId) ?? null : null);
+  const setSelectedChannel = useCallback((canal: Channel | null) => {
+    setEscolha(canal ? { canal, slug } : null);
+  }, [slug]);
 
   useEffect(() => {
     // O que veio da visita anterior já está na tela e fica nela; a lista
@@ -172,19 +188,6 @@ function TVPage() {
   }, []);
 
 
-  useEffect(() => {
-    if (slug && channels.length > 0) {
-      const slugLimpo = slug.replace(/-/g, '').toLowerCase();
-      let channel = channels.find(c => c.id.replace(/-/g, '').toLowerCase() === slugLimpo);
-      if (!channel) {
-        channel = channels.find(c => c.name.replace(/[\s-]/g, '').toLowerCase() === slugLimpo);
-      }
-      if (channel && channel.id !== canalEscolhido?.id) {
-        setSelectedChannel(channel);
-        setLastChannelId(channel.id);
-      }
-    }
-  }, [slug, channels, canalEscolhido, setLastChannelId]);
 
   const handleSelectChannel = useCallback((channel: Channel) => {
     setSelectedChannel(channel);
@@ -192,7 +195,7 @@ function TVPage() {
     setLastChannelId(channel.id);
     setIsMobileMenuOpen(false);
     showToast(`Assistindo: ${channel.name}`, 'info');
-  }, [setLastChannelId, showToast]);
+  }, [setLastChannelId, showToast, setSelectedChannel]);
 
   const handleBackFromMovie = useCallback(() => {
     setSelectedMovie(null);
