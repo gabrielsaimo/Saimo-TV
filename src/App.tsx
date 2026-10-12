@@ -37,7 +37,10 @@ const LoadingFallback = () => (
     color: 'var(--text-primary, #fff)'
   }}>
     <div style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📺</div>
+      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.8" style={{ marginBottom: '1rem', opacity: 0.7 }} aria-hidden="true">
+        <rect x="2" y="7" width="20" height="14" rx="2" />
+        <path d="M17 2l-5 5-5-5" />
+      </svg>
       <div>Carregando...</div>
     </div>
   </div>
@@ -255,6 +258,10 @@ function TVPage() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Um "g" digitado na busca do guia (ou em qualquer campo) é texto, não atalho.
+      const alvo = e.target as HTMLElement | null;
+      if (alvo && (alvo.tagName === 'INPUT' || alvo.tagName === 'TEXTAREA' || alvo.isContentEditable)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === 'g' || e.key === 'G') {
         setIsGuideOpen((prev) => !prev);
       }

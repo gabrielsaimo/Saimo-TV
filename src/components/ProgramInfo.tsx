@@ -1,7 +1,7 @@
 import { useState, useEffect, memo, useCallback } from 'react';
 import type { Channel } from '../types/channel';
 import type { CurrentProgram, Program } from '../types/epg';
-import { getCurrentProgram, getChannelEPG, fetchRealEPG, onEPGUpdate, getCurrentProgramAsync } from '../services/epgService';
+import { getCurrentProgram, getChannelEPG, fetchRealEPG, onEPGUpdate, getCurrentProgramAsync, epgKey } from '../services/epgService';
 import './ProgramInfo.css';
 
 // Funções auxiliares de formatação
@@ -54,9 +54,9 @@ export const ProgramInfo = memo(function ProgramInfo({
     fetchRealEPG();
     
     // Listener que atualiza quando EPG de qualquer canal é carregado
-    const unsubscribe = onEPGUpdate((channelId: string) => {
-      if (channel && channelId === channel.id) {
-        console.log(`[ProgramInfo] EPG atualizado para ${channelId}`);
+    // O aviso traz a chave do guia (nome normalizado), não o id do site.
+    const unsubscribe = onEPGUpdate((canais) => {
+      if (channel && (canais.has(epgKey(channel.id)) || canais.size === 0)) {
         updateProgramData();
         setIsLoading(false);
         forceUpdate(n => n + 1);

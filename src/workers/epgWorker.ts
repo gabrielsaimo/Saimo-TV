@@ -20,8 +20,14 @@ const FEEDS = [
   'https://www.open-epg.com/files/brazil3.xml',
 ];
 
-const PAST_WINDOW_MS = 6 * 60 * 60 * 1000;
-const FUTURE_WINDOW_MS = 3 * 24 * 60 * 60 * 1000;
+/*
+ * Janela guardada: três horas para trás e trinta para frente. O guia mostra de
+ * uma hora atrás até um dia adiante, e o cache vale seis horas — a folga cobre
+ * isso. Guardar três dias, como antes, dava cinco megabytes de JSON lidos de
+ * uma vez, na linha principal, em toda visita.
+ */
+const PAST_WINDOW_MS = 3 * 60 * 60 * 1000;
+const FUTURE_WINDOW_MS = 30 * 60 * 60 * 1000;
 
 /** Nomes que os feeds escrevem diferente do catálogo. */
 const ALIASES: Record<string, string> = {
@@ -137,9 +143,7 @@ export interface WorkerProgramme {
   stop: number;
   poster?: string;
   episode?: string;
-  year?: string;
   description?: string;
-  cast?: string[];
 }
 
 /** Nome do canal -> programação. */
@@ -177,8 +181,11 @@ const PLUTO_URL = 'https://raw.githubusercontent.com/matthuisman/i.mjh.nz/master
  * quem abre o site de Lisboa. O deslocamento é obtido do próprio navegador para
  * não depender de tabela nossa.
  */
+// Criar o formatador custa mais que usá-lo, e ele roda uma vez por programa.
+let formatoSp: Intl.DateTimeFormat | null = null;
+
 function saoPauloOffset(instante: number): number {
-  const formato = new Intl.DateTimeFormat('en-US', {
+  const formato = formatoSp ??= new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/Sao_Paulo',
     hour12: false,
     year: 'numeric', month: '2-digit', day: '2-digit',
@@ -432,12 +439,6 @@ function parseProgramme(
 
   const iconTag = entre(elemento, '<icon', '>');
   const poster = iconTag ? decodeEntities(atributo(iconTag, 'src') ?? '') || undefined : undefined;
-  const bloco = entre(elemento, '<credits', '</credits>');
-  const cast = bloco
-    ? [...bloco.matchAll(/<actor[^>]*>([\s\S]*?)<\/actor>/g)]
-      .map((m) => decodeEntities(m[1]).trim())
-      .filter(Boolean)
-    : [];
 
   return [canal, {
     title,
@@ -450,9 +451,7 @@ function parseProgramme(
     episode: (entre(elemento, '<episode-num', '</episode-num>') ?? '').includes('original-air-date')
       ? undefined
       : texto(elemento, 'episode-num') ?? undefined,
-    year: texto(elemento, 'date')?.slice(0, 4),
     description: texto(elemento, 'desc') || undefined,
-    cast,
   }];
 }
 
@@ -532,28 +531,54 @@ async function parseFeed(
 
 /**
  * O meuguia publica só título e gênero. Casando por título, os feeds trazem
- * pôster, sinopse, elenco, episódio e ano sem tocar no horário.
+ * pôster, sinopse e episódio sem tocar no horário.
  *
  * Preenche campo a campo: parar no primeiro programa que já tem pôster deixava
- * sem sinopse justamente os que o feed conseguiu ilustrar.
+ * sem sinopse justamente os que o feed conseguiu ilustrar. Devolve os canais
+ * que ganharam alguma coisa, para só eles irem à tela.
  */
-function enriquecer(grade: Grade, porTitulo: Map<string, WorkerProgramme>): void {
+function enriquecer(grade: Grade, porTitulo: Map<string, WorkerProgramme>): string[] {
+  const mudaram: string[] = [];
   for (const canal of Object.keys(grade)) {
+    let mudou = false;
     grade[canal] = grade[canal].map((p) => {
-      if (p.poster && p.description && p.cast?.length) return p;
+      if (p.poster && p.description && p.episode) return p;
       const fonte = porTitulo.get(normalise(p.title));
       if (!fonte) return p;
-      return {
+      const novo = {
         ...p,
         poster: p.poster ?? fonte.poster,
         episode: p.episode ?? fonte.episode,
-        year: p.year ?? fonte.year,
         description: p.description ?? fonte.description,
-        cast: p.cast?.length ? p.cast : fonte.cast,
         category: p.category || fonte.category,
       };
+      if (novo.poster !== p.poster || novo.episode !== p.episode
+        || novo.description !== p.description || novo.category !== p.category) mudou = true;
+      return novo;
     });
+    if (mudou) mudaram.push(canal);
   }
+  return mudaram;
+}
+
+/**
+ * Deixa a lista de um canal pronta para a grade: em ordem, sem programa de
+ * duração zero, sem o mesmo horário repetido e sem um invadindo o seguinte.
+ *
+ * Os feeds XMLTV repetem entradas e publicam fins que passam do começo do
+ * próximo; desenhados assim, os blocos se sobrepunham na grade e o "no ar
+ * agora" escolhia o programa errado.
+ */
+function arrumar(lista: WorkerProgramme[]): WorkerProgramme[] {
+  const ordenada = lista.filter((p) => p.stop > p.start).sort((a, b) => a.start - b.start);
+  const saida: WorkerProgramme[] = [];
+  for (const p of ordenada) {
+    const anterior = saida[saida.length - 1];
+    if (anterior && anterior.start === p.start) continue;
+    if (anterior && anterior.stop > p.start) anterior.stop = p.start;
+    saida.push(p);
+  }
+  return saida;
 }
 
 // ============================================================
@@ -581,8 +606,17 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
   const ate = agora + FUTURE_WINDOW_MS;
   const grade: Grade = {};
 
-  const publicar = (parcial: boolean) => {
-    self.postMessage({ type: parcial ? 'partial' : 'done', grade });
+  /*
+   * Só os canais que mudaram vão para a tela. Mandar a grade inteira a cada
+   * etapa obrigava a linha principal a copiar e converter tudo de novo cinco
+   * vezes, e cada vez era um engasgo visível na página.
+   */
+  const publicar = (canais: Iterable<string>, fim = false) => {
+    const parte: Grade = {};
+    for (const canal of canais) {
+      if (grade[canal]) parte[canal] = grade[canal] = arrumar(grade[canal]);
+    }
+    self.postMessage({ type: fim ? 'done' : 'partial', grade: parte });
   };
 
   // Canal da Pluto só usa o guia da Pluto; os outros guias nem tentam casá-lo.
@@ -595,12 +629,12 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
     })
     : Promise.resolve(new Map<string, WorkerProgramme[]>());
   void daPluto.then((lido) => {
-    let n = 0;
+    const cobertos: string[] = [];
     for (const [canal, programas] of lido) {
-      if (pluto[canal]?.principal) { grade[canal] = programas; n++; }
+      if (pluto[canal]?.principal) { grade[canal] = programas; cobertos.push(canal); }
     }
-    console.log(`[EPG] Pluto cobriu ${n} canais`);
-    if (n) publicar(true);
+    console.log(`[EPG] Pluto cobriu ${cobertos.length} canais`);
+    if (cobertos.length) publicar(cobertos);
   });
 
   const comCodigo = names
@@ -633,9 +667,10 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
 
   const paginas = await comLimite(comCodigo, 6, baixarGuia);
 
+  const doMeuGuia = paginas.filter(([, l]) => l.length).map(([name]) => name);
   for (const [name, lista] of paginas) if (lista.length) grade[name] = lista;
-  console.log(`[EPG] meuguia cobriu ${paginas.filter(([, l]) => l.length).length} de ${comCodigo.length} canais`);
-  if (Object.keys(grade).length) publicar(true);
+  console.log(`[EPG] meuguia cobriu ${doMeuGuia.length} de ${comCodigo.length} canais`);
+  if (doMeuGuia.length) publicar(doMeuGuia);
 
   /*
    * O resto: canais que o meuguia não lista, mas o guiadetv sim — Sony
@@ -662,9 +697,10 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
 
   if (comGuiaDeTv.length) {
     const extras = await comLimite(comGuiaDeTv, 6, baixarGuiaDeTv);
+    const cobertos = extras.filter(([, l]) => l.length).map(([name]) => name);
     for (const [name, lista] of extras) if (lista.length) grade[name] = lista;
-    console.log(`[EPG] guiadetv cobriu ${extras.filter(([, l]) => l.length).length} de ${comGuiaDeTv.length} canais`);
-    if (extras.some(([, l]) => l.length)) publicar(true);
+    console.log(`[EPG] guiadetv cobriu ${cobertos.length} de ${comGuiaDeTv.length} canais`);
+    if (cobertos.length) publicar(cobertos);
   }
 
   const porTitulo = new Map<string, WorkerProgramme>();
@@ -677,22 +713,24 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
       console.warn(`[EPG] ${url} falhou:`, erro);
       continue;
     }
+    const novos = new Set<string>();
     for (const [canal, programas] of lido) {
-      if (!grade[canal]) grade[canal] = programas;
+      if (!grade[canal]) { grade[canal] = programas; novos.add(canal); }
     }
     // O enriquecimento acontece a cada feed, não no fim de todos: é ele que traz
     // as imagens, e esperar os dois significava abrir o guia sem nenhuma.
-    enriquecer(grade, porTitulo);
-    publicar(true);
+    for (const canal of enriquecer(grade, porTitulo)) novos.add(canal);
+    if (novos.size) publicar(novos);
   }
 
   // Onde a Pluto é só reserva, a grade dela é genérica: entra na falta de outra.
+  const reservas: string[] = [];
   for (const [canal, programas] of await daPluto) {
-    if (!grade[canal]) grade[canal] = programas;
+    if (!grade[canal]) { grade[canal] = programas; reservas.push(canal); }
   }
 
   console.log(`[EPG] guia pronto: ${Object.keys(grade).length} canais`);
-  publicar(false);
+  publicar(reservas, true);
 }
 
 self.onmessage = (evento: MessageEvent<Pedido>) => {

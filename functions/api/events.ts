@@ -1,4 +1,4 @@
-export const onRequest: PagesFunction = async (context) => {
+export const onRequest: PagesFunction = async () => {
   const url = 'https://embedtv.cc/api/events';
 
   try {
@@ -24,8 +24,8 @@ export const onRequest: PagesFunction = async (context) => {
         'Cache-Control': 'public, max-age=300' // cache 5 min to avoid hammering
       }
     });
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message }), {
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err instanceof Error ? err.message : String(err) }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',

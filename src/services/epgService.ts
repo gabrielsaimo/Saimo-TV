@@ -17,8 +17,12 @@ import { normalise } from '../utils/nomes';
 import type { Grade, PlutoDoCanal, WorkerProgramme } from '../workers/epgWorker';
 import { proxyBase } from '../utils/streamUrl';
 
-const CACHE_KEY = 'saimo-epg-v4';
+const CACHE_KEY = 'saimo-epg-v5';
+/** Chaves de versões antigas, que guardavam três dias (cinco megabytes). */
+const CACHES_VELHOS = ['saimo-epg-v4', 'saimo-epg-v3'];
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+/** Programa que acabou há mais que isto não interessa a tela nenhuma. */
+const PASSADO_UTIL_MS = 3 * 60 * 60 * 1000;
 
 interface CacheGuardado {
   at: number;
@@ -49,11 +53,21 @@ function plutoDoCanal(canal: Channel): PlutoDoCanal | undefined {
   return { id, principal: !doLink || PLUTO_ID.test(links[0] ?? '') };
 }
 
-type EPGListener = (channelId: string, programs: Program[]) => void;
+/**
+ * Recebe as chaves (`epgKey`) dos canais que mudaram, uma vez por lote. Um
+ * aviso por canal, como antes, chamava cada cartão da lista uma vez para cada
+ * canal do guia — dezenas de milhares de chamadas a cada etapa da montagem.
+ * O conjunto vem vazio quando só o estado (carregando/pronto) mudou.
+ */
+type EPGListener = (canais: ReadonlySet<string>) => void;
 const listeners = new Set<EPGListener>();
 
 let worker: Worker | null = null;
 let iniciado = false;
+/** O guia terminou de montar (ou o cache ainda vale): falta de grade é falta de verdade. */
+let pronto = false;
+/** Tudo o que já chegou, no formato do worker, para o cache. */
+let gradeAtual: Grade = {};
 /** Assinatura da lista com que o guia foi montado, para saber quando refazê-lo. */
 let sigExecutada: string | null = null;
 
@@ -92,7 +106,8 @@ function parseEpisodio(bruto: string | undefined): Program['episodeInfo'] {
 }
 
 function converter(canal: string, lista: WorkerProgramme[]): Program[] {
-  return lista.map((p) => ({
+  const corte = Date.now() - PASSADO_UTIL_MS;
+  return lista.filter((p) => p.stop > corte).map((p) => ({
     id: `${canal}-${p.start}`,
     title: p.title,
     description: p.description,
@@ -113,15 +128,26 @@ function semInformacao(titulo: string): boolean {
   return !t || t === 'no data' || t === 'sem informação';
 }
 
+function avisar(canais: ReadonlySet<string>): void {
+  listeners.forEach((l) => {
+    try { l(canais); } catch (e) { console.error('[EPG] listener falhou', e); }
+  });
+}
+
 function aplicar(grade: Grade): void {
+  const mudaram = new Set<string>();
   for (const [canal, lista] of Object.entries(grade)) {
     const id = normalise(canal);
-    const programas = converter(canal, lista).filter((p) => !semInformacao(p.title));
-    porCanal.set(id, programas);
-    listeners.forEach((l) => {
-      try { l(id, programas); } catch (e) { console.error('[EPG] listener falhou', e); }
-    });
+    porCanal.set(id, converter(canal, lista).filter((p) => !semInformacao(p.title)));
+    mudaram.add(id);
   }
+  if (mudaram.size) avisar(mudaram);
+}
+
+function marcarPronto(): void {
+  if (pronto) return;
+  pronto = true;
+  avisar(new Set());
 }
 
 // ============================================================
@@ -134,6 +160,7 @@ function assinatura(): string {
 
 function lerCache(): CacheGuardado | null {
   try {
+    for (const velho of CACHES_VELHOS) localStorage.removeItem(velho);
     const raw = localStorage.getItem(CACHE_KEY);
     if (!raw) return null;
     const cache = JSON.parse(raw) as CacheGuardado;
@@ -144,11 +171,17 @@ function lerCache(): CacheGuardado | null {
 }
 
 function gravarCache(grade: Grade): void {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), sig: assinatura(), grade }));
-  } catch {
-    // Cota estourada: o guia continua na memória desta visita.
-  }
+  const gravar = () => {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), sig: assinatura(), grade }));
+    } catch {
+      // Cota estourada: o guia continua na memória desta visita.
+    }
+  };
+  // Serializar a grade é trabalho de linha principal: fica para quando ela
+  // estiver livre, e não no meio de uma rolagem.
+  if (typeof requestIdleCallback === 'function') requestIdleCallback(gravar, { timeout: 5000 });
+  else setTimeout(gravar, 0);
 }
 
 // ============================================================
@@ -176,6 +209,7 @@ export function registerChannels(channels: Channel[]): void {
   worker?.terminate();
   worker = null;
   iniciado = false;
+  pronto = false;
   void fetchRealEPG();
 }
 
@@ -184,7 +218,16 @@ export function onEPGUpdate(listener: EPGListener): () => void {
   return () => { listeners.delete(listener); };
 }
 
+/** O guia já terminou de montar: canal sem grade agora é canal sem grade. */
+export function isEPGReady(): boolean {
+  return pronto;
+}
+
 /** Chave de busca a partir do identificador do site ou do nome do canal. */
+export function epgKey(idOuNome: string): string {
+  return chave(idOuNome);
+}
+
 function chave(idOuNome: string): string {
   // O identificador é o nome normalizado com hífen no lugar do espaço, então
   // desfazer a troca devolve exatamente a chave da grade.
@@ -201,15 +244,22 @@ export async function fetchRealEPG(): Promise<boolean> {
   sigExecutada = assinatura();
 
   const cache = lerCache();
-  if (cache) aplicar(cache.grade);
+  if (cache) {
+    gradeAtual = { ...cache.grade };
+    aplicar(cache.grade);
+  }
 
   const velho = !cache || Date.now() - cache.at > CACHE_TTL_MS || cache.sig !== assinatura();
-  if (!velho) return true;
+  if (!velho) {
+    marcarPronto();
+    return true;
+  }
 
   try {
     worker = new Worker(new URL('../workers/epgWorker.ts', import.meta.url), { type: 'module' });
   } catch (e) {
     console.error('[EPG] não foi possível iniciar o worker', e);
+    marcarPronto();
     return Boolean(cache);
   }
 
@@ -217,14 +267,21 @@ export async function fetchRealEPG(): Promise<boolean> {
     const { type, grade } = evento.data;
     if (type === 'error') {
       console.error('[EPG] worker falhou:', evento.data.message);
-      return;
-    }
-    if (!grade) return;
-    aplicar(grade);
-    if (type === 'done') {
-      if (Object.keys(grade).length) gravarCache(grade);
       worker?.terminate();
       worker = null;
+      marcarPronto();
+      return;
+    }
+    if (grade) {
+      // O worker manda só os canais que mudaram; o cache guarda a soma.
+      Object.assign(gradeAtual, grade);
+      aplicar(grade);
+    }
+    if (type === 'done') {
+      if (Object.keys(gradeAtual).length) gravarCache(gradeAtual);
+      worker?.terminate();
+      worker = null;
+      marcarPronto();
     }
   };
 
@@ -232,8 +289,27 @@ export async function fetchRealEPG(): Promise<boolean> {
   return true;
 }
 
+/** Lista vazia única: uma nova a cada consulta redesenharia à toa as linhas sem grade. */
+const SEM_PROGRAMAS: Program[] = [];
+
 export function getChannelEPG(channelId: string): ChannelEPG {
-  return { channelId, programs: porCanal.get(chave(channelId)) ?? [] };
+  return { channelId, programs: porCanal.get(chave(channelId)) ?? SEM_PROGRAMAS };
+}
+
+/**
+ * Índice do primeiro programa que ainda não acabou em `instante`. A lista está
+ * em ordem e sem sobreposição (o worker garante), então a busca é binária: a
+ * grade e os cartões perguntam isso centenas de vezes por minuto.
+ */
+export function firstEndingAfter(programs: Program[], instante: number): number {
+  let lo = 0;
+  let hi = programs.length;
+  while (lo < hi) {
+    const meio = (lo + hi) >>> 1;
+    if (programs[meio].endTime.getTime() <= instante) lo = meio + 1;
+    else hi = meio;
+  }
+  return lo;
 }
 
 export function getCurrentProgram(channelId: string): CurrentProgram | null {
@@ -241,10 +317,11 @@ export function getCurrentProgram(channelId: string): CurrentProgram | null {
   if (!programs?.length) return null;
 
   const now = new Date();
-  const current = programs.find((p) => p.startTime <= now && p.endTime > now);
+  const i = firstEndingAfter(programs, now.getTime());
+  const current = programs[i] && programs[i].startTime <= now ? programs[i] : null;
   if (!current) return null;
 
-  const next = programs.find((p) => p.startTime > now) ?? null;
+  const next = programs[i + 1] ?? null;
   const total = current.endTime.getTime() - current.startTime.getTime();
   const elapsed = now.getTime() - current.startTime.getTime();
   const progress = total > 0 ? Math.min(100, Math.max(0, (elapsed / total) * 100)) : 0;
@@ -263,6 +340,7 @@ export function hasEPG(channelId: string): boolean {
 
 export function clearEPGCache(): void {
   porCanal.clear();
+  gradeAtual = {};
   localStorage.removeItem(CACHE_KEY);
 }
 

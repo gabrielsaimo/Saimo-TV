@@ -18,7 +18,9 @@ lidos direto do repositório
   uma cai
 - Ao vivo não pausa: sem botão de pausa, e pausa vinda dos fones, da tela de
   bloqueio ou da janela flutuante volta a tocar sozinha
-- Guia de programação (meuguia.tv, guiadetv, Pluto TV e XMLTV)
+- Guia de programação (meuguia.tv, guiadetv, Pluto TV e XMLTV): grade de uma
+  hora atrás até um dia adiante, com busca de canal, linha do "agora" e ficha
+  do programa (sinopse e botão para assistir); tecla **G** abre e fecha
 - Filmes e séries com ficha, episódios e favoritos
 - Busca na aba Início procura em todo o acervo (filmes, séries, animes e
   doramas), com o nome exato primeiro
@@ -69,6 +71,20 @@ bun run desktop:build    # instalador
 O workflow `Build Windows Desktop` gera MSI e NSIS ao receber uma tag
 `desktop-v*`. O app de Windows principal, nativo e mais leve, é o
 [SaimoWin](https://github.com/gabrielsaimo/SaimoWin).
+
+## Guia de programação
+
+- A montagem roda num Web Worker (`src/workers/epgWorker.ts`): páginas do
+  meuguia e do guiadetv primeiro (chegam em segundos), depois os feeds XMLTV,
+  lidos em streaming, pedaço a pedaço, sem segurar o arquivo inteiro na memória.
+- Só fica a janela útil: de três horas atrás a trinta horas adiante. O worker
+  ordena cada canal, tira repetidos e corta o programa que invade o seguinte.
+- A cada etapa o worker manda só os canais que mudaram, e o serviço
+  (`src/services/epgService.ts`) avisa as telas uma vez por lote.
+- Cache em `localStorage` (`saimo-epg-v5`, cerca de 2 MB) por seis horas,
+  gravado quando a página está ociosa.
+- A grade (`src/components/ProgramGuide.tsx`) é um único rolador com canal e
+  régua presos por `sticky` e desenha só as linhas e horários visíveis.
 
 ## Estrutura
 
