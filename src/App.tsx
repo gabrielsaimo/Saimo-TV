@@ -16,6 +16,16 @@ import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { DpadNavigationProvider } from './contexts/DpadContext';
 import './App.css';
 
+/**
+ * Celular: tela estreita, ou celular deitado. Deitado ele passa dos 768 px de
+ * largura e caía no layout de computador (menu no alto, lista ao lado e o
+ * vídeo espremido num canto); toque e pouca altura dizem que é celular.
+ */
+function ehCelular(): boolean {
+  return window.innerWidth <= 768
+    || (window.matchMedia('(pointer: coarse)').matches && window.innerHeight <= 500);
+}
+
 // Lazy loading dos componentes pesados
 const Sidebar = lazy(() => import('./components/Sidebar').then(m => ({ default: m.Sidebar })));
 const VideoPlayer = lazy(() => import('./components/VideoPlayer').then(m => ({ default: m.VideoPlayer })));
@@ -100,7 +110,8 @@ function TVPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [toast, setToast] = useState<ToastState | null>(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(ehCelular);
+  const [deitado, setDeitado] = useState(() => ehCelular() && window.innerWidth > window.innerHeight);
   const [remoteChannels, setRemoteChannels] = useState<Channel[] | null>(() => cachedChannels());
 
   /*
@@ -180,9 +191,17 @@ function TVPage() {
   }, [channels, remoteChannels]);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => {
+      const celular = ehCelular();
+      setIsMobile(celular);
+      setDeitado(celular && window.innerWidth > window.innerHeight);
+    };
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
   }, []);
 
   const showToast = useCallback((message: string, type: ToastState['type'] = 'info') => {
@@ -271,7 +290,7 @@ function TVPage() {
   }, []);
 
   return (
-    <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''}`}>
+    <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''} ${deitado ? 'deitado' : ''} ${deitado && (selectedMovie || selectedChannel) ? 'tocando' : ''}`}>
       {/* Header Global */}
       {!isTheaterMode && <AppHeader transparent isAdultUnlocked={isAdultUnlocked} onUnlockAdult={unlockAdult} onLockAdult={lockAdult} />}
 

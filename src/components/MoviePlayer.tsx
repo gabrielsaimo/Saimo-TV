@@ -14,6 +14,7 @@ import castService, { type CastMethod, type CastState } from '../services/castSe
 import * as telemetria from '../services/telemetria';
 import './MoviePlayer.css';
 import './AvisoApp.css';
+import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, sairDaTelaCheia, soltarOrientacao } from '../utils/telaCheia';
 
 interface MoviePlayerProps {
   movie: Movie | null;
@@ -616,11 +617,14 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   // Fullscreen
   useEffect(() => {
     const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      const cheia = !!elementoEmTelaCheia();
+      setIsFullscreen(cheia);
+      // Saiu pelo voltar do sistema ou pelo gesto: solta a trava de paisagem.
+      if (!cheia) soltarOrientacao();
     };
 
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    EVENTOS_TELA_CHEIA.forEach((e) => document.addEventListener(e, handleFullscreenChange));
+    return () => EVENTOS_TELA_CHEIA.forEach((e) => document.removeEventListener(e, handleFullscreenChange));
   }, []);
 
   // Picture-in-Picture
@@ -808,11 +812,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     const container = containerRef.current;
     if (!container) return;
 
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    } else {
-      container.requestFullscreen();
-    }
+    alternarTelaCheia(container, videoRef.current).catch(() => {
+      // Navegador recusou (sem gesto do usuário, por exemplo): fica como está.
+    });
   }, []);
 
   // Picture-in-Picture toggle
@@ -1014,7 +1016,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
           if (showEpisodeMenu) {
             setShowEpisodeMenu(false);
           } else if (isFullscreen) {
-            document.exitFullscreen();
+            void sairDaTelaCheia();
           } else {
             onBack();
           }

@@ -35,6 +35,10 @@ lidos direto do repositório
   Baixar app), vídeo em cima e canais embaixo (sem canal escolhido, só a
   lista, ocupando a tela), e o voltar do aparelho fecha a
   ficha, o ator, o player e o guia em vez de sair da página
+- Celular deitado: com um canal ou filme tocando, o vídeo toma a tela
+  inteira (em pé a lista volta, sem recarregar o vídeo). O botão de tela
+  cheia trava em paisagem no Android e usa o player nativo do vídeo no iPhone
+  (`src/utils/telaCheia.ts`)
 - Atalhos de teclado: aperte **?** para ver todos
 - Prévia de link com imagem ao compartilhar (Open Graph)
 

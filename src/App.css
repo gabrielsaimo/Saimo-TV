@@ -277,3 +277,54 @@
   overflow: hidden;
   padding-top: 0;
 }
+
+/* ========================================
+   CELULAR DEITADO
+   Fora do @media de 768 px: deitado o celular é mais largo que isso. Sem
+   nada tocando, a lista de celular; com um canal ou filme, o vídeo toma a
+   tela inteira, como no app — em pé, a lista volta.
+   ======================================== */
+.tv-page.deitado .desktop-only {
+  display: none !important;
+}
+
+.tv-page.deitado .mobile-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.tv-page.deitado .mobile-canais {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.tv-page.deitado.tocando .mobile-player {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  background: #000;
+}
+
+.tv-page.deitado.tocando .mobile-player > * {
+  height: 100%;
+}
+
+.tv-page.deitado.tocando .mobile-canais,
+.tv-page.deitado.tocando .app-header {
+  display: none;
+}
+
+body:has(.tv-page.deitado.tocando) .navegacao-mobile {
+  display: none;
+}

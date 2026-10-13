@@ -12,6 +12,7 @@ import { playDash, type DashHandle } from '../services/dashPlayer';
 import * as telemetria from '../services/telemetria';
 import './VideoPlayer.css';
 import './AvisoApp.css';
+import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, sairDaTelaCheia, soltarOrientacao } from '../utils/telaCheia';
 
 interface VideoPlayerProps {
   channel: Channel | null;
@@ -567,11 +568,14 @@ export const VideoPlayer = memo(function VideoPlayer({
   // Fullscreen change listener
   useEffect(() => {
     const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      const cheia = !!elementoEmTelaCheia();
+      setIsFullscreen(cheia);
+      // Saiu pelo voltar do sistema ou pelo gesto: solta a trava de paisagem.
+      if (!cheia) soltarOrientacao();
     };
 
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    EVENTOS_TELA_CHEIA.forEach((e) => document.addEventListener(e, handleFullscreenChange));
+    return () => EVENTOS_TELA_CHEIA.forEach((e) => document.removeEventListener(e, handleFullscreenChange));
   }, []);
 
   // PiP change listener
@@ -668,11 +672,7 @@ export const VideoPlayer = memo(function VideoPlayer({
     if (!container) return;
 
     try {
-      if (!document.fullscreenElement) {
-        await container.requestFullscreen();
-      } else {
-        await document.exitFullscreen();
-      }
+      await alternarTelaCheia(container, videoRef.current);
     } catch (err) {
       console.error('Fullscreen error:', err);
     }
@@ -810,9 +810,7 @@ export const VideoPlayer = memo(function VideoPlayer({
           setVolume((v) => Math.max(0, v - 0.1));
           break;
         case 'Escape':
-          if (document.fullscreenElement) {
-            document.exitFullscreen();
-          }
+          if (elementoEmTelaCheia()) void sairDaTelaCheia();
           break;
       }
     };
