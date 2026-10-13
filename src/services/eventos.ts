@@ -45,7 +45,7 @@ const HORA = 3_600_000;
 
 interface Placar {
     casa: string; fora: string; casaLogo: string; foraLogo: string; ligaLogo: string;
-    inicio: number; estado: string; placar: string; tempo: string;
+    inicio: number; estado: string; golsCasa: string; golsFora: string; tempo: string;
 }
 
 /** O que a agenda da embedtv traz de cada jogo (só o que é lido aqui). */
@@ -156,7 +156,7 @@ function lerEspn(bruto: unknown): Placar[] {
             casa: casa.team?.name ?? '', fora: fora.team?.name ?? '',
             casaLogo: casa.team?.logo ?? '', foraLogo: fora.team?.logo ?? '',
             ligaLogo, inicio: new Date(ev.date ?? '').getTime() || 0, estado,
-            placar: estado === 'pre' ? '' : `${casa.score ?? ''} x ${fora.score ?? ''}`,
+            golsCasa: casa.score ?? '', golsFora: fora.score ?? '',
             tempo: estado === 'in' ? status?.shortDetail ?? '' : '',
         });
     }
@@ -193,12 +193,20 @@ export async function buscarJogos(canais: Channel[]): Promise<Jogo[] | null> {
             ((mesmoTime(e.casa, jogo.casa) && mesmoTime(e.fora, jogo.fora)) ||
                 (mesmoTime(e.casa, jogo.fora) && mesmoTime(e.fora, jogo.casa))));
         if (!par) return jogo;
+        // A ESPN pode listar os times na ordem inversa da agenda: aí o escudo
+        // e os gols dela vão para o outro lado, senão o time mostrado ganha o
+        // escudo do adversário e o placar sai invertido.
+        const invertido = !(mesmoTime(par.casa, jogo.casa) && mesmoTime(par.fora, jogo.fora));
+        const [logoCasa, logoFora] = invertido ? [par.foraLogo, par.casaLogo] : [par.casaLogo, par.foraLogo];
+        const [golsCasa, golsFora] = invertido ? [par.golsFora, par.golsCasa] : [par.golsCasa, par.golsFora];
         return {
             ...jogo,
-            casaLogo: par.casaLogo || jogo.casaLogo,
-            foraLogo: par.foraLogo || jogo.foraLogo,
+            casaLogo: logoCasa || jogo.casaLogo,
+            foraLogo: logoFora || jogo.foraLogo,
             ligaLogo: jogo.ligaLogo || par.ligaLogo,
-            estado: par.estado, placar: par.placar, tempo: par.tempo,
+            estado: par.estado,
+            placar: par.estado === 'pre' ? '' : `${golsCasa} x ${golsFora}`,
+            tempo: par.tempo,
         };
     });
 }
