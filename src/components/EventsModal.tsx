@@ -1,71 +1,118 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './EventsModal.css';
-
-interface EventData {
-  id: number;
-  slug: string;
-  title: string;
-  league: {
-    name: string;
-    image: string;
-  };
-  teams: {
-    home: { name: string; image: string };
-    away: { name: string; image: string };
-  };
-  time_start: string;
-  time_end: string;
-  players: string[];
-}
+import { cachedChannels, fetchChannels } from '../services/catalogService';
+import { getAllChannels } from '../data/channels';
+import { acabou, aoVivo, buscarJogos, type Jogo } from '../services/eventos';
+import type { Channel } from '../types/channel';
 
 interface EventsModalProps {
   onClose: () => void;
   onWatch: (channelId: string) => void;
 }
 
+const HORA = 3_600_000;
+/** O placar anda: com o painel aberto e a aba à vista, busca de novo a cada minuto. */
+const INTERVALO = 60_000;
+const GRUPOS = ['Ao vivo agora', 'Começa em breve', 'Hoje mais tarde', 'Amanhã', 'Próximos dias'];
 
-/*
- * Escudos e logos da agenda vêm do CDN do 365scores pedidos em 24 ou 34 px
- * (`w_24,h_24`, 48 px com `dpr_2`) e em qualidade econômica: borrados. O CDN
- * monta a imagem pelo endereço, então pedir 256 px e qualidade máxima traz o
- * original (350 a 415 px); `c_limit` nunca amplia além dele.
- */
-function emAltaResolucao(url: string): string {
-  const marca = 'imagecache.365scores.com/image/upload/';
-  const pos = url.indexOf(marca);
-  if (pos < 0) return url;
-  const inicio = pos + marca.length;
-  const barra = url.indexOf('/', inicio);
-  const fim = barra < 0 ? url.length : barra;
-  const ajustes = url.slice(inicio, fim).split(',').map((p) => {
-    if (p.startsWith('w_')) return 'w_256';
-    if (p.startsWith('h_')) return 'h_256';
-    return p === 'q_auto:eco' ? 'q_auto:best' : p;
-  }).join(',');
-  return url.slice(0, inicio) + ajustes + url.slice(fim);
+function diaDe(ms: number): number {
+  const d = new Date(ms);
+  return Math.round(new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime() / 86_400_000);
 }
 
-function EventImage({ src, alt, fallback }: { src: string, alt: string, fallback: string }) {
-  const [currentSrc, setCurrentSrc] = useState(() => emAltaResolucao(src));
+const hora = (ms: number) => new Date(ms).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+/** "21:30", "amanhã 16:00" ou "sáb 16:00". */
+function quando(inicio: number, agora: number): string {
+  const d = diaDe(inicio) - diaDe(agora);
+  if (d <= 0) return hora(inicio);
+  if (d === 1) return `amanhã ${hora(inicio)}`;
+  const semana = new Date(inicio).toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '');
+  return `${semana} ${hora(inicio)}`;
+}
+
+function grupoDe(j: Jogo, agora: number): number {
+  if (aoVivo(j, agora)) return 0;
+  if (j.inicio - agora <= 2 * HORA) return 1;
+  const d = diaDe(j.inicio) - diaDe(agora);
+  if (d <= 0) return 2;
+  return d === 1 ? 3 : 4;
+}
+
+/** A lista de canais que o site já tem; sem ela, a publicada; sem rede, a embutida. */
+async function carregarCanais(): Promise<Channel[]> {
+  const canais = cachedChannels() ?? await fetchChannels() ?? getAllChannels(false);
+  // Canal adulto não entra na agenda.
+  return canais.filter((c) => c.category !== 'Adulto' && c.category !== 'ADULTOS');
+}
+
+function Escudo({ src, nome }: { src: string; nome: string }) {
+  const [falhou, setFalhou] = useState(false);
+  if (!src || falhou) {
+    return <div className="team-sem-escudo" aria-hidden="true">{nome.slice(0, 1)}</div>;
+  }
+  return <img src={src} alt={nome} referrerPolicy="no-referrer" onError={() => setFalhou(true)} />;
+}
+
+function CartaoJogo({ jogo, agora, onAbrir }: { jogo: Jogo; agora: number; onAbrir: (j: Jogo) => void }) {
+  const vivo = aoVivo(jogo, agora);
   return (
-    <img 
-      src={currentSrc} 
-      alt={alt} 
-      referrerPolicy="no-referrer" 
-      onError={() => {
-        if (currentSrc !== fallback) setCurrentSrc(fallback);
-      }} 
-    />
+    <button
+      type="button"
+      className={`event-card ${vivo ? 'is-live' : ''}`}
+      onClick={() => onAbrir(jogo)}
+      aria-label={`${jogo.casa} x ${jogo.fora}, no canal ${jogo.canal.name}`}
+    >
+      <div className="event-card-header">
+        <div className="event-league">
+          {jogo.ligaLogo && <img src={jogo.ligaLogo} alt="" referrerPolicy="no-referrer" />}
+          <span>{jogo.liga}</span>
+        </div>
+        {vivo ? (
+          <div className="event-badge live">
+            <span className="pulse" />AO VIVO{jogo.tempo ? ` ${jogo.tempo}` : ''}
+          </div>
+        ) : (
+          <div className="event-badge upnext">{quando(jogo.inicio, agora)}</div>
+        )}
+      </div>
+
+      <div className="event-teams">
+        <div className="team home">
+          <Escudo src={jogo.casaLogo} nome={jogo.casa} />
+          <span>{jogo.casa}</span>
+        </div>
+        {jogo.placar
+          ? <div className={`team-placar ${vivo ? 'vivo' : ''}`}>{jogo.placar}</div>
+          : <div className="team-vs">X</div>}
+        <div className="team away">
+          <Escudo src={jogo.foraLogo} nome={jogo.fora} />
+          <span>{jogo.fora}</span>
+        </div>
+      </div>
+
+      <div className="event-canal">
+        {jogo.canal.logo
+          ? <img src={jogo.canal.logo} alt="" referrerPolicy="no-referrer" />
+          : <span className="event-canal-sem-logo" aria-hidden="true" />}
+        <span className="event-canal-nome">{jogo.canal.name}</span>
+        <span className="btn-watch">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+          Assistir
+        </span>
+      </div>
+    </button>
   );
 }
 
 export function EventsModal({ onClose, onWatch }: EventsModalProps) {
-  const [events, setEvents] = useState<EventData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [jogos, setJogos] = useState<Jogo[] | null>(null);
+  const [erro, setErro] = useState(false);
+  const [agora, setAgora] = useState(() => Date.now());
+  const canaisRef = useRef<Channel[] | null>(null);
+  const buscando = useRef(false);
 
   useEffect(() => {
-    // Esc event listener to close modal
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
@@ -73,125 +120,91 @@ export function EventsModal({ onClose, onWatch }: EventsModalProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  useEffect(() => {
-    // Usando a função proxy para resolver CORS
-    fetch('/api/events')
-      .then(r => r.json())
-      .then(data => {
-        if (data.error) throw new Error(data.error);
-        const now = new Date().getTime();
-        const validEvents = data.filter((event: EventData) => {
-          let fimMs = 0;
-          let inicioMs = 0;
-          if (event.time_end) fimMs = new Date(event.time_end).getTime();
-          if (event.time_start) inicioMs = new Date(event.time_start).getTime();
-          
-          if (!fimMs && inicioMs) {
-              fimMs = inicioMs + (2 * 60 * 60 * 1000);
-          }
-          return isNaN(fimMs) || fimMs > now;
-        });
-        setEvents(validEvents);
-        setLoading(false);
-      })
-      .catch(err => {
-        setError(err.message);
-        setLoading(false);
-      });
+  const carregar = useCallback(async () => {
+    if (buscando.current) return;
+    buscando.current = true;
+    try {
+      canaisRef.current ??= await carregarCanais();
+      const lidos = await buscarJogos(canaisRef.current);
+      setAgora(Date.now());
+      if (lidos) {
+        setJogos(lidos);
+        setErro(false);
+      } else {
+        setErro(true);
+      }
+    } finally {
+      buscando.current = false;
+    }
   }, []);
 
-  const handleWatchClick = (players: string[]) => {
-    if (!players || players.length === 0) return;
-    const url = players[0];
-    const slug = url.split('/').pop();
-    if (slug) {
-      onWatch(slug);
-      onClose(); // Fechar o modal após escolher
-    }
-  };
+  useEffect(() => {
+    void carregar();
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') void carregar();
+    }, INTERVALO);
+    const aoVoltar = () => {
+      if (document.visibilityState === 'visible') void carregar();
+    };
+    document.addEventListener('visibilitychange', aoVoltar);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', aoVoltar);
+    };
+  }, [carregar]);
 
-  const isLive = (start: string, end: string) => {
-    const now = new Date().getTime();
-    const startTime = new Date(start).getTime();
-    const endTime = new Date(end).getTime();
-    return now >= startTime && now <= endTime;
-  };
+  const { grupos, total, vivos } = useMemo(() => {
+    const restantes = (jogos ?? []).filter((j) => !acabou(j, agora)).sort((a, b) => a.inicio - b.inicio);
+    const porGrupo: Jogo[][] = GRUPOS.map(() => []);
+    for (const j of restantes) porGrupo[grupoDe(j, agora)].push(j);
+    return { grupos: porGrupo, total: restantes.length, vivos: porGrupo[0].length };
+  }, [jogos, agora]);
 
-  const getStatus = (start: string, end: string) => {
-    const now = new Date().getTime();
-    const startTime = new Date(start).getTime();
-    
-    if (isLive(start, end)) return <div className="event-badge live"><span className="pulse"></span>AO VIVO</div>;
-    
-    const dateOpts: Intl.DateTimeFormatOptions = { weekday: 'short', hour: '2-digit', minute: '2-digit' };
-    if (startTime > now) {
-      return <div className="event-badge upnext">{new Date(start).toLocaleDateString('pt-BR', dateOpts)}</div>;
-    }
-    return <div className="event-badge ended">Encerrado</div>;
-  };
+  const abrir = useCallback((j: Jogo) => {
+    onWatch(j.canal.id);
+    onClose();
+  }, [onWatch, onClose]);
+
+  const carregando = jogos === null && !erro;
 
   return (
     <div className="events-modal-overlay" onClick={onClose}>
       <div className="events-modal-container" onClick={(e) => e.stopPropagation()}>
         <button className="events-close-btn" onClick={onClose} aria-label="Fechar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
         </button>
 
         <div className="events-header">
-          <h1>Eventos Esportivos</h1>
-          <p>Acompanhe os melhores jogos e campeonatos ao vivo na Saimo TV.</p>
+          <h1>Eventos</h1>
+          <p>
+            {jogos === null
+              ? 'Os jogos que passam nos canais da lista, com placar ao vivo.'
+              : `${total} ${total === 1 ? 'jogo' : 'jogos'} nos canais da lista · ${vivos} ao vivo`}
+          </p>
         </div>
 
         <div className="events-content">
-          {loading && <div className="events-loading">Carregando eventos incríveis...</div>}
-          {error && <div className="events-error">Erro ao carregar eventos: {error}</div>}
-          
-          {!loading && !error && events.length === 0 && (
-            <div className="events-empty">Nenhum evento rolando hoje. Tente mais tarde!</div>
+          {carregando && <div className="events-loading">Carregando a agenda…</div>}
+          {erro && jogos === null && (
+            <div className="events-error">Não deu para carregar a agenda agora. Tentando de novo em um minuto.</div>
+          )}
+          {jogos !== null && total === 0 && (
+            <div className="events-empty">Nenhum jogo nos canais da lista agora. A agenda se atualiza sozinha.</div>
           )}
 
-          <div className="events-grid">
-            {events.map(ev => {
-              const live = isLive(ev.time_start, ev.time_end);
-              return (
-                <div key={ev.id} className={`event-card ${live ? 'is-live' : ''}`}>
-                  <div className="event-card-header">
-                    <div className="event-league">
-                      <EventImage src={ev.league.image} alt={ev.league.name} fallback="https://i.imgur.com/8Qj8X9q.png" />
-                      <span>{ev.league.name}</span>
-                    </div>
-                    {getStatus(ev.time_start, ev.time_end)}
-                  </div>
-
-                  <div className="event-teams">
-                    <div className="team home">
-                      <EventImage src={ev.teams.home.image} alt={ev.teams.home.name} fallback={`https://ui-avatars.com/api/?name=${encodeURIComponent(ev.teams.home.name)}&background=random`} />
-                      <span>{ev.teams.home.name}</span>
-                    </div>
-                    <div className="team-vs">X</div>
-                    <div className="team away">
-                      <EventImage src={ev.teams.away.image} alt={ev.teams.away.name} fallback={`https://ui-avatars.com/api/?name=${encodeURIComponent(ev.teams.away.name)}&background=random`} />
-                      <span>{ev.teams.away.name}</span>
-                    </div>
-                  </div>
-
-                  <div className="event-footer">
-                    <h3 className="event-title">{ev.title}</h3>
-                    <button 
-                      className={`btn-watch ${!live ? 'disabled' : ''}`}
-                      onClick={() => handleWatchClick(ev.players)}
-                      title={live ? "Assistir agora" : "Canal estará disponível na hora do jogo"}
-                    >
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                      Assistir
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {grupos.map((lista, i) => lista.length > 0 && (
+            <section key={GRUPOS[i]} className="events-grupo">
+              <h2 className="events-grupo-titulo">
+                {i === 0 && <span className="pulse" />}
+                {GRUPOS[i]}
+              </h2>
+              <div className="events-grid">
+                {lista.map((j) => (
+                  <CartaoJogo key={`${j.casa}-${j.fora}-${j.inicio}`} jogo={j} agora={agora} onAbrir={abrir} />
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
       </div>
     </div>

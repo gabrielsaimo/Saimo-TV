@@ -39,6 +39,12 @@ lidos direto do repositório
   inteira (em pé a lista volta, sem recarregar o vídeo). O botão de tela
   cheia trava em paisagem no Android e usa o player nativo do vídeo no iPhone
   (`src/utils/telaCheia.ts`)
+- Eventos (`src/services/eventos.ts`), como no TV Box: a agenda da embedtv
+  (pela função `functions/api/events.ts`) com os placares da ESPN, só jogos
+  que passam em algum canal da lista, em grupos (ao vivo agora, começa em
+  breve, hoje, amanhã, próximos dias), placar e tempo de jogo atualizados a
+  cada minuto com o painel aberto, escudos em alta resolução e o canal com
+  logo; tocar abre o canal. No celular fica na barra de baixo
 - Atalhos de teclado: aperte **?** para ver todos
 - Prévia de link com imagem ao compartilhar (Open Graph)
 

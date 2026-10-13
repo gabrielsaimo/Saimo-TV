@@ -95,6 +95,12 @@
 }
 
 .event-card {
+  appearance: none;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
   background: var(--surface);
   border-radius: 20px;
   padding: 24px;
@@ -268,6 +274,90 @@
   cursor: not-allowed;
 }
 
+/* Grupos por horário, como no TV Box */
+.events-grupo + .events-grupo {
+  margin-top: 36px;
+}
+
+.events-grupo-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: var(--on-ground);
+}
+
+.team-placar {
+  font-size: 1.9rem;
+  font-weight: 900;
+  padding: 0 12px;
+  white-space: nowrap;
+  color: var(--on-surface);
+}
+
+.team-placar.vivo {
+  color: #fff;
+}
+
+.team-sem-escudo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--on-surface-variant);
+}
+
+/* Em que canal passa, com o logo, e o Assistir */
+.event-canal {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.event-canal img,
+.event-canal-sem-logo {
+  width: 44px;
+  height: 28px;
+  object-fit: contain;
+  flex: none;
+}
+
+.event-canal-nome {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.event-canal .btn-watch {
+  width: auto;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  border-radius: 999px;
+}
+
+.event-card:hover .btn-watch {
+  filter: brightness(1.1);
+}
+
+.event-card:focus-visible {
+  outline: 2px solid #a78bfa;
+  outline-offset: 2px;
+}
+
 @media (max-width: 768px) {
   .events-modal-overlay {
     padding: 0;
@@ -291,8 +381,12 @@
   .event-card {
     padding: 20px;
   }
-  .team img {
+  .team img,
+  .team-sem-escudo {
     width: 48px;
     height: 48px;
+  }
+  .team-placar {
+    font-size: 1.5rem;
   }
 }

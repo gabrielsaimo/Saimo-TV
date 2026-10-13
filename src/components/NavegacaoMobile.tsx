@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { EventsModal } from './EventsModal';
 import './NavegacaoMobile.css';
 
 /*
@@ -12,6 +14,7 @@ import './NavegacaoMobile.css';
  */
 
 interface Item {
+  /** Seção da barra; "#eventos" não é rota, abre o painel de eventos. */
   caminho: string;
   rotulo: string;
   icone: React.ReactNode;
@@ -31,6 +34,13 @@ const ITENS: Item[] = [
     icone: <svg {...ICONE}><rect x="2" y="7" width="20" height="14" rx="2" /><path d="m17 2-5 5-5-5" /></svg>,
   },
   {
+    // No celular o menu do topo (onde ficam os Eventos no computador) some;
+    // sem isto não havia como abrir a agenda.
+    caminho: '#eventos',
+    rotulo: 'Eventos',
+    icone: <svg {...ICONE}><rect x="3" y="4" width="18" height="18" rx="2" /><circle cx="12" cy="13" r="5" /><path d="M12 8v5" /></svg>,
+  },
+  {
     caminho: '/movies',
     rotulo: 'Filmes e séries',
     icone: <svg {...ICONE}><rect x="2" y="3" width="20" height="18" rx="2" /><path d="M7 3v18M17 3v18M2 8h5M2 16h5M17 8h5M17 16h5" /></svg>,
@@ -45,11 +55,15 @@ const ITENS: Item[] = [
 export function NavegacaoMobile() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [eventos, setEventos] = useState(false);
 
   return (
+    <>
     <nav className="navegacao-mobile" aria-label="Seções">
       {ITENS.map((item) => {
-        const ativa = item.caminho === '/' ? pathname === '/' : pathname.startsWith(item.caminho);
+        const ativa = item.caminho === '#eventos'
+          ? eventos
+          : item.caminho === '/' ? pathname === '/' : pathname.startsWith(item.caminho);
         return (
           <button
             key={item.caminho}
@@ -57,6 +71,10 @@ export function NavegacaoMobile() {
             className={`navegacao-mobile-item${ativa ? ' ativa' : ''}`}
             aria-current={ativa ? 'page' : undefined}
             onClick={() => {
+              if (item.caminho === '#eventos') {
+                setEventos(true);
+                return;
+              }
               if (ativa) {
                 // Tocar na seção em que já se está volta ao topo dela.
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -71,5 +89,9 @@ export function NavegacaoMobile() {
         );
       })}
     </nav>
+    {eventos && (
+      <EventsModal onClose={() => setEventos(false)} onWatch={(id) => navigate(`/tv/${id}`)} />
+    )}
+    </>
   );
 }
