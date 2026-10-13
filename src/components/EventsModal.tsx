@@ -24,8 +24,29 @@ interface EventsModalProps {
 }
 
 
+/*
+ * Escudos e logos da agenda vêm do CDN do 365scores pedidos em 24 ou 34 px
+ * (`w_24,h_24`, 48 px com `dpr_2`) e em qualidade econômica: borrados. O CDN
+ * monta a imagem pelo endereço, então pedir 256 px e qualidade máxima traz o
+ * original (350 a 415 px); `c_limit` nunca amplia além dele.
+ */
+function emAltaResolucao(url: string): string {
+  const marca = 'imagecache.365scores.com/image/upload/';
+  const pos = url.indexOf(marca);
+  if (pos < 0) return url;
+  const inicio = pos + marca.length;
+  const barra = url.indexOf('/', inicio);
+  const fim = barra < 0 ? url.length : barra;
+  const ajustes = url.slice(inicio, fim).split(',').map((p) => {
+    if (p.startsWith('w_')) return 'w_256';
+    if (p.startsWith('h_')) return 'h_256';
+    return p === 'q_auto:eco' ? 'q_auto:best' : p;
+  }).join(',');
+  return url.slice(0, inicio) + ajustes + url.slice(fim);
+}
+
 function EventImage({ src, alt, fallback }: { src: string, alt: string, fallback: string }) {
-  const [currentSrc, setCurrentSrc] = useState(src);
+  const [currentSrc, setCurrentSrc] = useState(() => emAltaResolucao(src));
   return (
     <img 
       src={currentSrc} 
