@@ -23,7 +23,8 @@ lidos direto do repositório
   do programa (sinopse e botão para assistir); tecla **G** abre e fecha
 - Filmes e séries com ficha, episódios e favoritos
 - Em série, o episódio seguinte (automático, Próximo ou outro da série) prefere a fonte
-  que estava tocando: mesmo servidor, senão a mesma posição, senão a ordem de sempre
+  que estava tocando, sem trocar entre dublado e legendado: mesmo servidor, senão a mesma
+  posição na versão, senão a ordem de sempre
   (`src/utils/fontePreferida.ts`); a ordem HTTPS primeiro não muda
 - Busca na aba Início procura em todo o acervo (filmes, séries, animes e
   doramas), com o nome exato primeiro

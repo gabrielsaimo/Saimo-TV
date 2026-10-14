@@ -26,10 +26,10 @@ interface MoviePlayerProps {
 
 /** Só séries lembram a fonte entre episódios; escolha explícita do modal vale primeiro. */
 const serieDe = (filme?: Movie | null) => (filme?.type === 'series' ? filme.seriesName : undefined);
-const fonteInicial = (lista: readonly { url: string }[], filme?: Movie | null) =>
+const fonteInicial = (lista: readonly { url: string; versao?: string }[], filme?: Movie | null) =>
   filme?.initialSourceUrl
     ? initialSourceIndex(lista, filme.initialSourceUrl)
-    : fontePreferida(serieDe(filme), lista.map(f => f.url));
+    : fontePreferida(serieDe(filme), lista);
 
 export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo, onEpisodeChange }: MoviePlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -413,7 +413,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
         abertura.avisado = true;
         telemetria.tocou('vod', abertura.titulo, abertura.url, 1, performance.now() - abertura.desde);
         // A fonte que de fato abriu vira a preferida do próximo episódio da série.
-        lembrarFonte(serieDe(movie), urlAtiva, fonteIdx);
+        lembrarFonte(serieDe(movie), fontes, fonteIdx);
       }
       setIsLoading(false);
       setIsPlaying(true);
@@ -445,7 +445,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       video.removeEventListener('canplay', handleCanPlay);
       window.removeEventListener('beforeunload', salvarProgresso);
     };
-  }, [resolvendo, movie, soHttp, urlAtiva, fonteIdx, fontes.length, seriesInfo?.seriesName]);
+  }, [resolvendo, movie, soHttp, urlAtiva, fonteIdx, fontes, fontes.length, seriesInfo?.seriesName]);
 
 
   const episodeIndex = useMemo(() => {
