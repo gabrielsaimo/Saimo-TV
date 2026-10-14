@@ -19,6 +19,7 @@ interface Aba {
   /** Caminhos que também deixam esta aba acesa. */
   prefixos?: string[];
   icone: React.ReactNode;
+  destacada?: boolean;
 }
 
 const tr = { fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
@@ -31,9 +32,21 @@ const ABAS: Aba[] = [
   { rota: '/movies', rotulo: 'On Demand', icone: <svg viewBox="0 0 24 24" {...tr}><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4" /></svg> },
   { rota: '/favoritos', rotulo: 'Favoritos', icone: <svg viewBox="0 0 24 24" {...tr}><path d="M12 21s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.1-8 11-8 11z" /></svg> },
   { rota: '/radios', rotulo: 'Rádios', icone: <svg viewBox="0 0 24 24" {...tr}><rect x="3" y="8" width="18" height="12" rx="2" /><circle cx="15" cy="14" r="3" /><path d="M7 12h3M7 16h3M5 8l11-5" /></svg> },
+  {
+    rota: '/app',
+    rotulo: 'Baixar app',
+    destacada: true,
+    icone: (
+      <svg viewBox="0 0 24 24" {...tr}>
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+      </svg>
+    ),
+  },
 ];
 
-/** Alt+1…Alt+8: as sete abas e depois os Ajustes. */
+/** Alt+1…Alt+9: as oito abas e depois os Ajustes. */
 const ATALHOS = [...ABAS.map((a) => a.rota), '/ajustes'];
 
 const relogio = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
@@ -150,7 +163,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp }: Barra
       if (!e.altKey || e.metaKey || e.ctrlKey) return;
       const alvo = e.target as HTMLElement | null;
       if (alvo && (alvo.tagName === 'INPUT' || alvo.tagName === 'TEXTAREA' || alvo.isContentEditable)) return;
-      const n = /^Digit([1-8])$/.exec(e.code);
+      const n = /^Digit([1-9])$/.exec(e.code);
       if (!n) return;
       e.preventDefault();
       navigate(ATALHOS[Number(n[1]) - 1]);
@@ -216,7 +229,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp }: Barra
           {ABAS.map((a, i) => (
             <button
               key={a.rota}
-              className={ativa(a, pathname) ? 'on' : ''}
+              className={`${ativa(a, pathname) ? 'on' : ''} ${a.destacada ? 'destacada' : ''}`}
               data-ativa={ativa(a, pathname) ? '1' : '0'}
               onClick={(e) => {
                 navigate(a.rota);
@@ -224,7 +237,9 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp }: Barra
               }}
               title={`${a.rotulo} (Alt+${i + 1})`}
             >
-              {a.icone}<span>{a.rotulo}</span>
+              {a.icone}
+              <span>{a.rotulo}</span>
+              {a.destacada && <span className="barra-aba-dot" aria-hidden="true" />}
             </button>
           ))}
         </nav>

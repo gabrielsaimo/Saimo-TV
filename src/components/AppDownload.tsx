@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { descreverAparelho } from '../services/telemetria';
+import { BarraTopo } from './BarraTopo';
 import './AppDownload.css';
 
 /**
@@ -206,6 +207,7 @@ export function AppDownload() {
 
   return (
     <div className="app-download-page">
+      <BarraTopo />
       <div className="download-bg" aria-hidden="true">
         <div className="gradient-orb orb-1" />
         <div className="gradient-orb orb-2" />

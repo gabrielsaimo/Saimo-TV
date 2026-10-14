@@ -4,7 +4,7 @@
   top: 12px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(1180px, calc(100vw - 32px));
+  width: min(1240px, calc(100vw - 32px));
   height: 52px;
   z-index: 900;
   display: flex;
@@ -73,6 +73,37 @@
 .barra-abas button svg { width: 16px; height: 16px; flex-shrink: 0; }
 .barra-abas button:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
 .barra-abas button.on { color: #fff; background: transparent; }
+
+/* Destaque para a aba Baixar app (mesma identidade elegante com toque ciano) */
+.barra-abas button.destacada {
+  color: #4ff3e0;
+}
+.barra-abas button.destacada svg {
+  color: #4ff3e0;
+  filter: drop-shadow(0 0 5px rgba(79, 243, 224, 0.45));
+}
+.barra-abas button.destacada:hover {
+  color: #fff;
+  background: rgba(79, 243, 224, 0.1);
+}
+.barra-abas button.destacada.on {
+  color: #fff;
+}
+.barra-aba-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #4ff3e0;
+  box-shadow: 0 0 6px #4ff3e0;
+  margin-left: 1px;
+  flex-shrink: 0;
+  animation: barraDotPulse 2.4s ease-in-out infinite;
+}
+@keyframes barraDotPulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.35); opacity: 1; }
+}
+
 .barra-capsula {
   position: absolute;
   top: 3px;
@@ -103,8 +134,9 @@
 }
 
 /* Telas largas e estreitas: abas só com ícone quando falta lugar. */
-@media (max-width: 1020px) {
+@media (max-width: 1060px) {
   .barra-abas button span { display: none; }
+  .barra-abas button .barra-aba-dot { display: block; }
   .barra-abas button { padding: 0 12px; }
 }
 
