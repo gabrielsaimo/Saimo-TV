@@ -40,7 +40,8 @@ lidos direto do repositório
   cheia trava em paisagem no Android e usa o player nativo do vídeo no iPhone
   (`src/utils/telaCheia.ts`)
 - Eventos (`src/services/eventos.ts`), como no TV Box: a agenda da embedtv
-  (pela função `functions/api/events.ts`) com os placares da ESPN, só jogos
+  (pela função `functions/api/events.ts`) e a do monitor (`/v1/eventos`, canais
+  de streaming como CazéTV, Disney+, Prime e Paramount+, sem repetir) com os placares da ESPN, só jogos
   que passam em algum canal da lista, em grupos (ao vivo agora, começa em
   breve, hoje, amanhã, próximos dias), placar e tempo de jogo atualizados a
   cada minuto com o painel aberto, escudos em alta resolução e o canal com
