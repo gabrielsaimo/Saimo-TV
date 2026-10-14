@@ -9,6 +9,7 @@ import type { Movie, SeriesEpisodeInfo } from '../types/movie';
 import { getProxiedUrl, needsProxy } from '../utils/proxyUrl';
 import { isHls } from '../utils/streamUrl';
 import { httpsFirst, initialSourceIndex } from '../utils/sourceOrder';
+import { fontePreferida, lembrarFonte } from '../utils/fontePreferida';
 import { resolveVodSources } from '../utils/resolveVodSources';
 import castService, { type CastMethod, type CastState } from '../services/castService';
 import * as telemetria from '../services/telemetria';
@@ -22,6 +23,13 @@ interface MoviePlayerProps {
   seriesInfo?: SeriesEpisodeInfo | null;
   onEpisodeChange?: (episode: Movie) => void;
 }
+
+/** Só séries lembram a fonte entre episódios; escolha explícita do modal vale primeiro. */
+const serieDe = (filme?: Movie | null) => (filme?.type === 'series' ? filme.seriesName : undefined);
+const fonteInicial = (lista: readonly { url: string }[], filme?: Movie | null) =>
+  filme?.initialSourceUrl
+    ? initialSourceIndex(lista, filme.initialSourceUrl)
+    : fontePreferida(serieDe(filme), lista.map(f => f.url));
 
 export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo, onEpisodeChange }: MoviePlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -55,9 +63,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
    * que é justamente o que não dá para fazer quando a tela mostra um aviso no
    * lugar do vídeo.
    */
-  const [fonteIdx, setFonteIdx] = useState(() => initialSourceIndex(
+  const [fonteIdx, setFonteIdx] = useState(() => fonteInicial(
     httpsFirst(movie?.sources?.length ? movie.sources : movie ? [{ url: movie.url }] : []),
-    movie?.initialSourceUrl,
+    movie,
   ));
   const [showControls, setShowControls] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(1);
@@ -140,7 +148,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     setError(null);
     resolveVodSources(fontesOriginais, controller.signal).then(sources => {
       if (!active) return;
-      setFonteIdx(initialSourceIndex(sources, movie.initialSourceUrl));
+      setFonteIdx(fonteInicial(sources, movie));
       setResolvidas({ movie, sources });
     });
     return () => { active = false; clearTimeout(timeout); controller.abort(); };
@@ -153,8 +161,9 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
   // Título novo recomeça pela fonte preferida, não pela que sobrou do anterior.
   useEffect(() => {
-    setFonteIdx(initialSourceIndex(fontes, movie?.initialSourceUrl));
-  }, [movie?.id, movie?.initialSourceUrl, fontes]);
+    // Em série, o episódio novo prefere a fonte que estava tocando (host, depois posição).
+    setFonteIdx(fonteInicial(fontes, movie));
+  }, [movie?.id, movie?.initialSourceUrl, fontes]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const noDesktop = !(globalThis as { __SAIMO_DESKTOP__?: boolean }).__SAIMO_DESKTOP__;
   const soHttp = noDesktop && !!urlAtiva && urlAtiva.startsWith('http://');
@@ -403,6 +412,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       if (!abertura.avisado) {
         abertura.avisado = true;
         telemetria.tocou('vod', abertura.titulo, abertura.url, 1, performance.now() - abertura.desde);
+        // A fonte que de fato abriu vira a preferida do próximo episódio da série.
+        lembrarFonte(serieDe(movie), urlAtiva, fonteIdx);
       }
       setIsLoading(false);
       setIsPlaying(true);
