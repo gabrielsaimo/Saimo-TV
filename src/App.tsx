@@ -78,6 +78,7 @@ interface ToastState {
 function TVPage() {
   const { slug } = useParams<{slug?: string}>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAdultUnlocked } = useAdultMode();
   // O ao vivo toma o som: a rádio para ao abrir esta tela.
   useEffect(() => { pararRadio(); }, []);
@@ -97,9 +98,19 @@ function TVPage() {
   const [isMultiScreen, setIsMultiScreen] = useState(false);
   const [secondChannel, setSecondChannel] = useState<Channel | null>(null);
   const [activeSide, setActiveSide] = useState<'primary' | 'secondary'>('primary');
-  const [isChannelsPanelOpen, setIsChannelsPanelOpen] = useState(false);
+  // Canais já vêm abertos no lado ao entrar no Ao vivo
+  const [isChannelsPanelOpen, setIsChannelsPanelOpen] = useState(() => window.innerWidth > 640 || !ehCelular());
   const [controlsVisible, setControlsVisible] = useState(true);
   const [personalizados, setPersonalizados] = useState<Channel[]>(locaisPersonalizados);
+
+  // Ao navegar para /tv novamente, reabre os canais
+  const [prevPath, setPrevPath] = useState(location.pathname);
+  if (prevPath !== location.pathname) {
+    setPrevPath(location.pathname);
+    if (window.innerWidth > 640 || !ehCelular()) {
+      setIsChannelsPanelOpen(true);
+    }
+  }
 
   useEffect(() => aoMudarPersonalizados(() => setPersonalizados(locaisPersonalizados())), []);
 

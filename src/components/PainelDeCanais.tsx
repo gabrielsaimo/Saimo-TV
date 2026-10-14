@@ -131,23 +131,19 @@ export const PainelDeCanais = memo(function PainelDeCanais({
     return numeros.get(activeChannelId) ?? null;
   }, [activeChannelId, numeros]);
 
-  // Fecha no Esc
+  // Fecha no Esc e foca busca no /
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
         onClose();
+      } else if (e.key === '/' && isOpen && document.activeElement !== buscaRef.current) {
+        e.preventDefault();
+        buscaRef.current?.focus();
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [isOpen, onClose]);
-
-  // Foco no input ao abrir
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => buscaRef.current?.focus(), 120);
-    }
-  }, [isOpen]);
 
   // Scroll até o canal ativo ao abrir
   useEffect(() => {
