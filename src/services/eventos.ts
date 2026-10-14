@@ -81,8 +81,15 @@ interface PlacarEspn {
 
 async function json(url: string): Promise<unknown> {
     try {
-        const r = await fetch(url);
-        return r.ok ? await r.json() : null;
+        // Prazo de 8 s: a embedtv às vezes não responde, e a tela não espera por ela.
+        const controle = new AbortController();
+        const relogio = setTimeout(() => controle.abort(), 8000);
+        try {
+            const r = await fetch(url, { signal: controle.signal });
+            return r.ok ? await r.json() : null;
+        } finally {
+            clearTimeout(relogio);
+        }
     } catch {
         return null;
     }
@@ -192,10 +199,11 @@ export async function buscarJogos(canais: Channel[]): Promise<Jogo[] | null> {
         json(STREAMING),
         ...ESPN.map(l => json(`https://site.api.espn.com/apis/site/v2/sports/${l}/scoreboard`)),
     ]);
-    // A função do site devolve {error} quando a embedtv falha.
-    if (!Array.isArray(agenda)) return null;
+    // A função do site devolve {error} quando a embedtv falha; aí a tela segue só
+    // com os jogos do monitor, e some apenas se as duas caírem.
+    if (!Array.isArray(agenda) && !Array.isArray(streaming)) return null;
     const espn = placares.filter(Boolean).flatMap(lerEspn);
-    const daEmbed = lerAgenda(agenda, canais);
+    const daEmbed = Array.isArray(agenda) ? lerAgenda(agenda, canais) : [];
     // Jogo do monitor que a embedtv já tem (mesmos times, começo a menos de
     // meia hora) não entra de novo.
     const extras = lerAgenda(streaming, canais).filter(x => !daEmbed.some(e =>
