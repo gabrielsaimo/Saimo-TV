@@ -55,11 +55,13 @@ const ativa = (a: Aba, caminho: string) =>
   caminho === a.rota || (a.prefixos?.some((p) => caminho.startsWith(p)) ?? false);
 
 interface BarraTopoProps {
-  /** Se `false`, força a barra a ficar oculta independente do mouse. Se omitido, auto-esconde com base no mouse. */
+  /** Se `false`, força a barra a ficar oculta independente do mouse. Se omitido, auto-esconde apenas se estiver em rota com player. */
   visible?: boolean;
+  /** Se `true`, auto-esconde quando o mouse se afasta. Se `false`, fica fixa na tela. Se omitido, auto-esconde apenas se estiver em rota de player (/tv). */
+  autoHide?: boolean;
 }
 
-export const BarraTopo = memo(function BarraTopo({ visible: visibleProp }: BarraTopoProps = {}) {
+export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHide }: BarraTopoProps = {}) {
   const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
   const navigate = useNavigate();
   const radio = useSyncExternalStore(assinar, atualRadio);
@@ -72,12 +74,20 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp }: Barra
   const trilho = useRef<HTMLElement>(null);
   const [capsula, setCapsula] = useState<{ x: number; w: number } | null>(null);
 
-  // Auto-hide da barra: só aparece com mouse nos primeiros 68px da tela ou sobre a própria barra
-  const [mouseNoTopo, setMouseNoTopo] = useState(false);
+  // O nav bar só auto-esconde quando um player estiver sendo usado (/tv ou autoHide=true).
+  // Fora isso (catálogos, início, busca, eventos, favoritos, rádios, etc.), ele fica fixo e visível na tela.
+  const deveAutoEsconder = autoHide ?? pathname.startsWith('/tv');
+
+  const [mouseNoTopo, setMouseNoTopo] = useState(() => !deveAutoEsconder);
   const hoverRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (!deveAutoEsconder) {
+      setMouseNoTopo(true);
+      return;
+    }
+
     const limparTimer = () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -118,18 +128,22 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp }: Barra
       document.removeEventListener('mouseleave', onMouseLeaveDoc);
       limparTimer();
     };
-  }, []);
+  }, [deveAutoEsconder]);
 
-  // Quando o usuário clica em uma aba e a rota muda, garante que a barra suma após o clique
+  // Quando o usuário clica em uma aba e a rota muda, se for tela com player, esconde após um breve delay
   useEffect(() => {
     hoverRef.current = false;
-    const t = window.setTimeout(() => {
-      setMouseNoTopo(false);
-    }, 1200);
-    return () => window.clearTimeout(t);
-  }, [pathname]);
+    if (deveAutoEsconder) {
+      const t = window.setTimeout(() => {
+        setMouseNoTopo(false);
+      }, 1200);
+      return () => window.clearTimeout(t);
+    } else {
+      setMouseNoTopo(true);
+    }
+  }, [pathname, deveAutoEsconder]);
 
-  const isVisivel = visibleProp === false ? false : (pedePin || mouseNoTopo);
+  const isVisivel = visibleProp === false ? false : (deveAutoEsconder ? (pedePin || mouseNoTopo) : true);
 
   useEffect(() => {
     if (!isVisivel) {
