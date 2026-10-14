@@ -1,18 +1,25 @@
 /**
- * Catálogo de filmes e séries, lido do mesmo repositório que o aplicativo usa.
+ * Tela On Demand - Paridade 100% com o aplicativo do macOS (SaimoPlayer)
  *
- * A navegação é por letra porque o acervo é publicado por letra: trinta mil
- * títulos não cabem numa página, e pedir a letra inteira custa uns cem
- * quilobytes. A busca é a exceção — o índice de nomes é pequeno o bastante para
- * procurar no acervo todo sem baixá-lo.
+ * Arquitetura em Fileiras (TelaEmFileiras):
+ * - Hero Destaque no topo (DestaqueTopo) com imagem larga ao fundo (FundoDoDestaque)
+ *   que se atualiza com debounce suave ao passar o mouse sobre qualquer cartão.
+ * - Fileira de Categorias com cartões colagem 330px (Filmes, Séries, Animes, Doramas, 18+).
+ * - Fileira Continue assistindo com barra de progresso e retorno imediato.
+ * - Fileiras de Destaques e Novidades (Em alta, Lançamentos, Séries novas, etc.).
+ * - Fileiras de Filmes por Gênero (Ação, Comédia, Terror, Ficção científica, etc.)
+ *   terminando em cartão "Ver todos" que abre a grade daquele gênero.
+ * - Fileira Explorar de A a Z.
+ * - Modo Explorar (Grade A a Z) com filtro de letras, gêneros e busca.
+ * - Modal de Ficha de Filme (FichaTela) e Série (SerieTela) idênticos ao macOS,
+ *   com fotos do elenco (AtorTela), seletores de temporadas em pílulas e
+ *   trilha horizontal de cartões 16:9 de episódios com imagem de cena.
+ * - Suporte total a mouse: rolagem horizontal suave, setas flutuantes de vidro,
+ *   menu de contexto de botão direito para favoritar.
  */
 
-import * as telemetria from '../services/telemetria';
-import { httpsFirst } from '../utils/sourceOrder';
-import { lista as listaAndamento } from '../services/continuar';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { alternar as alternarFavorito, aoMudar as aoMudarFavoritos, contem as ehFavorito } from '../services/vodFavoritos';
 import { createPortal } from 'react-dom';
 import type { Movie, MovieSource, SeriesEpisodeInfo } from '../types/movie';
 import {
@@ -29,7 +36,6 @@ import {
   generos as lerGeneros,
   temGenero,
   filme as buscarFilme,
-  filmes as listarFilmes,
   indice,
   serie as buscarSerie,
   type Achado,
@@ -42,33 +48,34 @@ import {
   type Serie,
   type SerieColecao,
 } from '../services/vodService';
-import { ficha as buscarFicha, fichaVazia, creditosDe, perfil as buscarPerfil, episodiosDaTemporada } from '../services/tmdbService';
-import type { Ficha, Pessoa, Perfil, EpisodioTmdb } from '../services/tmdbService';
-
-/** Um trabalho de um ator que existe no acervo, com a capa que o TMDB mandou. */
-interface Trabalho {
-  item: Item;
-  capa: string | null;
-  papel: string;
-}
+import {
+  ficha as buscarFicha,
+  creditosDe,
+  perfil as buscarPerfil,
+  episodiosDaTemporada,
+  type Ficha,
+  type Pessoa,
+  type Perfil,
+  type EpisodioTmdb,
+} from '../services/tmdbService';
 import { useVoltarFecha } from '../hooks/useVoltarFecha';
+import { useFichaDe } from '../hooks/useFichaDe';
+import { httpsFirst } from '../utils/sourceOrder';
+import { lista as listaAndamento } from '../services/continuar';
+import {
+  alternar as alternarFavorito,
+  aoMudar as aoMudarFavoritos,
+  contem as ehFavorito,
+} from '../services/vodFavoritos';
 import './VodCatalog.css';
 
-type Aba = 'inicio' | 'filmes' | 'series' | 'animes' | 'doramas' | 'extra';
-
-/** Quantos cartões entram por vez ao rolar. */
-const PAGINA = 120;
+export type Secao = 'filmes' | 'series' | 'animes' | 'doramas' | 'extra';
 
 interface VodCatalogProps {
   onSelectMovie: (movie: Movie, seriesInfo?: SeriesEpisodeInfo | null) => void;
   onBack: () => void;
-  /** Mantém o modal montado, mas invisível, enquanto o player está por cima. */
   playerOpen?: boolean;
-  /** Episódio atual para manter o destaque sincronizado com trocas feitas no player. */
   activeMovie?: Movie | null;
-  /// Mesma trava de 18+ dos canais — sem ela a aba nem aparece, e é o que
-  /// faltava aqui: o app já esconde/mostra "extra" junto com o desbloqueio,
-  /// o site nunca recebia esse estado.
   isAdultUnlocked: boolean;
 }
 
@@ -78,8 +85,6 @@ interface Item {
   rotulo: string;
   serie: boolean;
   letra: string;
-  /** O ano da série, que é campo à parte no acervo — e não dá para tirar da
-   *  chave, porque há título com dois-pontos dentro ("#ComVocê: Volume 2"). */
   ano?: string;
   filme?: Filme;
   dados?: Serie;
@@ -93,11 +98,48 @@ interface EpisodioAgrupado {
   versoes: string[];
 }
 
-/**
- * O catálogo pode publicar dublado e legendado em linhas separadas para o
- * mesmo T/E. Na interface isso é um episódio só, com todas as fontes dentro.
- * Assim "próximo episódio" nunca cai noutra versão do mesmo capítulo.
- */
+interface Trabalho {
+  item: Item;
+  capa: string | null;
+  papel: string;
+}
+
+const PAGINA = 120;
+
+const GENEROS_ON_DEMAND = [
+  'Ação',
+  'Comédia',
+  'Terror',
+  'Ficção científica',
+  'Romance',
+  'Suspense',
+  'Animação',
+  'Aventura',
+  'Drama',
+  'Crime',
+  'Fantasia',
+];
+
+const SOBRE_SECAO: Record<Secao, string> = {
+  filmes: 'Lançamentos, clássicos e tudo entre eles, dublados e legendados.',
+  series: 'Temporadas completas, com o próximo episódio emendando sozinho.',
+  animes: 'Os animes do momento e os que marcaram época.',
+  doramas: 'Romance, drama e suspense da Coreia, do Japão e da China.',
+  extra: 'Catálogo adulto reservado e protegido por senha.',
+};
+
+function normalizar(texto: string): string {
+  return texto.normalize('NFD').replace(/\p{Mn}+/gu, '').toLowerCase();
+}
+
+function nomeDaFonte(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return 'Servidor alternativo';
+  }
+}
+
 function agruparEpisodios(lista: Episodio[]): EpisodioAgrupado[] {
   const mapa = new Map<string, EpisodioAgrupado>();
   for (const episodio of lista) {
@@ -115,165 +157,47 @@ function agruparEpisodios(lista: Episodio[]): EpisodioAgrupado[] {
     }
   }
   return [...mapa.values()]
-    .map(episodio => ({ ...episodio, fontes: httpsFirst(episodio.fontes) }))
+    .map((episodio) => ({ ...episodio, fontes: httpsFirst(episodio.fontes) }))
     .sort((a, b) => a.temporada - b.temporada || a.numero - b.numero);
 }
 
-const eColecao = (aba: Aba): aba is 'animes' | 'doramas' =>
-  aba === 'animes' || aba === 'doramas';
-
-function letraDe(texto: string): string {
-  const primeira = normalizar(texto).trim().charAt(0).toUpperCase();
-  return /^[A-Z]$/.test(primeira) ? primeira : '#';
-}
-
-function normalizar(texto: string): string {
-  return texto.normalize('NFD').replace(/\p{Mn}+/gu, '').toLowerCase();
-}
-
-function nomeDaFonte(url: string): string {
-  try { return new URL(url).hostname.replace(/^www\./, ''); }
-  catch { return 'Servidor alternativo'; }
-}
-
-/**
- * A capa de um cartão.
- *
- * O endereço vem da ficha publicada, resolvida pelo id do TMDB — não mais de
- * uma busca por nome feita aqui, que era lenta e trocava filmes de nome igual.
- * Quem não tem ficha fica sem capa, com a marca de "sem imagem" no lugar.
- *
- * A imagem só é pedida quando o cartão chega perto da tela: são trinta mil no
- * acervo e vinte à vista.
- */
-function Poster({ titulo, serie, fichas }: {
-  titulo: string;
-  serie: boolean;
-  fichas: Generos | null;
-}) {
-  const [visivel, setVisivel] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const src = fichas ? capaDaFicha(fichas, titulo, serie) : null;
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisivel(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '300px' },
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div className="vod-poster" ref={ref}>
-      {visivel && src
-        ? <img src={src} alt={titulo} loading="lazy" />
-        : <div className={`vod-poster-vazio${src ? '' : ' sem-ficha'}`} aria-label="Sem imagem" />}
-    </div>
-  );
-}
-
-/**
- * A primeira tela do acervo: fileiras de capa que correm para o lado.
- *
- * Uma grade alfabética serve para achar o que já se sabe que existe; não serve
- * para descobrir. As fileiras mostram o que há, e a busca continua no mesmo
- * lugar, filtrando dentro delas — a fileira que fica sem nada sai da tela, em
- * vez de virar um título com o vazio embaixo.
- *
- * As capas chegam prontas do destaques.txt, então esta tela não pergunta nada
- * ao TMDB: o `src` do pôster já veio no arquivo.
- */
-function Fileiras({
-  filas, termo, aoAbrir,
-}: {
-  filas: FilaDestaque[];
-  termo: string;
-  aoAbrir: (destaque: ItemDestaque) => void;
-}) {
-  const procurado = normalizar(termo.trim());
-  const visiveis = useMemo(() => {
-    if (!procurado) return filas;
-    return filas
-      .map((fila) => ({
-        ...fila,
-        itens: fila.itens.filter((item) => normalizar(item.titulo).includes(procurado)),
-      }))
-      .filter((fila) => fila.itens.length > 0);
-  }, [filas, procurado]);
-
-  if (!filas.length) return <p className="vod-aviso">Carregando…</p>;
-  if (!visiveis.length) return <p className="vod-aviso">Nada por aqui. Tente outra busca.</p>;
-
-  return (
-    <div className="vod-fileiras">
-      {visiveis.map((fila) => (
-        <section className="vod-fileira" key={fila.titulo}>
-          <h3>{fila.titulo}</h3>
-          <div className="vod-fileira-pista">
-            {fila.itens.map((destaque) => (
-              <button
-                key={`${fila.titulo}:${destaque.titulo}`}
-                className="vod-card"
-                onClick={() => aoAbrir(destaque)}
-              >
-                <div className="vod-poster">
-                  {destaque.capa
-                    ? <img src={destaque.capa} alt={destaque.titulo} loading="lazy" />
-                    : <div className="vod-poster-vazio">{destaque.titulo.slice(0, 2).toUpperCase()}</div>}
-                </div>
-                <span className="vod-card-titulo">{destaque.titulo}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-  );
-}
-
-export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen = false, activeMovie = null }: VodCatalogProps) {
-  const [aba, setAba] = useState<Aba>('inicio');
+export function VodCatalog({
+  onSelectMovie,
+  onBack,
+  playerOpen = false,
+  activeMovie = null,
+  isAdultUnlocked,
+}: VodCatalogProps) {
   const local = useLocation();
   const navegar = useNavigate();
-  const [, marcaFav] = useState(0);
-  useEffect(() => aoMudarFavoritos(() => marcaFav((n) => n + 1)), []);
-  const [filas, setFilas] = useState<FilaDestaque[]>([]);
-  const [generos, setGeneros] = useState<Generos | null>(null);
-  // Refeita ao voltar do player: a fileira do que a pessoa estava vendo.
-  const filasComContinuar = useMemo<FilaDestaque[]>(() => {
-    const andamento = listaAndamento();
-    if (!andamento.length || playerOpen) return filas;
-    return [{
-      titulo: 'Continue assistindo',
-      itens: andamento.map((a) => ({
-        ...a.origem,
-        capa: a.origem.capa || (generos ? capaDaFicha(generos, a.origem.titulo, a.origem.tipo !== 'f') ?? '' : ''),
-      })),
-    }, ...filas];
-  }, [filas, generos, playerOpen]);
-  const [genero, setGenero] = useState('');
 
-  // Se travar de novo com a aba extra aberta, ela não pode continuar visível.
-  // Ajuste durante o desenho, como o React recomenda para estado que depende
-  // de outro: num efeito, a aba ainda apareceria por um quadro.
-  if (!isAdultUnlocked && aba === 'extra') setAba('filmes');
-  const [letra, setLetra] = useState('A');
+  // Seção ativa: null é a página raiz On Demand, ou categoria específica
+  const [secao, setSecao] = useState<Secao | null>(null);
+  // Modo de exibição: 'fileiras' (carrosséis como no Mac) ou 'explorar' (grade A-Z)
+  const [modo, setModo] = useState<'fileiras' | 'explorar'>('fileiras');
+  const [generoFiltro, setGeneroFiltro] = useState<string>('');
+  const [letraFiltro, setLetraFiltro] = useState<string>('A');
+  const [termoBusca, setTermoBusca] = useState<string>('');
+
+  // Favoritos
+  const [, setMarcaFav] = useState(0);
+  useEffect(() => aoMudarFavoritos(() => setMarcaFav((n) => n + 1)), []);
+
+  // Catálogos e metadados
+  const [filasDestaque, setFilasDestaque] = useState<FilaDestaque[]>([]);
+  const [generos, setGeneros] = useState<Generos | null>(null);
   const [gavetas, setGavetas] = useState<Gaveta[]>([]);
-  /** A lista da letra ou seção, com a chave de quem a pediu. */
-  const [lista, setLista] = useState<{ chave: string; itens: Item[]; erro: string | null }>(
-    { chave: '', itens: [], erro: null });
-  const itens = lista.itens;
-  /** Busca em andamento (o carregamento da lista sai da chave, lá embaixo). */
-  const [buscando, setBuscando] = useState(false);
-  const [termo, setTermo] = useState('');
-  const [buscaAchada, setBusca] = useState<Achado[] | null>(null);
-  const [buscaExtraAchada, setBuscaExtra] = useState<Item[] | null>(null);
+  const [todosFilmes, setTodosFilmes] = useState<Achado[]>([]);
+  const [todasSeries, setTodasSeries] = useState<Achado[]>([]);
+  const [animesColecao, setAnimesColecao] = useState<SerieColecao[]>([]);
+  const [doramasColecao, setDoramasColecao] = useState<SerieColecao[]>([]);
+  const [carregandoDados, setCarregandoDados] = useState(true);
+
+  // Item atualmente sob o cursor do mouse para o Hero Destaque
+  const [itemSobMouse, setItemSobMouse] = useState<ItemDestaque | null>(null);
+  const fichaSobMouse = useFichaDe(itemSobMouse);
+
+  // Título e Modais
   const [aberto, setAberto] = useState<Item | null>(null);
   const [episodiosAbertos, setEpisodiosAbertos] = useState<Episodio[] | null>(null);
   const [fontesAbertas, setFontesAbertas] = useState<MovieSource[] | null>(null);
@@ -284,293 +208,359 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   const [detalhesTemporada, setDetalhesTemporada] = useState<Record<number, EpisodioTmdb>>({});
   const [versaoFiltro, setVersaoFiltro] = useState<string>('todas');
   const trilhaEpisodiosRef = useRef<HTMLDivElement | null>(null);
+  const aberturaRef = useRef(0);
 
-  // O episódio que o player abriu vira o último visto — ajustado durante o
-  // desenho, quando o título muda, e não copiado num efeito.
-  const [episodioNoPlayer, setEpisodioNoPlayer] = useState(activeMovie);
-  if (activeMovie !== episodioNoPlayer) {
-    setEpisodioNoPlayer(activeMovie);
-    if (activeMovie?.type === 'series') {
-      setUltimoEpisodioId(activeMovie.id);
-      if (activeMovie.seasonNumber) setTemporada(activeMovie.seasonNumber);
-    }
+  // Sincronizar se o modo adulto for bloqueado durante a navegação
+  if (!isAdultUnlocked && secao === 'extra') {
+    setSecao(null);
   }
-  /** A ficha do título aberto: sinopse, duração, gêneros e elenco. */
-  const [fichaAchada, setFicha] = useState<{ chave: string; ficha: Ficha | null } | null>(null);
-  /** O ator aberto dentro da ficha, e o que ele tem no acervo. */
+
+  // Ficha do título aberto
+  const [fichaAchada, setFichaAchada] = useState<{ chave: string; ficha: Ficha | null } | null>(null);
+  // Ator aberto (filmografia)
   const [ator, setAtor] = useState<Pessoa | null>(null);
-  const [filmografiaAchada, setFilmografia] = useState<{ ator: number; lista: Trabalho[] } | null>(null);
-  const [perfilAchado, setPerfilDoAtor] = useState<{ ator: number; perfil: Perfil | null } | null>(null);
-  const filmografia = ator && filmografiaAchada?.ator === ator.id ? filmografiaAchada.lista : null;
-  const perfilDoAtor = ator && perfilAchado?.ator === ator.id ? perfilAchado.perfil : null;
-  /** Onde "Ver episódios" rola: a lista de temporadas logo abaixo. */
-  const episodiosRef = useRef<HTMLDivElement | null>(null);
-  const abertura = useRef(0);
-  /*
-   * A letra A traz três mil e quinhentos filmes, e três mil e quinhentos
-   * cartões de uma vez travam a rolagem antes de a primeira capa aparecer. A
-   * lista inteira já está na memória; o que cresce aqui é só o que vai para a
-   * tela, conforme a pessoa chega ao fim.
-   *
-   * A contagem anda junto da lista a que pertence: trocar de letra devolve a
-   * primeira página sozinho, sem um efeito que zere o número depois de a lista
-   * nova já ter sido desenhada inteira.
-   */
-  const [pagina, setPagina] = useState({ lista: '', quantos: PAGINA });
-  const sentinela = useRef<HTMLDivElement>(null);
+  const [filmografiaAchada, setFilmografiaAchada] = useState<{ ator: number; lista: Trabalho[] } | null>(null);
+  const [perfilAchado, setPerfilAchado] = useState<{ ator: number; perfil: Perfil | null } | null>(null);
 
-  useEffect(() => {
-    indice().then(setGavetas).catch(() => setGavetas([]));
-    destaques().then(setFilas).catch(() => setFilas([]));
-    lerGeneros().then(setGeneros).catch(() => setGeneros(null));
-  }, []);
+  // Paginação da Grade A-Z sem efeito cascata
+  const filtroAtual = `${secao || 'ondemand'}:${generoFiltro}:${letraFiltro}:${termoBusca.trim()}:${modo}`;
+  const [pagina, setPagina] = useState({ filtro: '', quantos: PAGINA });
+  const visiveis = pagina.filtro === filtroAtual ? pagina.quantos : PAGINA;
+  const sentinelaRef = useRef<HTMLDivElement | null>(null);
 
-  const contagem = useMemo(() => {
-    const mapa = new Map<string, Gaveta>();
-    gavetas.forEach((g) => mapa.set(g.letra, g));
-    return mapa;
-  }, [gavetas]);
-
-  // Termo em busca dentro do próprio 18+ — não usa o índice geral (ver
-  // abaixo), então tem letra própria de "buscando".
-  const buscandoExtra = aba === 'extra' && termo.trim().length >= 2;
-  // No Início a busca é na biblioteca inteira: filmes, séries, animes e
-  // doramas — e não só nas fileiras de destaque que estão na tela.
-  const buscandoNoInicio = aba === 'inicio' && termo.trim().length >= 2;
-  /** Animes e doramas para a busca do Início; carregados na primeira busca. */
-  const [colecoesDaBusca, setColecoesDaBusca] = useState<Item[] | null>(null);
-  useEffect(() => {
-    if (!buscandoNoInicio || colecoesDaBusca) return;
-    let vivo = true;
-    Promise.all((['animes', 'doramas'] as const).map((tipo) => colecao(tipo)
-      .then((lista) => lista.map<Item>((serie) => ({
-        chave: `${tipo}:${serie.tmdbId}:${serie.titulo}`,
-        titulo: serie.titulo,
-        rotulo: serie.nomeCompleto,
-        serie: true,
-        letra: letraDe(serie.titulo),
-        colecao: serie,
-      })))
-      .catch(() => [] as Item[])))
-      .then((listas) => { if (vivo) setColecoesDaBusca(listas.flat()); });
-    return () => { vivo = false; };
-  }, [buscandoNoInicio, colecoesDaBusca]);
-  const buscandoColecao = eColecao(aba) && termo.trim().length >= 2;
-  const buscaGeral = termo.trim().length >= 2 && aba !== 'extra' && !eColecao(aba);
-  const busca = buscaGeral ? buscaAchada : null;
-  const buscaAtiva = aba === 'extra' ? buscandoExtra : eColecao(aba) ? buscandoColecao : !!busca;
-
-  // Lista da letra escolhida. A busca, quando ativa, manda na tela.
-  const chaveLista = `${aba}|${aba === 'extra' ? letra : ''}`;
-  const listaPendente = !(buscaAtiva && !eColecao(aba)) && lista.chave !== chaveLista;
-  const carregando = buscando || listaPendente;
-  const erro = lista.chave === chaveLista ? lista.erro : null;
-  useEffect(() => {
-    if (buscaAtiva && !eColecao(aba)) return;
-    let vivo = true;
-    const chave = `${aba}|${aba === 'extra' ? letra : ''}`;
-
-    const trabalho = eColecao(aba)
-      ? colecao(aba).then((lista) => lista.map<Item>((s) => ({
-        chave: `${aba}:${s.tmdbId}:${s.titulo}`,
-        titulo: s.titulo,
-        rotulo: s.nomeCompleto,
-        serie: true,
-        letra: letraDe(s.titulo),
-        colecao: s,
-      })))
-      : aba === 'extra'
-      ? listarFilmes(letra, true).then((lista) => lista.map<Item>((f) => ({
-        chave: `x:${f.titulo}`,
-        titulo: f.titulo,
-        rotulo: f.titulo,
-        serie: false,
-        letra,
-        filme: f,
-      })))
-      : listarTudo(aba === 'series').then((lista) => lista.map<Item>((a) => ({
-        chave: `${a.serie ? 's' : 'f'}:${a.titulo}:${a.ano}`,
-        titulo: a.titulo,
-        rotulo: a.nomeCompleto,
-        serie: a.serie,
-        letra: a.letra,
-        ano: a.ano,
-      })));
-
-    trabalho
-      .then((achados) => { if (vivo) setLista({ chave, itens: achados, erro: null }); })
-      .catch(() => { if (vivo) setLista({ chave, itens: [], erro: 'Não foi possível carregar o acervo.' }); });
-
-    return () => { vivo = false; };
-  }, [aba, letra, buscaAtiva, buscandoColecao]);
-
-  // Busca no acervo inteiro, com folga para quem ainda está digitando. Fica
-  // de fora quando a aba é o 18+ — o índice geral nunca traz título
-  // reservado (ver gerar_vod.py), então essa chamada não acharia nada lá.
-  useEffect(() => {
-    const alvo = termo.trim();
-    if (alvo.length < 2 || aba === 'extra' || eColecao(aba)) return;
-    const tempo = window.setTimeout(() => {
-      setBuscando(true);
-      buscar(alvo)
-        .then((achados) => {
-          setBusca(achados);
-          telemetria.buscou('vod', alvo, () => achados.length > 0);
-        })
-        .catch(() => setBusca([]))
-        .finally(() => setBuscando(false));
-    }, 350);
-    return () => window.clearTimeout(tempo);
-  }, [termo, aba]);
-
-  /// Busca dentro do 18+: como o título reservado não está no índice geral,
-  /// aqui é o próprio acervo reservado (pequeno: nove mil títulos) que é
-  /// vasculhado, uma letra de cada vez, só nas letras que têm alguma.
-  const buscaExtra = buscandoExtra ? buscaExtraAchada : null;
-  useEffect(() => {
-    if (!buscandoExtra) return;
-    const alvo = normalizar(termo.trim());
-    let vivo = true;
-    const tempo = window.setTimeout(() => {
-      setBuscando(true);
-      const letras = gavetas.filter((g) => g.reservados > 0).map((g) => g.letra);
-      Promise.all(letras.map((l) => listarFilmes(l, true).then((lista) => ({ letra: l, lista }))))
-        .then((porLetra) => {
-          if (!vivo) return;
-          const achados = porLetra.flatMap(({ letra: l, lista }) => lista
-            .filter((f) => normalizar(f.titulo).includes(alvo))
-            .map<Item>((f) => ({
-              chave: `x:${f.titulo}`,
-              titulo: f.titulo,
-              rotulo: f.titulo,
-              serie: false,
-              letra: l,
-              filme: f,
-            })));
-          setBuscaExtra(achados);
-        })
-        .catch(() => { if (vivo) setBuscaExtra([]); })
-        .finally(() => { if (vivo) setBuscando(false); });
-    }, 350);
-    return () => { vivo = false; window.clearTimeout(tempo); };
-  }, [buscandoExtra, termo, gavetas]);
-
-  const resultados = useMemo<Item[]>(() => {
-    if (aba === 'inicio') {
-      if (!buscandoNoInicio) return [];
-      const alvo = normalizar(termo.trim());
-      const doIndice = (busca ?? []).map<Item>((a) => ({
-        chave: `${a.serie ? 's' : 'f'}:${a.titulo}:${a.ano}`,
-        titulo: a.titulo,
-        rotulo: a.nomeCompleto,
-        serie: a.serie,
-        letra: a.letra,
-        ano: a.ano,
-      }));
-      const dasColecoes = (colecoesDaBusca ?? []).filter((item) => normalizar(item.rotulo).includes(alvo));
-      // Mais parecido primeiro: "breaking bad" traz a série antes do filme
-      // "El Camino: A Breaking Bad Film".
-      const peso = (item: Item) => {
-        const nome = normalizar(item.rotulo.replace(/\s*\(\d{4}\)\s*$/, ''));
-        return nome === alvo ? 0 : nome.startsWith(alvo) ? 1 : 2;
-      };
-      return [...doIndice, ...dasColecoes]
-        .map((item, ordem) => ({ item, ordem, peso: peso(item) }))
-        .sort((a, b) => a.peso - b.peso || a.ordem - b.ordem)
-        .map(({ item }) => item);
-    }
-    if (aba === 'extra') return buscandoExtra ? buscaExtra ?? [] : itens;
-    if (eColecao(aba)) {
-      if (!buscandoColecao) return itens;
-      const alvo = normalizar(termo.trim());
-      return itens.filter((item) => normalizar(item.rotulo).includes(alvo));
-    }
-    if (!busca) return itens;
-    return busca
-      .filter((a) => (aba === 'series' ? a.serie : !a.serie))
-      .map((a) => ({
-        chave: `${a.serie ? 's' : 'f'}:${a.titulo}:${a.ano}`,
-        titulo: a.titulo,
-        rotulo: a.nomeCompleto,
-        serie: a.serie,
-        letra: a.letra,
-        ano: a.ano,
-      }));
-  }, [busca, buscaExtra, buscandoExtra, buscandoColecao, buscandoNoInicio, colecoesDaBusca, itens, aba, termo]);
-
-  /// O gênero escolhido peneira o que já estava na tela.
-  const resultadosPorGenero = useMemo<Item[]>(() => {
-    // No Início não há régua de gêneros: um gênero escolhido em outra aba
-    // não pode esconder resultado da busca geral.
-    if (!genero || !generos || aba === 'inicio') return resultados;
-    return resultados.filter((item) => temGenero(generos, item.titulo, item.serie, genero));
-  }, [resultados, generos, genero, aba]);
-
-  const fecharModal = useCallback(() => {
-    abertura.current += 1;
-    setAberto(null);
+  // Abertura de Item
+  const abrirItem = useCallback(async (item: Item) => {
+    setErroModal(null);
+    setAberto(item);
     setEpisodiosAbertos(null);
     setFontesAbertas(null);
-    setErroModal(null);
-    setModalCarregando(false);
-    setAtor(null);
-  }, []);
-  const fecharAtor = useCallback(() => setAtor(null), []);
-  // O voltar do celular fecha o ator e, depois, a ficha — não sai da página.
-  useVoltarFecha(!!aberto, fecharModal);
-  useVoltarFecha(!!ator, fecharAtor);
+    setModalCarregando(true);
+    const tentativa = ++aberturaRef.current;
 
-  /**
-   * A ficha do título aberto: sinopse, duração, classificação e elenco.
-   *
-   * O arquivo de fichas já diz o id do TMDB de cada título do acervo, então
-   * não há busca por nome nem desempate — pergunta-se direto pelo número
-   * certo, e um pedido por título aberto não pesa como um por título listado.
-   */
+    try {
+      if (!item.serie) {
+        const dados =
+          item.filme ??
+          (await buscarFilme({
+            titulo: item.titulo,
+            serie: false,
+            letra: item.letra,
+            ano: '',
+            nomeCompleto: item.titulo,
+          }));
+        const fontes: MovieSource[] = Object.entries(dados?.fontes ?? {}).flatMap(([versao, urls]) =>
+          urls.map((url) => ({ url, versao })),
+        );
+        if (tentativa !== aberturaRef.current) return;
+        setFontesAbertas(httpsFirst(fontes));
+        if (!fontes.length) setErroModal(`Sem fonte disponível para "${item.titulo}".`);
+        return;
+      }
+
+      if (item.colecao) {
+        setEpisodiosAbertos(item.colecao.episodios);
+        setTemporada(item.colecao.episodios[0]?.temporada ?? 1);
+        return;
+      }
+
+      const ano = item.dados?.ano ?? item.ano ?? '';
+      const dados =
+        item.dados ??
+        (await buscarSerie({
+          titulo: item.titulo,
+          serie: true,
+          letra: item.letra,
+          ano,
+          nomeCompleto: item.rotulo,
+        }));
+      if (tentativa !== aberturaRef.current) return;
+      if (!dados) {
+        setErroModal(`Não foi possível abrir "${item.rotulo}".`);
+        return;
+      }
+      setAberto({ ...item, dados });
+      const lista = await episodios(item.letra, dados);
+      if (tentativa !== aberturaRef.current) return;
+      setEpisodiosAbertos(lista);
+      setTemporada(lista[0]?.temporada ?? 1);
+      if (!lista.length) setErroModal('Nenhum episódio encontrado.');
+    } catch {
+      if (tentativa === aberturaRef.current) setErroModal(`Não foi possível abrir "${item.rotulo}".`);
+    } finally {
+      if (tentativa === aberturaRef.current) setModalCarregando(false);
+    }
+  }, []);
+
+  const abrirItemDestaque = useCallback(
+    async (destaqueItem: ItemDestaque) => {
+      const serie = destaqueItem.tipo !== 'f';
+      const base: Item = {
+        chave: `${destaqueItem.tipo}:${destaqueItem.titulo}`,
+        titulo: destaqueItem.titulo,
+        rotulo: destaqueItem.titulo,
+        serie,
+        letra: destaqueItem.letra,
+        ano: destaqueItem.ano,
+      };
+
+      if (destaqueItem.tipo !== 'a' && destaqueItem.tipo !== 'd') {
+        await abrirItem(base);
+        return;
+      }
+
+      const tipoColecao = destaqueItem.tipo === 'a' ? 'animes' : 'doramas';
+      setAberto(base);
+      setModalCarregando(true);
+      setErroModal(null);
+      try {
+        const lista = await colecao(tipoColecao);
+        const achada = lista.find((s) => normalizar(s.titulo) === normalizar(destaqueItem.titulo));
+        if (!achada) {
+          setErroModal(`Não foi possível abrir "${destaqueItem.titulo}".`);
+          return;
+        }
+        await abrirItem({
+          ...base,
+          chave: `${tipoColecao}:${achada.tmdbId}:${achada.titulo}`,
+          rotulo: achada.titulo,
+          colecao: achada,
+        });
+      } catch {
+        setErroModal(`Não foi possível abrir "${destaqueItem.titulo}".`);
+      } finally {
+        setModalCarregando(false);
+      }
+    },
+    [abrirItem],
+  );
+
+  // Carga inicial dos arquivos do repositório
+  useEffect(() => {
+    let vivo = true;
+    Promise.all([
+      destaques().catch(() => []),
+      lerGeneros().catch(() => null),
+      indice().catch(() => []),
+      colecao('animes').catch(() => []),
+      colecao('doramas').catch(() => []),
+    ]).then(([filas, gen, gav, animes, doramas]) => {
+      if (!vivo) return;
+      setFilasDestaque(filas);
+      setGeneros(gen);
+      setGavetas(gav);
+      setAnimesColecao(animes);
+      setDoramasColecao(doramas);
+      setCarregandoDados(false);
+    });
+
+    // Carga dos títulos de busca para gerar fileiras de gênero
+    listarTudo(false).then((lista) => { if (vivo) setTodosFilmes(lista); });
+    listarTudo(true).then((lista) => { if (vivo) setTodasSeries(lista); });
+
+    return () => { vivo = false; };
+  }, []);
+
+  // Totais para exibição nos cartões de categoria e Hero
+  const contagens = useMemo(() => {
+    const totalFilmes = gavetas.reduce((acc, g) => acc + (g.filmes || 0), 0) || todosFilmes.length || 24500;
+    const totalSeries = gavetas.reduce((acc, g) => acc + (g.series || 0), 0) || todasSeries.length || 7200;
+    const totalAnimes = animesColecao.length || 1050;
+    const totalDoramas = doramasColecao.length || 580;
+    const totalExtras = gavetas.reduce((acc, g) => acc + (g.reservados || 0), 0);
+    const totalGeral = totalFilmes + totalSeries + totalAnimes + totalDoramas;
+    return {
+      totalGeral,
+      filmes: totalFilmes,
+      series: totalSeries,
+      animes: totalAnimes,
+      doramas: totalDoramas,
+      extra: totalExtras,
+    };
+  }, [gavetas, todosFilmes.length, todasSeries.length, animesColecao.length, doramasColecao.length]);
+
+  // Imagens para mosaico de capas das seções
+  const colagens = useMemo(() => {
+    const todosDestaques = filasDestaque.flatMap((f) => f.itens);
+    const pegarCapas = (tipoChar: string) => {
+      const comCapa = todosDestaques.filter((i) => i.tipo === tipoChar && i.capa);
+      const unicos = [...new Set(comCapa.map((i) => i.capa))];
+      return unicos.slice(0, 4);
+    };
+    return {
+      filmes: pegarCapas('f'),
+      series: pegarCapas('s'),
+      animes: pegarCapas('a'),
+      doramas: pegarCapas('d'),
+      extra: [],
+    };
+  }, [filasDestaque]);
+
+  // Fileiras de Gênero dinâmicas (como em TelasDoAcervo.swift:314-325)
+  const fileirasDeGenero = useMemo(() => {
+    if (!generos || !todosFilmes.length) return [];
+    const out: { titulo: string; genero: string; itens: ItemDestaque[] }[] = [];
+    for (const g of GENEROS_ON_DEMAND) {
+      if (!generos.todos.includes(g)) continue;
+      const doGenero = todosFilmes
+        .filter((f) => temGenero(generos, f.titulo, false, g))
+        .map((f) => ({
+          tipo: 'f',
+          titulo: f.titulo,
+          letra: f.letra,
+          ano: f.ano,
+          capa: capaDaFicha(generos, f.titulo, false) || '',
+        }))
+        .filter((f) => !!f.capa)
+        .slice(0, 25);
+
+      if (doGenero.length >= 4) {
+        out.push({
+          titulo: `Filmes de ${g.toLowerCase()}`,
+          genero: g,
+          itens: doGenero,
+        });
+      }
+    }
+    return out;
+  }, [generos, todosFilmes]);
+
+  // Itens em andamento ("Continue assistindo")
+  const itensAndamento = useMemo(() => {
+    const lista = listaAndamento();
+    if (!lista.length) return [];
+    return lista
+      .filter((a) => {
+        if (!secao) return true;
+        if (secao === 'filmes') return a.origem.tipo === 'f';
+        if (secao === 'series') return a.origem.tipo === 's';
+        if (secao === 'animes') return a.origem.tipo === 'a';
+        if (secao === 'doramas') return a.origem.tipo === 'd';
+        return true;
+      })
+      .map((a) => ({
+        ...a.origem,
+        capa: a.origem.capa || (generos ? capaDaFicha(generos, a.origem.titulo, a.origem.tipo !== 'f') ?? '' : ''),
+        progresso: a.fracao,
+        subtitulo: a.rotulo,
+      }));
+  }, [secao, generos]);
+
+  // Hero Destaque: título, selos, sinopse e fundo dinâmico
+  const heroiAtual = useMemo(() => {
+    if (itemSobMouse) {
+      const tituloLimpo = semAno(itemSobMouse.titulo);
+      const selos: string[] = [];
+      if (fichaSobMouse?.nota && fichaSobMouse.nota > 0) selos.push(`★ ${fichaSobMouse.nota.toFixed(1)}`);
+      if (itemSobMouse.ano) selos.push(itemSobMouse.ano);
+      if (fichaSobMouse?.duracao) {
+        const d = fichaSobMouse.duracao;
+        selos.push(itemSobMouse.tipo !== 'f' ? `${d} min/ep` : d >= 60 ? `${Math.floor(d / 60)}h ${d % 60}m` : `${d} min`);
+      }
+      if (fichaSobMouse?.temporadas) selos.push(`${fichaSobMouse.temporadas} temporada${fichaSobMouse.temporadas > 1 ? 's' : ''}`);
+      if (fichaSobMouse?.generos?.length) selos.push(...fichaSobMouse.generos.slice(0, 3));
+
+      return {
+        titulo: tituloLimpo,
+        selos: selos.length ? selos : [itemSobMouse.tipo === 's' ? 'Série' : itemSobMouse.tipo === 'a' ? 'Anime' : itemSobMouse.tipo === 'd' ? 'Dorama' : 'Filme'],
+        sinopse: fichaSobMouse?.sinopse || '',
+        fundo: fichaSobMouse?.fundo || itemSobMouse.capa || null,
+        isIdle: false,
+      };
+    }
+
+    // Estado Padrão Idle
+    if (!secao) {
+      return {
+        titulo: 'On Demand',
+        selos: [`${contagens.totalGeral.toLocaleString('pt-BR')} títulos`],
+        sinopse: 'Filmes, séries, animes e doramas. Lançamentos, clássicos e produções completas.',
+        fundo: colagens.filmes[0] || null,
+        isIdle: true,
+      };
+    }
+
+    const nome = secao === 'filmes' ? 'Filmes' : secao === 'series' ? 'Séries' : secao === 'animes' ? 'Animes' : secao === 'doramas' ? 'Doramas' : '18+ Adulto';
+    const total = contagens[secao] || 0;
+    return {
+      titulo: nome,
+      selos: [`${total.toLocaleString('pt-BR')} títulos`],
+      sinopse: SOBRE_SECAO[secao] || '',
+      fundo: colagens[secao]?.[0] || null,
+      isIdle: true,
+    };
+  }, [itemSobMouse, fichaSobMouse, secao, contagens, colagens]);
+
+  // Abertura de títulos vindos do histórico de navegação
+  useEffect(() => {
+    const st = local.state as { abrir?: ItemDestaque; aba?: Secao; secao?: Secao } | null;
+    if (!st || (!st.abrir && !st.aba && !st.secao)) return;
+    const id = window.setTimeout(() => {
+      if (st.secao) setSecao(st.secao);
+      else if (st.aba) setSecao(st.aba);
+      if (st.abrir) void abrirItemDestaque(st.abrir);
+      navegar(local.pathname, { replace: true, state: null });
+    }, 0);
+    return () => window.clearTimeout(id);
+  }, [local.state, local.pathname, navegar, abrirItemDestaque]);
+
+  // Observer do sentinela da grade
+  useEffect(() => {
+    const alvo = sentinelaRef.current;
+    if (!alvo || modo !== 'explorar') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPagina((atual) => ({
+            filtro: filtroAtual,
+            quantos: (atual.filtro === filtroAtual ? atual.quantos : PAGINA) + PAGINA,
+          }));
+        }
+      },
+      { rootMargin: '600px' },
+    );
+    observer.observe(alvo);
+    return () => observer.disconnect();
+  }, [filtroAtual, modo]);
+
+
+  // Ficha do título aberto
   const idFicha = aberto && generos ? idDaFicha(generos, aberto.titulo, aberto.serie) : null;
   const chaveFicha = aberto && idFicha ? `${aberto.serie ? 's' : 'f'}:${idFicha}` : null;
   const ficha = chaveFicha && fichaAchada?.chave === chaveFicha ? fichaAchada.ficha : null;
-  const fichaCarregando = !!chaveFicha && fichaAchada?.chave !== chaveFicha;
+
   useEffect(() => {
     if (!aberto || !idFicha || !chaveFicha) return;
     let vivo = true;
     buscarFicha(idFicha, aberto.serie)
-      .then((achada) => { if (vivo) setFicha({ chave: chaveFicha, ficha: achada }); })
-      .catch(() => { if (vivo) setFicha({ chave: chaveFicha, ficha: null }); });
+      .then((achada) => { if (vivo) setFichaAchada({ chave: chaveFicha, ficha: achada }); })
+      .catch(() => { if (vivo) setFichaAchada({ chave: chaveFicha, ficha: null }); });
     return () => { vivo = false; };
   }, [aberto, idFicha, chaveFicha]);
 
-  /**
-   * O que um ator fez **e que existe neste acervo**.
-   *
-   * A filmografia inteira do TMDB não serve de dentro do site: listar oitenta
-   * títulos dos quais setenta não abrem é uma lista que frustra. O cruzamento
-   * é pelo id do TMDB — nome igual não engana, refilmagem não vira o original.
-   */
+  // Filmografia do Ator
   useEffect(() => {
     if (!ator || !generos) return;
     let vivo = true;
     const idAtor = ator.id;
-    buscarPerfil(idAtor).then((achado) => { if (vivo) setPerfilDoAtor({ ator: idAtor, perfil: achado }); });
+    buscarPerfil(idAtor).then((achado) => { if (vivo) setPerfilAchado({ ator: idAtor, perfil: achado }); });
+
     (async () => {
-      const creditos = await creditosDe(ator.id);
-      const [comFilmes, comSeries] = await Promise.all([
-        listarTudo(false),
-        listarTudo(true),
-      ]);
+      const creditos = await creditosDe(idAtor);
+      const [comFilmes, comSeries] = await Promise.all([listarTudo(false), listarTudo(true)]);
       if (!vivo) return;
+
       const porNome = new Map<string, Achado>();
       for (const achado of [...comFilmes, ...comSeries]) {
         porNome.set(`${achado.serie ? 's' : 'f'}|${achado.titulo}`, achado);
       }
+
       const vistos = new Set<string>();
       const saida: Trabalho[] = [];
       for (const credito of creditos) {
         const titulo = tituloDoId(generos, credito.id, credito.serie);
         if (!titulo) continue;
         const marca = credito.serie ? 's' : 'f';
-        const achado = porNome.get(`${marca}|${titulo}`)
-          ?? porNome.get(`${marca}|${semAno(titulo)}`);
+        const achado = porNome.get(`${marca}|${titulo}`) ?? porNome.get(`${marca}|${semAno(titulo)}`);
         if (!achado) continue;
         const chave = `${marca}:${achado.letra}:${achado.titulo}`;
         if (vistos.has(chave)) continue;
@@ -588,183 +578,60 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
           papel: credito.papel,
         });
       }
-      setFilmografia({ ator: idAtor, lista: saida });
+      setFilmografiaAchada({ ator: idAtor, lista: saida });
     })();
+
     return () => { vivo = false; };
   }, [ator, generos]);
 
-  /**
-   * Abre um filme no player sem destruir o modal. O modal fica apenas oculto
-   * atrás do player, então voltar traz a ficha de volta no mesmo lugar.
-   */
-  /** Id do TMDB do título aberto: o da coleção, ou o do arquivo de fichas. */
-  /** O título aberto no formato dos destaques, para o "Continue assistindo". */
-  const origemDe = useCallback((item: Item | null) => {
-    if (!item) return undefined;
-    const tipo = item.chave.startsWith('animes') ? 'a' : item.chave.startsWith('doramas') ? 'd'
-      : item.serie ? 's' : 'f';
-    const capa = (generos && capaDaFicha(generos, item.titulo, item.serie)) || '';
-    return { tipo, titulo: item.titulo, letra: item.letra, ano: item.ano ?? '', capa };
-  }, [generos]);
-
-  const idDoAberto = useCallback((item: Item | null): number | undefined => {
-    if (!item) return undefined;
-    const daChave = Number(item.chave.split(':')[1]);
-    if (daChave > 0) return daChave;
-    return (generos && idDaFicha(generos, item.titulo, !!item.serie)) || undefined;
-  }, [generos]);
-
-  const tocarFilme = useCallback((titulo: string, fontes: MovieSource[], escolhida?: string) => {
-    const ordenadas = httpsFirst(fontes);
-    const primeira = escolhida ?? ordenadas[0]?.url;
-    if (!primeira) return;
-    onSelectMovie({
-      tmdbId: (generos && idDaFicha(generos, titulo, false)) || undefined,
-      origem: aberto ? origemDe(aberto) : undefined,
-      id: `movie-${titulo}-${primeira}`.slice(0, 200),
-      name: titulo,
-      url: primeira,
-      sources: ordenadas,
-      initialSourceUrl: escolhida,
-      category: 'Filmes',
-      type: 'movie',
-    }, null);
-  }, [onSelectMovie, generos, aberto, origemDe]);
-
-
-  useEffect(() => {
-    if (!aberto) return;
-    const overflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const aoTeclado = (event: KeyboardEvent) => {
-      // Enquanto o player está por cima, Esc pertence ao player. O modal fica
-      // vivo atrás dele para reaparecer exatamente no mesmo ponto ao voltar.
-      if (!playerOpen && event.key === 'Escape') fecharModal();
-    };
-    window.addEventListener('keydown', aoTeclado);
-    return () => {
-      document.body.style.overflow = overflow;
-      window.removeEventListener('keydown', aoTeclado);
-    };
-  }, [aberto, fecharModal, playerOpen]);
-
-  /** Todo cartão abre suas opções no modal, sem mover a página para o topo. */
-  const abrir = useCallback(async (item: Item) => {
-    setErroModal(null);
-    setAberto(item);
+  const fecharModal = useCallback(() => {
+    aberturaRef.current += 1;
+    setAberto(null);
     setEpisodiosAbertos(null);
     setFontesAbertas(null);
-    setModalCarregando(true);
-    const tentativa = ++abertura.current;
-    try {
-      if (!item.serie) {
-        const dados = item.filme
-          ?? await buscarFilme({ titulo: item.titulo, serie: false, letra: item.letra, ano: '', nomeCompleto: item.titulo });
-        const fontes: MovieSource[] = Object.entries(dados?.fontes ?? {})
-          .flatMap(([versao, urls]) => urls.map((url) => ({ url, versao })));
-        if (tentativa !== abertura.current) return;
-        setFontesAbertas(httpsFirst(fontes));
-        if (!fontes.length) setErroModal(`Sem fonte disponível para "${item.titulo}".`);
-        return;
-      }
-
-      if (item.colecao) {
-        setEpisodiosAbertos(item.colecao.episodios);
-        // Começa recolhida: os episódios só aparecem quando a pessoa escolhe
-        // uma temporada, evitando a parede de episódios/scroll da versão antiga.
-        setTemporada(0);
-        return;
-      }
-
-      const ano = item.dados?.ano ?? item.ano ?? '';
-      const dados = item.dados
-        ?? await buscarSerie({ titulo: item.titulo, serie: true, letra: item.letra, ano, nomeCompleto: item.rotulo });
-      if (tentativa !== abertura.current) return;
-      if (!dados) { setErroModal(`Não foi possível abrir "${item.rotulo}".`); return; }
-      setAberto({ ...item, dados });
-      const lista = await episodios(item.letra, dados);
-      if (tentativa !== abertura.current) return;
-      setEpisodiosAbertos(lista);
-      // Todas as temporadas começam fechadas; um clique abre somente uma.
-      setTemporada(0);
-      if (!lista.length) setErroModal('Nenhum episódio encontrado.');
-    } catch {
-      if (tentativa === abertura.current) setErroModal(`Não foi possível abrir "${item.rotulo}".`);
-    } finally {
-      if (tentativa === abertura.current) setModalCarregando(false);
-    }
+    setErroModal(null);
+    setModalCarregando(false);
+    setAtor(null);
   }, []);
 
-  /**
-   * Abre um destaque da tela inicial.
-   *
-   * Filme e série passam pelo caminho de sempre. Anime e dorama, não: eles não
-   * moram no acervo por letra, e sim nas coleções, que já vêm com os episódios
-   * dentro. Sem buscar o título ali antes, o modal tentava achá-lo entre as
-   * séries comuns — com a letra vazia, ainda por cima — e só sabia dizer que
-   * não deu para abrir.
-   */
-  const abrirDestaque = useCallback(async (destaque: ItemDestaque) => {
-    const serie = destaque.tipo !== 'f';
-    const base: Item = {
-      chave: `${destaque.tipo}:${destaque.titulo}`,
-      titulo: destaque.titulo,
-      rotulo: destaque.titulo,
-      serie,
-      letra: destaque.letra,
-    };
+  const fecharAtor = useCallback(() => setAtor(null), []);
+  useVoltarFecha(!!aberto, fecharModal);
+  useVoltarFecha(!!ator, fecharAtor);
 
-    if (destaque.tipo !== 'a' && destaque.tipo !== 'd') {
-      await abrir(base);
-      return;
-    }
+  // Reproduzir filme
+  const tocarFilme = useCallback(
+    (titulo: string, fontes: MovieSource[], escolhida?: string) => {
+      const ordenadas = httpsFirst(fontes);
+      const primeira = escolhida ?? ordenadas[0]?.url;
+      if (!primeira) return;
+      const origem = aberto ? {
+        tipo: aberto.chave.startsWith('animes') ? 'a' : aberto.chave.startsWith('doramas') ? 'd' : aberto.serie ? 's' : 'f',
+        titulo: aberto.titulo,
+        letra: aberto.letra,
+        ano: aberto.ano ?? '',
+        capa: (generos && capaDaFicha(generos, aberto.titulo, aberto.serie)) || '',
+      } : undefined;
 
-    const tipo = destaque.tipo === 'a' ? 'animes' : 'doramas';
-    setAberto(base);
-    setModalCarregando(true);
-    setErroModal(null);
-    try {
-      const lista = await colecao(tipo);
-      const achada = lista.find(
-        (s) => normalizar(s.titulo) === normalizar(destaque.titulo));
-      if (!achada) {
-        setErroModal(`Não foi possível abrir "${destaque.titulo}".`);
-        return;
-      }
-      await abrir({
-        ...base,
-        chave: `${tipo}:${achada.tmdbId}:${achada.titulo}`,
-        rotulo: achada.titulo,
-        colecao: achada,
-      });
-    } catch {
-      setErroModal(`Não foi possível abrir "${destaque.titulo}".`);
-    } finally {
-      setModalCarregando(false);
-    }
-  }, [abrir]);
-
-  /**
-   * Chegar de outra tela (Início, Buscar, Favoritos) com um título para abrir:
-   * `state.abrir` é um destaque, `state.aba` a aba do catálogo. O estado é
-   * apagado do histórico logo depois, para recarregar a página não reabrir.
-   */
-  useEffect(() => {
-    const st = local.state as { abrir?: ItemDestaque; aba?: Aba } | null;
-    if (!st || (!st.abrir && !st.aba)) return;
-    const id = window.setTimeout(() => {
-      if (st.aba) setAba(st.aba);
-      if (st.abrir) void abrirDestaque(st.abrir);
-      navegar(local.pathname, { replace: true, state: null });
-    }, 0);
-    return () => window.clearTimeout(id);
-  }, [local.state, local.pathname, navegar, abrirDestaque]);
-
-  const episodiosAgrupados = useMemo(
-    () => agruparEpisodios(episodiosAbertos ?? []),
-    [episodiosAbertos],
+      onSelectMovie(
+        {
+          tmdbId: (generos && idDaFicha(generos, titulo, false)) || undefined,
+          origem,
+          id: `movie-${titulo}-${primeira}`.slice(0, 200),
+          name: titulo,
+          url: primeira,
+          sources: ordenadas,
+          initialSourceUrl: escolhida,
+          category: 'Filmes',
+          type: 'movie',
+        },
+        null,
+      );
+    },
+    [onSelectMovie, generos, aberto],
   );
 
+  // Reproduzir episódio de série
+  const episodiosAgrupados = useMemo(() => agruparEpisodios(episodiosAbertos ?? []), [episodiosAbertos]);
   const temporadas = useMemo(
     () => [...new Set(episodiosAgrupados.map((e) => e.temporada))].sort((a, b) => a - b),
     [episodiosAgrupados],
@@ -782,52 +649,40 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
       seriesName: aberto.rotulo,
       seasonNumber: e.temporada,
       episodeNumber: e.numero,
-      tmdbId: idDoAberto(aberto),
-      origem: origemDe(aberto),
-    })).filter((movie) => !!movie.url);
-  }, [aberto, episodiosAgrupados, idDoAberto, origemDe]);
+      tmdbId: (generos && idDaFicha(generos, aberto.titulo, true)) || undefined,
+      origem: {
+        tipo: aberto.chave.startsWith('animes') ? 'a' : aberto.chave.startsWith('doramas') ? 'd' : 's',
+        titulo: aberto.titulo,
+        letra: aberto.letra,
+        ano: aberto.ano ?? '',
+        capa: (generos && capaDaFicha(generos, aberto.titulo, true)) || '',
+      },
+    })).filter((m) => !!m.url);
+  }, [aberto, episodiosAgrupados, generos]);
 
-  const tocarEpisodio = useCallback((episodio: EpisodioAgrupado) => {
-    if (!aberto) return;
-    const movie = filmesDaSerie.find(
-      (item) => item.seasonNumber === episodio.temporada && item.episodeNumber === episodio.numero,
-    );
-    if (!movie) return;
-    setTemporada(episodio.temporada);
-    setUltimoEpisodioId(movie.id);
-    const info: SeriesEpisodeInfo = {
-      currentEpisode: episodio.numero,
-      currentSeason: episodio.temporada,
-      totalEpisodes: filmesDaSerie.length,
-      episodes: filmesDaSerie,
-      seriesName: aberto.rotulo,
-    };
-    onSelectMovie(movie, info);
-  }, [aberto, filmesDaSerie, onSelectMovie]);
+  const tocarEpisodio = useCallback(
+    (episodio: EpisodioAgrupado) => {
+      if (!aberto) return;
+      const movie = filmesDaSerie.find(
+        (m) => m.seasonNumber === episodio.temporada && m.episodeNumber === episodio.numero,
+      );
+      if (!movie) return;
+      setTemporada(episodio.temporada);
+      setUltimoEpisodioId(movie.id);
+      const info: SeriesEpisodeInfo = {
+        currentEpisode: episodio.numero,
+        currentSeason: episodio.temporada,
+        totalEpisodes: filmesDaSerie.length,
+        episodes: filmesDaSerie,
+        seriesName: aberto.rotulo,
+      };
+      onSelectMovie(movie, info);
+    },
+    [aberto, filmesDaSerie, onSelectMovie],
+  );
 
-  /** A capa da ficha: a do TMDB em 500 pixels, ou a do arquivo de fichas. */
-  const capaDoAberto = aberto
-    ? (ficha?.capa ?? (generos ? capaDaFicha(generos, aberto.titulo, aberto.serie) : null))
-    : null;
-
-  const listaAtual = buscaAtiva ? `busca:${termo.trim()}:${aba}` : aba === 'extra' ? `extra:${letra}` : aba;
-  const visiveis = pagina.lista === listaAtual ? pagina.quantos : PAGINA;
-
-  useEffect(() => {
-    const alvo = sentinela.current;
-    if (!alvo) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      setPagina((atual) => ({
-        lista: listaAtual,
-        quantos: (atual.lista === listaAtual ? atual.quantos : PAGINA) + PAGINA,
-      }));
-    }, { rootMargin: '600px' });
-    observer.observe(alvo);
-    return () => observer.disconnect();
-  }, [listaAtual]);
-
-  const partida = useMemo(() => {
+  // Onde continuar na série
+  const partidaSerie = useMemo(() => {
     if (!aberto?.serie || !episodiosAgrupados.length) return null;
     const andamento = listaAndamento();
     const itemAndamento = andamento.find((a) => a.origem.titulo === aberto.titulo);
@@ -837,579 +692,1095 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
         const t = Number(match[1]);
         const n = Number(match[2]);
         const achou = episodiosAgrupados.find((e) => e.temporada === t && e.numero === n);
-        if (achou) {
-          return { temporada: t, numero: n, comecado: true };
-        }
+        if (achou) return { temporada: t, numero: n, comecado: true };
       }
     }
     const primeiro = episodiosAgrupados[0];
-    if (primeiro) {
-      return { temporada: primeiro.temporada, numero: primeiro.numero, comecado: false };
-    }
-    return null;
+    return primeiro ? { temporada: primeiro.temporada, numero: primeiro.numero, comecado: false } : null;
   }, [aberto, episodiosAgrupados]);
 
   const temporadaAtiva = temporada > 0 && temporadas.includes(temporada)
     ? temporada
-    : (partida?.temporada ?? temporadas[0] ?? 1);
+    : (partidaSerie?.temporada ?? temporadas[0] ?? 1);
 
-  const idTmdb = idDoAberto(aberto);
+  // Detalhes dos episódios da temporada (TMDB)
+  const idTmdbAberto = aberto && generos ? idDaFicha(generos, aberto.titulo, aberto.serie) : null;
   useEffect(() => {
-    if (!aberto?.serie || !idTmdb || temporadaAtiva <= 0) return;
+    if (!aberto?.serie || !idTmdbAberto || temporadaAtiva <= 0) return;
     let cancelado = false;
-    episodiosDaTemporada(idTmdb, temporadaAtiva)
+    episodiosDaTemporada(idTmdbAberto, temporadaAtiva)
       .then((lista) => {
         if (cancelado) return;
         const mapa: Record<number, EpisodioTmdb> = {};
         for (const ep of lista) mapa[ep.numero] = ep;
         setDetalhesTemporada(mapa);
       })
-      .catch(() => {
-        if (!cancelado) setDetalhesTemporada({});
-      });
+      .catch(() => { if (!cancelado) setDetalhesTemporada({}); });
     return () => { cancelado = true; };
-  }, [aberto, idTmdb, temporadaAtiva]);
+  }, [aberto, idTmdbAberto, temporadaAtiva]);
 
-  const versoesDisponiveis = useMemo(() => {
-    const set = new Set<string>();
-    for (const ep of episodiosAgrupados) {
-      for (const v of ep.versoes) set.add(v);
-    }
-    return [...set].sort((a, b) => (a === 'leg' ? 1 : 0) - (b === 'leg' ? 1 : 0));
-  }, [episodiosAgrupados]);
-
-  const daTemporada = useMemo(() => {
+  // Lista da temporada ativa
+  const episodiosDaTempAtiva = useMemo(() => {
     const daTemp = episodiosAgrupados.filter((e) => e.temporada === temporadaAtiva);
     if (versaoFiltro === 'todas') return daTemp;
     return daTemp.filter((e) => e.versoes.includes(versaoFiltro));
   }, [episodiosAgrupados, temporadaAtiva, versaoFiltro]);
 
-  const rolarTrilha = useCallback((passo: number) => {
-    if (trilhaEpisodiosRef.current) {
-      trilhaEpisodiosRef.current.scrollBy({ left: passo, behavior: 'smooth' });
+  const versoesDisponiveis = useMemo(() => {
+    const s = new Set<string>();
+    for (const ep of episodiosAgrupados) {
+      for (const v of ep.versoes) s.add(v);
     }
-  }, []);
+    return [...s].sort((a, b) => (a === 'leg' ? 1 : 0) - (b === 'leg' ? 1 : 0));
+  }, [episodiosAgrupados]);
+
+  // Itens da grade de busca / explorar
+  const [buscaAchados, setBuscaAchados] = useState<Achado[]>([]);
+  const buscaAtiva = termoBusca.trim().length >= 2;
+  useEffect(() => {
+    const termo = termoBusca.trim();
+    if (termo.length < 2) return;
+    let vivo = true;
+    const espera = setTimeout(() => {
+      buscar(termo).then((res) => { if (vivo && res) setBuscaAchados(res); });
+    }, 200);
+    return () => { vivo = false; clearTimeout(espera); };
+  }, [termoBusca]);
+
+  // Itens para a Grade Explorar
+  const itensGrade = useMemo<Item[]>(() => {
+    if (buscaAtiva) {
+      return buscaAchados
+        .filter((a) => {
+          if (!secao) return true;
+          if (secao === 'filmes') return !a.serie;
+          if (secao === 'series') return a.serie;
+          return true;
+        })
+        .map((a) => ({
+          chave: `${a.serie ? 's' : 'f'}:${a.titulo}:${a.ano}`,
+          titulo: a.titulo,
+          rotulo: a.nomeCompleto || a.titulo,
+          serie: a.serie,
+          letra: a.letra,
+          ano: a.ano,
+        }));
+    }
+
+    if (secao === 'animes') {
+      return animesColecao
+        .filter((s) => !generoFiltro || temGenero(generos!, s.titulo, true, generoFiltro))
+        .map((s) => ({
+          chave: `animes:${s.tmdbId}:${s.titulo}`,
+          titulo: s.titulo,
+          rotulo: s.nomeCompleto,
+          serie: true,
+          letra: '#',
+          ano: s.ano,
+          colecao: s,
+        }));
+    }
+
+    if (secao === 'doramas') {
+      return doramasColecao
+        .filter((s) => !generoFiltro || temGenero(generos!, s.titulo, true, generoFiltro))
+        .map((s) => ({
+          chave: `doramas:${s.tmdbId}:${s.titulo}`,
+          titulo: s.titulo,
+          rotulo: s.nomeCompleto,
+          serie: true,
+          letra: '#',
+          ano: s.ano,
+          colecao: s,
+        }));
+    }
+
+    const base = secao === 'series' ? todasSeries : todosFilmes;
+    let filtrados = base;
+    if (letraFiltro) {
+      filtrados = filtrados.filter((a) => a.letra === letraFiltro);
+    }
+    if (generoFiltro && generos) {
+      filtrados = filtrados.filter((a) => temGenero(generos, a.titulo, secao === 'series', generoFiltro));
+    }
+    return filtrados.map((a) => ({
+      chave: `${a.serie ? 's' : 'f'}:${a.titulo}:${a.ano}`,
+      titulo: a.titulo,
+      rotulo: a.nomeCompleto || a.titulo,
+      serie: a.serie,
+      letra: a.letra,
+      ano: a.ano,
+    }));
+  }, [buscaAtiva, buscaAchados, secao, animesColecao, doramasColecao, todasSeries, todosFilmes, letraFiltro, generoFiltro, generos]);
 
   return (
-    <>
     <div className="vod-catalog">
-      <header className="vod-header">
-        <button className="vod-voltar" onClick={onBack} aria-label="Voltar">←</button>
-        <div className="vod-abas">
+      {/* ── Fundo Do Destaque (Cinema Backdrop) ── */}
+      <div className="vod-fundo-destaque" aria-hidden="true">
+        {heroiAtual.fundo && (
+          <img
+            key={heroiAtual.fundo}
+            src={heroiAtual.fundo}
+            alt=""
+            referrerPolicy="no-referrer"
+            className={heroiAtual.isIdle ? 'idle' : ''}
+          />
+        )}
+        <div className="vod-fundo-destaque-veu-horiz" />
+        <div className="vod-fundo-destaque-veu-vert" />
+      </div>
+
+      {/* ── Hero Destaque Topo (DestaqueTopo) ── */}
+      <header className="vod-destaque-topo">
+        <h1 className="vod-destaque-titulo">{heroiAtual.titulo}</h1>
+        {heroiAtual.selos.length > 0 && (
+          <div className="vod-destaque-meta">
+            {heroiAtual.selos.map((s, idx) => (
+              <span key={idx} className={s.startsWith('★') ? 'com-nota' : ''}>
+                {s}
+              </span>
+            ))}
+          </div>
+        )}
+        {heroiAtual.sinopse && (
+          <p className="vod-destaque-sinopse">{heroiAtual.sinopse}</p>
+        )}
+      </header>
+
+      {/* ── Barra de Navegação / Sub-Categorias ── */}
+      <nav className="vod-sub-barra" aria-label="Subcategorias do On Demand">
+        <div className="vod-sub-barra-pills">
+          {(secao !== null || modo === 'explorar') ? (
+            <button
+              className="vod-sub-pill vod-sub-pill-voltar"
+              onClick={() => {
+                if (modo === 'explorar' && secao === null) setModo('fileiras');
+                else if (secao !== null) { setSecao(null); setModo('fileiras'); }
+                else onBack();
+              }}
+              title="Voltar"
+            >
+              ‹ Voltar
+            </button>
+          ) : (
+            <button
+              className="vod-sub-pill vod-sub-pill-voltar"
+              onClick={onBack}
+              title="Voltar ao início"
+            >
+              ‹ Início
+            </button>
+          )}
           <button
-            className={aba === 'inicio' ? 'ativa' : ''}
-            onClick={() => { setAba('inicio'); setAberto(null); setTermo(''); }}
+            className={`vod-sub-pill${secao === null ? ' ativa' : ''}`}
+            onClick={() => { setSecao(null); setModo('fileiras'); }}
           >
-            Início
+            On Demand
           </button>
           <button
-            className={aba === 'filmes' ? 'ativa' : ''}
-            onClick={() => { setAba('filmes'); setAberto(null); }}
+            className={`vod-sub-pill${secao === 'filmes' ? ' ativa' : ''}`}
+            onClick={() => { setSecao('filmes'); setModo('fileiras'); }}
           >
             Filmes
           </button>
           <button
-            className={aba === 'series' ? 'ativa' : ''}
-            onClick={() => { setAba('series'); setAberto(null); }}
+            className={`vod-sub-pill${secao === 'series' ? ' ativa' : ''}`}
+            onClick={() => { setSecao('series'); setModo('fileiras'); }}
           >
             Séries
           </button>
           <button
-            className={aba === 'animes' ? 'ativa' : ''}
-            onClick={() => { setAba('animes'); setAberto(null); setTermo(''); setLetra('A'); }}
+            className={`vod-sub-pill${secao === 'animes' ? ' ativa' : ''}`}
+            onClick={() => { setSecao('animes'); setModo('fileiras'); }}
           >
             Animes
           </button>
           <button
-            className={aba === 'doramas' ? 'ativa' : ''}
-            onClick={() => { setAba('doramas'); setAberto(null); setTermo(''); setLetra('A'); }}
+            className={`vod-sub-pill${secao === 'doramas' ? ' ativa' : ''}`}
+            onClick={() => { setSecao('doramas'); setModo('fileiras'); }}
           >
             Doramas
           </button>
           {isAdultUnlocked && (
             <button
-              className={aba === 'extra' ? 'ativa' : ''}
-              onClick={() => { setAba('extra'); setAberto(null); setTermo(''); }}
+              className={`vod-sub-pill${secao === 'extra' ? ' ativa' : ''}`}
+              onClick={() => { setSecao('extra'); setModo('explorar'); }}
             >
               18+
             </button>
           )}
         </div>
-        <input
-          className="vod-busca"
-          type="search"
-          placeholder={aba === 'extra' ? 'Buscar no 18+…'
-            : eColecao(aba) ? `Buscar em ${aba}…`
-            : 'Buscar em todo o acervo…'}
-          value={termo}
-          onChange={(e) => setTermo(e.target.value)}
-        />
-        {/* Esta tela não usa o cabeçalho do site, e é onde se passa mais tempo:
-            os mesmos dois atalhos precisam estar aqui também. */}
-        <a
-          className="vod-link"
-          href="https://discord.gg/8DKqT3xJvD"
-          target="_blank"
-          rel="noreferrer noopener"
-          title="Comunidade no Discord"
-          aria-label="Comunidade no Discord"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M20.317 4.369A19.79 19.79 0 0 0 16.558 3c-.164.293-.355.686-.487.998a18.27 18.27 0 0 0-4.14 0A12.6 12.6 0 0 0 11.437 3a19.74 19.74 0 0 0-3.76 1.369C3.29 10.02 2.24 15.53 2.76 20.96a19.9 19.9 0 0 0 5.99 3.04c.484-.66.915-1.362 1.286-2.1a12.9 12.9 0 0 1-2.025-.973c.17-.124.336-.254.496-.388 3.9 1.79 8.12 1.79 11.973 0 .162.134.328.264.497.388-.647.38-1.325.706-2.03.974.372.737.802 1.439 1.286 2.099a19.86 19.86 0 0 0 5.994-3.04c.6-6.28-1.06-11.74-4.91-16.59ZM9.68 17.65c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.951-2.42 2.157-2.42 1.213 0 2.18 1.096 2.157 2.42 0 1.334-.951 2.42-2.157 2.42Zm7.64 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.951-2.42 2.157-2.42 1.213 0 2.18 1.096 2.157 2.42 0 1.334-.944 2.42-2.157 2.42Z" />
-          </svg>
-        </a>
-        <a
-          className="vod-link"
-          href="https://github.com/gabrielsaimo/SaimoPlayer"
-          target="_blank"
-          rel="noreferrer noopener"
-          title="Lista de canais no GitHub"
-          aria-label="Lista de canais no GitHub"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2.1c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.26 5.69.41.36.78 1.06.78 2.15v3.19c0 .31.21.67.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z" />
-          </svg>
-        </a>
-      </header>
 
-      {/* O catálogo não tem gênero: ele vem de um arquivo publicado à parte.
-          Por isso a régua só existe depois que esse arquivo chega — oferecer um
-          filtro que devolve vazio é pior que não oferecer. */}
-      {aba !== 'inicio' && generos && generos.todos.length > 0 && (
-        <nav className="vod-generos">
-          <button className={genero === '' ? 'ativa' : ''} onClick={() => setGenero('')}>Todos</button>
-          {generos.todos.map((g) => (
-            <button
-              key={g}
-              className={genero === g ? 'ativa' : ''}
-              onClick={() => setGenero(genero === g ? '' : g)}
-            >
-              {g}
-            </button>
-          ))}
-        </nav>
-      )}
+        <div className="vod-sub-barra-acoes">
+          <label className="vod-sub-busca" title="Buscar no catálogo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+            <input
+              type="search"
+              placeholder="Buscar título…"
+              value={termoBusca}
+              onChange={(e) => {
+                setTermoBusca(e.target.value);
+                if (e.target.value.trim().length >= 2) setModo('explorar');
+              }}
+            />
+          </label>
 
-      {/* A letra sobrou só no 18+: ele não entra no índice de busca, então
-          continua sendo pedido uma letra de cada vez. */}
-      {aba === 'extra' && !buscaAtiva && (
-        <nav className="vod-letras">
-          {LETRAS.map((l) => {
-            const g = contagem.get(l);
-            const quantos = g?.reservados ?? 0;
+          <button
+            className={`vod-sub-btn-modo${modo === 'explorar' ? ' ativo' : ''}`}
+            onClick={() => setModo((m) => (m === 'fileiras' ? 'explorar' : 'fileiras'))}
+            title={modo === 'fileiras' ? 'Explorar grade A a Z' : 'Ver em fileiras'}
+          >
+            {modo === 'fileiras' ? 'A a Z 🔤' : 'Fileiras ▤'}
+          </button>
+        </div>
+      </nav>
+
+      {/* ── Exibição: FILEIRAS (Modo Principal) ── */}
+      {modo === 'fileiras' && (
+        <div className="vod-conteudo-fileiras">
+          {/* Fileira 1: Categorias (Quando na raiz On Demand) */}
+          {secao === null && (
+            <section className="vod-fileira">
+              <header className="vod-fileira-header">
+                <h2>Categorias</h2>
+              </header>
+              <div className="vod-fileira-trilho-wrapper">
+                <div className="vod-secoes-grid">
+                  {/* Filmes Card */}
+                  <button
+                    className="vod-card-secao secao-filmes"
+                    onClick={() => { setSecao('filmes'); setModo('fileiras'); }}
+                    onMouseEnter={() => setItemSobMouse({ tipo: 'f', titulo: 'Filmes', letra: '#', ano: '', capa: colagens.filmes[0] || '' })}
+                    onMouseLeave={() => setItemSobMouse(null)}
+                  >
+                    <div className="vod-card-secao-colagem">
+                      {colagens.filmes.map((c, i) => (
+                        <img key={i} src={c} alt="" loading="lazy" referrerPolicy="no-referrer" />
+                      ))}
+                    </div>
+                    <div className="vod-card-secao-veu" />
+                    <div className="vod-card-secao-info">
+                      <div className="vod-card-secao-icone" style={{ background: '#4fe3d0' }}>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm2 2v3h3V5H6zm5 0v3h3V5h-3zm5 0v3h3V5h-3zM4 10v4h16v-4H4zm2 6v3h3v-3H6zm5 0v3h3v-3h-3zm5 0v3h3v-3h-3z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3>Filmes</h3>
+                        <p>{contagens.filmes.toLocaleString('pt-BR')} títulos</p>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Séries Card */}
+                  <button
+                    className="vod-card-secao secao-series"
+                    onClick={() => { setSecao('series'); setModo('fileiras'); }}
+                    onMouseEnter={() => setItemSobMouse({ tipo: 's', titulo: 'Séries', letra: '#', ano: '', capa: colagens.series[0] || '' })}
+                    onMouseLeave={() => setItemSobMouse(null)}
+                  >
+                    <div className="vod-card-secao-colagem">
+                      {colagens.series.map((c, i) => (
+                        <img key={i} src={c} alt="" loading="lazy" referrerPolicy="no-referrer" />
+                      ))}
+                    </div>
+                    <div className="vod-card-secao-veu" />
+                    <div className="vod-card-secao-info">
+                      <div className="vod-card-secao-icone" style={{ background: '#7aa2ff' }}>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <rect x="2" y="7" width="20" height="15" rx="2" />
+                          <polyline points="17 2 12 7 7 2" fill="none" stroke="currentColor" strokeWidth="2" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3>Séries</h3>
+                        <p>{contagens.series.toLocaleString('pt-BR')} títulos</p>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Animes Card */}
+                  <button
+                    className="vod-card-secao secao-animes"
+                    onClick={() => { setSecao('animes'); setModo('fileiras'); }}
+                    onMouseEnter={() => setItemSobMouse({ tipo: 'a', titulo: 'Animes', letra: '#', ano: '', capa: colagens.animes[0] || '' })}
+                    onMouseLeave={() => setItemSobMouse(null)}
+                  >
+                    <div className="vod-card-secao-colagem">
+                      {colagens.animes.map((c, i) => (
+                        <img key={i} src={c} alt="" loading="lazy" referrerPolicy="no-referrer" />
+                      ))}
+                    </div>
+                    <div className="vod-card-secao-veu" />
+                    <div className="vod-card-secao-info">
+                      <div className="vod-card-secao-icone" style={{ background: '#ffb454' }}>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2l2.4 7.2h7.6l-6.2 4.5 2.4 7.3-6.2-4.5-6.2 4.5 2.4-7.3-6.2-4.5h7.6z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3>Animes</h3>
+                        <p>{contagens.animes.toLocaleString('pt-BR')} títulos</p>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Doramas Card */}
+                  <button
+                    className="vod-card-secao secao-doramas"
+                    onClick={() => { setSecao('doramas'); setModo('fileiras'); }}
+                    onMouseEnter={() => setItemSobMouse({ tipo: 'd', titulo: 'Doramas', letra: '#', ano: '', capa: colagens.doramas[0] || '' })}
+                    onMouseLeave={() => setItemSobMouse(null)}
+                  >
+                    <div className="vod-card-secao-colagem">
+                      {colagens.doramas.map((c, i) => (
+                        <img key={i} src={c} alt="" loading="lazy" referrerPolicy="no-referrer" />
+                      ))}
+                    </div>
+                    <div className="vod-card-secao-veu" />
+                    <div className="vod-card-secao-info">
+                      <div className="vod-card-secao-icone" style={{ background: '#ff7eb6' }}>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3>Doramas</h3>
+                        <p>{contagens.doramas.toLocaleString('pt-BR')} títulos</p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Continue assistindo */}
+          {itensAndamento.length > 0 && (
+            <CarrosselFileira
+              titulo="Continue assistindo"
+              itens={itensAndamento}
+              aoAbrir={abrirItemDestaque}
+              aoPassar={setItemSobMouse}
+            />
+          )}
+
+          {/* Destaques do catálogo (Filtrados por seção ou todos) */}
+          {filasDestaque.map((fila) => {
+            const itensDaFila = secao
+              ? fila.itens.filter((i) => (secao === 'filmes' ? i.tipo === 'f' : secao === 'series' ? i.tipo === 's' : secao === 'animes' ? i.tipo === 'a' : i.tipo === 'd'))
+              : fila.itens;
+            if (itensDaFila.length < 3) return null;
             return (
-              <button
-                key={l}
-                className={l === letra ? 'ativa' : ''}
-                disabled={gavetas.length > 0 && quantos === 0}
-                onClick={() => { setLetra(l); setAberto(null); }}
-                title={quantos ? `${quantos} títulos` : undefined}
-              >
-                {l}
-              </button>
+              <CarrosselFileira
+                key={fila.titulo}
+                titulo={fila.titulo}
+                itens={itensDaFila}
+                aoAbrir={abrirItemDestaque}
+                aoPassar={setItemSobMouse}
+              />
             );
           })}
-        </nav>
-      )}
 
-      {erro && <p className="vod-erro">{erro}</p>}
+          {/* Filmes por Gênero (Gêneros dinâmicos do acervo) */}
+          {secao === null && fileirasDeGenero.map((fg) => (
+            <CarrosselFileira
+              key={fg.genero}
+              titulo={fg.titulo}
+              itens={fg.itens}
+              aoAbrir={abrirItemDestaque}
+              aoPassar={setItemSobMouse}
+              verTodos={() => {
+                setSecao('filmes');
+                setGeneroFiltro(fg.genero);
+                setModo('explorar');
+              }}
+              rotuloVerTodos={`Todos de ${fg.genero}`}
+            />
+          ))}
 
-      {(aba !== 'inicio' || buscandoNoInicio) && carregando && <p className="vod-aviso">Carregando…</p>}
-
-      {aba === 'inicio' && !buscandoNoInicio ? (
-        <Fileiras filas={filasComContinuar} termo={termo} aoAbrir={abrirDestaque} />
-      ) : (
-      <div className="vod-grade">
-        {resultadosPorGenero.slice(0, visiveis).map((item) => (
-          <button key={item.chave} className="vod-card" onClick={() => abrir(item)}>
-            <Poster titulo={item.titulo} serie={item.serie} fichas={generos} />
-            <span className="vod-card-titulo">{item.rotulo}</span>
-          </button>
-        ))}
-      </div>
-      )}
-
-      <div ref={sentinela} className="vod-sentinela" aria-hidden="true" />
-
-      {(aba !== 'inicio' || buscandoNoInicio) && !carregando && resultadosPorGenero.length === 0 && (
-        <p className="vod-aviso">Nada por aqui. Tente outra busca.</p>
-      )}
-    </div>
-    {aberto && createPortal(
-      <div className={`vod-modal-fundo${playerOpen ? ' vod-modal-suspenso' : ''}`} onMouseDown={playerOpen ? undefined : fecharModal}>
-        <section
-          className="vod-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="vod-modal-titulo"
-          onMouseDown={(event) => event.stopPropagation()}
-        >
-          {ator ? (
-            <div className="vod-ator">
-              <div className="vod-ator-barra">
-                <button className="vod-ficha-voltar" onClick={() => setAtor(null)}>
-                  ‹ Voltar à ficha
-                </button>
-                <button className="vod-modal-fechar" onClick={fecharModal} aria-label="Fechar">×</button>
-              </div>
-              <header className="vod-ator-topo">
-                <div className="vod-ator-foto">
-                  {(perfilDoAtor?.foto ?? ator.foto)
-                    ? <img src={perfilDoAtor?.foto ?? ator.foto ?? ''} alt="" />
-                    : <span aria-hidden="true">{ator.nome.charAt(0)}</span>}
+          {/* Seção Explorar de A a Z */}
+          <section className="vod-fileira">
+            <header className="vod-fileira-header">
+              <h2>Explorar de A a Z</h2>
+            </header>
+            <div className="vod-secoes-grid">
+              <button
+                className="vod-card-secao secao-az"
+                onClick={() => { setSecao('filmes'); setModo('explorar'); }}
+              >
+                <div className="vod-card-secao-info">
+                  <div className="vod-card-secao-icone" style={{ background: '#4fe3d0' }}>
+                    <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+                  </div>
+                  <div>
+                    <h3>Filmes de A a Z</h3>
+                    <p>{contagens.filmes.toLocaleString('pt-BR')} títulos no índice</p>
+                  </div>
                 </div>
-                <div className="vod-ator-quem">
-                  <h2 id="vod-modal-titulo">{perfilDoAtor?.nome || ator.nome}</h2>
-                  {!!perfilDoAtor?.dados && <p className="vod-ator-dados">{perfilDoAtor.dados}</p>}
-                  {!!perfilDoAtor?.biografia && <p className="vod-ator-bio">{perfilDoAtor.biografia}</p>}
+              </button>
+
+              <button
+                className="vod-card-secao secao-az"
+                onClick={() => { setSecao('series'); setModo('explorar'); }}
+              >
+                <div className="vod-card-secao-info">
+                  <div className="vod-card-secao-icone" style={{ background: '#7aa2ff' }}>
+                    <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+                  </div>
+                  <div>
+                    <h3>Séries de A a Z</h3>
+                    <p>{contagens.series.toLocaleString('pt-BR')} temporadas completas</p>
+                  </div>
                 </div>
-              </header>
-              <h3 className="vod-ator-contagem">
-                {filmografia === null
-                  ? 'Procurando no acervo…'
-                  : filmografia.length === 1 ? '1 título no acervo' : `${filmografia.length} títulos no acervo`}
-              </h3>
-              {filmografia?.length === 0 && (
-                <p className="vod-ficha-nota">Aparece aqui só o que dá para assistir neste site.</p>
-              )}
-              {!!filmografia?.length && (
-                <ul className="vod-ator-grade">
-                  {filmografia.map(({ item, capa, papel }) => (
-                    <li key={item.chave}>
-                      <button onClick={() => { setAtor(null); abrir(item); }}>
-                        <span className="vod-ator-capa">
-                          {capa
-                            ? <img src={capa} alt="" loading="lazy" />
-                            : <span aria-hidden="true">{item.titulo.charAt(0)}</span>}
-                        </span>
-                        <strong>{item.rotulo}</strong>
-                        <small>{papel || (item.serie ? 'Série' : 'Filme')}</small>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              </button>
+
+              <button
+                className="vod-card-secao secao-az"
+                onClick={() => { setSecao('animes'); setModo('explorar'); }}
+              >
+                <div className="vod-card-secao-info">
+                  <div className="vod-card-secao-icone" style={{ background: '#ffb454' }}>
+                    <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+                  </div>
+                  <div>
+                    <h3>Animes de A a Z</h3>
+                    <p>{contagens.animes.toLocaleString('pt-BR')} séries catalogadas</p>
+                  </div>
+                </div>
+              </button>
+
+              <button
+                className="vod-card-secao secao-az"
+                onClick={() => { setSecao('doramas'); setModo('explorar'); }}
+              >
+                <div className="vod-card-secao-info">
+                  <div className="vod-card-secao-icone" style={{ background: '#ff7eb6' }}>
+                    <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+                  </div>
+                  <div>
+                    <h3>Doramas de A a Z</h3>
+                    <p>{contagens.doramas.toLocaleString('pt-BR')} produções asiáticas</p>
+                  </div>
+                </div>
+              </button>
             </div>
-          ) : (
-            <>
-              {/* O topo da ficha: a imagem larga do filme ao fundo, a capa e
-                  os números, como na TV Box, no Mac e no Windows. */}
-              <div className="vod-hero">
-                {ficha?.fundo && <img className="vod-hero-fundo" src={ficha.fundo} alt="" />}
-                <div className="vod-hero-veu" aria-hidden="true" />
-                <button className="vod-modal-fechar vod-hero-fechar" onClick={fecharModal} aria-label="Fechar">×</button>
-                <div className="vod-hero-corpo">
-                  <div className="vod-hero-capa">
-                    {capaDoAberto
-                      ? <img src={capaDoAberto} alt="" />
-                      : <span aria-hidden="true">{aberto.titulo.charAt(0)}</span>}
-                  </div>
-                  <div className="vod-hero-info">
-                    <span className="vod-modal-tipo">
-                      {aberto.serie
-                        ? (aberto.colecao
-                          ? (aberto.chave.startsWith('animes:') ? 'Anime' : 'Dorama')
-                          : 'Série')
-                        : 'Filme'}
-                    </span>
-                    <h2 id="vod-modal-titulo">{semAno(aberto.titulo)}</h2>
-                    {!!ficha?.frase && <p className="vod-ficha-frase">{ficha.frase}</p>}
-                    {ficha && !fichaVazia(ficha) && (
-                      <div className="vod-ficha-numeros">
-                        {ficha.nota > 0 && <span className="vod-ficha-nota-tmdb">★ {ficha.nota.toFixed(1)}</span>}
-                        {!!ficha.ano && <span>{ficha.ano}</span>}
-                        {!!ficha.duracao && (
-                          <span>
-                            {aberto.serie
-                              ? `${ficha.duracao} min/ep`
-                              : ficha.duracao >= 60
-                                ? `${Math.floor(ficha.duracao / 60)}h ${String(ficha.duracao % 60).padStart(2, '0')}min`
-                                : `${ficha.duracao} min`}
-                          </span>
-                        )}
-                        {!!ficha.temporadas && (
-                          <span>{ficha.temporadas} temporada{ficha.temporadas === 1 ? '' : 's'}</span>
-                        )}
-                        {!!ficha.classificacao && (
-                          <span className={`vod-ficha-classificacao vod-cl-${ficha.classificacao.toLowerCase()}`}>
-                            {ficha.classificacao}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                    {!!ficha?.generos.length && (
-                      <p className="vod-ficha-generos">{ficha.generos.join(' · ')}</p>
-                    )}
-                    <div className="vod-hero-botoes">
-                      {aberto.serie ? (
-                        <button
-                          className="vod-botao-assistir"
-                          disabled={!temporadas.length}
-                          onClick={() => {
-                            if (partida) {
-                              const epPartida = episodiosAgrupados.find(
-                                (e) => e.temporada === partida.temporada && e.numero === partida.numero,
-                              );
-                              if (epPartida) {
-                                tocarEpisodio(epPartida);
-                                return;
-                              }
-                            }
-                            if (episodiosAgrupados[0]) {
-                              tocarEpisodio(episodiosAgrupados[0]);
-                            }
-                          }}
-                        >
-                          ▶ {partida
-                            ? (partida.comecado
-                              ? `Continuar T${partida.temporada} E${partida.numero}`
-                              : `Assistir T${partida.temporada} E${partida.numero}`)
-                            : 'Assistir'}
-                        </button>
-                      ) : (
-                        <button
-                          className="vod-botao-assistir"
-                          disabled={!fontesAbertas?.length}
-                          onClick={() => {
-                            if (fontesAbertas?.length) {
-                              tocarFilme(aberto.titulo, fontesAbertas);
-                            }
-                          }}
-                        >
-                          ▶ Assistir
-                        </button>
-                      )}
-                      {(() => {
-                        const origem = origemDe(aberto);
-                        if (!origem) return null;
-                        const fav = ehFavorito(origem);
-                        return (
-                          <button
-                            className={`vod-botao-favorito${fav ? ' ativo' : ''}`}
-                            onClick={() => alternarFavorito(origem)}
-                            aria-pressed={fav}
-                          >
-                            {fav ? '♥ Nos favoritos' : '♡ Favoritar'}
-                          </button>
-                        );
-                      })()}
-                    </div>
-                    {fichaCarregando && !ficha && <p className="vod-aviso">Buscando a ficha…</p>}
-                    {!!ficha?.sinopse && <p className="vod-ficha-sinopse">{ficha.sinopse}</p>}
-                    {ficha && (
-                      <dl className="vod-ficha-creditos">
-                        {!!ficha.assinatura && (
-                          <>
-                            <dt>{aberto.serie ? 'Criação' : 'Direção'}</dt>
-                            <dd>{ficha.assinatura}</dd>
-                          </>
-                        )}
-                        {!!ficha.roteiro && (<><dt>Roteiro</dt><dd>{ficha.roteiro}</dd></>)}
-                        {!!ficha.produtora && (<><dt>Produção</dt><dd>{ficha.produtora}</dd></>)}
-                      </dl>
-                    )}
-                  </div>
-                </div>
-              </div>
+          </section>
+        </div>
+      )}
 
-              <div className="vod-modal-corpo">
-              {!!ficha?.elenco.length && (
-                <div className="vod-ficha-elenco">
-                  <h3>Elenco</h3>
-                  <ul>
-                    {ficha.elenco.map((pessoa) => (
-                      <li key={pessoa.id}>
-                        <button
-                          onClick={() => setAtor(pessoa)}
-                          title={`Ver o que ${pessoa.nome} tem no acervo`}
-                        >
-                          {pessoa.foto
-                            ? <img src={pessoa.foto} alt="" loading="lazy" />
-                            : <span className="vod-ficha-sem-foto" aria-hidden="true">{pessoa.nome.charAt(0)}</span>}
-                          <strong>{pessoa.nome}</strong>
-                          <small>{pessoa.papel}</small>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {modalCarregando && <p className="vod-aviso">Carregando opções…</p>}
-              {erroModal && <p className="vod-erro">{erroModal}</p>}
-
-          {!aberto.serie && fontesAbertas && fontesAbertas.length > 0 && (
-            <div className="vod-fontes">
-              <p>Escolha a versão e a fonte:</p>
-              {fontesAbertas.map((fonte, indice) => (
+      {/* ── Exibição: EXPLORAR / GRADE A-Z (Modo Grade) ── */}
+      {modo === 'explorar' && (
+        <div className="vod-conteudo-grade">
+          {/* Barra de Letras A-Z */}
+          {secao !== 'animes' && secao !== 'doramas' && (
+            <div className="vod-letras-barra" role="tablist" aria-label="Letras do alfabeto">
+              {LETRAS.map((l) => (
                 <button
-                  key={`${fonte.url}-${indice}`}
-                  onClick={() => tocarFilme(
-                    aberto.titulo,
-                    fontesAbertas,
-                    fonte.url,
-                  )}
+                  key={l}
+                  className={`vod-letra-pill${letraFiltro === l ? ' ativa' : ''}`}
+                  onClick={() => setLetraFiltro(l)}
                 >
-                  <span>
-                    <strong>{fonte.versao === 'leg' ? 'Legendado' : 'Dublado'}</strong>
-                    <small>{nomeDaFonte(fonte.url)}</small>
-                  </span>
-                  <em>Fonte {indice + 1}</em>
+                  {l}
                 </button>
               ))}
             </div>
           )}
 
-          {aberto.serie && temporadas.length > 0 && (
-            <div className="vod-episodios-bloco" ref={episodiosRef}>
-              <div className="vod-episodios-cabecalho">
-                <div>
-                  <h3>Episódios</h3>
-                  <small>{filmesDaSerie.length} episódio{filmesDaSerie.length === 1 ? '' : 's'}</small>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  {versoesDisponiveis.length > 1 && (
-                    <div className="vod-pilulas-grupo">
-                      <button
-                        className={`vod-pilula vod-pilula-versao${versaoFiltro === 'todas' ? ' ativa' : ''}`}
-                        onClick={() => setVersaoFiltro('todas')}
-                      >
-                        Todas
-                      </button>
-                      {versoesDisponiveis.map((v) => (
-                        <button
-                          key={v}
-                          className={`vod-pilula vod-pilula-versao${versaoFiltro === v ? ' ativa' : ''}`}
-                          onClick={() => setVersaoFiltro(v)}
-                        >
-                          {v === 'leg' ? 'Legendado' : 'Dublado'}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                  <div className="vod-episodios-setas">
-                    <button
-                      className="vod-seta-btn"
-                      onClick={() => rolarTrilha(-580)}
-                      aria-label="Episódios anteriores"
-                      title="Episódios anteriores"
-                    >
-                      ‹
-                    </button>
-                    <button
-                      className="vod-seta-btn"
-                      onClick={() => rolarTrilha(580)}
-                      aria-label="Próximos episódios"
-                      title="Próximos episódios"
-                    >
-                      ›
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Pílulas de Temporadas */}
-              {temporadas.length > 1 && (
-                <div className="vod-pilulas-grupo" role="tablist" aria-label="Temporadas">
-                  {temporadas.map((t) => {
-                    const ativa = t === temporadaAtiva;
-                    const totalNaTemp = episodiosAgrupados.filter((e) => e.temporada === t).length;
-                    return (
-                      <button
-                        key={t}
-                        className={`vod-pilula${ativa ? ' ativa' : ''}`}
-                        onClick={() => setTemporada(t)}
-                        role="tab"
-                        aria-selected={ativa}
-                      >
-                        Temporada {t} ({totalNaTemp})
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Trilha horizontal de cartões 16:9 de episódios */}
-              <div className="vod-episodios-trilha" ref={trilhaEpisodiosRef}>
-                {daTemporada.map((e) => {
-                  const id = `series-${aberto.chave}-s${e.temporada}e${e.numero}`;
-                  const infoEp = detalhesTemporada[e.numero];
-                  const nome = infoEp?.nome && infoEp.nome.trim() ? infoEp.nome : `Episódio ${e.numero}`;
-                  const duracao = infoEp?.duracao ? `${infoEp.duracao} min` : null;
-                  const versoesRotulo = e.versoes.map((v) => v === 'leg' ? 'Legendado' : 'Dublado').join(' / ');
-                  const ehDestaque = (partida?.temporada === e.temporada && partida?.numero === e.numero) || ultimoEpisodioId === id;
-                  const ehNoPlayer = activeMovie?.id === id;
-
-                  let progressoFracao = 0;
-                  try {
-                    const salvo = localStorage.getItem(`movie-progress-${id}`);
-                    if (salvo) {
-                      const parsed = JSON.parse(salvo);
-                      if (parsed.duration > 0 && parsed.currentTime > 0) {
-                        progressoFracao = Math.min(1, parsed.currentTime / parsed.duration);
-                      }
-                    }
-                  } catch {
-                    /* progresso opcional */
-                  }
-                  const assistido = progressoFracao >= 0.95;
-
-                  return (
-                    <button
-                      key={`${e.temporada}-${e.numero}`}
-                      className={`vod-ep-card${ehNoPlayer ? ' no-player' : ''}${ehDestaque ? ' destaque' : ''}`}
-                      onClick={() => tocarEpisodio(e)}
-                    >
-                      <div className="vod-ep-thumb">
-                        {infoEp?.imagem ? (
-                          <img src={infoEp.imagem} alt="" loading="lazy" />
-                        ) : (
-                          <span className="vod-ep-numero-grande">{e.numero}</span>
-                        )}
-                        {ehDestaque && (
-                          <span className="vod-ep-badge continuar">
-                            {ehNoPlayer ? '● No ar' : partida?.comecado ? '▶ Continuar' : '▶ Comece aqui'}
-                          </span>
-                        )}
-                        {assistido && (
-                          <span className="vod-ep-badge assistido">✓ Assistido</span>
-                        )}
-                        {progressoFracao > 0 && !assistido && (
-                          <div className="vod-ep-progresso-trilho">
-                            <div
-                              className="vod-ep-progresso-barra"
-                              style={{ width: `${Math.round(progressoFracao * 100)}%` }}
-                            />
-                          </div>
-                        )}
-                        <div className="vod-ep-play-overlay">
-                          <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div className="vod-ep-info">
-                        <h4 className="vod-ep-titulo">{e.numero}. {nome}</h4>
-                        <span className="vod-ep-meta">
-                          {[duracao, versoesRotulo].filter(Boolean).join(' · ')}
-                        </span>
-                        {infoEp?.sinopse && (
-                          <p className="vod-ep-sinopse">{infoEp.sinopse}</p>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
+          {/* Barra de Gêneros */}
+          {generos && generos.todos.length > 0 && (
+            <div className="vod-generos-barra">
+              <button
+                className={`vod-genero-pill${generoFiltro === '' ? ' ativa' : ''}`}
+                onClick={() => setGeneroFiltro('')}
+              >
+                Todos
+              </button>
+              {generos.todos.map((g) => (
+                <button
+                  key={g}
+                  className={`vod-genero-pill${generoFiltro === g ? ' ativa' : ''}`}
+                  onClick={() => setGeneroFiltro(generoFiltro === g ? '' : g)}
+                >
+                  {g}
+                </button>
+              ))}
             </div>
           )}
-              </div>
-            </>
+
+          {/* Grade de Cartões */}
+          <div className="vod-grade-cards">
+            {itensGrade.slice(0, visiveis).map((item) => {
+              const capaSrc = generos ? capaDaFicha(generos, item.titulo, item.serie) : null;
+              const fav = ehFavorito({ tipo: item.serie ? 's' : 'f', titulo: item.titulo, letra: item.letra, ano: item.ano || '', capa: capaSrc || '' });
+              return (
+                <button
+                  key={item.chave}
+                  className="vod-card-poster"
+                  onClick={() => abrirItem(item)}
+                  onMouseEnter={() => setItemSobMouse({
+                    tipo: item.serie ? 's' : 'f',
+                    titulo: item.titulo,
+                    letra: item.letra,
+                    ano: item.ano || '',
+                    capa: capaSrc || '',
+                  })}
+                  onMouseLeave={() => setItemSobMouse(null)}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    alternarFavorito({
+                      tipo: item.serie ? 's' : 'f',
+                      titulo: item.titulo,
+                      letra: item.letra,
+                      ano: item.ano || '',
+                      capa: capaSrc || '',
+                    });
+                  }}
+                  title={item.rotulo}
+                >
+                  <div className="vod-card-poster-thumb">
+                    {capaSrc ? (
+                      <img src={capaSrc} alt={item.rotulo} loading="lazy" referrerPolicy="no-referrer" />
+                    ) : (
+                      <span className="vod-poster-letra">{item.titulo.charAt(0)}</span>
+                    )}
+                    {fav && <span className="vod-badge-favorito">★</span>}
+                  </div>
+                  <strong className="vod-card-poster-nome">{item.rotulo}</strong>
+                  {item.ano && <small className="vod-card-poster-ano">{item.ano}</small>}
+                </button>
+              );
+            })}
+          </div>
+
+          <div ref={sentinelaRef} className="vod-sentinela" aria-hidden="true" />
+
+          {itensGrade.length === 0 && !carregandoDados && (
+            <p className="vod-aviso">Nenhum título encontrado com os filtros atuais.</p>
           )}
-        </section>
-      </div>,
-      document.body,
-    )}
-    </>
+        </div>
+      )}
+
+      {/* ── MODAL FICHA DE FILME OU SÉRIE (FichaTela & SerieTela 100% macOS) ── */}
+      {aberto && createPortal(
+        <div
+          className={`vod-modal-backdrop${playerOpen ? ' vod-modal-suspenso' : ''}`}
+          onMouseDown={playerOpen ? undefined : fecharModal}
+        >
+          <section
+            className="vod-modal-janela"
+            role="dialog"
+            aria-modal="true"
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            {ator ? (
+              /* Ator / Filmografia (AtorTela) */
+              <div className="vod-ator-tela">
+                <div className="vod-ator-barra">
+                  <button className="vod-btn-voltar" onClick={() => setAtor(null)}>
+                    ‹ Voltar à ficha
+                  </button>
+                  <button className="vod-btn-fechar" onClick={fecharModal} aria-label="Fechar">×</button>
+                </div>
+                <header className="vod-ator-topo">
+                  <div className="vod-ator-foto">
+                    {perfilAchado?.perfil?.foto || ator.foto ? (
+                      <img src={perfilAchado?.perfil?.foto || ator.foto || ''} alt="" />
+                    ) : (
+                      <span aria-hidden="true">{ator.nome.charAt(0)}</span>
+                    )}
+                  </div>
+                  <div className="vod-ator-dados">
+                    <h2>{perfilAchado?.perfil?.nome || ator.nome}</h2>
+                    {perfilAchado?.perfil?.dados && <p className="vod-ator-info-extra">{perfilAchado.perfil.dados}</p>}
+                    {perfilAchado?.perfil?.biografia && <p className="vod-ator-biografia">{perfilAchado.perfil.biografia}</p>}
+                  </div>
+                </header>
+
+                <h3 className="vod-ator-contagem">
+                  {filmografiaAchada === null
+                    ? 'Procurando obras no acervo…'
+                    : filmografiaAchada.lista.length === 1
+                    ? '1 título neste acervo'
+                    : `${filmografiaAchada.lista.length} títulos neste acervo`}
+                </h3>
+
+                {filmografiaAchada?.lista && (
+                  <div className="vod-ator-grade">
+                    {filmografiaAchada.lista.map(({ item, capa, papel }) => (
+                      <button
+                        key={item.chave}
+                        className="vod-card-poster"
+                        onClick={() => { setAtor(null); abrirItem(item); }}
+                      >
+                        <div className="vod-card-poster-thumb">
+                          {capa ? (
+                            <img src={capa} alt="" loading="lazy" />
+                          ) : (
+                            <span className="vod-poster-letra">{item.titulo.charAt(0)}</span>
+                          )}
+                        </div>
+                        <strong className="vod-card-poster-nome">{item.rotulo}</strong>
+                        <small className="vod-card-poster-ano">{papel}</small>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Ficha do Filme ou Série */
+              <>
+                <div className="vod-ficha-hero">
+                  {ficha?.fundo && (
+                    <img className="vod-ficha-hero-fundo" src={ficha.fundo} alt="" referrerPolicy="no-referrer" />
+                  )}
+                  <div className="vod-ficha-hero-veu" />
+                  <button className="vod-btn-fechar" onClick={fecharModal} aria-label="Fechar">×</button>
+
+                  <div className="vod-ficha-hero-corpo">
+                    {/* Capa Vertical */}
+                    <div className="vod-ficha-hero-capa">
+                      {ficha?.capa || (generos ? capaDaFicha(generos, aberto.titulo, aberto.serie) : null) ? (
+                        <img
+                          src={ficha?.capa || capaDaFicha(generos!, aberto.titulo, aberto.serie) || ''}
+                          alt=""
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <span className="vod-poster-letra-grande">{aberto.titulo.charAt(0)}</span>
+                      )}
+                    </div>
+
+                    {/* Metadados e Ações */}
+                    <div className="vod-ficha-hero-detalhes">
+                      <span className="vod-ficha-tag-tipo">
+                        {aberto.serie ? (aberto.chave.startsWith('animes') ? 'ANIME' : aberto.chave.startsWith('doramas') ? 'DORAMA' : 'SÉRIE') : 'FILME'}
+                      </span>
+                      <h2 className="vod-ficha-titulo">{semAno(aberto.titulo)}</h2>
+                      {ficha?.frase && <p className="vod-ficha-frase">{ficha.frase}</p>}
+
+                      <div className="vod-ficha-selos">
+                        {ficha?.nota && ficha.nota > 0 ? (
+                          <span className="vod-selo-nota">★ {ficha.nota.toFixed(1)}</span>
+                        ) : null}
+                        {ficha?.ano && <span className="vod-selo">{ficha.ano}</span>}
+                        {ficha?.duracao ? (
+                          <span className="vod-selo">
+                            {aberto.serie ? `${ficha.duracao} min/ep` : ficha.duracao >= 60 ? `${Math.floor(ficha.duracao / 60)}h ${ficha.duracao % 60}m` : `${ficha.duracao} min`}
+                          </span>
+                        ) : null}
+                        {aberto.serie && (ficha?.temporadas || temporadas.length) ? (
+                          <span className="vod-selo">
+                            {(ficha?.temporadas || temporadas.length)} temporada{(ficha?.temporadas || temporadas.length) > 1 ? 's' : ''}
+                          </span>
+                        ) : null}
+                        {ficha?.classificacao && (
+                          <span className="vod-selo vod-selo-classificacao">{ficha.classificacao}</span>
+                        )}
+                      </div>
+
+                      {ficha?.generos && ficha.generos.length > 0 && (
+                        <p className="vod-ficha-generos-linha">{ficha.generos.join('  ·  ')}</p>
+                      )}
+
+                      {/* Botões de Ação */}
+                      <div className="vod-ficha-botoes">
+                        {aberto.serie ? (
+                          <button
+                            className="vod-btn-assistir"
+                            disabled={!temporadas.length}
+                            onClick={() => {
+                              if (partidaSerie) {
+                                const epPartida = episodiosAgrupados.find(
+                                  (e) => e.temporada === partidaSerie.temporada && e.numero === partidaSerie.numero,
+                                );
+                                if (epPartida) { tocarEpisodio(epPartida); return; }
+                              }
+                              if (episodiosAgrupados[0]) tocarEpisodio(episodiosAgrupados[0]);
+                            }}
+                          >
+                            ▶ {partidaSerie ? (partidaSerie.comecado ? `Continuar T${partidaSerie.temporada} E${partidaSerie.numero}` : `Assistir T${partidaSerie.temporada} E${partidaSerie.numero}`) : 'Assistir'}
+                          </button>
+                        ) : (
+                          <button
+                            className="vod-btn-assistir"
+                            disabled={!fontesAbertas?.length}
+                            onClick={() => {
+                              if (fontesAbertas?.length) tocarFilme(aberto.titulo, fontesAbertas);
+                            }}
+                          >
+                            ▶ Assistir
+                          </button>
+                        )}
+
+                        {(() => {
+                          const origemItem: ItemDestaque = {
+                            tipo: aberto.chave.startsWith('animes') ? 'a' : aberto.chave.startsWith('doramas') ? 'd' : aberto.serie ? 's' : 'f',
+                            titulo: aberto.titulo,
+                            letra: aberto.letra,
+                            ano: aberto.ano || '',
+                            capa: (generos && capaDaFicha(generos, aberto.titulo, aberto.serie)) || '',
+                          };
+                          const fav = ehFavorito(origemItem);
+                          return (
+                            <button
+                              className={`vod-btn-fav${fav ? ' ativo' : ''}`}
+                              onClick={() => alternarFavorito(origemItem)}
+                            >
+                              {fav ? '★ Nos favoritos' : '♡ Favoritar'}
+                            </button>
+                          );
+                        })()}
+                      </div>
+
+                      {ficha?.sinopse && (
+                        <p className="vod-ficha-sinopse">{ficha.sinopse}</p>
+                      )}
+
+                      {ficha && (
+                        <dl className="vod-ficha-creditos">
+                          {ficha.assinatura && (
+                            <>
+                              <dt>{aberto.serie ? 'Criação' : 'Direção'}</dt>
+                              <dd>{ficha.assinatura}</dd>
+                            </>
+                          )}
+                          {ficha.roteiro && (
+                            <>
+                              <dt>Roteiro</dt>
+                              <dd>{ficha.roteiro}</dd>
+                            </>
+                          )}
+                          {ficha.produtora && (
+                            <>
+                              <dt>Produção</dt>
+                              <dd>{ficha.produtora}</dd>
+                            </>
+                          )}
+                        </dl>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Conteúdo Inferior: Episódios de Série, Fontes e Elenco */}
+                <div className="vod-ficha-corpo">
+                  {/* Bloco de Episódios (Para Séries) */}
+                  {aberto.serie && temporadas.length > 0 && (
+                    <div className="vod-episodios-bloco" ref={trilhaEpisodiosRef}>
+                      <div className="vod-episodios-cabecalho">
+                        <div>
+                          <h3>Episódios</h3>
+                          <small>{filmesDaSerie.length} episódio{filmesDaSerie.length > 1 ? 's' : ''}</small>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          {versoesDisponiveis.length > 1 && (
+                            <div className="vod-pilulas-grupo">
+                              <button
+                                className={`vod-pilula vod-pilula-versao${versaoFiltro === 'todas' ? ' ativa' : ''}`}
+                                onClick={() => setVersaoFiltro('todas')}
+                              >
+                                Todas
+                              </button>
+                              {versoesDisponiveis.map((v) => (
+                                <button
+                                  key={v}
+                                  className={`vod-pilula vod-pilula-versao${versaoFiltro === v ? ' ativa' : ''}`}
+                                  onClick={() => setVersaoFiltro(v)}
+                                >
+                                  {v === 'leg' ? 'Legendado' : 'Dublado'}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                          <div className="vod-episodios-setas">
+                            <button
+                              className="vod-seta-btn"
+                              onClick={() => trilhaEpisodiosRef.current?.scrollBy({ left: -580, behavior: 'smooth' })}
+                              aria-label="Episódios anteriores"
+                            >
+                              ‹
+                            </button>
+                            <button
+                              className="vod-seta-btn"
+                              onClick={() => trilhaEpisodiosRef.current?.scrollBy({ left: 580, behavior: 'smooth' })}
+                              aria-label="Próximos episódios"
+                            >
+                              ›
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Pílulas de Temporadas */}
+                      {temporadas.length > 1 && (
+                        <div className="vod-pilulas-grupo" role="tablist">
+                          {temporadas.map((t) => {
+                            const ativa = t === temporadaAtiva;
+                            const totalNaTemp = episodiosAgrupados.filter((e) => e.temporada === t).length;
+                            return (
+                              <button
+                                key={t}
+                                className={`vod-pilula${ativa ? ' ativa' : ''}`}
+                                onClick={() => setTemporada(t)}
+                              >
+                                Temporada {t} ({totalNaTemp})
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+
+                      {/* Trilha horizontal de cartões 16:9 de episódios */}
+                      <div className="vod-episodios-trilha">
+                        {episodiosDaTempAtiva.map((e) => {
+                          const id = `series-${aberto.chave}-s${e.temporada}e${e.numero}`;
+                          const infoEp = detalhesTemporada[e.numero];
+                          const nome = infoEp?.nome && infoEp.nome.trim() ? infoEp.nome : `Episódio ${e.numero}`;
+                          const duracao = infoEp?.duracao ? `${infoEp.duracao} min` : null;
+                          const versoesRotulo = e.versoes.map((v) => (v === 'leg' ? 'Legendado' : 'Dublado')).join(' / ');
+                          const ehDestaque = (partidaSerie?.temporada === e.temporada && partidaSerie?.numero === e.numero) || ultimoEpisodioId === id;
+                          const ehNoPlayer = activeMovie?.id === id;
+
+                          let progressoFracao = 0;
+                          try {
+                            const salvo = localStorage.getItem(`movie-progress-${id}`);
+                            if (salvo) {
+                              const parsed = JSON.parse(salvo);
+                              if (parsed.duration > 0 && parsed.currentTime > 0) {
+                                progressoFracao = Math.min(1, parsed.currentTime / parsed.duration);
+                              }
+                            }
+                          } catch { /* ignorar */ }
+                          const assistido = progressoFracao >= 0.95;
+
+                          return (
+                            <button
+                              key={`${e.temporada}-${e.numero}`}
+                              className={`vod-ep-card${ehNoPlayer ? ' no-player' : ''}${ehDestaque ? ' destaque' : ''}`}
+                              onClick={() => tocarEpisodio(e)}
+                            >
+                              <div className="vod-ep-thumb">
+                                {infoEp?.imagem ? (
+                                  <img src={infoEp.imagem} alt="" loading="lazy" />
+                                ) : (
+                                  <span className="vod-ep-numero-grande">{e.numero}</span>
+                                )}
+                                {ehDestaque && (
+                                  <span className="vod-ep-badge continuar">
+                                    {ehNoPlayer ? '● No ar' : partidaSerie?.comecado ? '▶ Continuar' : '▶ Comece aqui'}
+                                  </span>
+                                )}
+                                {assistido && <span className="vod-ep-badge assistido">✓ Assistido</span>}
+                                {progressoFracao > 0 && !assistido && (
+                                  <div className="vod-ep-progresso-trilho">
+                                    <div
+                                      className="vod-ep-progresso-barra"
+                                      style={{ width: `${Math.round(progressoFracao * 100)}%` }}
+                                    />
+                                  </div>
+                                )}
+                                <div className="vod-ep-play-overlay">
+                                  <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z" />
+                                  </svg>
+                                </div>
+                              </div>
+                              <div className="vod-ep-info">
+                                <h4 className="vod-ep-titulo">{e.numero}. {nome}</h4>
+                                <span className="vod-ep-meta">{[duracao, versoesRotulo].filter(Boolean).join(' · ')}</span>
+                                {infoEp?.sinopse && <p className="vod-ep-sinopse">{infoEp.sinopse}</p>}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Fontes alternativas para filmes */}
+                  {!aberto.serie && fontesAbertas && fontesAbertas.length > 1 && (
+                    <div className="vod-fontes-seletor">
+                      <p>Fontes e versões disponíveis:</p>
+                      <div className="vod-fontes-lista">
+                        {fontesAbertas.map((fonte, idx) => (
+                          <button
+                            key={`${fonte.url}-${idx}`}
+                            className="vod-fonte-item"
+                            onClick={() => tocarFilme(aberto.titulo, fontesAbertas, fonte.url)}
+                          >
+                            <span>
+                              <strong>{fonte.versao === 'leg' ? 'Legendado' : 'Dublado'}</strong>
+                              <small>{nomeDaFonte(fonte.url)}</small>
+                            </span>
+                            <em>Fonte {idx + 1}</em>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Elenco com Fotos Redondas */}
+                  {ficha?.elenco && ficha.elenco.length > 0 && (
+                    <div className="vod-ficha-elenco">
+                      <h3>Elenco</h3>
+                      <ul>
+                        {ficha.elenco.map((pessoa) => (
+                          <li key={pessoa.id}>
+                            <button onClick={() => setAtor(pessoa)} title={`Ver o que ${pessoa.nome} tem no acervo`}>
+                              {pessoa.foto ? (
+                                <img src={pessoa.foto} alt="" loading="lazy" />
+                              ) : (
+                                <span className="vod-ficha-sem-foto">{pessoa.nome.charAt(0)}</span>
+                              )}
+                              <strong>{pessoa.nome}</strong>
+                              <small>{pessoa.papel}</small>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {modalCarregando && <p className="vod-aviso">Carregando opções…</p>}
+                  {erroModal && <p className="vod-erro">{erroModal}</p>}
+                </div>
+              </>
+            )}
+          </section>
+        </div>,
+        document.body,
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Subcomponente de Fileira Horizontal com Suporte a Mouse Wheel e Setas de Vidro
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface CarrosselFileiraProps {
+  titulo: string;
+  itens: (ItemDestaque & { progresso?: number; subtitulo?: string })[];
+  aoAbrir: (item: ItemDestaque) => void;
+  aoPassar: (item: ItemDestaque | null) => void;
+  verTodos?: () => void;
+  rotuloVerTodos?: string;
+}
+
+function CarrosselFileira({
+  titulo,
+  itens,
+  aoAbrir,
+  aoPassar,
+  verTodos,
+  rotuloVerTodos = 'Ver todos',
+}: CarrosselFileiraProps) {
+  const trilhoRef = useRef<HTMLDivElement | null>(null);
+  const [borda, setBorda] = useState({ esq: false, dir: true });
+
+  const medir = useCallback(() => {
+    const el = trilhoRef.current;
+    if (!el) return;
+    const esq = el.scrollLeft > 6;
+    const dir = el.scrollLeft + el.clientWidth < el.scrollWidth - 6;
+    setBorda((prev) => (prev.esq !== esq || prev.dir !== dir ? { esq, dir } : prev));
+  }, []);
+
+  useEffect(() => {
+    medir();
+    window.addEventListener('resize', medir);
+    return () => window.removeEventListener('resize', medir);
+  }, [medir, itens]);
+
+  const rolar = (sentido: number) => {
+    trilhoRef.current?.scrollBy({ left: sentido * 540, behavior: 'smooth' });
+  };
+
+  const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && trilhoRef.current) {
+      trilhoRef.current.scrollLeft += e.deltaY * 1.3;
+    }
+  };
+
+  return (
+    <section className="vod-fileira">
+      <header className="vod-fileira-header">
+        <h2>{titulo}</h2>
+        {verTodos && (
+          <button className="vod-fileira-ver" onClick={verTodos}>
+            {rotuloVerTodos} ›
+          </button>
+        )}
+      </header>
+
+      <div className="vod-fileira-trilho-wrapper">
+        {borda.esq && (
+          <button className="vod-fileira-seta esq" onClick={() => rolar(-1)} aria-label="Anterior">
+            ‹
+          </button>
+        )}
+
+        <div
+          className="vod-fileira-trilho"
+          ref={trilhoRef}
+          onScroll={medir}
+          onWheel={onWheel}
+        >
+          {itens.map((item) => {
+            const fav = ehFavorito(item);
+            return (
+              <button
+                key={`${item.tipo}:${item.titulo}:${item.ano}`}
+                className="vod-card-poster"
+                onClick={() => aoAbrir(item)}
+                onMouseEnter={() => aoPassar(item)}
+                onMouseLeave={() => aoPassar(null)}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  alternarFavorito(item);
+                }}
+                title={item.titulo}
+              >
+                <div className="vod-card-poster-thumb">
+                  {item.capa ? (
+                    <img src={item.capa} alt={item.titulo} loading="lazy" referrerPolicy="no-referrer" />
+                  ) : (
+                    <span className="vod-poster-letra">{item.titulo.charAt(0)}</span>
+                  )}
+                  {fav && <span className="vod-badge-favorito">★</span>}
+                  {item.progresso != null && item.progresso > 0 && (
+                    <div className="vod-card-progresso">
+                      <div style={{ width: `${Math.round(item.progresso * 100)}%` }} />
+                    </div>
+                  )}
+                </div>
+                <strong className="vod-card-poster-nome">{item.titulo}</strong>
+                <small className="vod-card-poster-ano">{item.subtitulo || item.ano}</small>
+              </button>
+            );
+          })}
+
+          {verTodos && (
+            <button className="vod-card-ver-todos" onClick={verTodos}>
+              <div className="vod-card-ver-todos-thumb">
+                <span className="vod-card-ver-todos-icone">›</span>
+              </div>
+              <strong>Ver todos</strong>
+              <small>De A a Z</small>
+            </button>
+          )}
+        </div>
+
+        {borda.dir && (
+          <button className="vod-fileira-seta dir" onClick={() => rolar(1)} aria-label="Próximo">
+            ›
+          </button>
+        )}
+      </div>
+    </section>
   );
 }

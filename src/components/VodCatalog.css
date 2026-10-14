@@ -1,1654 +1,1218 @@
+/* ==========================================================================
+   TELA ON DEMAND - SAIMO TV (100% PARIDADE COM O MAC SAIMOPLAYER)
+   ========================================================================== */
+
 .vod-catalog {
+  position: relative;
   min-height: 100vh;
-  padding: 1rem 1.25rem 3rem;
-  background: var(--bg-primary, #0a0a0a);
-  color: var(--text-primary, #fff);
+  padding-top: 76px;
+  padding-bottom: 5rem;
+  background: #0a0b14;
+  color: #fff;
+  overflow-x: hidden;
 }
 
-.vod-header {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-  background: linear-gradient(180deg, var(--bg-primary, #0a0a0a) 70%, transparent);
-  flex-wrap: wrap;
-}
+/* ── Fundo do Destaque (Cinema Backdrop) ─────────────────────────────────── */
 
-.vod-voltar {
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.06);
-  color: inherit;
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-
-.vod-abas {
-  display: flex;
-  gap: 0.35rem;
-}
-
-.vod-abas button,
-.vod-letras button,
-.vod-temporadas button {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.05);
-  color: inherit;
-  border-radius: 999px;
-  padding: 0.4rem 0.9rem;
-  cursor: pointer;
-  font-size: 0.85rem;
-}
-
-.vod-abas button.ativa,
-.vod-letras button.ativa,
-.vod-temporadas button.ativa {
-  background: var(--accent, #e50914);
-  border-color: transparent;
-  font-weight: 600;
-}
-
-.vod-letras button:disabled {
-  opacity: 0.25;
-  cursor: default;
-}
-
-.vod-busca {
-  flex: 1 1 14rem;
-  min-width: 10rem;
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.06);
-  color: inherit;
-  font-size: 0.9rem;
-}
-
-.vod-letras {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin: 0.5rem 0 1rem;
-}
-
-.vod-letras button {
-  min-width: 2.1rem;
-  padding: 0.3rem 0.5rem;
-  text-align: center;
-}
-
-.vod-grade {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1rem;
-}
-
-.vod-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  padding: 0;
-  border: none;
-  background: none;
-  color: inherit;
-  cursor: pointer;
-  text-align: left;
-}
-
-.vod-poster {
-  aspect-ratio: 2 / 3;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.vod-poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.vod-poster-vazio {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.35);
-}
-
-.vod-card-titulo {
-  font-size: 0.78rem;
-  line-height: 1.25;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.vod-card:hover .vod-poster,
-.vod-card:focus-visible .vod-poster {
-  outline: 2px solid var(--accent, #e50914);
-}
-
-.vod-aviso,
-.vod-erro {
-  padding: 1rem 0;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
-}
-
-.vod-erro {
-  color: #ff8080;
-}
-
-.vod-serie {
-  margin: 0 0 1.5rem;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.vod-modal-fundo {
+.vod-fundo-destaque {
   position: fixed;
   inset: 0;
-  z-index: 1000;
-  display: grid;
-  place-items: center;
-  padding: clamp(0.75rem, 3vw, 2rem);
-  background: rgba(0, 0, 0, 0.78);
-  backdrop-filter: blur(8px);
-  animation: vod-fundo-entra 160ms ease-out;
-}
-
-.vod-modal {
-  width: min(1080px, 95vw);
-  max-height: min(90vh, 880px);
-  overflow: auto;
-  overscroll-behavior: contain;
-  padding: clamp(1rem, 2.5vw, 1.5rem);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 1rem;
-  background: #11151b;
-  color: var(--text-primary, #fff);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.65);
-  animation: vod-modal-entra 180ms ease-out;
-}
-
-@keyframes vod-fundo-entra {
-  from { opacity: 0; }
-}
-
-@keyframes vod-modal-entra {
-  from { opacity: 0; transform: translateY(12px) scale(0.98); }
-}
-
-.vod-modal-tipo {
-  display: block;
-  margin-bottom: 0.25rem;
-  color: var(--accent, #e50914);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.vod-modal-fechar {
-  width: 2.5rem;
-  height: 2.5rem;
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  padding: 0 !important;
-  border-radius: 50% !important;
-  font-size: 1.5rem !important;
-  line-height: 1;
-}
-
-.vod-fontes > p {
-  margin: 1rem 0 0.65rem;
-  color: rgba(255, 255, 255, 0.68);
-  font-size: 0.86rem;
-}
-
-.vod-fontes {
-  display: grid;
-  gap: 0.55rem;
-}
-
-.vod-fontes button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.8rem 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.65rem;
-  background: rgba(255, 255, 255, 0.045);
-  color: inherit;
-  cursor: pointer;
-  text-align: left;
-}
-
-.vod-fontes button:hover,
-.vod-fontes button:focus-visible,
-.vod-episodios button:hover,
-.vod-episodios button:focus-visible {
-  border-color: var(--accent, #e50914);
-  background: rgba(229, 9, 20, 0.1);
-  outline: none;
-}
-
-.vod-fontes button span {
-  display: grid;
-  gap: 0.2rem;
-  min-width: 0;
-}
-
-.vod-fontes button small {
-  overflow: hidden;
-  color: rgba(255, 255, 255, 0.55);
-  text-overflow: ellipsis;
-}
-
-.vod-fontes button em {
-  flex: 0 0 auto;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.76rem;
-  font-style: normal;
-}
-
-.vod-serie-topo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.vod-serie-topo h2 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.vod-serie-topo button {
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: none;
-  color: inherit;
-  border-radius: 999px;
-  padding: 0.3rem 0.8rem;
-  cursor: pointer;
-  font-size: 0.8rem;
-}
-
-.vod-temporadas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin: 0.75rem 0;
-}
-
-.vod-episodios {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 0.5rem;
-  max-height: 58vh;
-  overflow: auto;
-}
-
-.vod-episodios button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  color: inherit;
-  cursor: pointer;
-  font-size: 0.82rem;
-}
-
-.vod-ep-versao {
-  opacity: 0.6;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-}
-
-.vod-sentinela {
-  height: 1px;
-}
-
-.vod-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  flex-shrink: 0;
-  border-radius: 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.vod-link svg {
-  width: 1.1rem;
-  height: 1.1rem;
-}
-
-.vod-link:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-@media (max-width: 600px) {
-  .vod-modal-fundo {
-    align-items: end;
-    padding: 0;
-  }
-
-  .vod-modal {
-    width: 100%;
-    max-height: 88dvh;
-    border-radius: 1rem 1rem 0 0;
-  }
-
-  .vod-episodios {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .vod-modal-fundo,
-  .vod-modal {
-    animation: none;
-  }
-}
-
-/* Fileiras da tela inicial.
-   A pista rola sozinha no eixo horizontal e encaixa nos cartões, então o
-   arrasto no telemóvel pára sempre com um cartão inteiro à vista em vez de
-   metade de um. */
-.vod-fileiras {
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
-  padding-bottom: 24px;
-}
-
-.vod-fileira h3 {
-  margin: 0 0 10px;
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
-.vod-fileira-pista {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  padding-bottom: 6px;
-  scrollbar-width: thin;
-}
-
-.vod-fileira-pista .vod-card {
-  flex: 0 0 150px;
-  scroll-snap-align: start;
-}
-
-/* A régua de gêneros, logo abaixo das abas. Rola sozinha no eixo horizontal:
-   são vinte e poucos e não cabem numa linha em telemóvel. */
-.vod-generos {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  padding: 8px 0 10px;
-  scrollbar-width: thin;
-}
-
-.vod-generos button {
-  flex: 0 0 auto;
-  padding: 5px 12px;
-  border: 0;
-  border-radius: 100px;
-  background: rgba(255, 255, 255, 0.08);
-  color: inherit;
-  font-size: 0.82rem;
-  cursor: pointer;
-}
-
-.vod-generos button:hover { background: rgba(255, 255, 255, 0.16); }
-.vod-generos button.ativa { background: var(--accent, #e50914); color: #fff; }
-
-/* Sem ficha no TMDB: uma moldura com um risco, que diz "aqui não há imagem"
-   em vez de fingir que há. */
-.vod-poster-vazio.sem-ficha {
-  position: relative;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.vod-poster-vazio.sem-ficha::after {
-  content: "";
-  position: absolute;
-  left: 18%;
-  right: 18%;
-  top: 50%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.22);
-  transform: rotate(-32deg);
-}
-
-/* ── Ficha do título ────────────────────────────────────────────────────────
-   Sinopse, números e elenco dentro do mesmo modal que já escolhe a fonte: a
-   pessoa decide se quer o filme antes de escolher por onde assistir. */
-
-.vod-ficha {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 4px 0 18px;
-}
-
-.vod-ficha-numeros {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.vod-ficha-numeros span {
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 999px;
-  padding: 2px 10px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.vod-ficha-classificacao {
-  border-color: rgba(239, 68, 68, 0.7);
-  color: #fca5a5;
-}
-
-.vod-ficha-generos {
-  margin: 0;
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.vod-ficha-frase {
-  margin: 0;
-  font-style: italic;
-  font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.62);
-}
-
-.vod-ficha-sinopse {
-  margin: 0;
-  line-height: 1.55;
-  font-size: 0.92rem;
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.vod-ficha-creditos {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 2px 10px;
-  margin: 0;
-  font-size: 0.84rem;
-}
-
-.vod-ficha-creditos dt {
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.vod-ficha-creditos dd {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.62);
-}
-
-.vod-ficha-elenco h3 {
-  margin: 6px 0 8px;
-  font-size: 0.95rem;
-}
-
-.vod-ficha-elenco ul {
-  display: flex;
-  gap: 12px;
-  margin: 0;
-  padding: 0 0 6px;
-  list-style: none;
-  overflow-x: auto;
-}
-
-.vod-ficha-elenco li button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  width: 84px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  cursor: pointer;
-  text-align: center;
-}
-
-.vod-ficha-elenco img,
-.vod-ficha-sem-foto {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.vod-ficha-elenco strong {
-  font-size: 0.72rem;
-  line-height: 1.2;
-}
-
-.vod-ficha-elenco small {
-  font-size: 0.66rem;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.vod-ficha-elenco li button:hover strong {
-  text-decoration: underline;
-}
-
-/* A filmografia: só o que existe no acervo, porque é o que dá para abrir. */
-
-.vod-ficha-voltar {
-  margin-bottom: 10px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  font-size: 0.85rem;
-}
-
-.vod-ficha-nota {
-  margin: 4px 0 0;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.vod-ficha-filmografia {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.vod-ficha-filmografia button {
-  display: flex;
-  width: 100%;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 9px 12px;
-  border: 0;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  color: inherit;
-  cursor: pointer;
-  text-align: left;
-}
-
-.vod-ficha-filmografia button:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.vod-ficha-filmografia small {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.75rem;
-}
-
-/* ========================================================================
-   EXPERIÊNCIA VOD 1.8 — navegação inspirada em apps de streaming
-   ======================================================================== */
-
-.vod-catalog {
-  padding: 0 clamp(1rem, 3vw, 3.5rem) 4rem;
-  background:
-    radial-gradient(circle at 78% -8%, rgba(229, 9, 20, 0.09), transparent 32rem),
-    linear-gradient(180deg, #0b0b0b 0%, #090909 58%, #080808 100%);
-}
-
-.vod-header {
-  min-height: 68px;
-  margin: 0 calc(clamp(1rem, 3vw, 3.5rem) * -1) 1rem;
-  padding: 0.75rem clamp(1rem, 3vw, 3.5rem);
-  gap: 1rem;
-  background: linear-gradient(180deg, rgba(8, 8, 8, 0.98) 0%, rgba(8, 8, 8, 0.92) 75%, rgba(8, 8, 8, 0.72) 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-.vod-voltar,
-.vod-link {
-  background: rgba(255, 255, 255, 0.075);
-  border-color: rgba(255, 255, 255, 0.08);
-  transition: background 140ms ease, transform 140ms ease;
-}
-
-.vod-voltar:hover,
-.vod-link:hover {
-  background: rgba(255, 255, 255, 0.14);
-  transform: translateY(-1px);
-}
-
-.vod-abas {
-  align-items: center;
-  gap: 0.15rem;
-}
-
-.vod-abas button {
-  position: relative;
-  border: 0;
-  border-radius: 0.35rem;
-  padding: 0.55rem 0.7rem;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.66);
-  font-size: 0.88rem;
-  transition: color 140ms ease, background 140ms ease;
-}
-
-.vod-abas button:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.055);
-}
-
-.vod-abas button.ativa {
-  background: transparent;
-  color: #fff;
-  font-weight: 700;
-}
-
-.vod-abas button.ativa::after {
-  content: '';
-  position: absolute;
-  left: 0.65rem;
-  right: 0.65rem;
-  bottom: 0.15rem;
-  height: 2px;
-  border-radius: 99px;
-  background: var(--accent, #e50914);
-}
-
-.vod-busca {
-  max-width: 360px;
-  margin-left: auto;
-  border-radius: 0.35rem;
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(0, 0, 0, 0.54);
-  transition: max-width 180ms ease, border-color 180ms ease, background 180ms ease;
-}
-
-.vod-busca:focus {
-  max-width: 440px;
-  border-color: rgba(255, 255, 255, 0.42);
-  background: rgba(0, 0, 0, 0.78);
-}
-
-.vod-fileiras {
-  gap: 2rem;
-  padding-top: 0.35rem;
-}
-
-.vod-fileira h3 {
-  margin-bottom: 0.7rem;
-  font-size: clamp(1rem, 1.6vw, 1.25rem);
-  font-weight: 750;
-  letter-spacing: -0.01em;
-}
-
-.vod-fileira-pista {
-  gap: clamp(0.65rem, 1vw, 1rem);
-  margin: 0 calc(clamp(1rem, 3vw, 3.5rem) * -1);
-  padding: 0.35rem clamp(1rem, 3vw, 3.5rem) 1rem;
-  scroll-padding-inline: clamp(1rem, 3vw, 3.5rem);
-}
-
-.vod-fileira-pista .vod-card {
-  flex-basis: clamp(138px, 12vw, 180px);
-}
-
-.vod-card {
-  position: relative;
-  transform: translateZ(0);
-  transition: transform 170ms ease, filter 170ms ease;
-}
-
-.vod-card .vod-poster {
-  border-radius: 0.4rem;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-  transition: outline-color 150ms ease, box-shadow 170ms ease;
-}
-
-@media (hover: hover) {
-  .vod-card:hover,
-  .vod-card:focus-visible {
-    z-index: 2;
-    transform: translateY(-4px) scale(1.035);
-  }
-
-  .vod-card:hover .vod-poster,
-  .vod-card:focus-visible .vod-poster {
-    outline: 2px solid rgba(255, 255, 255, 0.72);
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
-  }
-}
-
-.vod-card-titulo {
-  font-size: 0.82rem;
-  font-weight: 560;
-  color: rgba(255, 255, 255, 0.86);
-}
-
-.vod-generos {
-  margin-bottom: 0.8rem;
-  padding-block: 0.2rem 0.7rem;
-}
-
-.vod-generos button {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.045);
-}
-
-.vod-modal-fundo {
-  padding: clamp(0.65rem, 2vw, 1.5rem);
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* O player fica por cima sem desmontar o modal. Ao voltar, inclusive o scroll
-   interno da ficha/temporada continua exatamente onde estava. */
-.vod-modal-fundo.vod-modal-suspenso {
-  visibility: hidden;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
   pointer-events: none;
-}
-
-.vod-modal {
-  width: min(1080px, 100%);
-  max-height: min(92vh, 900px);
-  padding: clamp(1.1rem, 2vw, 1.8rem);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 0.65rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 11rem),
-    #181818;
-  box-shadow: 0 28px 110px rgba(0, 0, 0, 0.78);
-}
-
-.vod-serie-topo {
-  position: sticky;
-  top: calc(clamp(1.1rem, 2vw, 1.8rem) * -1);
-  z-index: 4;
-  margin: calc(clamp(1.1rem, 2vw, 1.8rem) * -1) calc(clamp(1.1rem, 2vw, 1.8rem) * -1) 1rem;
-  padding: 1.2rem clamp(1.1rem, 2vw, 1.8rem) 0.9rem;
-  background: linear-gradient(180deg, #181818 70%, rgba(24, 24, 24, 0.94));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
-}
-
-.vod-serie-topo h2 {
-  font-size: clamp(1.25rem, 2vw, 1.75rem);
-  letter-spacing: -0.025em;
-}
-
-.vod-modal-fechar {
-  background: #2a2a2a !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-.vod-modal-fechar:hover {
-  background: #3a3a3a !important;
-}
-
-.vod-season-stack {
-  display: grid;
-  gap: 0.55rem;
-  margin-top: 1.25rem;
-}
-
-.vod-episodios-cabecalho {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 0.25rem 0 0.3rem;
-}
-
-.vod-episodios-cabecalho h3 {
-  margin: 0;
-  font-size: 1.15rem;
-}
-
-.vod-episodios-cabecalho p {
-  margin: 0.2rem 0 0;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.78rem;
-}
-
-.vod-season {
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.075);
-  border-radius: 0.55rem;
-  background: #202020;
 }
 
-.vod-season.aberta {
-  border-color: rgba(255, 255, 255, 0.13);
-  background: #1c1c1c;
-}
-
-.vod-season-toggle {
-  width: 100%;
-  min-height: 58px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.8rem 1rem;
-  color: #fff;
-  text-align: left;
-  transition: background 140ms ease;
-}
-
-.vod-season-toggle:hover {
-  background: rgba(255, 255, 255, 0.055);
-}
-
-.vod-season-toggle > span {
-  display: grid;
-  gap: 0.1rem;
-}
-
-.vod-season-toggle strong {
-  font-size: 0.94rem;
-}
-
-.vod-season-toggle small {
-  color: rgba(255, 255, 255, 0.48);
-  font-size: 0.72rem;
-}
-
-.vod-season-toggle svg {
-  width: 20px;
-  height: 20px;
-  flex: 0 0 auto;
-  transition: transform 160ms ease;
-}
-
-.vod-season.aberta .vod-season-toggle svg {
-  transform: rotate(180deg);
-}
-
-.vod-episodios {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  max-height: none;
-  overflow: visible;
-  border-top: 1px solid rgba(255, 255, 255, 0.065);
-}
-
-.vod-episodios li + li {
-  border-top: 1px solid rgba(255, 255, 255, 0.055);
-}
-
-.vod-episodios button {
-  display: grid;
-  grid-template-columns: 2rem minmax(90px, 0.75fr) minmax(150px, 1.8fr) auto;
-  align-items: center;
-  min-height: 60px;
-  gap: 0.75rem;
-  padding: 0.72rem 1rem;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  font-size: 0.84rem;
-  transition: background 130ms ease;
-}
-
-.vod-episodios button:hover,
-.vod-episodios button:focus-visible {
-  border: 0;
-  background: rgba(255, 255, 255, 0.07);
-  outline: none;
-}
-
-.vod-episodios button.assistindo {
-  background: rgba(229, 9, 20, 0.09);
-  box-shadow: inset 3px 0 0 var(--accent, #e50914);
-}
-
-.vod-ep-play {
-  width: 1.7rem;
-  height: 1.7rem;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  border-radius: 50%;
-  font-size: 0.58rem;
-  color: #fff;
-}
-
-.vod-ep-numero {
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.94);
-}
-
-.vod-ep-versao {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: rgba(255, 255, 255, 0.5);
-  text-transform: none;
-  font-size: 0.74rem;
-}
-
-.vod-episodios button em {
-  justify-self: end;
-  padding: 0.2rem 0.45rem;
-  border-radius: 999px;
-  background: rgba(229, 9, 20, 0.16);
-  color: #ff858b;
-  font-size: 0.66rem;
-  font-style: normal;
-  font-weight: 700;
-}
-
-@media (max-width: 760px) {
-  .vod-catalog {
-    padding-inline: 0.85rem;
-  }
-
-  .vod-header {
-    margin-inline: -0.85rem;
-    padding-inline: 0.85rem;
-    gap: 0.5rem;
-  }
-
-  .vod-abas {
-    order: 3;
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 0.2rem;
-  }
-
-  .vod-abas button {
-    flex: 0 0 auto;
-  }
-
-  .vod-busca {
-    flex: 1 1 9rem;
-    max-width: none;
-  }
-
-  .vod-fileira-pista {
-    margin-inline: -0.85rem;
-    padding-inline: 0.85rem;
-    scroll-padding-inline: 0.85rem;
-  }
-
-  .vod-modal {
-    max-height: 92dvh;
-    border-radius: 0.8rem 0.8rem 0 0;
-  }
-
-  .vod-episodios button {
-    grid-template-columns: 1.8rem 1fr auto;
-    gap: 0.6rem;
-  }
-
-  .vod-ep-versao {
-    grid-column: 2 / -1;
-    white-space: normal;
-    margin-top: -0.45rem;
-  }
-
-  .vod-episodios button em {
-    grid-column: 3;
-    grid-row: 1;
-  }
-}
-
-/* ── Ficha visual (1.8.0) ───────────────────────────────────────────────────
-   O mesmo desenho da TV Box, do Mac e do Windows: a imagem larga do filme ao
-   fundo, escurecendo da esquerda para a direita e de baixo para cima, a capa
-   com sombra, os números em selos e o botão de assistir em destaque. */
-
-.vod-modal {
-  --pad: clamp(1.1rem, 2vw, 1.8rem);
-}
-
-.vod-hero {
-  position: relative;
-  margin: calc(var(--pad) * -1) calc(var(--pad) * -1) 0;
-  padding: calc(var(--pad) + 1.2rem) var(--pad) 1.6rem;
-  min-height: 25rem;
-  overflow: hidden;
-  border-radius: 0.65rem 0.65rem 0 0;
-  isolation: isolate;
-}
-
-.vod-hero-fundo {
+.vod-fundo-destaque img {
   position: absolute;
   inset: 0;
-  z-index: -2;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 25%;
-  animation: vod-hero-aparece 420ms ease-out;
+  opacity: 0.85;
+  transition: opacity 0.38s ease-in-out, transform 0.5s ease-out;
+  animation: vod-destaque-fadein 0.4s ease;
 }
 
-@keyframes vod-hero-aparece {
-  from { opacity: 0; transform: scale(1.03); }
-  to { opacity: 1; transform: none; }
-}
-
-.vod-hero-veu {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(90deg, rgba(18, 18, 20, 0.97) 0%, rgba(18, 18, 20, 0.86) 42%, rgba(18, 18, 20, 0.25) 100%),
-    linear-gradient(0deg, #181818 0%, rgba(24, 24, 24, 0) 45%);
-}
-
-.vod-hero-fechar {
-  position: absolute !important;
-  top: 1rem;
-  right: 1rem;
-  z-index: 2;
-  background: rgba(20, 20, 22, 0.7) !important;
-  backdrop-filter: blur(6px);
-}
-
-.vod-hero-corpo {
-  display: flex;
-  gap: clamp(1.25rem, 3vw, 2.25rem);
-  align-items: flex-start;
-}
-
-.vod-hero-capa {
-  flex: 0 0 auto;
-  width: clamp(8.5rem, 17vw, 13.5rem);
-  aspect-ratio: 2 / 3;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-  border-radius: 0.6rem;
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
-}
-
-.vod-hero-capa img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.vod-hero-capa span,
-.vod-ator-capa span,
-.vod-ator-foto span {
-  font-size: 3rem;
-  font-weight: 700;
-  color: rgba(229, 9, 20, 0.7);
-}
-
-.vod-hero-info {
-  flex: 1 1 auto;
-  min-width: 0;
-  max-width: 44rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.vod-hero-info h2 {
-  margin: 0;
-  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
-}
-
-.vod-hero-info .vod-ficha-numeros span {
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 0.4rem;
-  padding: 0.2rem 0.6rem;
-  font-size: 0.82rem;
-}
-
-.vod-ficha-nota-tmdb {
-  color: #ffd166 !important;
-  border-color: rgba(255, 209, 102, 0.55) !important;
-}
-
-/* As cores da classificação indicativa brasileira, as mesmas do celular. */
-.vod-cl-l { color: #10b981 !important; border-color: rgba(16, 185, 129, 0.6) !important; }
-.vod-cl-10 { color: #3b82f6 !important; border-color: rgba(59, 130, 246, 0.6) !important; }
-.vod-cl-12 { color: #f59e0b !important; border-color: rgba(245, 158, 11, 0.6) !important; }
-.vod-cl-14 { color: #f97316 !important; border-color: rgba(249, 115, 22, 0.6) !important; }
-.vod-cl-16,
-.vod-cl-18 { color: #ef4444 !important; border-color: rgba(239, 68, 68, 0.6) !important; }
-
-.vod-hero-botoes {
-  display: flex;
-  gap: 0.75rem;
-  margin: 0.4rem 0 0.2rem;
-}
-
-.vod-botao-assistir {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.9rem;
-  border: 0;
-  border-radius: 0.45rem;
-  background: #fff;
-  color: #111;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 120ms ease, background 120ms ease;
-}
-
-.vod-botao-assistir:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.86);
-  transform: scale(1.03);
-}
-
-.vod-botao-assistir:disabled {
+.vod-fundo-destaque img.idle {
   opacity: 0.45;
-  cursor: default;
-}
-
-.vod-hero-info .vod-ficha-sinopse {
-  font-size: 0.98rem;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-.vod-modal-corpo {
-  padding-top: 1.25rem;
-}
-
-/* Elenco: fotos maiores e redondas, como nos aplicativos. */
-.vod-modal-corpo .vod-ficha-elenco img,
-.vod-modal-corpo .vod-ficha-sem-foto {
-  width: 76px;
-  height: 76px;
-}
-
-.vod-ficha-sem-foto {
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.vod-modal-corpo .vod-ficha-elenco li button {
-  width: 96px;
-  transition: transform 120ms ease;
-}
-
-.vod-modal-corpo .vod-ficha-elenco li button:hover {
-  transform: translateY(-3px);
-}
-
-.vod-modal-corpo .vod-ficha-elenco li button:hover img {
-  outline: 3px solid var(--accent, #e50914);
-  outline-offset: 2px;
-}
-
-/* ── Ator ─────────────────────────────────────────────────────────────────── */
-
-.vod-ator-barra {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.vod-ator-topo {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.vod-ator-foto {
-  flex: 0 0 auto;
-  width: 8.5rem;
-  height: 8.5rem;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.5);
-}
-
-.vod-ator-foto img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 15%;
-}
-
-.vod-ator-quem h2 {
-  margin: 0 0 0.3rem;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  letter-spacing: -0.02em;
-}
-
-.vod-ator-dados {
-  margin: 0 0 0.5rem;
-  color: var(--accent, #e50914);
-  font-size: 0.88rem;
-}
-
-.vod-ator-bio {
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-  line-height: 1.55;
-}
-
-.vod-ator-contagem {
-  margin: 0 0 0.9rem;
-  font-size: 1.05rem;
-}
-
-.vod-ator-grade {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
-  gap: 1.1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.vod-ator-grade button {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.vod-ator-capa {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 2 / 3;
-  overflow: hidden;
-  border-radius: 0.45rem;
-  background: rgba(255, 255, 255, 0.07);
-  transition: transform 140ms ease, box-shadow 140ms ease;
-}
-
-.vod-ator-capa img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.vod-ator-grade button:hover .vod-ator-capa {
-  transform: scale(1.04);
-  box-shadow: 0 0 0 3px var(--accent, #e50914), 0 12px 30px rgba(0, 0, 0, 0.55);
-}
-
-.vod-ator-grade strong {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-size: 0.85rem;
-}
-
-.vod-ator-grade small {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.74rem;
-}
-
-/* Celular: a capa sobe e o texto desce, em coluna. */
-@media (max-width: 640px) {
-  .vod-hero { min-height: 0; }
-  .vod-hero-corpo { flex-direction: column; align-items: center; text-align: center; }
-  .vod-hero-info { align-items: center; }
-  .vod-hero-capa { width: 9rem; }
-  .vod-ficha-numeros, .vod-hero-botoes { justify-content: center; }
-  .vod-ator-topo { flex-direction: column; text-align: center; }
-  .vod-ator-grade { grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr)); }
-}
-
-/* Celular: Discord e GitHub saem do topo do catálogo; a navegação fica na
-   barra de baixo e a busca ganha a largura toda. */
-@media (max-width: 768px) {
-  .vod-link {
-    display: none !important;
-  }
-}
-
-/* Celular: rola com o dedo, sem trilho cinza aparecendo sob as abas e as
-   fileiras. */
-@media (max-width: 768px) {
-  .vod-page *::-webkit-scrollbar,
-  .vod-catalog *::-webkit-scrollbar {
-    display: none;
-  }
-
-  .vod-page *,
-  .vod-catalog * {
-    scrollbar-width: none;
-  }
-}
-
-.vod-botao-favorito {
-  padding: 0.7rem 1.2rem; border-radius: 8px; font-weight: 700; font-size: 0.95rem;
-  background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;
-}
-.vod-botao-favorito:hover { background: rgba(255, 255, 255, 0.2); }
-.vod-botao-favorito.ativo { color: #ff5d7a; border-color: rgba(255, 93, 122, 0.55); }
-
-/* ── Episódios no formato TV Box & Mac (Pílulas de Temporadas e Cartões 16:9) ── */
-
-.vod-episodios-bloco {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.vod-episodios-cabecalho {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.vod-episodios-cabecalho h3 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.vod-episodios-cabecalho small {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.85rem;
-  margin-left: 0.5rem;
-}
-
-.vod-pilulas-grupo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  padding-bottom: 4px;
-}
-
-.vod-pilula {
-  padding: 0.45rem 1rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.86rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 150ms ease;
-}
-
-.vod-pilula:hover {
-  background: rgba(255, 255, 255, 0.18);
-  color: #fff;
-}
-
-.vod-pilula.ativa {
-  background: #fff;
-  border-color: #fff;
-  color: #0b0f19;
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
-}
-
-.vod-pilula-versao {
-  font-size: 0.78rem;
-  padding: 0.35rem 0.85rem;
-}
-
-.vod-pilula-versao.ativa {
-  background: var(--accent, #4ff3e0);
-  border-color: var(--accent, #4ff3e0);
-  color: #05141b;
-}
-
-.vod-episodios-setas {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.vod-seta-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 140ms ease;
-}
-
-.vod-seta-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.25);
+  filter: blur(12px);
   transform: scale(1.08);
 }
 
-.vod-seta-btn:disabled {
-  opacity: 0.3;
-  cursor: default;
+@keyframes vod-destaque-fadein {
+  from { opacity: 0; transform: scale(1.02); }
+  to { opacity: 0.85; transform: scale(1); }
 }
 
-/* Trilha / Grid de cartões de episódios */
-.vod-episodios-trilha {
+.vod-fundo-destaque-veu-horiz {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 11, 20, 0.96) 0%,
+    rgba(10, 11, 20, 0.65) 45%,
+    rgba(10, 11, 20, 0.15) 100%
+  );
+}
+
+.vod-fundo-destaque-veu-vert {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 20%,
+    rgba(10, 11, 20, 0.85) 60%,
+    #0a0b14 100%
+  );
+}
+
+/* ── Destaque Topo (DestaqueTopo) ────────────────────────────────────────── */
+
+.vod-destaque-topo {
+  position: relative;
+  z-index: 2;
+  padding: 1.2rem clamp(1.2rem, 3.5vw, 3.5rem) 0.8rem;
+  max-width: 840px;
+}
+
+.vod-destaque-titulo {
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: #fff;
+  margin: 0 0 0.5rem;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7);
+}
+
+.vod-destaque-meta {
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4fe3d0;
+  margin-bottom: 0.75rem;
+}
+
+.vod-destaque-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.vod-destaque-meta span.com-nota {
+  color: #ffcc00;
+}
+
+.vod-destaque-sinopse {
+  font-size: 0.96rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Barra de Sub-Navegação (Pílulas de Categoria e Busca) ────────────────── */
+
+.vod-sub-barra {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  margin: 0.8rem clamp(1.2rem, 3.5vw, 3.5rem) 1.6rem;
+  border-radius: 999px;
+  background: rgba(18, 20, 34, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.vod-sub-barra-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.vod-sub-barra-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.vod-sub-pill {
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.vod-sub-pill:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.vod-sub-pill.ativa {
+  background: #fff;
+  color: #0b0f19;
+  border-color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.25);
+}
+
+.vod-sub-barra-acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vod-sub-busca {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.vod-sub-busca:focus-within {
+  border-color: #4fe3d0;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.vod-sub-busca svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.vod-sub-busca input {
+  font-size: 0.85rem;
+  color: #fff;
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 130px;
+  transition: width 0.2s ease;
+}
+
+.vod-sub-busca input:focus {
+  width: 190px;
+}
+
+.vod-sub-btn-modo {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #4fe3d0;
+  background: rgba(79, 227, 208, 0.12);
+  border: 1px solid rgba(79, 227, 208, 0.25);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.vod-sub-btn-modo:hover {
+  background: rgba(79, 227, 208, 0.22);
+}
+
+.vod-sub-btn-modo.ativo {
+  background: #4fe3d0;
+  color: #06181f;
+  border-color: #4fe3d0;
+  font-weight: 700;
+}
+
+/* ── Conteúdo em Fileiras ─────────────────────────────────────────────────── */
+
+.vod-conteudo-fileiras {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.vod-fileira {
+  margin: 0 0 0.8rem;
+}
+
+.vod-fileira-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 clamp(1.2rem, 3.5vw, 3.5rem);
+  margin-bottom: 0.75rem;
+}
+
+.vod-fileira-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 0;
+}
+
+.vod-fileira-ver {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #4fe3d0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.vod-fileira-ver:hover {
+  background: rgba(79, 227, 208, 0.12);
+}
+
+.vod-fileira-trilho-wrapper {
+  position: relative;
+}
+
+.vod-fileira-trilho {
+  display: flex;
+  gap: 16px;
   overflow-x: auto;
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
-  padding: 0.5rem 0.25rem 1rem;
-  scrollbar-width: thin;
+  padding: 8px clamp(1.2rem, 3.5vw, 3.5rem) 16px;
+  scrollbar-width: none;
 }
 
-.vod-ep-card {
-  flex: 0 0 280px;
-  max-width: 280px;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
+.vod-fileira-trilho::-webkit-scrollbar {
+  display: none;
+}
+
+.vod-fileira-seta {
+  position: absolute;
+  top: 8px;
+  bottom: 46px;
+  z-index: 10;
+  width: 44px;
+  border-radius: 14px;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.15s;
+  background: rgba(18, 20, 34, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   cursor: pointer;
-  text-align: left;
-  border-radius: 10px;
-  transition: transform 150ms ease;
-}
-
-.vod-ep-card:hover {
-  transform: translateY(-4px);
-}
-
-.vod-ep-thumb {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 8px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
-  border: 2px solid transparent;
   display: grid;
   place-items: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-  transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
-.vod-ep-card:hover .vod-ep-thumb {
-  border-color: var(--accent, #4ff3e0);
-  box-shadow: 0 10px 30px rgba(79, 243, 224, 0.25);
+.vod-fileira-seta.esq { left: 8px; }
+.vod-fileira-seta.dir { right: 8px; }
+
+.vod-fileira-trilho-wrapper:hover .vod-fileira-seta {
+  opacity: 1;
 }
 
-.vod-ep-card.destaque .vod-ep-thumb {
-  border-color: var(--accent, #4ff3e0);
+.vod-fileira-seta:hover {
+  background: rgba(79, 227, 208, 0.35);
+  color: #fff;
 }
 
-.vod-ep-thumb img {
+/* ── Cartões de Seção / Categoria (330px Colagem) ────────────────────────── */
+
+.vod-secoes-grid {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 6px clamp(1.2rem, 3.5vw, 3.5rem) 16px;
+  scrollbar-width: none;
+}
+
+.vod-secoes-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.vod-card-secao {
+  flex: 0 0 330px;
+  width: 330px;
+  height: 191px;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #141724;
+  text-align: left;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  scroll-snap-align: start;
+}
+
+.vod-card-secao:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+}
+
+.vod-card-secao-colagem {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  height: 100%;
+}
+
+.vod-card-secao-colagem img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.vod-ep-numero-grande {
-  font-size: 2.8rem;
-  font-weight: 800;
-  color: rgba(79, 243, 224, 0.7);
+.vod-card-secao-veu {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 11, 20, 0.25) 0%,
+    rgba(10, 11, 20, 0.88) 65%,
+    rgba(10, 11, 20, 0.98) 100%
+  );
 }
 
-.vod-ep-badge {
+.vod-card-secao-info {
   position: absolute;
-  top: 8px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 0.2rem 0.55rem;
-  border-radius: 999px;
-  letter-spacing: 0.02em;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  padding: 16px 18px;
   z-index: 2;
 }
 
-.vod-ep-badge.continuar {
-  left: 8px;
-  background: var(--accent, #4ff3e0);
-  color: #061921;
+.vod-card-secao-icone {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: #0b0f19;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
-.vod-ep-badge.assistido {
-  right: 8px;
-  background: rgba(0, 0, 0, 0.78);
-  color: #4ff3e0;
-  border: 1px solid rgba(79, 243, 224, 0.35);
+.vod-card-secao-icone svg {
+  width: 22px;
+  height: 22px;
 }
 
-.vod-ep-progresso-trilho {
+.vod-card-secao-info h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.vod-card-secao-info p {
+  margin: 2px 0 0;
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.vod-card-secao.secao-az {
+  background: linear-gradient(135deg, rgba(25, 28, 48, 0.85), rgba(16, 18, 32, 0.95));
+}
+
+/* ── Cartões Poster Padrão (154px) ───────────────────────────────────────── */
+
+.vod-card-poster {
+  flex: 0 0 154px;
+  width: 154px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+
+.vod-card-poster-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #181b30, #101222);
+  border: 2px solid transparent;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: grid;
+  place-items: center;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.vod-card-poster-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vod-card-poster:hover .vod-card-poster-thumb {
+  transform: translateY(-4px) scale(1.03);
+  border-color: #4fe3d0;
+  box-shadow: 0 12px 30px rgba(79, 227, 208, 0.28);
+}
+
+.vod-poster-letra {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: rgba(79, 227, 208, 0.4);
+}
+
+.vod-badge-favorito {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffcc00;
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+}
+
+.vod-card-progresso {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: 4px;
   background: rgba(0, 0, 0, 0.6);
-  z-index: 2;
 }
 
-.vod-ep-progresso-barra {
+.vod-card-progresso div {
   height: 100%;
-  background: var(--accent, #4ff3e0);
-  transition: width 0.3s ease;
+  background: #4fe3d0;
 }
 
-.vod-ep-play-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: grid;
-  place-items: center;
-  opacity: 0;
-  transition: opacity 150ms ease;
-  z-index: 1;
-}
-
-.vod-ep-play-overlay svg {
-  width: 42px;
-  height: 42px;
-  color: #fff;
-  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.7));
-}
-
-.vod-ep-card:hover .vod-ep-play-overlay {
-  opacity: 1;
-}
-
-.vod-ep-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  min-width: 0;
-}
-
-.vod-ep-titulo {
-  margin: 0;
-  font-size: 0.92rem;
+.vod-card-poster-nome {
+  font-size: 0.86rem;
   font-weight: 600;
+  line-height: 1.25;
   color: #fff;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.vod-ep-meta {
-  font-size: 0.76rem;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.vod-ep-sinopse {
-  margin: 0.2rem 0 0;
-  font-size: 0.78rem;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.72);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.vod-card-poster-ano {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ── Cartão "Ver Todos" no final das fileiras de gênero ───────────────────── */
+
+.vod-card-ver-todos {
+  flex: 0 0 154px;
+  width: 154px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+
+.vod-card-ver-todos-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  display: grid;
+  place-items: center;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.vod-card-ver-todos:hover .vod-card-ver-todos-thumb {
+  transform: translateY(-4px) scale(1.03);
+  border-color: #4fe3d0;
+  background: rgba(79, 227, 208, 0.1);
+}
+
+.vod-card-ver-todos-icone {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4fe3d0;
+}
+
+.vod-card-ver-todos strong {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #4fe3d0;
+}
+
+.vod-card-ver-todos small {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ── Conteúdo em Grade (Modo Explorar A-Z) ────────────────────────────────── */
+
+.vod-conteudo-grade {
+  position: relative;
+  z-index: 2;
+  padding: 0 clamp(1.2rem, 3.5vw, 3.5rem);
+}
+
+.vod-letras-barra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 1rem;
+}
+
+.vod-letra-pill {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+
+.vod-letra-pill:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.vod-letra-pill.ativa {
+  background: #4fe3d0;
+  color: #0b0f19;
+  border-color: #4fe3d0;
+}
+
+.vod-generos-barra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.vod-genero-pill {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+
+.vod-genero-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.vod-genero-pill.ativa {
+  background: rgba(79, 227, 208, 0.25);
+  border-color: #4fe3d0;
+  color: #4fe3d0;
+}
+
+.vod-grade-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 16px;
+}
+
+.vod-sentinela {
+  height: 40px;
+}
+
+.vod-aviso {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 1rem;
+}
+
+/* ── MODAL FICHA DE FILME OU SÉRIE (FichaTela & SerieTela) ───────────────── */
+
+.vod-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.75rem, 3vw, 2.5rem);
+  background: rgba(4, 5, 10, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: vod-modal-fundo-entra 0.18s ease-out;
+}
+
+.vod-modal-backdrop.vod-modal-suspenso {
+  display: none;
+}
+
+@keyframes vod-modal-fundo-entra {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.vod-modal-janela {
+  width: min(1080px, 94vw);
+  max-height: min(90vh, 880px);
+  overflow-y: auto;
+  border-radius: 20px;
+  background: #0d101a;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.75);
+  color: #fff;
+  position: relative;
+  scrollbar-width: thin;
+}
+
+.vod-btn-fechar {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 20;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vod-btn-fechar:hover {
+  background: rgba(239, 68, 68, 0.4);
+  border-color: #ef4444;
+}
+
+.vod-btn-voltar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.vod-btn-voltar:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ── Hero da Ficha ────────────────────────────────────────────────────────── */
+
+.vod-ficha-hero {
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  border-radius: 20px 20px 0 0;
+}
+
+.vod-ficha-hero-fundo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.vod-ficha-hero-veu {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(13, 16, 26, 0.96) 0%, rgba(13, 16, 26, 0.82) 45%, rgba(13, 16, 26, 0.25) 100%),
+    linear-gradient(0deg, #0d101a 0%, transparent 45%);
+}
+
+.vod-ficha-hero-corpo {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.vod-ficha-hero-capa {
+  width: 220px;
+  height: 330px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #151829;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+  display: grid;
+  place-items: center;
+}
+
+.vod-ficha-hero-capa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vod-poster-letra-grande {
+  font-size: 4rem;
+  font-weight: 800;
+  color: rgba(79, 227, 208, 0.4);
+}
+
+.vod-ficha-hero-detalhes {
+  flex: 1;
+  min-width: 0;
+}
+
+.vod-ficha-tag-tipo {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #4fe3d0;
+  margin-bottom: 4px;
+}
+
+.vod-ficha-titulo {
+  font-size: clamp(2rem, 3.8vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin: 0 0 4px;
+  line-height: 1.1;
+}
+
+.vod-ficha-frase {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 10px;
+}
+
+.vod-ficha-selos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.vod-selo {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.vod-selo-nota {
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 8px;
+  background: rgba(255, 204, 0, 0.18);
+  border: 1px solid rgba(255, 204, 0, 0.4);
+  color: #ffcc00;
+}
+
+.vod-selo-classificacao {
+  background: rgba(79, 227, 208, 0.15);
+  border-color: rgba(79, 227, 208, 0.35);
+  color: #4fe3d0;
+}
+
+.vod-ficha-generos-linha {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 16px;
+}
+
+.vod-ficha-botoes {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.vod-btn-assistir {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 10px;
+  background: #fff;
+  color: #0b0f19;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.3);
+}
+
+.vod-btn-assistir:hover:not(:disabled) {
+  transform: scale(1.04);
+  background: #f0f0f0;
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.4);
+}
+
+.vod-btn-assistir:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.vod-btn-fav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vod-btn-fav:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.vod-btn-fav.ativo {
+  background: rgba(255, 204, 0, 0.18);
+  border-color: #ffcc00;
+  color: #ffcc00;
+}
+
+.vod-ficha-sinopse {
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 16px;
+  max-width: 680px;
+}
+
+.vod-ficha-creditos {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  font-size: 0.84rem;
+  margin: 0;
+}
+
+.vod-ficha-creditos dt {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+
+.vod-ficha-creditos dd {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Corpo Inferior da Ficha (Episódios, Fontes, Elenco) ─────────────────── */
+
+.vod-ficha-corpo {
+  padding: 1.5rem clamp(1.5rem, 3.5vw, 2.5rem) 2.5rem;
+}
+
+/* Fontes Alternativas para Filmes */
+.vod-fontes-seletor {
+  margin-bottom: 2rem;
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.vod-fontes-seletor p {
+  margin: 0 0 10px;
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.vod-fontes-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.vod-fonte-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.vod-fonte-item:hover {
+  background: rgba(79, 227, 208, 0.15);
+  border-color: #4fe3d0;
+}
+
+.vod-fonte-item strong {
+  display: block;
+  font-size: 0.84rem;
+}
+
+.vod-fonte-item small {
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.vod-fonte-item em {
+  font-style: normal;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4fe3d0;
+}
+
+/* Elenco (Fotos Redondas) */
+.vod-ficha-elenco h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.vod-ficha-elenco ul {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+  scrollbar-width: thin;
+}
+
+.vod-ficha-elenco li button {
+  width: 96px;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.15s ease;
+}
+
+.vod-ficha-elenco li button:hover {
+  transform: translateY(-4px);
+}
+
+.vod-ficha-elenco img,
+.vod-ficha-sem-foto {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.vod-ficha-sem-foto {
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.vod-ficha-elenco strong {
+  font-size: 0.82rem;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.vod-ficha-elenco small {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Ator Tela (Filmografia) ──────────────────────────────────────────────── */
+
+.vod-ator-tela {
+  padding: 1.8rem;
+}
+
+.vod-ator-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.vod-ator-topo {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.vod-ator-foto {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+}
+
+.vod-ator-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vod-ator-dados h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+}
+
+.vod-ator-info-extra {
+  font-size: 0.88rem;
+  color: #4fe3d0;
+  margin: 0 0 6px;
+}
+
+.vod-ator-biografia {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.vod-ator-contagem {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.vod-ator-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 14px;
+}
+
+/* ── Responsividade ───────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .vod-catalog {
+    padding-top: 60px;
+  }
+  .vod-ficha-hero-corpo {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .vod-ficha-hero-capa {
+    width: 160px;
+    height: 240px;
+  }
+  .vod-ficha-selos,
+  .vod-ficha-botoes {
+    justify-content: center;
+  }
+  .vod-sub-busca input {
+    width: 80px;
+  }
+  .vod-sub-busca input:focus {
+    width: 130px;
+  }
 }
