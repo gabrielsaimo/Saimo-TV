@@ -26,6 +26,12 @@
   transform: translate(-50%, -10px);
 }
 
+.barra-topo:hover {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translate(-50%, 0) !important;
+}
+
 .barra-logo {
   display: flex;
   align-items: center;

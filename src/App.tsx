@@ -39,7 +39,6 @@ function ehCelular(): boolean {
 const Sidebar = lazy(() => import('./components/Sidebar').then(m => ({ default: m.Sidebar })));
 const VideoPlayer = lazy(() => import('./components/VideoPlayer').then(m => ({ default: m.VideoPlayer })));
 const PainelDeCanais = lazy(() => import('./components/PainelDeCanais').then(m => ({ default: m.PainelDeCanais })));
-const CartaoNoAr = lazy(() => import('./components/CartaoNoAr').then(m => ({ default: m.CartaoNoAr })));
 const MoviePlayer = lazy(() => import('./components/MoviePlayer').then(m => ({ default: m.MoviePlayer })));
 const ProgramGuide = lazy(() => import('./components/ProgramGuide').then(m => ({ default: m.ProgramGuide })));
 const VodCatalog = lazy(() => import('./components/VodCatalog').then(m => ({ default: m.VodCatalog })));
@@ -318,10 +317,35 @@ function TVPage() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isChannelsPanelOpen]);
 
+  // O nav bar só aparece se o usuário passar o mouse na parte superior da tela (para não tapar a programação)
+  const [mouseNoTopo, setMouseNoTopo] = useState(false);
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const onMouseMove = (e: MouseEvent) => {
+      const pertoDoTopo = e.clientY <= 72;
+      if (pertoDoTopo) {
+        if (timer) clearTimeout(timer);
+        setMouseNoTopo(true);
+      } else {
+        if (!timer) {
+          timer = setTimeout(() => {
+            setMouseNoTopo(false);
+            timer = null;
+          }, 350);
+        }
+      }
+    };
+    window.addEventListener('mousemove', onMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
   return (
     <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''} ${deitado ? 'deitado' : ''} ${deitado && (selectedMovie || selectedChannel) ? 'tocando' : ''}`}>
-      {/* Header Global com auto-hide sincronizado aos controles (como no macOS ContentView.swift) */}
-      {!isTheaterMode && <BarraTopo visible={controlsVisible || isChannelsPanelOpen} />}
+      {/* Header Global aparece apenas ao passar o mouse no topo da tela */}
+      {!isTheaterMode && <BarraTopo visible={mouseNoTopo} />}
 
       <Suspense fallback={<LoadingFallback />}>
         {/* Celular: o vídeo fica no alto, e a lista de canais rola embaixo dele */}
@@ -454,21 +478,6 @@ function TVPage() {
                     onPrevChannel={handlePrevChannel}
                     onControlsVisibilityChange={setControlsVisible}
                     hideFloatingCartao={true}
-                  />
-                </div>
-
-                {/* No MultiTela, exibe um único CartaoNoAr flutuando à direita para a tela ativa */}
-                <div
-                  className={`multitela-cartao-flutuante ${controlsVisible ? 'visivel' : ''}`}
-                  style={{ paddingLeft: isChannelsPanelOpen ? '420px' : '0px' }}
-                >
-                  <CartaoNoAr
-                    channel={activeSide === 'secondary' ? secondChannel : selectedChannel}
-                    channelNumber={
-                      channels.findIndex(
-                        (c) => c.id === (activeSide === 'secondary' ? secondChannel?.id : selectedChannel?.id)
-                      ) + 1
-                    }
                   />
                 </div>
               </div>

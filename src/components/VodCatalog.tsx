@@ -120,6 +120,28 @@ const GENEROS_ON_DEMAND = [
   'Fantasia',
 ];
 
+const ORDEM_GENEROS = [
+  'Ação',
+  'Comédia',
+  'Drama',
+  'Terror',
+  'Suspense',
+  'Ficção científica',
+  'Animação',
+  'Romance',
+  'Aventura',
+  'Crime',
+  'Família',
+  'Fantasia',
+  'Mistério',
+  'Documentário',
+  'Guerra',
+  'Faroeste',
+  'História',
+  'Sci-Fi & Fantasy',
+  'Action & Adventure',
+];
+
 const SOBRE_SECAO: Record<Secao, string> = {
   filmes: 'Lançamentos, clássicos e tudo entre eles, dublados e legendados.',
   series: 'Temporadas completas, com o próximo episódio emendando sozinho.',
@@ -403,34 +425,97 @@ export function VodCatalog({
     };
   }, [filasDestaque]);
 
-  // Fileiras de Gênero dinâmicas (como em TelasDoAcervo.swift:314-325)
+  // Fileiras de Gênero dinâmicas (100% igual ao macOS TelasDoAcervo.swift:301-325)
   const fileirasDeGenero = useMemo(() => {
-    if (!generos || !todosFilmes.length) return [];
+    if (!generos) return [];
+
+    const ehSerie = secao === 'series';
+    const listaBase = ehSerie ? todasSeries : todosFilmes;
+
+    const generosAlvo = (secao === null)
+      ? GENEROS_ON_DEMAND
+      : ORDEM_GENEROS.filter((g) => generos.todos.includes(g));
+
     const out: { titulo: string; genero: string; itens: ItemDestaque[] }[] = [];
-    for (const g of GENEROS_ON_DEMAND) {
+
+    if (secao === 'animes') {
+      for (const g of generosAlvo) {
+        const doGenero = animesColecao
+          .filter((s) => temGenero(generos, s.titulo, true, g))
+          .map((s) => ({
+            tipo: 'a',
+            titulo: s.titulo,
+            letra: '#',
+            ano: s.ano,
+            capa: capaDaFicha(generos, s.titulo, true) || '',
+          }))
+          .filter((s) => !!s.capa)
+          .slice(0, 25);
+        if (doGenero.length >= 4) {
+          out.push({
+            titulo: g,
+            genero: g,
+            itens: doGenero,
+          });
+        }
+      }
+      return out;
+    }
+
+    if (secao === 'doramas') {
+      for (const g of generosAlvo) {
+        const doGenero = doramasColecao
+          .filter((s) => temGenero(generos, s.titulo, true, g))
+          .map((s) => ({
+            tipo: 'd',
+            titulo: s.titulo,
+            letra: '#',
+            ano: s.ano,
+            capa: capaDaFicha(generos, s.titulo, true) || '',
+          }))
+          .filter((s) => !!s.capa)
+          .slice(0, 25);
+        if (doGenero.length >= 4) {
+          out.push({
+            titulo: g,
+            genero: g,
+            itens: doGenero,
+          });
+        }
+      }
+      return out;
+    }
+
+    if (!listaBase.length) return [];
+
+    const tipoLetra = ehSerie ? 's' : 'f';
+    const prefixoTitulo = secao === null ? 'Filmes de ' : '';
+
+    for (const g of generosAlvo) {
       if (!generos.todos.includes(g)) continue;
-      const doGenero = todosFilmes
-        .filter((f) => temGenero(generos, f.titulo, false, g))
-        .map((f) => ({
-          tipo: 'f',
-          titulo: f.titulo,
-          letra: f.letra,
-          ano: f.ano,
-          capa: capaDaFicha(generos, f.titulo, false) || '',
+      const doGenero = listaBase
+        .filter((item) => temGenero(generos, item.titulo, ehSerie, g))
+        .map((item) => ({
+          tipo: tipoLetra,
+          titulo: item.titulo,
+          letra: item.letra,
+          ano: item.ano,
+          capa: capaDaFicha(generos, item.titulo, ehSerie) || '',
         }))
-        .filter((f) => !!f.capa)
+        .filter((item) => !!item.capa)
         .slice(0, 25);
 
       if (doGenero.length >= 4) {
         out.push({
-          titulo: `Filmes de ${g.toLowerCase()}`,
+          titulo: prefixoTitulo ? `${prefixoTitulo}${g.toLowerCase()}` : g,
           genero: g,
           itens: doGenero,
         });
       }
     }
+
     return out;
-  }, [generos, todosFilmes]);
+  }, [generos, secao, todasSeries, todosFilmes, animesColecao, doramasColecao]);
 
   // Itens em andamento ("Continue assistindo")
   const itensAndamento = useMemo(() => {
@@ -1098,8 +1183,8 @@ export function VodCatalog({
             );
           })}
 
-          {/* Filmes por Gênero (Gêneros dinâmicos do acervo) */}
-          {secao === null && fileirasDeGenero.map((fg) => (
+          {/* Fileiras de Gênero dinâmicas (Filmes, Séries, Animes ou Doramas) */}
+          {fileirasDeGenero.map((fg) => (
             <CarrosselFileira
               key={fg.genero}
               titulo={fg.titulo}
@@ -1107,7 +1192,10 @@ export function VodCatalog({
               aoAbrir={abrirItemDestaque}
               aoPassar={setItemSobMouse}
               verTodos={() => {
-                setSecao('filmes');
+                if (secao === 'series') setSecao('series');
+                else if (secao === 'animes') setSecao('animes');
+                else if (secao === 'doramas') setSecao('doramas');
+                else setSecao('filmes');
                 setGeneroFiltro(fg.genero);
                 setModo('explorar');
               }}
@@ -1118,68 +1206,86 @@ export function VodCatalog({
           {/* Seção Explorar de A a Z */}
           <section className="vod-fileira">
             <header className="vod-fileira-header">
-              <h2>Explorar de A a Z</h2>
+              <h2>
+                {secao === 'filmes'
+                  ? 'Explorar Filmes de A a Z'
+                  : secao === 'series'
+                  ? 'Explorar Séries de A a Z'
+                  : secao === 'animes'
+                  ? 'Explorar Animes de A a Z'
+                  : secao === 'doramas'
+                  ? 'Explorar Doramas de A a Z'
+                  : 'Explorar de A a Z'}
+              </h2>
             </header>
             <div className="vod-secoes-grid">
-              <button
-                className="vod-card-secao secao-az"
-                onClick={() => { setSecao('filmes'); setModo('explorar'); }}
-              >
-                <div className="vod-card-secao-info">
-                  <div className="vod-card-secao-icone" style={{ background: '#4fe3d0' }}>
-                    <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+              {(secao === null || secao === 'filmes') && (
+                <button
+                  className="vod-card-secao secao-az"
+                  onClick={() => { setSecao('filmes'); setModo('explorar'); }}
+                >
+                  <div className="vod-card-secao-info">
+                    <div className="vod-card-secao-icone" style={{ background: '#4fe3d0' }}>
+                      <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+                    </div>
+                    <div>
+                      <h3>Filmes de A a Z</h3>
+                      <p>{contagens.filmes.toLocaleString('pt-BR')} títulos no índice</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3>Filmes de A a Z</h3>
-                    <p>{contagens.filmes.toLocaleString('pt-BR')} títulos no índice</p>
-                  </div>
-                </div>
-              </button>
+                </button>
+              )}
 
-              <button
-                className="vod-card-secao secao-az"
-                onClick={() => { setSecao('series'); setModo('explorar'); }}
-              >
-                <div className="vod-card-secao-info">
-                  <div className="vod-card-secao-icone" style={{ background: '#7aa2ff' }}>
-                    <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+              {(secao === null || secao === 'series') && (
+                <button
+                  className="vod-card-secao secao-az"
+                  onClick={() => { setSecao('series'); setModo('explorar'); }}
+                >
+                  <div className="vod-card-secao-info">
+                    <div className="vod-card-secao-icone" style={{ background: '#7aa2ff' }}>
+                      <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+                    </div>
+                    <div>
+                      <h3>Séries de A a Z</h3>
+                      <p>{contagens.series.toLocaleString('pt-BR')} temporadas completas</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3>Séries de A a Z</h3>
-                    <p>{contagens.series.toLocaleString('pt-BR')} temporadas completas</p>
-                  </div>
-                </div>
-              </button>
+                </button>
+              )}
 
-              <button
-                className="vod-card-secao secao-az"
-                onClick={() => { setSecao('animes'); setModo('explorar'); }}
-              >
-                <div className="vod-card-secao-info">
-                  <div className="vod-card-secao-icone" style={{ background: '#ffb454' }}>
-                    <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+              {(secao === null || secao === 'animes') && (
+                <button
+                  className="vod-card-secao secao-az"
+                  onClick={() => { setSecao('animes'); setModo('explorar'); }}
+                >
+                  <div className="vod-card-secao-info">
+                    <div className="vod-card-secao-icone" style={{ background: '#ffb454' }}>
+                      <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+                    </div>
+                    <div>
+                      <h3>Animes de A a Z</h3>
+                      <p>{contagens.animes.toLocaleString('pt-BR')} séries catalogadas</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3>Animes de A a Z</h3>
-                    <p>{contagens.animes.toLocaleString('pt-BR')} séries catalogadas</p>
-                  </div>
-                </div>
-              </button>
+                </button>
+              )}
 
-              <button
-                className="vod-card-secao secao-az"
-                onClick={() => { setSecao('doramas'); setModo('explorar'); }}
-              >
-                <div className="vod-card-secao-info">
-                  <div className="vod-card-secao-icone" style={{ background: '#ff7eb6' }}>
-                    <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+              {(secao === null || secao === 'doramas') && (
+                <button
+                  className="vod-card-secao secao-az"
+                  onClick={() => { setSecao('doramas'); setModo('explorar'); }}
+                >
+                  <div className="vod-card-secao-info">
+                    <div className="vod-card-secao-icone" style={{ background: '#ff7eb6' }}>
+                      <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>A-Z</span>
+                    </div>
+                    <div>
+                      <h3>Doramas de A a Z</h3>
+                      <p>{contagens.doramas.toLocaleString('pt-BR')} produções asiáticas</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3>Doramas de A a Z</h3>
-                    <p>{contagens.doramas.toLocaleString('pt-BR')} produções asiáticas</p>
-                  </div>
-                </div>
-              </button>
+                </button>
+              )}
             </div>
           </section>
         </div>

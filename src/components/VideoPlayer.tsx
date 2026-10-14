@@ -13,7 +13,6 @@ import * as telemetria from '../services/telemetria';
 import './VideoPlayer.css';
 import './AvisoApp.css';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, sairDaTelaCheia, soltarOrientacao } from '../utils/telaCheia';
-import { CartaoNoAr } from './CartaoNoAr';
 
 interface VideoPlayerProps {
   channel: Channel | null;
@@ -38,7 +37,6 @@ interface VideoPlayerProps {
 
 export const VideoPlayer = memo(function VideoPlayer({
   channel,
-  channelNumber,
   isTheaterMode,
   onToggleTheater,
   onOpenGuide,
@@ -54,7 +52,6 @@ export const VideoPlayer = memo(function VideoPlayer({
   onNextChannel,
   onPrevChannel,
   onControlsVisibilityChange,
-  hideFloatingCartao = false,
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -1177,31 +1174,25 @@ export const VideoPlayer = memo(function VideoPlayer({
             style={{ paddingLeft: isChannelsPanelOpen ? '420px' : '0px' }}
             onMouseMove={resetControlsTimeout}
           >
-            {/* Cartão do programa no ar flutuando à direita acima da barra */}
-            {!hideFloatingCartao && !isMultiScreen && channel && (
-              <div className="cartao-container-pos">
-                <CartaoNoAr channel={channel} channelNumber={channelNumber} />
-              </div>
-            )}
-
             {/* Barra de vidro flutuante de controles (ControlBar) */}
             <div className="video-glass-controlbar">
-              {/* Botão de abrir/fechar Painel de Canais */}
+              {/* Botão de abrir/fechar Painel de Canais com ícone pulsante */}
               {onToggleChannelsPanel && (
                 <button
-                  className={`control-btn pill-channels-btn ${isChannelsPanelOpen ? 'active' : ''}`}
+                  className={`control-btn pill-channels-btn ${isChannelsPanelOpen ? 'active' : 'pulsing'}`}
                   onClick={() => { resetControlsTimeout(); onToggleChannelsPanel(); }}
-                  title="Lista de canais (C)"
+                  title={isChannelsPanelOpen ? 'Fechar canais (C)' : 'Abrir canais (C)'}
                   data-focusable="true"
+                  aria-label="Canais"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <rect x="3" y="4" width="18" height="16" rx="2" />
-                    <line x1="8" y1="4" x2="8" y2="20" />
-                    <line x1="12" y1="8" x2="17" y2="8" />
-                    <line x1="12" y1="12" x2="17" y2="12" />
-                    <line x1="12" y1="16" x2="17" y2="16" />
+                    <line x1="9" y1="4" x2="9" y2="20" />
+                    <line x1="14" y1="9" x2="18" y2="9" />
+                    <line x1="14" y1="13" x2="18" y2="13" />
+                    <line x1="14" y1="17" x2="16" y2="17" />
                   </svg>
-                  <span>Canais</span>
+                  <span className="pulse-indicator" aria-hidden="true" />
                 </button>
               )}
 
