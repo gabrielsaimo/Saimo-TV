@@ -467,3 +467,50 @@ export function perfil(id: number): Promise<Perfil | null> {
   perfisEmMemoria.set(id, promessa);
   return promessa;
 }
+
+export interface EpisodioTmdb {
+  numero: number;
+  nome: string;
+  sinopse: string;
+  imagem: string | null;
+  duracao: number | null;
+}
+
+const episodiosCache = new Map<string, Promise<EpisodioTmdb[]>>();
+
+/** Os episódios de uma temporada, para a lista da ficha e do player ter cena, título e duração como no TV Box e Mac. */
+export function episodiosDaTemporada(tmdbId: number, temporada: number): Promise<EpisodioTmdb[]> {
+  if (tmdbId <= 0 || temporada <= 0) return Promise.resolve([]);
+  const chave = `${tmdbId}|${temporada}`;
+  const existente = episodiosCache.get(chave);
+  if (existente) return existente;
+
+  const promessa = (async (): Promise<EpisodioTmdb[]> => {
+    try {
+      const r = await fetch(`${TMDB_BASE}/tv/${tmdbId}/season/${temporada}?api_key=${TMDB_API_KEY}&language=pt-BR`);
+      if (!r.ok) return [];
+      const json = await r.json();
+      const episodes = json.episodes as Array<{
+        episode_number: number;
+        name?: string;
+        overview?: string;
+        still_path?: string | null;
+        runtime?: number | null;
+      }>;
+      if (!Array.isArray(episodes)) return [];
+      return episodes.map((ep) => ({
+        numero: ep.episode_number,
+        nome: ep.name && ep.name !== 'null' ? ep.name : '',
+        sinopse: ep.overview && ep.overview !== 'null' ? ep.overview : '',
+        imagem: ep.still_path ? `https://image.tmdb.org/t/p/w300${ep.still_path}` : null,
+        duracao: ep.runtime && ep.runtime > 0 ? ep.runtime : null,
+      }));
+    } catch {
+      return [];
+    }
+  })();
+
+  episodiosCache.set(chave, promessa);
+  return promessa;
+}
+

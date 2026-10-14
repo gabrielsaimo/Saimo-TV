@@ -45,13 +45,16 @@ export function Fileira({ titulo, children, aoVerTodos, rotuloVerTodos = 'Ver to
   const medir = () => {
     const el = trilho.current;
     if (!el) return;
-    setBorda({ esq: el.scrollLeft > 4, dir: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
+    const esq = el.scrollLeft > 4;
+    const dir = el.scrollLeft + el.clientWidth < el.scrollWidth - 4;
+    setBorda((prev) => (prev.esq !== esq || prev.dir !== dir ? { esq, dir } : prev));
   };
+
   useEffect(() => {
     medir();
     window.addEventListener('resize', medir);
     return () => window.removeEventListener('resize', medir);
-  });
+  }, []);
 
   const rolar = (sentido: number) =>
     trilho.current?.scrollBy({ left: sentido * trilho.current.clientWidth * 0.85, behavior: 'smooth' });

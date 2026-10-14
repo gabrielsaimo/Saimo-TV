@@ -47,6 +47,56 @@
   transform: scaleX(-1) translateZ(0);
 }
 
+.video-element.aspect-auto {
+  object-fit: contain;
+}
+
+.video-element.aspect-16\:9 {
+  object-fit: fill;
+  aspect-ratio: 16 / 9;
+}
+
+.video-element.aspect-4\:3 {
+  object-fit: fill;
+  aspect-ratio: 4 / 3;
+}
+
+.video-element.aspect-fill {
+  object-fit: cover;
+}
+
+.aspect-ratio-hud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 26px;
+  background: rgba(10, 10, 15, 0.88);
+  border: 1px solid rgba(79, 243, 224, 0.4);
+  border-radius: 14px;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 600;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+  z-index: 50;
+  animation: hud-in 160ms ease-out;
+}
+
+.aspect-ratio-hud svg {
+  width: 26px;
+  height: 26px;
+  color: #4ff3e0;
+}
+
+@keyframes hud-in {
+  from { opacity: 0; transform: translate(-50%, -46%) scale(0.95); }
+}
+
 /* No channel state */
 .no-channel {
   display: flex;

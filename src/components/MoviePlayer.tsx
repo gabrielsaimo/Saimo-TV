@@ -13,6 +13,7 @@ import { fontePreferida, lembrarFonte } from '../utils/fontePreferida';
 import { resolveVodSources } from '../utils/resolveVodSources';
 import castService, { type CastMethod, type CastState } from '../services/castService';
 import * as telemetria from '../services/telemetria';
+import { episodiosDaTemporada, type EpisodioTmdb } from '../services/tmdbService';
 import './MoviePlayer.css';
 import './AvisoApp.css';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, sairDaTelaCheia, soltarOrientacao } from '../utils/telaCheia';
@@ -72,6 +73,23 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const [showExternalMenu, setShowExternalMenu] = useState(false);
   const [showEpisodeMenu, setShowEpisodeMenu] = useState(false);
   const [episodeMenuSeason, setEpisodeMenuSeason] = useState<number | null>(null);
+  const [drawerDetalhes, setDrawerDetalhes] = useState<Record<number, EpisodioTmdb>>({});
+
+  useEffect(() => {
+    if (!showEpisodeMenu || !movie?.tmdbId || !episodeMenuSeason) return;
+    let cancelado = false;
+    episodiosDaTemporada(movie.tmdbId, episodeMenuSeason)
+      .then((lista) => {
+        if (cancelado) return;
+        const mapa: Record<number, EpisodioTmdb> = {};
+        for (const ep of lista) mapa[ep.numero] = ep;
+        setDrawerDetalhes(mapa);
+      })
+      .catch(() => {
+        if (!cancelado) setDrawerDetalhes({});
+      });
+    return () => { cancelado = true; };
+  }, [showEpisodeMenu, movie?.tmdbId, episodeMenuSeason]);
   const [isPiP, setIsPiP] = useState(false);
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
   const [skipTime, setSkipTime] = useState(() => {
@@ -1463,6 +1481,10 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
             <div className="episode-browser-list">
               {(episodiosPorTemporada.find(([numero]) => numero === episodeMenuSeason)?.[1] ?? []).map((episodio) => {
                 const ativo = episodio.id === movie.id;
+                const num = episodio.episodeNumber ?? 0;
+                const infoTmdb = drawerDetalhes[num];
+                const tituloEp = infoTmdb?.nome ? `Episódio ${num}: ${infoTmdb.nome}` : `Episódio ${num || '?'}`;
+                const duracaoEp = infoTmdb?.duracao ? `${infoTmdb.duracao} min · ` : '';
                 return (
                   <button
                     key={episodio.id}
@@ -1470,10 +1492,14 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                     onClick={() => trocarEpisodio(episodio)}
                     disabled={ativo}
                   >
-                    <span className="episode-browser-play">{ativo ? '●' : '▶'}</span>
+                    {infoTmdb?.imagem ? (
+                      <img src={infoTmdb.imagem} alt="" className="episode-browser-thumb" loading="lazy" />
+                    ) : (
+                      <span className="episode-browser-play">{ativo ? '●' : '▶'}</span>
+                    )}
                     <span className="episode-browser-copy">
-                      <strong>Episódio {episodio.episodeNumber ?? '?'}</strong>
-                      <small>{episodio.sources?.length ?? 1} fonte{(episodio.sources?.length ?? 1) === 1 ? '' : 's'}</small>
+                      <strong>{tituloEp}</strong>
+                      <small>{duracaoEp}{episodio.sources?.length ?? 1} fonte{(episodio.sources?.length ?? 1) === 1 ? '' : 's'}</small>
                     </span>
                     {ativo && <em>Reproduzindo</em>}
                   </button>

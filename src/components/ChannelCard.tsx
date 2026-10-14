@@ -31,21 +31,23 @@ export const ChannelCard = memo(function ChannelCard({
   const [isFocused, setIsFocused] = useState(false);
   const [showSuccessIndicator, setShowSuccessIndicator] = useState(false);
   const prevLogoRef = useRef<string | undefined>(logo);
-  const [agora, setAgora] = useState<string | null>(() => getCurrentProgram(id)?.current?.title ?? null);
+  const [agora, setAgora] = useState<{ title: string; progress: number } | null>(() => {
+    const prog = getCurrentProgram(id);
+    return prog?.current ? { title: prog.current.title, progress: prog.progress } : null;
+  });
 
   /*
-   * O que está passando agora, igual ao app e ao Mac. Reage a três coisas: o
-   * guia chegou (listener), o programa acabou e o próximo começou (relógio de
-   * minuto em minuto) e o cartão virou de um canal para outro (o id mudou).
+   * O que está passando agora, com barra de progresso, igual ao TV Box e ao Mac.
+   * Reage a três coisas: o guia chegou (listener), o programa avançou e a troca de canal.
    */
   useEffect(() => {
-    const atualizar = () => setAgora(getCurrentProgram(id)?.current?.title ?? null);
+    const atualizar = () => {
+      const prog = getCurrentProgram(id);
+      setAgora(prog?.current ? { title: prog.current.title, progress: prog.progress } : null);
+    };
     atualizar();
-    // O evento não recorta por canal aqui: comparar a chave normalizada do
-    // guia com este id (que pode ter sufixo de desempate, "-2") custaria mais
-    // do que a própria consulta, que já é um Map.get.
     const unsubscribe = onEPGUpdate(atualizar);
-    const relogio = window.setInterval(atualizar, 60_000);
+    const relogio = window.setInterval(atualizar, 30_000);
     return () => {
       unsubscribe();
       window.clearInterval(relogio);
@@ -147,9 +149,19 @@ export const ChannelCard = memo(function ChannelCard({
       
       <div className="channel-info">
         <h3 className="channel-name" title={name}>{name}</h3>
-        {agora
-          ? <span className="channel-now" title={agora}>{agora}</span>
-          : category && <span className="channel-category">{category}</span>}
+        {agora ? (
+          <>
+            <span className="channel-now" title={agora.title}>{agora.title}</span>
+            <div className="channel-epg-progress-track">
+              <div
+                className="channel-epg-progress-bar"
+                style={{ width: `${Math.min(100, Math.max(0, Math.round(agora.progress)))}%` }}
+              />
+            </div>
+          </>
+        ) : (
+          category && <span className="channel-category">{category}</span>
+        )}
       </div>
       
       <button

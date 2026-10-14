@@ -93,10 +93,28 @@ export const VideoPlayer = memo(function VideoPlayer({
   const [error, setError] = useState<string | null>(null);
   const [showControls, setShowControls] = useState(true);
   const [videoResolution, setVideoResolution] = useState<string | null>(null);
+  const [aspectRatio, setAspectRatio] = useState<'auto' | '16:9' | '4:3' | 'fill'>('auto');
+  const [aspectRatioToast, setAspectRatioToast] = useState<string | null>(null);
+  const [audioTracks, setAudioTracks] = useState<Array<{ id: number; label: string }>>([]);
+  const [selectedAudio, setSelectedAudio] = useState(-1);
+  const [showAudioMenu, setShowAudioMenu] = useState(false);
+  const [qualityLevels, setQualityLevels] = useState<Array<{ id: number; label: string }>>([]);
+  const [selectedQuality, setSelectedQuality] = useState(-1);
+  const [showQualityMenu, setShowQualityMenu] = useState(false);
   const controlsTimeoutRef = useRef<number | null>(null);
   const isPlayingRef = useRef(false);
   const recoveryAttemptsRef = useRef(0);
   const maxRecoveryAttempts = 3;
+
+  const toggleAspectRatio = useCallback(() => {
+    setAspectRatio((prev) => {
+      const next = prev === 'auto' ? '16:9' : prev === '16:9' ? '4:3' : prev === '4:3' ? 'fill' : 'auto';
+      const label = next === 'auto' ? 'Auto (Padrão)' : next === '16:9' ? '16:9 (Widescreen)' : next === '4:3' ? '4:3 (Clássico)' : 'Preencher Tela';
+      setAspectRatioToast(label);
+      setTimeout(() => setAspectRatioToast(null), 1800);
+      return next;
+    });
+  }, []);
 
   /*
    * As fontes do canal, HTTPS primeiro e depois na ordem publicada. Um canal antigo, guardado antes de
@@ -428,6 +446,37 @@ export const VideoPlayer = memo(function VideoPlayer({
         recoveryAttemptsRef.current = 0;
         video.muted = forceMutedRef.current || isMutedRef.current;
         tocar();
+        if (hls.audioTracks?.length > 1) {
+          setAudioTracks(hls.audioTracks.map((track, id) => ({
+            id,
+            label: track.name || track.lang || `Faixa ${id + 1}`,
+          })));
+          setSelectedAudio(hls.audioTrack);
+        } else {
+          setAudioTracks([]);
+        }
+        if (hls.levels?.length > 1) {
+          setQualityLevels([
+            { id: -1, label: 'Automática' },
+            ...hls.levels.map((level, id) => ({
+              id,
+              label: `${level.height}p${level.bitrate ? ` (${Math.round(level.bitrate / 1000)}k)` : ''}`,
+            })),
+          ]);
+          setSelectedQuality(hls.currentLevel);
+        } else {
+          setQualityLevels([]);
+        }
+      });
+
+      hls.on(Hls.Events.AUDIO_TRACKS_UPDATED, () => {
+        if (hls.audioTracks?.length > 1) {
+          setAudioTracks(hls.audioTracks.map((track, id) => ({
+            id,
+            label: track.name || track.lang || `Faixa ${id + 1}`,
+          })));
+          setSelectedAudio(hls.audioTrack);
+        }
       });
 
       hls.on(Hls.Events.ERROR, (_, data) => {
@@ -810,16 +859,51 @@ export const VideoPlayer = memo(function VideoPlayer({
       // Ações específicas de teclas
       switch (e.key) {
         case 'f':
+        case 'F':
           e.preventDefault();
           toggleFullscreen();
           break;
         case 'm':
+        case 'M':
           e.preventDefault();
           toggleMute();
           break;
         case 'c':
+        case 'C':
           e.preventDefault();
           toggleCast();
+          break;
+        case 'a':
+        case 'A':
+          e.preventDefault();
+          toggleAspectRatio();
+          break;
+        case 'r':
+        case 'R':
+          e.preventDefault();
+          toggleMirror();
+          break;
+        case 'p':
+        case 'P':
+          e.preventDefault();
+          togglePiP();
+          break;
+        case 't':
+        case 'T':
+          e.preventDefault();
+          onToggleTheater();
+          break;
+        case 'u':
+        case 'U':
+          if (onToggleMultiScreen) {
+            e.preventDefault();
+            onToggleMultiScreen();
+          }
+          break;
+        case 'g':
+        case 'G':
+          e.preventDefault();
+          onOpenGuide();
           break;
         case 'ArrowUp':
           e.preventDefault();
@@ -838,7 +922,7 @@ export const VideoPlayer = memo(function VideoPlayer({
     // Global keyboard listener
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [resetControlsTimeout, toggleFullscreen, toggleMute, toggleCast]);
+  }, [resetControlsTimeout, toggleFullscreen, toggleMute, toggleCast, toggleAspectRatio, toggleMirror, togglePiP, onToggleTheater, onToggleMultiScreen, onOpenGuide]);
 
   // Show controls on initial load
   useEffect(() => {
@@ -939,11 +1023,21 @@ export const VideoPlayer = memo(function VideoPlayer({
           <video
             ref={videoRef}
             data-monitor="1"
-            className={`video-element ${isMirrored ? 'mirrored' : ''}`}
+            className={`video-element aspect-${aspectRatio} ${isMirrored ? 'mirrored' : ''}`}
             playsInline
             onClick={handleVideoClick}
             onDoubleClick={handleVideoDoubleClick}
           />
+
+          {aspectRatioToast && (
+            <div className="aspect-ratio-hud">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="M7 8h10M7 16h10" />
+              </svg>
+              <span>{aspectRatioToast}</span>
+            </div>
+          )}
 
           {/* Só aparece se o navegador barrou o play automático: ao vivo
               não tem pausa. */}
@@ -1077,6 +1171,67 @@ export const VideoPlayer = memo(function VideoPlayer({
             </div>
 
             <div className="controls-right">
+              {/* Proporção de tela (Aspect Ratio) */}
+              <button
+                className="control-btn"
+                onClick={() => { resetControlsTimeout(); toggleAspectRatio(); }}
+                title={`Proporção: ${aspectRatio} (A)`}
+                data-focusable="true"
+                data-focus-key="btn-aspect"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="M7 8h10M7 16h10" />
+                </svg>
+              </button>
+
+              {/* Idiomas do Áudio */}
+              {audioTracks.length > 1 && (
+                <button
+                  className={`control-btn ${showAudioMenu ? 'active' : ''}`}
+                  onClick={() => { resetControlsTimeout(); setShowAudioMenu((v) => !v); }}
+                  title="Idiomas do Áudio"
+                  data-focusable="true"
+                  data-focus-key="btn-audio"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                    <line x1="12" y1="19" x2="12" y2="23" />
+                    <line x1="8" y1="23" x2="16" y2="23" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Qualidade */}
+              {qualityLevels.length > 1 && (
+                <button
+                  className={`control-btn ${showQualityMenu ? 'active' : ''}`}
+                  onClick={() => { resetControlsTimeout(); setShowQualityMenu((v) => !v); }}
+                  title="Qualidade do Vídeo"
+                  data-focusable="true"
+                  data-focus-key="btn-quality"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Guia de Programação EPG */}
+              <button
+                className="control-btn"
+                onClick={() => { resetControlsTimeout(); onOpenGuide(); }}
+                title="Guia de Programação (G)"
+                data-focusable="true"
+                data-focus-key="btn-guide"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 6h16M4 12h16M4 18h7" />
+                </svg>
+              </button>
+
               {fontes.length > 1 && (
                 <button
                   className={`control-btn ${showSources ? 'active' : ''}`}
@@ -1246,6 +1401,71 @@ export const VideoPlayer = memo(function VideoPlayer({
                 </div>
 
                 <button className="cast-modal-close" onClick={() => setShowSources(false)}>
+                  Fechar
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Modal de Áudio */}
+          {showAudioMenu && (
+            <div className="cast-modal-overlay" onClick={() => setShowAudioMenu(false)}>
+              <div className="cast-modal" onClick={(e) => e.stopPropagation()}>
+                <h3>Idiomas do Áudio</h3>
+                <p>Selecione a faixa de áudio desejada para este canal:</p>
+                <div className="cast-options">
+                  {audioTracks.map((track) => (
+                    <button
+                      key={track.id}
+                      className={`cast-option ${selectedAudio === track.id ? 'active' : ''}`}
+                      onClick={() => {
+                        setSelectedAudio(track.id);
+                        if (hlsRef.current) hlsRef.current.audioTrack = track.id;
+                        setShowAudioMenu(false);
+                      }}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                      </svg>
+                      <span>{track.label}</span>
+                      {selectedAudio === track.id && <small>Em uso</small>}
+                    </button>
+                  ))}
+                </div>
+                <button className="cast-modal-close" onClick={() => setShowAudioMenu(false)}>
+                  Fechar
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Modal de Qualidade */}
+          {showQualityMenu && (
+            <div className="cast-modal-overlay" onClick={() => setShowQualityMenu(false)}>
+              <div className="cast-modal" onClick={(e) => e.stopPropagation()}>
+                <h3>Qualidade do Vídeo</h3>
+                <p>Selecione a resolução desejada para transmissão:</p>
+                <div className="cast-options">
+                  {qualityLevels.map((level) => (
+                    <button
+                      key={level.id}
+                      className={`cast-option ${selectedQuality === level.id ? 'active' : ''}`}
+                      onClick={() => {
+                        setSelectedQuality(level.id);
+                        if (hlsRef.current) hlsRef.current.currentLevel = level.id;
+                        setShowQualityMenu(false);
+                      }}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                      <span>{level.label}</span>
+                      {selectedQuality === level.id && <small>Em uso</small>}
+                    </button>
+                  ))}
+                </div>
+                <button className="cast-modal-close" onClick={() => setShowQualityMenu(false)}>
                   Fechar
                 </button>
               </div>

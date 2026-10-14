@@ -42,8 +42,8 @@ import {
   type Serie,
   type SerieColecao,
 } from '../services/vodService';
-import { ficha as buscarFicha, fichaVazia, creditosDe, perfil as buscarPerfil } from '../services/tmdbService';
-import type { Ficha, Pessoa, Perfil } from '../services/tmdbService';
+import { ficha as buscarFicha, fichaVazia, creditosDe, perfil as buscarPerfil, episodiosDaTemporada } from '../services/tmdbService';
+import type { Ficha, Pessoa, Perfil, EpisodioTmdb } from '../services/tmdbService';
 
 /** Um trabalho de um ator que existe no acervo, com a capa que o TMDB mandou. */
 interface Trabalho {
@@ -281,6 +281,9 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
   const [erroModal, setErroModal] = useState<string | null>(null);
   const [temporada, setTemporada] = useState(0);
   const [ultimoEpisodioId, setUltimoEpisodioId] = useState<string | null>(null);
+  const [detalhesTemporada, setDetalhesTemporada] = useState<Record<number, EpisodioTmdb>>({});
+  const [versaoFiltro, setVersaoFiltro] = useState<string>('todas');
+  const trilhaEpisodiosRef = useRef<HTMLDivElement | null>(null);
 
   // O episódio que o player abriu vira o último visto — ajustado durante o
   // desenho, quando o título muda, e não copiado num efeito.
@@ -824,13 +827,67 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
     return () => observer.disconnect();
   }, [listaAtual]);
 
-  const daTemporada = useMemo(
-    () => episodiosAgrupados.filter((e) => e.temporada === temporada),
-    [episodiosAgrupados, temporada],
-  );
+  const partida = useMemo(() => {
+    if (!aberto?.serie || !episodiosAgrupados.length) return null;
+    const andamento = listaAndamento();
+    const itemAndamento = andamento.find((a) => a.origem.titulo === aberto.titulo);
+    if (itemAndamento) {
+      const match = /T(\d+)[:\s]E(\d+)/i.exec(itemAndamento.rotulo);
+      if (match) {
+        const t = Number(match[1]);
+        const n = Number(match[2]);
+        const achou = episodiosAgrupados.find((e) => e.temporada === t && e.numero === n);
+        if (achou) {
+          return { temporada: t, numero: n, comecado: true };
+        }
+      }
+    }
+    const primeiro = episodiosAgrupados[0];
+    if (primeiro) {
+      return { temporada: primeiro.temporada, numero: primeiro.numero, comecado: false };
+    }
+    return null;
+  }, [aberto, episodiosAgrupados]);
 
-  const selecionarTemporada = useCallback((numero: number) => {
-    setTemporada((atual) => atual === numero ? 0 : numero);
+  const temporadaAtiva = temporada > 0 && temporadas.includes(temporada)
+    ? temporada
+    : (partida?.temporada ?? temporadas[0] ?? 1);
+
+  const idTmdb = idDoAberto(aberto);
+  useEffect(() => {
+    if (!aberto?.serie || !idTmdb || temporadaAtiva <= 0) return;
+    let cancelado = false;
+    episodiosDaTemporada(idTmdb, temporadaAtiva)
+      .then((lista) => {
+        if (cancelado) return;
+        const mapa: Record<number, EpisodioTmdb> = {};
+        for (const ep of lista) mapa[ep.numero] = ep;
+        setDetalhesTemporada(mapa);
+      })
+      .catch(() => {
+        if (!cancelado) setDetalhesTemporada({});
+      });
+    return () => { cancelado = true; };
+  }, [aberto, idTmdb, temporadaAtiva]);
+
+  const versoesDisponiveis = useMemo(() => {
+    const set = new Set<string>();
+    for (const ep of episodiosAgrupados) {
+      for (const v of ep.versoes) set.add(v);
+    }
+    return [...set].sort((a, b) => (a === 'leg' ? 1 : 0) - (b === 'leg' ? 1 : 0));
+  }, [episodiosAgrupados]);
+
+  const daTemporada = useMemo(() => {
+    const daTemp = episodiosAgrupados.filter((e) => e.temporada === temporadaAtiva);
+    if (versaoFiltro === 'todas') return daTemp;
+    return daTemp.filter((e) => e.versoes.includes(versaoFiltro));
+  }, [episodiosAgrupados, temporadaAtiva, versaoFiltro]);
+
+  const rolarTrilha = useCallback((passo: number) => {
+    if (trilhaEpisodiosRef.current) {
+      trilhaEpisodiosRef.current.scrollBy({ left: passo, behavior: 'smooth' });
+    }
   }, []);
 
   return (
@@ -1084,22 +1141,44 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
                       <p className="vod-ficha-generos">{ficha.generos.join(' · ')}</p>
                     )}
                     <div className="vod-hero-botoes">
-                      <button
-                        className="vod-botao-assistir"
-                        disabled={aberto.serie ? !temporadas.length : !fontesAbertas?.length}
-                        onClick={() => {
-                          if (aberto.serie) {
-                            // As temporadas começam fechadas; quem pediu os
-                            // episódios quer ver episódio, não uma sanfona.
-                            setTemporada((atual) => atual || temporadas[0] || 0);
-                            episodiosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                          } else if (fontesAbertas?.length) {
-                            tocarFilme(aberto.titulo, fontesAbertas);
-                          }
-                        }}
-                      >
-                        ▶ {aberto.serie ? 'Ver episódios' : 'Assistir'}
-                      </button>
+                      {aberto.serie ? (
+                        <button
+                          className="vod-botao-assistir"
+                          disabled={!temporadas.length}
+                          onClick={() => {
+                            if (partida) {
+                              const epPartida = episodiosAgrupados.find(
+                                (e) => e.temporada === partida.temporada && e.numero === partida.numero,
+                              );
+                              if (epPartida) {
+                                tocarEpisodio(epPartida);
+                                return;
+                              }
+                            }
+                            if (episodiosAgrupados[0]) {
+                              tocarEpisodio(episodiosAgrupados[0]);
+                            }
+                          }}
+                        >
+                          ▶ {partida
+                            ? (partida.comecado
+                              ? `Continuar T${partida.temporada} E${partida.numero}`
+                              : `Assistir T${partida.temporada} E${partida.numero}`)
+                            : 'Assistir'}
+                        </button>
+                      ) : (
+                        <button
+                          className="vod-botao-assistir"
+                          disabled={!fontesAbertas?.length}
+                          onClick={() => {
+                            if (fontesAbertas?.length) {
+                              tocarFilme(aberto.titulo, fontesAbertas);
+                            }
+                          }}
+                        >
+                          ▶ Assistir
+                        </button>
+                      )}
                       {(() => {
                         const origem = origemDe(aberto);
                         if (!origem) return null;
@@ -1182,57 +1261,146 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
           )}
 
           {aberto.serie && temporadas.length > 0 && (
-            <div className="vod-season-stack" ref={episodiosRef}>
+            <div className="vod-episodios-bloco" ref={episodiosRef}>
               <div className="vod-episodios-cabecalho">
                 <div>
                   <h3>Episódios</h3>
-                  <p>{filmesDaSerie.length} episódio{filmesDaSerie.length === 1 ? '' : 's'} · escolha uma temporada</p>
+                  <small>{filmesDaSerie.length} episódio{filmesDaSerie.length === 1 ? '' : 's'}</small>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  {versoesDisponiveis.length > 1 && (
+                    <div className="vod-pilulas-grupo">
+                      <button
+                        className={`vod-pilula vod-pilula-versao${versaoFiltro === 'todas' ? ' ativa' : ''}`}
+                        onClick={() => setVersaoFiltro('todas')}
+                      >
+                        Todas
+                      </button>
+                      {versoesDisponiveis.map((v) => (
+                        <button
+                          key={v}
+                          className={`vod-pilula vod-pilula-versao${versaoFiltro === v ? ' ativa' : ''}`}
+                          onClick={() => setVersaoFiltro(v)}
+                        >
+                          {v === 'leg' ? 'Legendado' : 'Dublado'}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  <div className="vod-episodios-setas">
+                    <button
+                      className="vod-seta-btn"
+                      onClick={() => rolarTrilha(-580)}
+                      aria-label="Episódios anteriores"
+                      title="Episódios anteriores"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      className="vod-seta-btn"
+                      onClick={() => rolarTrilha(580)}
+                      aria-label="Próximos episódios"
+                      title="Próximos episódios"
+                    >
+                      ›
+                    </button>
+                  </div>
                 </div>
               </div>
-              {temporadas.map((t) => {
-                const aberta = t === temporada;
-                const total = episodiosAgrupados.filter((e) => e.temporada === t).length;
-                return (
-                  <section className={`vod-season${aberta ? ' aberta' : ''}`} key={t}>
+
+              {/* Pílulas de Temporadas */}
+              {temporadas.length > 1 && (
+                <div className="vod-pilulas-grupo" role="tablist" aria-label="Temporadas">
+                  {temporadas.map((t) => {
+                    const ativa = t === temporadaAtiva;
+                    const totalNaTemp = episodiosAgrupados.filter((e) => e.temporada === t).length;
+                    return (
+                      <button
+                        key={t}
+                        className={`vod-pilula${ativa ? ' ativa' : ''}`}
+                        onClick={() => setTemporada(t)}
+                        role="tab"
+                        aria-selected={ativa}
+                      >
+                        Temporada {t} ({totalNaTemp})
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Trilha horizontal de cartões 16:9 de episódios */}
+              <div className="vod-episodios-trilha" ref={trilhaEpisodiosRef}>
+                {daTemporada.map((e) => {
+                  const id = `series-${aberto.chave}-s${e.temporada}e${e.numero}`;
+                  const infoEp = detalhesTemporada[e.numero];
+                  const nome = infoEp?.nome && infoEp.nome.trim() ? infoEp.nome : `Episódio ${e.numero}`;
+                  const duracao = infoEp?.duracao ? `${infoEp.duracao} min` : null;
+                  const versoesRotulo = e.versoes.map((v) => v === 'leg' ? 'Legendado' : 'Dublado').join(' / ');
+                  const ehDestaque = (partida?.temporada === e.temporada && partida?.numero === e.numero) || ultimoEpisodioId === id;
+                  const ehNoPlayer = activeMovie?.id === id;
+
+                  let progressoFracao = 0;
+                  try {
+                    const salvo = localStorage.getItem(`movie-progress-${id}`);
+                    if (salvo) {
+                      const parsed = JSON.parse(salvo);
+                      if (parsed.duration > 0 && parsed.currentTime > 0) {
+                        progressoFracao = Math.min(1, parsed.currentTime / parsed.duration);
+                      }
+                    }
+                  } catch {
+                    /* progresso opcional */
+                  }
+                  const assistido = progressoFracao >= 0.95;
+
+                  return (
                     <button
-                      className="vod-season-toggle"
-                      onClick={() => selecionarTemporada(t)}
-                      aria-expanded={aberta}
+                      key={`${e.temporada}-${e.numero}`}
+                      className={`vod-ep-card${ehNoPlayer ? ' no-player' : ''}${ehDestaque ? ' destaque' : ''}`}
+                      onClick={() => tocarEpisodio(e)}
                     >
-                      <span>
-                        <strong>Temporada {t}</strong>
-                        <small>{total} episódio{total === 1 ? '' : 's'}</small>
-                      </span>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                        <path d="m6 9 6 6 6-6" />
-                      </svg>
+                      <div className="vod-ep-thumb">
+                        {infoEp?.imagem ? (
+                          <img src={infoEp.imagem} alt="" loading="lazy" />
+                        ) : (
+                          <span className="vod-ep-numero-grande">{e.numero}</span>
+                        )}
+                        {ehDestaque && (
+                          <span className="vod-ep-badge continuar">
+                            {ehNoPlayer ? '● No ar' : partida?.comecado ? '▶ Continuar' : '▶ Comece aqui'}
+                          </span>
+                        )}
+                        {assistido && (
+                          <span className="vod-ep-badge assistido">✓ Assistido</span>
+                        )}
+                        {progressoFracao > 0 && !assistido && (
+                          <div className="vod-ep-progresso-trilho">
+                            <div
+                              className="vod-ep-progresso-barra"
+                              style={{ width: `${Math.round(progressoFracao * 100)}%` }}
+                            />
+                          </div>
+                        )}
+                        <div className="vod-ep-play-overlay">
+                          <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div className="vod-ep-info">
+                        <h4 className="vod-ep-titulo">{e.numero}. {nome}</h4>
+                        <span className="vod-ep-meta">
+                          {[duracao, versoesRotulo].filter(Boolean).join(' · ')}
+                        </span>
+                        {infoEp?.sinopse && (
+                          <p className="vod-ep-sinopse">{infoEp.sinopse}</p>
+                        )}
+                      </div>
                     </button>
-                    {aberta && (
-                      <ul className="vod-episodios">
-                        {daTemporada.map((e) => {
-                          const id = `series-${aberto.chave}-s${e.temporada}e${e.numero}`;
-                          const idiomas = e.versoes.map((v) => v === 'leg' ? 'Legendado' : v === 'dub' ? 'Dublado' : v);
-                          return (
-                            <li key={`${e.temporada}-${e.numero}`}>
-                              <button
-                                className={id === ultimoEpisodioId ? 'assistindo' : undefined}
-                                onClick={() => tocarEpisodio(e)}
-                              >
-                                <span className="vod-ep-play" aria-hidden="true">▶</span>
-                                <span className="vod-ep-numero">Episódio {e.numero}</span>
-                                <span className="vod-ep-versao">
-                                  {idiomas.join(' · ')} · {e.fontes.length} fonte{e.fontes.length === 1 ? '' : 's'}
-                                </span>
-                                {id === ultimoEpisodioId && <em>Último</em>}
-                              </button>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-                  </section>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           )}
               </div>
