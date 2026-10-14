@@ -12,85 +12,141 @@
 }
 
 /* ========================================
-   TV PAGE LAYOUT
+   TV PAGE LAYOUT - macOS Live TV Architecture
    ======================================== */
 .tv-page {
-  padding-top: 76px; /* Espaço para a barra do topo */
+  padding-top: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
 }
 
 .tv-page.theater-mode {
-  padding-top: 0;
   background: #000;
 }
 
-.tv-page.theater-mode .tv-layout {
-  height: 100vh;
-  height: 100dvh;
-}
-
-.tv-layout {
-  flex: 1;
-  display: flex;
-  min-height: 0;
-  max-height: calc(100vh - 76px);
-  max-height: calc(100dvh - 76px);
-  height: calc(100vh - 76px);
-  height: calc(100dvh - 76px);
+.stage-aovivo-mac {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
   overflow: hidden;
-}
-
-.sidebar-wrapper {
   display: flex;
-  z-index: 100;
-  flex-shrink: 0;
 }
 
-.main-content {
-  flex: 1;
+.multitela-stage-mac {
   display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-  max-height: 100%;
-  overflow: hidden;
-  background: #0a0a0a;
-}
-
-.main-content.multi-screen-layout {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  gap: 3px;
   position: relative;
 }
 
-.multi-screen-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  width: 100%;
+.multitela-lado-mac {
+  flex: 1;
   height: 100%;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  cursor: pointer;
   background: #000;
   box-sizing: border-box;
-  padding: 8px;
 }
 
-.multi-screen-slot {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.08);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+.multitela-lado-mac.ativo {
+  box-shadow: inset 0 0 0 3px #4fe3d0;
+}
+
+.multitela-moldura-mac {
+  position: absolute;
+  top: 76px;
+  left: 16px;
+  right: 16px;
+  z-index: 120;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.22s ease;
 }
 
-.multi-screen-slot.active {
-  border-color: #4ff3e0;
-  box-shadow: 0 0 20px rgba(79, 243, 224, 0.35);
+.multitela-moldura-mac.visivel {
+  opacity: 1;
 }
 
-.multi-screen-slot .video-player-container {
-  width: 100%;
-  height: 100%;
+.multitela-rotulo-mac {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(11, 14, 20, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  user-select: none;
+}
+
+.multitela-som-icone {
+  font-size: 12px;
+}
+
+.multitela-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(79, 243, 224, 0.2);
+  color: #4fe3d0;
+  letter-spacing: 0.3px;
+}
+
+.multitela-fechar {
+  pointer-events: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(11, 14, 20, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.multitela-fechar:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: #ef4444;
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+.multitela-cartao-flutuante {
+  position: absolute;
+  bottom: 80px;
+  right: 22px;
+  z-index: 120;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, padding-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.multitela-cartao-flutuante.visivel {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ========================================

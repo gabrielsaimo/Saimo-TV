@@ -38,6 +38,8 @@ function ehCelular(): boolean {
 // Lazy loading dos componentes pesados
 const Sidebar = lazy(() => import('./components/Sidebar').then(m => ({ default: m.Sidebar })));
 const VideoPlayer = lazy(() => import('./components/VideoPlayer').then(m => ({ default: m.VideoPlayer })));
+const PainelDeCanais = lazy(() => import('./components/PainelDeCanais').then(m => ({ default: m.PainelDeCanais })));
+const CartaoNoAr = lazy(() => import('./components/CartaoNoAr').then(m => ({ default: m.CartaoNoAr })));
 const MoviePlayer = lazy(() => import('./components/MoviePlayer').then(m => ({ default: m.MoviePlayer })));
 const ProgramGuide = lazy(() => import('./components/ProgramGuide').then(m => ({ default: m.ProgramGuide })));
 const VodCatalog = lazy(() => import('./components/VodCatalog').then(m => ({ default: m.VodCatalog })));
@@ -87,8 +89,6 @@ function TVPage() {
   const [escolha, setEscolha] = useState<{ canal: Channel; slug?: string } | null>(null);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isTheaterMode, setIsTheaterMode] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [toast, setToast] = useState<ToastState | null>(null);
   const [isMobile, setIsMobile] = useState(ehCelular);
@@ -97,6 +97,8 @@ function TVPage() {
   const [isMultiScreen, setIsMultiScreen] = useState(false);
   const [secondChannel, setSecondChannel] = useState<Channel | null>(null);
   const [activeSide, setActiveSide] = useState<'primary' | 'secondary'>('primary');
+  const [isChannelsPanelOpen, setIsChannelsPanelOpen] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
   const [personalizados, setPersonalizados] = useState<Channel[]>(locaisPersonalizados);
 
   useEffect(() => aoMudarPersonalizados(() => setPersonalizados(locaisPersonalizados())), []);
@@ -204,14 +206,12 @@ function TVPage() {
   const handleSelectChannel = useCallback((channel: Channel) => {
     if (isMultiScreen && activeSide === 'secondary') {
       setSecondChannel(channel);
-      setIsMobileMenuOpen(false);
       showToast(`Tela 2: ${channel.name}`, 'info');
       return;
     }
     setSelectedChannel(channel);
     setSelectedMovie(null);
     setLastChannelId(channel.id);
-    setIsMobileMenuOpen(false);
     showToast(isMultiScreen ? `Tela 1: ${channel.name}` : `Assistindo: ${channel.name}`, 'info');
   }, [isMultiScreen, activeSide, setLastChannelId, showToast, setSelectedChannel]);
 
@@ -254,11 +254,6 @@ function TVPage() {
 
   const handleToggleTheater = useCallback(() => {
     setIsTheaterMode((prev) => !prev);
-    setIsSidebarCollapsed((prev) => !prev);
-  }, []);
-
-  const handleToggleSidebar = useCallback(() => {
-    setIsSidebarCollapsed((prev) => !prev);
   }, []);
 
   const handleNextChannel = useCallback(() => {
@@ -294,47 +289,31 @@ function TVPage() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Um "g" digitado na busca do guia (ou em qualquer campo) é texto, não atalho.
+      // Um "g" ou "c" digitado na busca do guia (ou em qualquer campo) é texto, não atalho.
       const alvo = e.target as HTMLElement | null;
       if (alvo && (alvo.tagName === 'INPUT' || alvo.tagName === 'TEXTAREA' || alvo.isContentEditable)) return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === 'g' || e.key === 'G') {
         setIsGuideOpen((prev) => !prev);
       }
+      if (e.key === 'c' || e.key === 'C') {
+        setIsChannelsPanelOpen((prev) => !prev);
+      }
+      if (e.key === 'Escape' && isChannelsPanelOpen) {
+        setIsChannelsPanelOpen(false);
+      }
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [isChannelsPanelOpen]);
 
   return (
     <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''} ${deitado ? 'deitado' : ''} ${deitado && (selectedMovie || selectedChannel) ? 'tocando' : ''}`}>
-      {/* Header Global */}
-      {!isTheaterMode && <BarraTopo />}
+      {/* Header Global com auto-hide sincronizado aos controles (como no macOS ContentView.swift) */}
+      {!isTheaterMode && <BarraTopo visible={controlsVisible || isChannelsPanelOpen} />}
 
       <Suspense fallback={<LoadingFallback />}>
-        <div className="tv-layout">
-          {/* Desktop Sidebar */}
-          <div className={`sidebar-wrapper desktop-only ${isMobileMenuOpen ? 'open' : ''}`}>
-            <Sidebar
-              channels={channels}
-              activeChannelId={isMultiScreen && activeSide === 'secondary' ? (secondChannel?.id || null) : (selectedChannel?.id || null)}
-              favorites={favorites}
-              onSelectChannel={handleSelectChannel}
-              onToggleFavorite={handleToggleFavorite}
-              isCollapsed={isSidebarCollapsed}
-              onToggleCollapse={handleToggleSidebar}
-            />
-        </div>
-
-        {isMobileMenuOpen && (
-          <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />
-        )}
-
-        {/* Celular: o vídeo fica no alto, e a lista de canais rola embaixo
-            dele — trocar de canal não esconde o que está passando. Sem nada
-            passando (primeira visita), não há vídeo: o aviso "Selecione um
-            canal" esticava o bloco a quase metade da tela e sobrava lugar
-            para um canal só. A lista ocupa tudo até a pessoa escolher. */}
+        {/* Celular: o vídeo fica no alto, e a lista de canais rola embaixo dele */}
         {isMobile && (
           <div className="mobile-content">
             {(selectedMovie || selectedChannel) && (
@@ -344,6 +323,7 @@ function TVPage() {
                 ) : (
                   <VideoPlayer
                     channel={selectedChannel}
+                    channelNumber={channels.findIndex((c) => c.id === selectedChannel?.id) + 1}
                     isTheaterMode={isTheaterMode}
                     onToggleTheater={handleToggleTheater}
                     onOpenGuide={() => setIsGuideOpen(true)}
@@ -366,20 +346,41 @@ function TVPage() {
           </div>
         )}
 
-        {/* Desktop Main Content */}
+        {/* Desktop: Stage 100% idêntico ao macOS SaimoPlayer (AoVivo.swift / ContentView.swift) */}
         {!isMobile && (
-          <main className={`main-content ${isMultiScreen ? 'multi-screen-layout' : ''}`}>
+          <div className="stage-aovivo-mac">
             {selectedMovie ? (
               <MoviePlayer movie={selectedMovie} onBack={handleBackFromMovie} />
             ) : isMultiScreen ? (
-              <div className="multi-screen-grid">
+              <div className="multitela-stage-mac">
                 <div
-                  className={`multi-screen-slot ${activeSide === 'primary' ? 'active' : ''}`}
+                  className={`multitela-lado-mac ${activeSide === 'primary' ? 'ativo' : ''}`}
                   onClick={() => setActiveSide('primary')}
                 >
+                  <div className={`multitela-moldura-mac ${controlsVisible ? 'visivel' : ''}`}>
+                    <div className="multitela-rotulo-mac">
+                      <span className="multitela-som-icone">
+                        {activeSide === 'primary' ? '🔊' : '🔇'}
+                      </span>
+                      <span className="multitela-nome">{selectedChannel?.name || 'Tela 1'}</span>
+                      {activeSide === 'primary' && <span className="multitela-badge">Áudio ativo</span>}
+                    </div>
+                    <button
+                      className="multitela-fechar"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsMultiScreen(false);
+                        setActiveSide('primary');
+                      }}
+                      title="Fechar multi tela"
+                    >
+                      ✕
+                    </button>
+                  </div>
                   <VideoPlayer
                     channel={selectedChannel}
-                    isTheaterMode={isTheaterMode}
+                    channelNumber={channels.findIndex((c) => c.id === selectedChannel?.id) + 1}
+                    isTheaterMode={false}
                     onToggleTheater={handleToggleTheater}
                     onOpenGuide={() => setIsGuideOpen(true)}
                     isMultiScreen={true}
@@ -388,15 +389,42 @@ function TVPage() {
                     onActivateSplit={() => setActiveSide('primary')}
                     forceMuted={activeSide !== 'primary'}
                     splitLabel="Tela 1"
+                    isChannelsPanelOpen={isChannelsPanelOpen}
+                    onToggleChannelsPanel={() => setIsChannelsPanelOpen((v) => !v)}
+                    onNextChannel={handleNextChannel}
+                    onPrevChannel={handlePrevChannel}
+                    onControlsVisibilityChange={setControlsVisible}
+                    hideFloatingCartao={true}
                   />
                 </div>
                 <div
-                  className={`multi-screen-slot ${activeSide === 'secondary' ? 'active' : ''}`}
+                  className={`multitela-lado-mac ${activeSide === 'secondary' ? 'ativo' : ''}`}
                   onClick={() => setActiveSide('secondary')}
                 >
+                  <div className={`multitela-moldura-mac ${controlsVisible ? 'visivel' : ''}`}>
+                    <div className="multitela-rotulo-mac">
+                      <span className="multitela-som-icone">
+                        {activeSide === 'secondary' ? '🔊' : '🔇'}
+                      </span>
+                      <span className="multitela-nome">{secondChannel?.name || 'Tela 2'}</span>
+                      {activeSide === 'secondary' && <span className="multitela-badge">Áudio ativo</span>}
+                    </div>
+                    <button
+                      className="multitela-fechar"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsMultiScreen(false);
+                        setActiveSide('primary');
+                      }}
+                      title="Fechar multi tela"
+                    >
+                      ✕
+                    </button>
+                  </div>
                   <VideoPlayer
                     channel={secondChannel}
-                    isTheaterMode={isTheaterMode}
+                    channelNumber={channels.findIndex((c) => c.id === secondChannel?.id) + 1}
+                    isTheaterMode={false}
                     onToggleTheater={handleToggleTheater}
                     onOpenGuide={() => setIsGuideOpen(true)}
                     isMultiScreen={true}
@@ -409,20 +437,69 @@ function TVPage() {
                     }}
                     forceMuted={activeSide !== 'secondary'}
                     splitLabel="Tela 2"
+                    isChannelsPanelOpen={isChannelsPanelOpen}
+                    onToggleChannelsPanel={() => setIsChannelsPanelOpen((v) => !v)}
+                    onNextChannel={handleNextChannel}
+                    onPrevChannel={handlePrevChannel}
+                    onControlsVisibilityChange={setControlsVisible}
+                    hideFloatingCartao={true}
+                  />
+                </div>
+
+                {/* No MultiTela, exibe um único CartaoNoAr flutuando à direita para a tela ativa */}
+                <div
+                  className={`multitela-cartao-flutuante ${controlsVisible ? 'visivel' : ''}`}
+                  style={{ paddingLeft: isChannelsPanelOpen ? '420px' : '0px' }}
+                >
+                  <CartaoNoAr
+                    channel={activeSide === 'secondary' ? secondChannel : selectedChannel}
+                    channelNumber={
+                      channels.findIndex(
+                        (c) => c.id === (activeSide === 'secondary' ? secondChannel?.id : selectedChannel?.id)
+                      ) + 1
+                    }
                   />
                 </div>
               </div>
             ) : (
               <VideoPlayer
                 channel={selectedChannel}
+                channelNumber={channels.findIndex((c) => c.id === selectedChannel?.id) + 1}
                 isTheaterMode={isTheaterMode}
                 onToggleTheater={handleToggleTheater}
                 onOpenGuide={() => setIsGuideOpen(true)}
                 isMultiScreen={false}
                 onToggleMultiScreen={handleToggleMultiScreen}
+                isChannelsPanelOpen={isChannelsPanelOpen}
+                onToggleChannelsPanel={() => setIsChannelsPanelOpen((v) => !v)}
+                onNextChannel={handleNextChannel}
+                onPrevChannel={handlePrevChannel}
+                onControlsVisibilityChange={setControlsVisible}
               />
             )}
-          </main>
+
+            {/* Painel de Canais Flutuante de Vidro como no macOS AoVivo.swift */}
+            <PainelDeCanais
+              channels={channels}
+              activeChannelId={
+                isMultiScreen && activeSide === 'secondary'
+                  ? secondChannel?.id || null
+                  : selectedChannel?.id || null
+              }
+              favorites={favorites}
+              isOpen={isChannelsPanelOpen}
+              onClose={() => setIsChannelsPanelOpen(false)}
+              onSelectChannel={handleSelectChannel}
+              onToggleFavorite={handleToggleFavorite}
+              onOpenOtherScreen={(ch) => {
+                if (!isMultiScreen) setIsMultiScreen(true);
+                setSecondChannel(ch);
+                setActiveSide('secondary');
+                showToast(`Tela 2: ${ch.name}`, 'info');
+              }}
+              isMultiScreen={isMultiScreen}
+            />
+          </div>
         )}
 
         {/* Guia de Programação */}
@@ -433,7 +510,6 @@ function TVPage() {
           onClose={() => setIsGuideOpen(false)}
           isOpen={isGuideOpen}
         />
-        </div>
       </Suspense>
 
       {toast && (

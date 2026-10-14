@@ -41,7 +41,11 @@ const relogio = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', 
 const ativa = (a: Aba, caminho: string) =>
   caminho === a.rota || (a.prefixos?.some((p) => caminho.startsWith(p)) ?? false);
 
-export const BarraTopo = memo(function BarraTopo() {
+interface BarraTopoProps {
+  visible?: boolean;
+}
+
+export const BarraTopo = memo(function BarraTopo({ visible = true }: BarraTopoProps = {}) {
   const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
   const navigate = useNavigate();
   const radio = useSyncExternalStore(assinar, atualRadio);
@@ -101,7 +105,7 @@ export const BarraTopo = memo(function BarraTopo() {
 
   return (
     <>
-      <header className="barra-topo" role="banner">
+      <header className={`barra-topo ${!visible ? 'oculta' : ''}`} role="banner">
         <button className="barra-logo" onClick={aoClicarLogo} aria-label="Saimo TV — início">
           <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <defs>
