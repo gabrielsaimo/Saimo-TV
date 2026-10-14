@@ -1441,4 +1441,38 @@
   transform: scale(1.1);
 }
 
+/* ── Responsividade de Controles de Vídeo em Telas Menores e Celular ──── */
+@media (max-width: 768px) {
+  .video-floating-stack {
+    padding: 0 8px 8px !important;
+    padding-left: 8px !important;
+  }
+  .video-glass-controlbar {
+    padding: 6px 8px;
+    gap: 4px;
+    border-radius: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .video-glass-controlbar::-webkit-scrollbar {
+    display: none;
+  }
+  .control-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .control-btn svg {
+    width: 17px;
+    height: 17px;
+  }
+  .volume-control-mac .volume-slider-mac {
+    display: none;
+  }
+  .video-player-container:not(.theater-mode):not(:fullscreen) .cartao-container-pos {
+    display: none;
+  }
+}
+
+
 

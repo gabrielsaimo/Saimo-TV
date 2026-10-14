@@ -16,6 +16,7 @@ interface PainelDeCanaisProps {
   onSelectVariant?: (channel: Channel, variantIndex: number) => void;
   onOpenOtherScreen?: (channel: Channel) => void;
   isMultiScreen?: boolean;
+  isMobileInline?: boolean;
 }
 
 interface LinhaDeCanalProps {
@@ -109,6 +110,7 @@ export const PainelDeCanais = memo(function PainelDeCanais({
   onSelectVariant,
   onOpenOtherScreen,
   isMultiScreen = false,
+  isMobileInline = false,
 }: PainelDeCanaisProps) {
   const [busca, setBusca] = useState('');
   const [categoriaAtiva, setCategoriaAtiva] = useState<string>('Todos');
@@ -134,20 +136,20 @@ export const PainelDeCanais = memo(function PainelDeCanais({
   // Fecha no Esc e foca busca no /
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape' && isOpen && !isMobileInline) {
         onClose();
-      } else if (e.key === '/' && isOpen && document.activeElement !== buscaRef.current) {
+      } else if (e.key === '/' && (isOpen || isMobileInline) && document.activeElement !== buscaRef.current) {
         e.preventDefault();
         buscaRef.current?.focus();
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [isOpen, onClose]);
+  }, [isOpen, isMobileInline, onClose]);
 
   // Scroll até o canal ativo ao abrir
   useEffect(() => {
-    if (isOpen && activeChannelId && listaRef.current) {
+    if ((isOpen || isMobileInline) && activeChannelId && listaRef.current) {
       setTimeout(() => {
         const el = listaRef.current?.querySelector(`[data-channel-id="${activeChannelId}"]`);
         if (el) {
@@ -155,7 +157,7 @@ export const PainelDeCanais = memo(function PainelDeCanais({
         }
       }, 150);
     }
-  }, [isOpen, activeChannelId]);
+  }, [isOpen, isMobileInline, activeChannelId]);
 
   // Fecha menu de contexto ao clicar fora
   useEffect(() => {
@@ -251,10 +253,14 @@ export const PainelDeCanais = memo(function PainelDeCanais({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen && !isMobileInline) return null;
 
   return (
-    <aside className="painel-de-canais-container" aria-label="Painel de Canais" onClick={(e) => e.stopPropagation()}>
+    <aside
+      className={`painel-de-canais-container ${isMobileInline ? 'mobile-inline' : ''}`}
+      aria-label="Painel de Canais"
+      onClick={(e) => e.stopPropagation()}
+    >
       {/* Topo do painel */}
       <div className="painel-topo">
         <h2 className="painel-titulo">Canais</h2>
@@ -263,17 +269,19 @@ export const PainelDeCanais = memo(function PainelDeCanais({
             <span className="painel-numero-ativo">{activeChannelIndex}</span>
           )}
           <span className="painel-contagem-total">{channels.length}</span>
-          <button
-            type="button"
-            className="painel-btn-fechar"
-            onClick={onClose}
-            title="Fechar a lista (Esc)"
-            aria-label="Fechar"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
+          {!isMobileInline && (
+            <button
+              type="button"
+              className="painel-btn-fechar"
+              onClick={onClose}
+              title="Fechar a lista (Esc)"
+              aria-label="Fechar"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 

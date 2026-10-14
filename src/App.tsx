@@ -36,7 +36,6 @@ function ehCelular(): boolean {
 }
 
 // Lazy loading dos componentes pesados
-const Sidebar = lazy(() => import('./components/Sidebar').then(m => ({ default: m.Sidebar })));
 const VideoPlayer = lazy(() => import('./components/VideoPlayer').then(m => ({ default: m.VideoPlayer })));
 const PainelDeCanais = lazy(() => import('./components/PainelDeCanais').then(m => ({ default: m.PainelDeCanais })));
 const MoviePlayer = lazy(() => import('./components/MoviePlayer').then(m => ({ default: m.MoviePlayer })));
@@ -337,22 +336,43 @@ function TVPage() {
                     isTheaterMode={isTheaterMode}
                     onToggleTheater={handleToggleTheater}
                     onOpenGuide={() => setIsGuideOpen(true)}
+                    isChannelsPanelOpen={isChannelsPanelOpen}
+                    onToggleChannelsPanel={() => setIsChannelsPanelOpen((v) => !v)}
+                    onNextChannel={handleNextChannel}
+                    onPrevChannel={handlePrevChannel}
+                    onControlsVisibilityChange={setControlsVisible}
                   />
                 )}
               </div>
             )}
             <div className="mobile-canais">
-              <Sidebar
+              <PainelDeCanais
                 channels={channels}
                 activeChannelId={selectedChannel?.id || null}
                 favorites={favorites}
+                isOpen={true}
+                onClose={() => {}}
                 onSelectChannel={handleSelectChannel}
                 onToggleFavorite={handleToggleFavorite}
-                isCollapsed={false}
-                onToggleCollapse={() => {}}
-                isMobileView={true}
+                isMobileInline={true}
               />
             </div>
+
+            {/* Gaveta flutuante de canais quando em tela cheia ou celular deitado */}
+            {(isTheaterMode || deitado) && isChannelsPanelOpen && (
+              <PainelDeCanais
+                channels={channels}
+                activeChannelId={selectedChannel?.id || null}
+                favorites={favorites}
+                isOpen={isChannelsPanelOpen}
+                onClose={() => setIsChannelsPanelOpen(false)}
+                onSelectChannel={(ch) => {
+                  handleSelectChannel(ch);
+                  setIsChannelsPanelOpen(false);
+                }}
+                onToggleFavorite={handleToggleFavorite}
+              />
+            )}
           </div>
         )}
 

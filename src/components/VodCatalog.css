@@ -9,7 +9,7 @@
   padding-bottom: 5rem;
   background: #0a0b14;
   color: #fff;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ── Fundo do Destaque (Cinema Backdrop) ─────────────────────────────────── */
@@ -146,8 +146,9 @@
 /* ── Barra de Sub-Navegação (Pílulas de Categoria e Busca) ────────────────── */
 
 .vod-sub-barra {
-  position: relative;
-  z-index: 5;
+  position: sticky;
+  top: 70px;
+  z-index: 800;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -156,11 +157,12 @@
   padding: 8px 16px;
   margin: 0.8rem clamp(1.2rem, 3.5vw, 3.5rem) 1.6rem;
   border-radius: 999px;
-  background: rgba(18, 20, 34, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  background: rgba(18, 20, 34, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: top 0.25s ease, background 0.2s ease;
 }
 
 .vod-sub-barra-pills {
@@ -1549,6 +1551,12 @@
   .vod-ficha-selos,
   .vod-ficha-botoes {
     justify-content: center;
+  }
+  .vod-sub-barra {
+    top: 8px;
+    margin: 0.4rem 10px 1rem;
+    padding: 6px 12px;
+    border-radius: 20px;
   }
   .vod-sub-busca input {
     width: 80px;
