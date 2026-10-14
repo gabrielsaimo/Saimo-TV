@@ -43,6 +43,9 @@ lidos direto do repositório
   inteira (em pé a lista volta, sem recarregar o vídeo). O botão de tela
   cheia trava em paisagem no Android e usa o player nativo do vídeo no iPhone
   (`src/utils/telaCheia.ts`)
+- Novidades (`/novidades`, sem link em lugar nenhum): o que entrou e o que mudou
+  em cada rodada da atualização do acervo (11h e 18h), com data, hora e capa,
+  lido de `vod/novidades.json` (gerado por `SaimoPlayer/gerar_novidades.py`).
 - Abertura animada (`src/components/Abertura.tsx`): toda vez que a página inicial
   abre, a logo se monta peça por peça em SVG (camadas em `public/abertura/`,
   geradas por `SaimoPlayer/abertura`), no dobro da velocidade dos apps; clique

@@ -1,0 +1,85 @@
+.nov-pagina {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 24px 16px 96px;
+  background: #0b0d12;
+  color: #e8eaf0;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.nov-pagina h1 { margin: 0 0 4px; font-size: 1.6rem; }
+.nov-pagina header p { margin: 0 0 20px; color: #9aa1b2; }
+.nov-aviso { color: #9aa1b2; }
+
+.nov-rodada {
+  margin-bottom: 12px;
+  border: 1px solid #232733;
+  border-radius: 12px;
+  background: #11141c;
+}
+
+.nov-rodada > summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+.nov-rodada > summary::-webkit-details-marker { display: none; }
+.nov-quando strong::first-letter { text-transform: uppercase; }
+.nov-quando strong { font-weight: 600; }
+.nov-turno { color: #7ee0d2; font-size: 0.85rem; }
+.nov-contagem { margin-left: auto; color: #9aa1b2; font-size: 0.85rem; }
+
+.nov-secao { padding: 0 16px 16px; }
+.nov-secao h3 { margin: 4px 0 10px; font-size: 1rem; font-weight: 600; }
+.nov-secao h3 span { color: #9aa1b2; font-weight: 400; margin-left: 6px; }
+
+.nov-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nov-cartao { min-width: 0; }
+.nov-capa {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1a1e29;
+  display: grid;
+  place-items: center;
+  color: #6c7488;
+  font-size: 1.6rem;
+}
+.nov-capa img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nov-faixa {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #7ee0d2;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.nov-nome {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.nov-tipo { margin-top: 2px; color: #9aa1b2; font-size: 0.72rem; }
+.nov-resto { margin: 10px 0 0; color: #9aa1b2; font-size: 0.85rem; }

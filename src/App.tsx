@@ -36,6 +36,7 @@ const VodCatalog = lazy(() => import('./components/VodCatalog').then(m => ({ def
 const HomeSelector = lazy(() => import('./components/HomeSelector').then(m => ({ default: m.HomeSelector })));
 const StreamTester = lazy(() => import('./components/StreamTester').then(m => ({ default: m.StreamTester })));
 const AppDownload = lazy(() => import('./components/AppDownload').then(m => ({ default: m.AppDownload })));
+const Novidades = lazy(() => import('./components/Novidades').then(m => ({ default: m.Novidades })));
 
 // Loading fallback
 const LoadingFallback = () => (
@@ -486,6 +487,12 @@ function AppLayout() {
       <Route path="/app" element={
         <Suspense fallback={<LoadingFallback />}>
           <AppDownload />
+        </Suspense>
+      } />
+      {/* O que cada rodada da atualização trouxe. Sem link em lugar nenhum. */}
+      <Route path="/novidades" element={
+        <Suspense fallback={<LoadingFallback />}>
+          <Novidades />
         </Suspense>
       } />
       {/* Ferramenta interna: só para quem ligou o modo de testes no navegador. */}
