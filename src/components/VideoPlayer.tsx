@@ -113,8 +113,6 @@ export const VideoPlayer = memo(function VideoPlayer({
   const [qualityLevels, setQualityLevels] = useState<Array<{ id: number; label: string }>>([]);
   const [selectedQuality, setSelectedQuality] = useState(-1);
   const [showQualityMenu, setShowQualityMenu] = useState(false);
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const controlsTimeoutRef = useRef<number | null>(null);
   const isPlayingRef = useRef(false);
   const recoveryAttemptsRef = useRef(0);
@@ -1245,12 +1243,6 @@ export const VideoPlayer = memo(function VideoPlayer({
                 </button>
               )}
 
-              {/* Badge AO VIVO */}
-              <div className="live-badge-mac">
-                <span className="live-badge-dot" />
-                <span className="live-badge-text">AO VIVO</span>
-              </div>
-
               {/* Badge de Qualidade */}
               {videoResolution && (
                 <span className="quality-badge-mac">{videoResolution}</span>
@@ -1341,39 +1333,6 @@ export const VideoPlayer = memo(function VideoPlayer({
                 </button>
               )}
 
-              {/* Velocidade de reprodução */}
-              <div className="speed-menu-container">
-                <button
-                  className={`control-btn ${playbackRate !== 1 ? 'active' : ''}`}
-                  onClick={() => { resetControlsTimeout(); setShowSpeedMenu((v) => !v); }}
-                  title={`Velocidade (${playbackRate}x)`}
-                  data-focusable="true"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
-                </button>
-                {showSpeedMenu && (
-                  <div className="glass-popup-menu" onClick={(e) => e.stopPropagation()}>
-                    <span className="glass-popup-header">Velocidade</span>
-                    {[0.5, 0.75, 1, 1.25, 1.5, 2].map((r) => (
-                      <button
-                        key={r}
-                        className={`glass-popup-item ${playbackRate === r ? 'active' : ''}`}
-                        onClick={() => {
-                          setPlaybackRate(r);
-                          if (videoRef.current) videoRef.current.playbackRate = r;
-                          setShowSpeedMenu(false);
-                        }}
-                      >
-                        {playbackRate === r ? `✓ ${r}×` : `   ${r}×`}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
               {/* Multi-Tela */}
               {onToggleMultiScreen && (
                 <button
@@ -1388,24 +1347,6 @@ export const VideoPlayer = memo(function VideoPlayer({
                   </svg>
                 </button>
               )}
-
-              {/* Proporção de tela (Aspect Ratio) */}
-              <button
-                className="control-btn"
-                onClick={() => { resetControlsTimeout(); toggleAspectRatio(); }}
-                title={`Proporção: ${aspectRatio} (A)`}
-                data-focusable="true"
-              >
-                {aspectRatio === 'fill' ? (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M4 14h6m0 0v6m0-6L3 21M20 10h-6m0 0V4m0 6l7-7" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-                  </svg>
-                )}
-              </button>
 
               {/* Cast */}
               <button

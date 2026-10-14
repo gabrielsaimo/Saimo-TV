@@ -154,8 +154,7 @@
    ======================================== */
 .movies-page {
   /* Não precisa de padding top pois o catálogo tem seu próprio header interno */
-  overflow-y: auto;
-  overflow-x: clip;
+  overflow: visible;
 }
 
 .movies-page .catalog-container {
@@ -422,8 +421,3 @@ body:has(.tv-page.deitado.tocando) .navegacao-mobile {
   display: none;
 }
 
-/* On Demand: o catálogo começa abaixo da barra do topo, e o cabeçalho dele fica colado nela. */
-@media (min-width: 769px) {
-  .movies-page { padding-top: 64px; }
-  .movies-page .vod-header { top: 64px; }
-}

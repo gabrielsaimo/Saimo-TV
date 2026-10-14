@@ -15,7 +15,7 @@ body {
   background: #0a0a0a;
   color: #f1f1f1;
   line-height: 1.5;
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-y: auto;
 }
 

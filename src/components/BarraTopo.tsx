@@ -119,6 +119,17 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp }: Barra
   const isVisivel = visibleProp === false ? false : (pedePin || mouseNoTopo);
 
   useEffect(() => {
+    if (!isVisivel) {
+      document.body.classList.add('barra-topo-oculta');
+    } else {
+      document.body.classList.remove('barra-topo-oculta');
+    }
+    return () => {
+      document.body.classList.remove('barra-topo-oculta');
+    };
+  }, [isVisivel]);
+
+  useEffect(() => {
     const id = window.setInterval(() => setHora(relogio()), 15_000);
     return () => window.clearInterval(id);
   }, []);

@@ -9,7 +9,7 @@
   padding-bottom: 5rem;
   background: #0a0b14;
   color: #fff;
-  overflow-x: clip;
+  overflow: visible;
 }
 
 /* ── Fundo do Destaque (Cinema Backdrop) ─────────────────────────────────── */
@@ -147,7 +147,7 @@
 
 .vod-sub-barra {
   position: sticky;
-  top: 70px;
+  top: 72px;
   z-index: 800;
   display: flex;
   flex-wrap: wrap;
@@ -157,12 +157,18 @@
   padding: 8px 16px;
   margin: 0.8rem clamp(1.2rem, 3.5vw, 3.5rem) 1.6rem;
   border-radius: 999px;
-  background: rgba(18, 20, 34, 0.84);
+  background: rgba(18, 20, 34, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transition: top 0.25s ease, background 0.2s ease;
+  transition: top 0.28s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Quando a BarraTopo oculta por ausência do mouse, encaixa direto no topo da tela */
+body.barra-topo-oculta .vod-sub-barra,
+body:has(.barra-topo.oculta) .vod-sub-barra {
+  top: 12px;
 }
 
 .vod-sub-barra-pills {
@@ -633,10 +639,26 @@
 }
 
 .vod-letras-barra {
+  position: sticky;
+  top: 138px;
+  z-index: 790;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 1rem;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: rgba(10, 11, 20, 0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: top 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.barra-topo-oculta .vod-letras-barra,
+body:has(.barra-topo.oculta) .vod-letras-barra {
+  top: 78px;
 }
 
 .vod-letra-pill {
@@ -1563,5 +1585,17 @@
   }
   .vod-sub-busca input:focus {
     width: 130px;
+  }
+  .vod-letras-barra {
+    top: 60px !important;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 10px 1rem;
+    padding: 6px 8px;
+  }
+  .vod-letras-barra::-webkit-scrollbar {
+    display: none;
   }
 }
