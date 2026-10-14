@@ -149,6 +149,115 @@
   pointer-events: auto;
 }
 
+/* ── Placeholder de escolha para Tela 2 ── */
+.multitela-lado-mac.vazio {
+  background: #080c14;
+}
+
+.multitela-badge.vazio {
+  background: rgba(234, 179, 8, 0.2);
+  color: #facc15;
+}
+
+.multitela-placeholder-escolha {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(79, 243, 224, 0.06) 0%, rgba(10, 14, 20, 0.95) 70%, #06080c 100%);
+  border: 2px dashed rgba(79, 243, 224, 0.25);
+  border-radius: 16px;
+  margin: 12px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.multitela-placeholder-escolha:hover {
+  border-color: rgba(79, 243, 224, 0.55);
+  background: radial-gradient(circle at center, rgba(79, 243, 224, 0.1) 0%, rgba(10, 14, 20, 0.95) 70%, #06080c 100%);
+  box-shadow: 0 0 35px rgba(79, 243, 224, 0.15);
+}
+
+.multitela-placeholder-conteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 380px;
+  padding: 32px 24px;
+  gap: 14px;
+}
+
+.multitela-placeholder-icone {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+  background: rgba(79, 243, 224, 0.1);
+  border: 1px solid rgba(79, 243, 224, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4fe3d0;
+  box-shadow: 0 8px 28px rgba(79, 243, 224, 0.18);
+  animation: pulsarIconeMultiTela 2.4s ease-in-out infinite;
+}
+
+.multitela-placeholder-icone svg {
+  width: 36px;
+  height: 36px;
+}
+
+@keyframes pulsarIconeMultiTela {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 28px rgba(79, 243, 224, 0.18);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 14px 36px rgba(79, 243, 224, 0.32);
+  }
+}
+
+.multitela-placeholder-titulo {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.multitela-placeholder-desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+.multitela-btn-abrir-canais {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4fe3d0, #0ea5e9);
+  color: #0b0f19;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(79, 243, 224, 0.3);
+}
+
+.multitela-btn-abrir-canais:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 24px rgba(79, 243, 224, 0.45);
+}
+
 /* ========================================
    MOVIES PAGE LAYOUT
    ======================================== */

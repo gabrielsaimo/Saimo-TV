@@ -17,6 +17,9 @@ interface PainelDeCanaisProps {
   onOpenOtherScreen?: (channel: Channel) => void;
   isMultiScreen?: boolean;
   isMobileInline?: boolean;
+  activeSide?: 'primary' | 'secondary';
+  onSelectSide?: (side: 'primary' | 'secondary') => void;
+  hasSecondChannel?: boolean;
 }
 
 interface LinhaDeCanalProps {
@@ -111,6 +114,9 @@ export const PainelDeCanais = memo(function PainelDeCanais({
   onOpenOtherScreen,
   isMultiScreen = false,
   isMobileInline = false,
+  activeSide = 'primary',
+  onSelectSide,
+  hasSecondChannel = true,
 }: PainelDeCanaisProps) {
   const [busca, setBusca] = useState('');
   const [categoriaAtiva, setCategoriaAtiva] = useState<string>('Todos');
@@ -285,6 +291,31 @@ export const PainelDeCanais = memo(function PainelDeCanais({
         </div>
       </div>
 
+      {/* Seletor de Tela quando em Multi-Tela */}
+      {isMultiScreen && onSelectSide && (
+        <div className="painel-seletor-tela" role="tablist" aria-label="Escolher tela para o canal">
+          <button
+            type="button"
+            className={`painel-btn-tela ${activeSide === 'primary' ? 'ativo' : ''}`}
+            onClick={() => onSelectSide('primary')}
+            title="Escolher canal para a Tela 1"
+          >
+            <span className="painel-tela-ponto" />
+            <span>Tela 1</span>
+          </button>
+          <button
+            type="button"
+            className={`painel-btn-tela ${activeSide === 'secondary' ? 'ativo' : ''}`}
+            onClick={() => onSelectSide('secondary')}
+            title="Escolher canal para a Tela 2"
+          >
+            <span className="painel-tela-ponto" />
+            <span>Tela 2</span>
+            {!hasSecondChannel && <span className="painel-tela-aviso">escolha</span>}
+          </button>
+        </div>
+      )}
+
       {/* Caixa de Busca */}
       <div className="painel-busca-box">
         <svg className="painel-busca-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -426,7 +457,7 @@ export const PainelDeCanais = memo(function PainelDeCanais({
                 setMenuContexto(null);
               }}
             >
-              Abrir na outra tela
+              {activeSide === 'secondary' ? 'Abrir na Tela 1' : 'Abrir na Tela 2'}
             </button>
           )}
         </div>

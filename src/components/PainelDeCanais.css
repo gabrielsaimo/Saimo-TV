@@ -562,3 +562,61 @@
   }
 }
 
+/* ── Seletor de Tela no modo Multi-Tela ── */
+.painel-seletor-tela {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.painel-btn-tela {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+
+.painel-btn-tela:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.painel-btn-tela.ativo {
+  background: rgba(79, 243, 224, 0.16);
+  color: #4fe3d0;
+  box-shadow: inset 0 0 0 1px rgba(79, 243, 224, 0.4);
+}
+
+.painel-tela-ponto {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.painel-tela-aviso {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(234, 179, 8, 0.25);
+  color: #facc15;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+

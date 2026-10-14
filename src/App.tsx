@@ -228,19 +228,18 @@ function TVPage() {
     setIsMultiScreen((prev) => {
       const next = !prev;
       if (next) {
-        if (!secondChannel && channels.length > 0) {
-          const outro = channels.find((c) => c.id !== selectedChannel?.id) || channels[0];
-          setSecondChannel(outro);
-        }
+        setSecondChannel(null);
         setActiveSide('secondary');
-        showToast('Multi-Tela ativada (2 telas). Clique em uma tela para alternar o áudio.', 'info');
+        setIsChannelsPanelOpen(true);
+        showToast('Multi-Tela ativada: Escolha o canal da Tela 2 na lista', 'info');
       } else {
+        setSecondChannel(null);
         setActiveSide('primary');
         showToast('Multi-Tela desativada', 'info');
       }
       return next;
     });
-  }, [channels, selectedChannel, secondChannel, showToast]);
+  }, [showToast]);
 
   const handleBackFromMovie = useCallback(() => {
     setSelectedMovie(null);
@@ -390,17 +389,19 @@ function TVPage() {
                   <div className={`multitela-moldura-mac ${controlsVisible ? 'visivel' : ''}`}>
                     <div className="multitela-rotulo-mac">
                       <span className="multitela-som-icone">
-                        {activeSide === 'primary' ? '🔊' : '🔇'}
+                        {activeSide === 'primary' || !secondChannel ? '🔊' : '🔇'}
                       </span>
                       <span className="multitela-nome">{selectedChannel?.name || 'Tela 1'}</span>
-                      {activeSide === 'primary' && <span className="multitela-badge">Áudio ativo</span>}
+                      {(activeSide === 'primary' || !secondChannel) && <span className="multitela-badge">Áudio ativo</span>}
                     </div>
                     <button
                       className="multitela-fechar"
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsMultiScreen(false);
+                        setSecondChannel(null);
                         setActiveSide('primary');
+                        showToast('Multi-Tela desativada', 'info');
                       }}
                       title="Fechar multi tela"
                     >
@@ -417,7 +418,13 @@ function TVPage() {
                     onToggleMultiScreen={handleToggleMultiScreen}
                     isSplitActive={activeSide === 'primary'}
                     onActivateSplit={() => setActiveSide('primary')}
-                    forceMuted={activeSide !== 'primary'}
+                    onCloseSplit={() => {
+                      setIsMultiScreen(false);
+                      setSecondChannel(null);
+                      setActiveSide('primary');
+                      showToast('Multi-Tela desativada', 'info');
+                    }}
+                    forceMuted={isMultiScreen && Boolean(secondChannel) && activeSide !== 'primary'}
                     splitLabel="Tela 1"
                     isChannelsPanelOpen={isChannelsPanelOpen}
                     onToggleChannelsPanel={() => setIsChannelsPanelOpen((v) => !v)}
@@ -428,52 +435,105 @@ function TVPage() {
                   />
                 </div>
                 <div
-                  className={`multitela-lado-mac ${activeSide === 'secondary' ? 'ativo' : ''}`}
-                  onClick={() => setActiveSide('secondary')}
+                  className={`multitela-lado-mac ${activeSide === 'secondary' ? 'ativo' : ''} ${!secondChannel ? 'vazio' : ''}`}
+                  onClick={() => {
+                    setActiveSide('secondary');
+                    if (!secondChannel) {
+                      setIsChannelsPanelOpen(true);
+                    }
+                  }}
                 >
-                  <div className={`multitela-moldura-mac ${controlsVisible ? 'visivel' : ''}`}>
+                  <div className={`multitela-moldura-mac ${controlsVisible || !secondChannel ? 'visivel' : ''}`}>
                     <div className="multitela-rotulo-mac">
                       <span className="multitela-som-icone">
-                        {activeSide === 'secondary' ? '🔊' : '🔇'}
+                        {secondChannel ? (activeSide === 'secondary' ? '🔊' : '🔇') : '📺'}
                       </span>
-                      <span className="multitela-nome">{secondChannel?.name || 'Tela 2'}</span>
-                      {activeSide === 'secondary' && <span className="multitela-badge">Áudio ativo</span>}
+                      <span className="multitela-nome">{secondChannel ? secondChannel.name : 'Tela 2 (Escolha o canal)'}</span>
+                      {secondChannel && activeSide === 'secondary' && <span className="multitela-badge">Áudio ativo</span>}
+                      {!secondChannel && <span className="multitela-badge vazio">Aguardando canal</span>}
                     </div>
                     <button
                       className="multitela-fechar"
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsMultiScreen(false);
+                        setSecondChannel(null);
                         setActiveSide('primary');
+                        showToast('Multi-Tela desativada', 'info');
                       }}
                       title="Fechar multi tela"
                     >
                       ✕
                     </button>
                   </div>
-                  <VideoPlayer
-                    channel={secondChannel}
-                    channelNumber={channels.findIndex((c) => c.id === secondChannel?.id) + 1}
-                    isTheaterMode={false}
-                    onToggleTheater={handleToggleTheater}
-                    onOpenGuide={() => setIsGuideOpen(true)}
-                    isMultiScreen={true}
-                    onToggleMultiScreen={handleToggleMultiScreen}
-                    isSplitActive={activeSide === 'secondary'}
-                    onActivateSplit={() => setActiveSide('secondary')}
-                    onCloseSplit={() => {
-                      setIsMultiScreen(false);
-                      setActiveSide('primary');
-                    }}
-                    forceMuted={activeSide !== 'secondary'}
-                    splitLabel="Tela 2"
-                    isChannelsPanelOpen={isChannelsPanelOpen}
-                    onToggleChannelsPanel={() => setIsChannelsPanelOpen((v) => !v)}
-                    onNextChannel={handleNextChannel}
-                    onPrevChannel={handlePrevChannel}
-                    onControlsVisibilityChange={setControlsVisible}
-                    hideFloatingCartao={true}
-                  />
+                  {secondChannel ? (
+                    <VideoPlayer
+                      channel={secondChannel}
+                      channelNumber={channels.findIndex((c) => c.id === secondChannel?.id) + 1}
+                      isTheaterMode={false}
+                      onToggleTheater={handleToggleTheater}
+                      onOpenGuide={() => setIsGuideOpen(true)}
+                      isMultiScreen={true}
+                      onToggleMultiScreen={handleToggleMultiScreen}
+                      isSplitActive={activeSide === 'secondary'}
+                      onActivateSplit={() => setActiveSide('secondary')}
+                      onCloseSplit={() => {
+                        setIsMultiScreen(false);
+                        setSecondChannel(null);
+                        setActiveSide('primary');
+                        showToast('Multi-Tela desativada', 'info');
+                      }}
+                      forceMuted={activeSide !== 'secondary'}
+                      splitLabel="Tela 2"
+                      isChannelsPanelOpen={isChannelsPanelOpen}
+                      onToggleChannelsPanel={() => setIsChannelsPanelOpen((v) => !v)}
+                      onNextChannel={handleNextChannel}
+                      onPrevChannel={handlePrevChannel}
+                      onControlsVisibilityChange={setControlsVisible}
+                      hideFloatingCartao={true}
+                    />
+                  ) : (
+                    <div
+                      className="multitela-placeholder-escolha"
+                      onClick={() => {
+                        setActiveSide('secondary');
+                        setIsChannelsPanelOpen(true);
+                      }}
+                    >
+                      <div className="multitela-placeholder-conteudo">
+                        <div className="multitela-placeholder-icone">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="2" y="4" width="20" height="15" rx="3" />
+                            <line x1="12" y1="9" x2="12" y2="15" />
+                            <line x1="9" y1="12" x2="15" y2="12" />
+                          </svg>
+                        </div>
+                        <h3 className="multitela-placeholder-titulo">Escolha o canal da Tela 2</h3>
+                        <p className="multitela-placeholder-desc">
+                          Selecione qualquer canal na lista ao lado para assistir em multi tela simultânea.
+                        </p>
+                        <button
+                          type="button"
+                          className="multitela-btn-abrir-canais"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveSide('secondary');
+                            setIsChannelsPanelOpen(true);
+                          }}
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 16, height: 16 }}>
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
+                          </svg>
+                          <span>Abrir lista de canais</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
@@ -508,11 +568,20 @@ function TVPage() {
               onToggleFavorite={handleToggleFavorite}
               onOpenOtherScreen={(ch) => {
                 if (!isMultiScreen) setIsMultiScreen(true);
-                setSecondChannel(ch);
-                setActiveSide('secondary');
-                showToast(`Tela 2: ${ch.name}`, 'info');
+                if (activeSide === 'secondary') {
+                  setSelectedChannel(ch);
+                  setLastChannelId(ch.id);
+                  showToast(`Tela 1: ${ch.name}`, 'info');
+                } else {
+                  setSecondChannel(ch);
+                  setActiveSide('secondary');
+                  showToast(`Tela 2: ${ch.name}`, 'info');
+                }
               }}
               isMultiScreen={isMultiScreen}
+              activeSide={activeSide}
+              onSelectSide={setActiveSide}
+              hasSecondChannel={Boolean(secondChannel)}
             />
           </div>
         )}
