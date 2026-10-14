@@ -184,6 +184,7 @@ body:has(.barra-topo.oculta) .vod-sub-barra {
 }
 
 .vod-sub-pill {
+  flex-shrink: 0;
   padding: 6px 16px;
   border-radius: 999px;
   font-size: 0.86rem;
@@ -1576,26 +1577,80 @@ body:has(.barra-topo.oculta) .vod-letras-barra {
   }
   .vod-sub-barra {
     top: 8px;
-    margin: 0.4rem 10px 1rem;
-    padding: 6px 12px;
-    border-radius: 20px;
+    margin: 0.4rem 10px 0.8rem;
+    padding: 8px 10px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    box-sizing: border-box;
+    width: calc(100% - 20px);
   }
-  .vod-sub-busca input {
-    width: 80px;
-  }
-  .vod-sub-busca input:focus {
-    width: 130px;
-  }
-  .vod-letras-barra {
-    top: 60px !important;
+  .vod-sub-barra-pills {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     overflow-x: auto;
     flex-wrap: nowrap;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    margin: 0 10px 1rem;
+    padding: 2px 2px 4px;
+    box-sizing: border-box;
+  }
+  .vod-sub-barra-pills::-webkit-scrollbar {
+    display: none;
+  }
+  .vod-sub-pill {
+    flex-shrink: 0 !important;
+    min-width: max-content;
+    white-space: nowrap;
+    font-size: 0.82rem;
+    padding: 6px 14px;
+  }
+  .vod-sub-barra-acoes {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+  .vod-sub-busca {
+    flex: 1;
+    min-width: 0;
+    height: 36px;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  .vod-sub-busca input {
+    width: 100% !important;
+    min-width: 0;
+    flex: 1;
+    font-size: 0.84rem;
+  }
+  .vod-sub-busca input:focus {
+    width: 100% !important;
+  }
+  .vod-sub-btn-modo {
+    flex-shrink: 0;
+    height: 36px;
+    padding: 0 12px;
+    font-size: 0.8rem;
+  }
+  .vod-letras-barra {
+    top: 108px !important;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 10px 0.8rem;
     padding: 6px 8px;
   }
   .vod-letras-barra::-webkit-scrollbar {
     display: none;
+  }
+  .vod-letra-pill {
+    flex-shrink: 0;
   }
 }

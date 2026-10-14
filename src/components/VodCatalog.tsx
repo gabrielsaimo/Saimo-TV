@@ -252,7 +252,16 @@ export function VodCatalog({
   const [versaoFiltro, setVersaoFiltro] = useState<string>('todas');
   const trilhaEpisodiosRef = useRef<HTMLDivElement | null>(null);
   const janelaRef = useRef<HTMLElement | null>(null);
+  const subBarraPillsRef = useRef<HTMLDivElement | null>(null);
   const aberturaRef = useRef(0);
+
+  // Rolagem suave da pílula ativa na barra de categorias do catálogo
+  useEffect(() => {
+    const el = subBarraPillsRef.current?.querySelector<HTMLButtonElement>('.vod-sub-pill.ativa');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  }, [secao]);
 
   // Sincronizar se o modo adulto for bloqueado durante a navegação
   if (!isAdultUnlocked && secao === 'extra') {
@@ -989,7 +998,7 @@ export function VodCatalog({
 
       {/* ── Barra de Navegação / Sub-Categorias ── */}
       <nav className="vod-sub-barra" aria-label="Subcategorias do On Demand">
-        <div className="vod-sub-barra-pills">
+        <div className="vod-sub-barra-pills" ref={subBarraPillsRef}>
           {(secao !== null || modo === 'explorar') ? (
             <button
               className="vod-sub-pill vod-sub-pill-voltar"
