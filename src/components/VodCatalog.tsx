@@ -11,6 +11,8 @@ import * as telemetria from '../services/telemetria';
 import { httpsFirst } from '../utils/sourceOrder';
 import { lista as listaAndamento } from '../services/continuar';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { alternar as alternarFavorito, aoMudar as aoMudarFavoritos, contem as ehFavorito } from '../services/vodFavoritos';
 import { createPortal } from 'react-dom';
 import type { Movie, MovieSource, SeriesEpisodeInfo } from '../types/movie';
 import {
@@ -237,6 +239,10 @@ function Fileiras({
 
 export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen = false, activeMovie = null }: VodCatalogProps) {
   const [aba, setAba] = useState<Aba>('inicio');
+  const local = useLocation();
+  const navegar = useNavigate();
+  const [, marcaFav] = useState(0);
+  useEffect(() => aoMudarFavoritos(() => marcaFav((n) => n + 1)), []);
   const [filas, setFilas] = useState<FilaDestaque[]>([]);
   const [generos, setGeneros] = useState<Generos | null>(null);
   // Refeita ao voltar do player: a fileira do que a pessoa estava vendo.
@@ -735,6 +741,22 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
     }
   }, [abrir]);
 
+  /**
+   * Chegar de outra tela (Início, Buscar, Favoritos) com um título para abrir:
+   * `state.abrir` é um destaque, `state.aba` a aba do catálogo. O estado é
+   * apagado do histórico logo depois, para recarregar a página não reabrir.
+   */
+  useEffect(() => {
+    const st = local.state as { abrir?: ItemDestaque; aba?: Aba } | null;
+    if (!st || (!st.abrir && !st.aba)) return;
+    const id = window.setTimeout(() => {
+      if (st.aba) setAba(st.aba);
+      if (st.abrir) void abrirDestaque(st.abrir);
+      navegar(local.pathname, { replace: true, state: null });
+    }, 0);
+    return () => window.clearTimeout(id);
+  }, [local.state, local.pathname, navegar, abrirDestaque]);
+
   const episodiosAgrupados = useMemo(
     () => agruparEpisodios(episodiosAbertos ?? []),
     [episodiosAbertos],
@@ -1078,6 +1100,20 @@ export function VodCatalog({ onSelectMovie, onBack, isAdultUnlocked, playerOpen 
                       >
                         ▶ {aberto.serie ? 'Ver episódios' : 'Assistir'}
                       </button>
+                      {(() => {
+                        const origem = origemDe(aberto);
+                        if (!origem) return null;
+                        const fav = ehFavorito(origem);
+                        return (
+                          <button
+                            className={`vod-botao-favorito${fav ? ' ativo' : ''}`}
+                            onClick={() => alternarFavorito(origem)}
+                            aria-pressed={fav}
+                          >
+                            {fav ? '♥ Nos favoritos' : '♡ Favoritar'}
+                          </button>
+                        );
+                      })()}
                     </div>
                     {fichaCarregando && !ficha && <p className="vod-aviso">Buscando a ficha…</p>}
                     {!!ficha?.sinopse && <p className="vod-ficha-sinopse">{ficha.sinopse}</p>}

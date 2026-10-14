@@ -1,0 +1,150 @@
+/* Telas em fileiras: destaque, fileiras com setas de vidro, cartões. */
+.tela {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 80% -10%, rgba(163, 92, 240, 0.12), transparent 36rem),
+    radial-gradient(circle at 10% 0%, rgba(79, 243, 224, 0.08), transparent 30rem),
+    #0a0b14;
+  color: #fff;
+  padding-bottom: 4rem;
+}
+.tela-miolo { padding: 0 clamp(1rem, 3vw, 3rem); }
+.tela-titulo { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; margin: 1.2rem 0 0.4rem; }
+.tela-sub { color: rgba(255, 255, 255, 0.55); font-size: 0.92rem; margin-bottom: 1rem; }
+.tela-vazio { padding: 4rem 1rem; text-align: center; color: rgba(255, 255, 255, 0.55); }
+.tela-vazio h2 { color: #fff; font-size: 1.2rem; margin-bottom: 0.4rem; }
+
+/* ---------- Destaque ---------- */
+.heroi {
+  position: relative;
+  height: clamp(300px, 46vh, 460px);
+  margin: -76px 0 1.2rem;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.heroi-vazio { background: linear-gradient(180deg, #14162a, transparent); }
+.heroi-fundo {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
+  animation: heroi-entra 0.5s ease;
+}
+.heroi-fundo.borrado { filter: blur(34px) saturate(1.3); transform: scale(1.3); opacity: 0.65; }
+@keyframes heroi-entra { from { opacity: 0; } to { opacity: 1; } }
+.heroi-vinheta {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(10, 11, 20, 0.92) 0%, rgba(10, 11, 20, 0.55) 45%, transparent 75%),
+    linear-gradient(0deg, #0a0b14 0%, transparent 45%);
+}
+.heroi-texto { position: relative; z-index: 1; padding: 0 clamp(1rem, 3vw, 3rem) 2rem; max-width: 760px; }
+.heroi-selos { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0.6rem; }
+.heroi-selos span {
+  font-size: 0.74rem; font-weight: 700; padding: 3px 10px; border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+}
+.heroi h1 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6); }
+.heroi p {
+  margin-top: 0.7rem; font-size: 0.95rem; color: rgba(255, 255, 255, 0.82); line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* ---------- Fileira ---------- */
+.fileira { margin: 0 0 1.6rem; }
+.fileira > header { display: flex; align-items: baseline; justify-content: space-between; padding: 0 clamp(1rem, 3vw, 3rem); margin-bottom: 0.6rem; }
+.fileira h2 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+.fileira-ver { font-size: 0.82rem; font-weight: 600; color: #4ff3e0; padding: 4px 8px; border-radius: 10px; }
+.fileira-ver:hover { background: rgba(79, 243, 224, 0.12); }
+.fileira-corpo { position: relative; }
+.fileira-trilho {
+  display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x proximity;
+  padding: 6px clamp(1rem, 3vw, 3rem) 10px; scrollbar-width: none;
+}
+.fileira-trilho::-webkit-scrollbar { display: none; }
+.fileira-seta {
+  position: absolute; top: 8px; bottom: 36px; z-index: 3; width: 44px; border-radius: 14px;
+  font-size: 2rem; line-height: 1; color: #fff; opacity: 0; transition: opacity 0.15s;
+  background: rgba(20, 22, 38, 0.6); border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
+.fileira-seta.esq { left: 6px; }
+.fileira-seta.dir { right: 6px; }
+.fileira-corpo:hover .fileira-seta { opacity: 1; }
+.fileira-seta:hover { background: rgba(79, 243, 224, 0.25); }
+
+/* ---------- Cartões ---------- */
+.cartao-capa { flex: 0 0 auto; width: 154px; text-align: left; scroll-snap-align: start; display: flex; flex-direction: column; gap: 6px; }
+.cartao-capa-img {
+  position: relative; aspect-ratio: 2 / 3; border-radius: 14px; overflow: hidden;
+  background: linear-gradient(135deg, #1b1e36, #12142a); display: grid; place-items: center;
+  border: 2px solid transparent; transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+}
+.cartao-capa-img span { font-size: 2.2rem; font-weight: 800; color: rgba(255, 255, 255, 0.25); }
+.cartao-capa-img img { width: 100%; height: 100%; object-fit: cover; }
+.cartao-capa:hover .cartao-capa-img, .cartao-capa:focus-visible .cartao-capa-img {
+  transform: translateY(-4px); border-color: #4ff3e0; box-shadow: 0 10px 28px rgba(79, 243, 224, 0.22);
+}
+.cartao-capa strong { font-size: 0.84rem; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cartao-capa small { font-size: 0.74rem; color: rgba(255, 255, 255, 0.55); }
+.cartao-capa-prog, .cartao-largo-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255, 255, 255, 0.2); }
+.cartao-capa-prog b, .cartao-largo-prog b { display: block; height: 100%; background: #4ff3e0; }
+.cartao-capa-coracao {
+  position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; display: grid; place-items: center;
+  border-radius: 50%; background: rgba(0, 0, 0, 0.55); color: #ff5d7a; font-size: 0.9rem;
+}
+
+.cartao-largo {
+  position: relative; flex: 0 0 auto; width: 248px; padding: 16px 14px 18px; text-align: left; overflow: hidden;
+  border-radius: 18px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex; flex-direction: column; gap: 4px; scroll-snap-align: start;
+  transition: transform 0.18s, border-color 0.18s, background 0.18s;
+}
+.cartao-largo:hover, .cartao-largo:focus-visible { transform: translateY(-3px); border-color: #4ff3e0; background: rgba(79, 243, 224, 0.08); }
+.cartao-largo-logo { height: 74px; display: grid; place-items: center; margin-bottom: 6px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); }
+.cartao-largo-logo img { max-height: 58px; max-width: 70%; object-fit: contain; }
+.cartao-largo-logo span { font-size: 1.8rem; font-weight: 800; color: rgba(255, 255, 255, 0.3); }
+.cartao-largo strong { font-size: 0.92rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cartao-largo small { font-size: 0.78rem; color: rgba(255, 255, 255, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.selo-vivo {
+  position: absolute; top: 10px; left: 10px; z-index: 2; display: flex; align-items: center; gap: 5px;
+  font-style: normal; font-size: 0.64rem; font-weight: 800; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 10px; background: #e5484d;
+}
+.selo-vivo i { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: selo-pulsa 1.2s infinite; }
+@keyframes selo-pulsa { 50% { opacity: 0.3; } }
+
+/* ---------- Busca ---------- */
+.campo-busca {
+  display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border-radius: 22px;
+  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: rgba(255, 255, 255, 0.6);
+}
+.campo-busca:focus-within { border-color: #4ff3e0; color: #fff; }
+.campo-busca svg { width: 18px; height: 18px; flex-shrink: 0; }
+.campo-busca input { flex: 1; font-size: 1rem; color: #fff; min-width: 0; }
+.campo-busca button { font-size: 1.3rem; color: rgba(255, 255, 255, 0.6); padding: 0 4px; }
+
+/* ---------- Pílulas ---------- */
+.pilulas { display: flex; flex-wrap: wrap; gap: 8px; margin: 0.6rem 0 1.2rem; }
+.pilulas button {
+  padding: 6px 14px; border-radius: 16px; font-size: 0.82rem; font-weight: 600;
+  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.75);
+}
+.pilulas button:hover { background: rgba(255, 255, 255, 0.13); }
+.pilulas button.on { background: linear-gradient(135deg, rgba(79, 243, 224, 0.3), rgba(163, 92, 240, 0.35)); color: #fff; border-color: rgba(255, 255, 255, 0.25); }
+
+@media (max-width: 768px) {
+  .heroi { margin-top: 0; height: 260px; }
+  .tela-com-barra { padding-top: 0; }
+}
+
+/* ---------- Grade (Favoritos) ---------- */
+.grade-titulo { font-size: 1.1rem; font-weight: 700; margin: 1.4rem 0 0.7rem; }
+.grade { display: flex; flex-wrap: wrap; gap: 16px; }
+.grade-item { position: relative; }
+.grade-tirar {
+  position: absolute; top: 8px; right: 8px; z-index: 4; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 0.95rem; color: #ff5d7a;
+  background: rgba(0, 0, 0, 0.6); opacity: 0; transition: opacity 0.15s, transform 0.15s;
+}
+.grade-item:hover .grade-tirar { opacity: 1; }
+.grade-tirar:hover { transform: scale(1.12); background: rgba(0, 0, 0, 0.85); }

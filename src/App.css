@@ -15,7 +15,7 @@
    TV PAGE LAYOUT
    ======================================== */
 .tv-page {
-  padding-top: 64px; /* Espaço para o header */
+  padding-top: 76px; /* Espaço para a barra do topo */
 }
 
 .tv-page.theater-mode {
@@ -32,10 +32,10 @@
   flex: 1;
   display: flex;
   min-height: 0;
-  max-height: calc(100vh - 64px);
-  max-height: calc(100dvh - 64px);
-  height: calc(100vh - 64px);
-  height: calc(100dvh - 64px);
+  max-height: calc(100vh - 76px);
+  max-height: calc(100dvh - 76px);
+  height: calc(100vh - 76px);
+  height: calc(100dvh - 76px);
   overflow: hidden;
 }
 
@@ -327,4 +327,10 @@
 
 body:has(.tv-page.deitado.tocando) .navegacao-mobile {
   display: none;
+}
+
+/* On Demand: o catálogo começa abaixo da barra do topo, e o cabeçalho dele fica colado nela. */
+@media (min-width: 769px) {
+  .movies-page { padding-top: 64px; }
+  .movies-page .vod-header { top: 64px; }
 }

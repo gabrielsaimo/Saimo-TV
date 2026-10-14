@@ -1377,3 +1377,10 @@
     scrollbar-width: none;
   }
 }
+
+.vod-botao-favorito {
+  padding: 0.7rem 1.2rem; border-radius: 8px; font-weight: 700; font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;
+}
+.vod-botao-favorito:hover { background: rgba(255, 255, 255, 0.2); }
+.vod-botao-favorito.ativo { color: #ff5d7a; border-color: rgba(255, 93, 122, 0.55); }

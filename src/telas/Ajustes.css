@@ -1,0 +1,25 @@
+.ajustes { max-width: 760px; margin: 0 auto; }
+.ajustes-bloco {
+  margin: 1rem 0; padding: 18px 20px; border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.09);
+}
+.ajustes-bloco h2 { font-size: 1.05rem; font-weight: 700; }
+.ajustes-bloco p { font-size: 0.86rem; color: rgba(255, 255, 255, 0.6); margin: 4px 0 10px; }
+.ajustes-botoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.ajustes-botao {
+  display: inline-block; padding: 8px 16px; border-radius: 16px; font-size: 0.84rem; font-weight: 600;
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.ajustes-botao:hover { background: rgba(255, 255, 255, 0.15); }
+.ajustes-aviso {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 950; padding: 10px 20px;
+  border-radius: 20px; font-weight: 600; background: rgba(20, 22, 38, 0.85); border: 1px solid #4ff3e0;
+  backdrop-filter: blur(16px);
+}
+.ajustes-atalhos { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 20px; margin-top: 10px; }
+.ajustes-atalhos > div { display: flex; align-items: center; gap: 10px; font-size: 0.86rem; }
+.ajustes-atalhos dt { min-width: 64px; }
+.ajustes-atalhos dd { margin: 0; color: rgba(255, 255, 255, 0.7); }
+.ajustes-atalhos kbd {
+  background: rgba(255, 255, 255, 0.12); border-radius: 6px; padding: 2px 8px; font-family: inherit; font-size: 0.78rem;
+}

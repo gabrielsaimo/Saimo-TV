@@ -1,7 +1,13 @@
-import { useState, useCallback, useEffect, useMemo, createContext, useContext, lazy, Suspense } from 'react';
+import { useState, useCallback, useEffect, useMemo, lazy, Suspense } from 'react';
 import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
-import { Abertura } from './components/Abertura';
-import { AppHeader } from './components/AppHeader';
+import { BarraTopo } from './components/BarraTopo';
+import { AdultModeContext, useAdultMode } from './contexts/adultoContexto';
+import { Inicio } from './telas/Inicio';
+import { Eventos } from './telas/Eventos';
+import { Radios } from './telas/Radios';
+import { Favoritos } from './telas/Favoritos';
+import { Busca } from './telas/Busca';
+import { Ajustes } from './telas/Ajustes';
 import { Toast } from './components/Toast';
 import { AtalhosAjuda } from './components/AtalhosAjuda';
 import { NavegacaoMobile } from './components/NavegacaoMobile';
@@ -33,7 +39,6 @@ const VideoPlayer = lazy(() => import('./components/VideoPlayer').then(m => ({ d
 const MoviePlayer = lazy(() => import('./components/MoviePlayer').then(m => ({ default: m.MoviePlayer })));
 const ProgramGuide = lazy(() => import('./components/ProgramGuide').then(m => ({ default: m.ProgramGuide })));
 const VodCatalog = lazy(() => import('./components/VodCatalog').then(m => ({ default: m.VodCatalog })));
-const HomeSelector = lazy(() => import('./components/HomeSelector').then(m => ({ default: m.HomeSelector })));
 const StreamTester = lazy(() => import('./components/StreamTester').then(m => ({ default: m.StreamTester })));
 const AppDownload = lazy(() => import('./components/AppDownload').then(m => ({ default: m.AppDownload })));
 const Novidades = lazy(() => import('./components/Novidades').then(m => ({ default: m.Novidades })));
@@ -65,44 +70,11 @@ interface ToastState {
 }
 
 
-// Contexto para estado adulto global
-interface AdultModeContextType {
-  isAdultUnlocked: boolean;
-  unlockAdult: () => void;
-  lockAdult: () => void;
-}
-
-const AdultModeContext = createContext<AdultModeContextType>({
-  isAdultUnlocked: false,
-  unlockAdult: () => {},
-  lockAdult: () => {},
-});
-
-const useAdultMode = () => useContext(AdultModeContext);
-
-// Componente Home
-function HomePage() {
-  const navigate = useNavigate();
-  
-  const handleSelect = (mode: 'tv' | 'movies') => {
-    navigate(`/${mode}`);
-  };
-
-  return (
-    <>
-      <Abertura />
-      <Suspense fallback={<LoadingFallback />}>
-        <HomeSelector onSelect={handleSelect} />
-      </Suspense>
-    </>
-  );
-}
-
 // Componente de TV
 function TVPage() {
   const { slug } = useParams<{slug?: string}>();
   const navigate = useNavigate();
-  const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
+  const { isAdultUnlocked } = useAdultMode();
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
   const [lastChannelId, setLastChannelId] = useLocalStorage<string | null>('tv-last-channel', null);
   // O canal escolhido guarda junto o link (/tv/:slug) em que foi escolhido:
@@ -297,7 +269,7 @@ function TVPage() {
   return (
     <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''} ${deitado ? 'deitado' : ''} ${deitado && (selectedMovie || selectedChannel) ? 'tocando' : ''}`}>
       {/* Header Global */}
-      {!isTheaterMode && <AppHeader transparent isAdultUnlocked={isAdultUnlocked} onUnlockAdult={unlockAdult} onLockAdult={lockAdult} />}
+      {!isTheaterMode && <BarraTopo />}
 
       <Suspense fallback={<LoadingFallback />}>
         <div className="tv-layout">
@@ -429,6 +401,7 @@ function MoviesPage() {
 
   return (
     <div className="page-container movies-page">
+      {!selectedMovie && <BarraTopo />}
       {/* O player tem cabeçalho próprio, como nos apps de streaming: sem uma
           segunda barra global ocupando espaço e duplicando o botão de voltar. */}
       {/* Catálogo lido do repositório, o mesmo que o aplicativo usa */}
@@ -480,7 +453,12 @@ function AppLayout() {
   return (
     <>
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<Inicio />} />
+      <Route path="/busca" element={<Busca />} />
+      <Route path="/eventos" element={<Eventos />} />
+      <Route path="/favoritos" element={<Favoritos />} />
+      <Route path="/radios" element={<Radios />} />
+      <Route path="/ajustes" element={<Ajustes />} />
       <Route path="/tv" element={<TVPage />} />
       <Route path="/tv/:slug" element={<TVPage />} />
             <Route path="/movies" element={<MoviesPage />} />

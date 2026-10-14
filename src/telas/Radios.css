@@ -1,0 +1,29 @@
+.radio-topo { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding: 1rem 0 1.6rem; }
+.radio-topo .campo-busca { width: min(340px, 100%); }
+.radio-agora { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.radio-agora small { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #4ff3e0; }
+.radio-agora h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+.radio-agora p { font-size: 0.86rem; color: rgba(255, 255, 255, 0.6); }
+.radio-agora-logo { width: 84px; height: 84px; border-radius: 20px; background: rgba(255, 255, 255, 0.08); display: grid; place-items: center; overflow: hidden; flex-shrink: 0; }
+.radio-agora-logo img { width: 80%; height: 80%; object-fit: contain; }
+.radio-agora-logo span { font-size: 2rem; font-weight: 800; color: rgba(255, 255, 255, 0.3); }
+.radio-parar { padding: 8px 18px; border-radius: 18px; font-weight: 700; font-size: 0.84rem; background: rgba(229, 72, 77, 0.2); border: 1px solid rgba(229, 72, 77, 0.5); }
+.radio-parar:hover { background: rgba(229, 72, 77, 0.4); }
+
+.cartao-radio { flex: 0 0 auto; width: 132px; display: flex; flex-direction: column; gap: 8px; text-align: center; scroll-snap-align: start; }
+.cartao-radio-logo {
+  position: relative; width: 132px; height: 132px; border-radius: 22px; display: grid; place-items: center; overflow: hidden;
+  background: rgba(255, 255, 255, 0.07); border: 2px solid transparent; transition: transform 0.18s, border-color 0.18s;
+}
+.cartao-radio-logo img { width: 78%; height: 78%; object-fit: contain; }
+.cartao-radio-logo span { font-size: 2.4rem; font-weight: 800; color: rgba(255, 255, 255, 0.28); }
+.cartao-radio:hover .cartao-radio-logo, .cartao-radio.tocando .cartao-radio-logo { transform: translateY(-3px); border-color: #4ff3e0; }
+.cartao-radio strong { font-size: 0.82rem; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cartao-radio-logo .equalizador { position: absolute; left: 8px; bottom: 8px; height: 18px; }
+
+.equalizador { display: flex; align-items: flex-end; gap: 3px; height: 28px; }
+.equalizador i { width: 4px; border-radius: 2px; background: #4ff3e0; animation: eq 0.9s ease-in-out infinite; }
+.equalizador i:nth-child(2) { animation-delay: -0.3s; background: #a35cf0; }
+.equalizador i:nth-child(3) { animation-delay: -0.6s; }
+.equalizador i:nth-child(4) { animation-delay: -0.15s; background: #a35cf0; }
+@keyframes eq { 0%, 100% { height: 20%; } 50% { height: 100%; } }

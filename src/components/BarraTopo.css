@@ -1,0 +1,110 @@
+/* Barra do topo: vidro, cápsula que desliza, pensada para mouse. */
+.barra-topo {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1180px, calc(100vw - 32px));
+  height: 52px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px 0 12px;
+  border-radius: 26px;
+  background: rgba(20, 22, 38, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+}
+
+.barra-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  transition: background 0.15s;
+}
+.barra-logo:hover { background: rgba(255, 255, 255, 0.08); }
+.barra-logo svg { width: 26px; height: 26px; }
+.barra-logo b { color: #4ff3e0; font-weight: 800; margin-left: 1px; }
+.barra-logo .adult-badge {
+  font-style: normal; font-size: 0.65rem; font-weight: 800; color: #fff;
+  background: #e5484d; padding: 1px 6px; border-radius: 8px;
+}
+
+.barra-abas {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0 auto;
+  padding: 3px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.barra-abas button {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 18px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.68);
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.barra-abas button svg { width: 16px; height: 16px; flex-shrink: 0; }
+.barra-abas button:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+.barra-abas button.on { color: #fff; background: transparent; }
+.barra-capsula {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 34px;
+  z-index: 0;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(79, 243, 224, 0.28), rgba(163, 92, 240, 0.34));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 2px 14px rgba(79, 243, 224, 0.18);
+  transition: transform 0.28s cubic-bezier(0.3, 1.2, 0.4, 1), width 0.28s cubic-bezier(0.3, 1.2, 0.4, 1);
+}
+
+.barra-direita { display: flex; align-items: center; gap: 6px; }
+.barra-engrenagem {
+  width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%;
+  color: rgba(255, 255, 255, 0.7); transition: background 0.15s, color 0.15s, transform 0.3s;
+}
+.barra-engrenagem svg { width: 18px; height: 18px; }
+.barra-engrenagem:hover { background: rgba(255, 255, 255, 0.1); color: #fff; transform: rotate(40deg); }
+.barra-engrenagem.on { color: #4ff3e0; }
+.barra-relogio {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 0 8px 0 4px;
+}
+
+/* Telas largas e estreitas: abas só com ícone quando falta lugar. */
+@media (max-width: 1020px) {
+  .barra-abas button span { display: none; }
+  .barra-abas button { padding: 0 12px; }
+}
+
+/* Celular tem a navegação própria, embaixo. */
+@media (max-width: 768px) {
+  .barra-topo { display: none; }
+}
+
+/* O conteúdo de toda tela com a barra começa abaixo dela. */
+.tela-com-barra { padding-top: 76px; }
