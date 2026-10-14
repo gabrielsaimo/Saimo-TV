@@ -550,9 +550,8 @@ export const VideoPlayer = memo(function VideoPlayer({
     };
     const handlePause = () => {
       setIsPlaying(false);
-      // Ao vivo não fica parado: qualquer pausa (fones, tela de bloqueio,
-      // janela flutuante) volta a tocar.
-      if (channel && video.readyState >= 2) {
+      // Ao vivo não fica parado: qualquer tentativa de pausa volta a tocar imediatamente
+      if (channel) {
         video.play().catch(() => {
           // Se falhar, tenta mutado
           video.muted = true;
@@ -819,17 +818,6 @@ export const VideoPlayer = memo(function VideoPlayer({
     setShowCastModal(false);
   }, []);
 
-  const togglePlayPause = useCallback(() => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play().catch((err) => console.warn('Erro ao reproduzir:', err));
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  }, []);
-
   const toggleMirror = useCallback(() => {
     setIsMirrored((prev) => !prev);
   }, []);
@@ -895,6 +883,16 @@ export const VideoPlayer = memo(function VideoPlayer({
 
       // Ações específicas de teclas
       switch (e.key) {
+        case ' ':
+        case 'Space':
+        case 'k':
+        case 'K':
+          // Ao vivo não pode pausar nunca
+          e.preventDefault();
+          if (videoRef.current?.paused) {
+            void videoRef.current.play().catch(() => {});
+          }
+          break;
         case 'f':
         case 'F':
           e.preventDefault();
@@ -1193,25 +1191,6 @@ export const VideoPlayer = memo(function VideoPlayer({
                   <span className="pulse-indicator" aria-hidden="true" />
                 </button>
               )}
-
-              {/* Tocar / Pausar */}
-              <button
-                className="control-btn"
-                onClick={() => { resetControlsTimeout(); togglePlayPause(); }}
-                title={isPlaying ? 'Pausar (Espaço)' : 'Tocar (Espaço)'}
-                data-focusable="true"
-              >
-                {isPlaying ? (
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="6" y="4" width="4" height="16" rx="1" />
-                    <rect x="14" y="4" width="4" height="16" rx="1" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="5 3 19 12 5 21 5 3" />
-                  </svg>
-                )}
-              </button>
 
               {/* Canal anterior */}
               {onPrevChannel && (

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
  * números…), mas nada na tela dizia — ninguém descobria.
  */
 const ATALHOS: [string, string][] = [
-  ['Espaço', 'Pausar / continuar'],
+  ['Espaço', 'Pausar / continuar (filmes)'],
   ['← →', 'Canal anterior / seguinte (TV) · voltar / avançar (filme)'],
   ['↑ ↓', 'Volume'],
   ['0–9', 'Ir para o canal pelo número'],
