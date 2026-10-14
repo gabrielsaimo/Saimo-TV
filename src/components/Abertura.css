@@ -1,0 +1,34 @@
+/* Por cima de tudo enquanto a logo se monta; some em fade quando termina. */
+.abertura {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(60% 50% at 18% 30%, rgba(40, 110, 150, 0.35), transparent 70%),
+    radial-gradient(55% 45% at 85% 78%, rgba(120, 50, 150, 0.38), transparent 70%),
+    linear-gradient(160deg, #151a45, #0b0f2a 60%);
+  opacity: 1;
+  transition: opacity 300ms ease;
+  cursor: pointer;
+}
+
+.abertura.saindo {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.abertura-luz {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.abertura-logo {
+  position: relative;
+  width: min(64vmin, 560px);
+  height: auto;
+  overflow: visible;
+}

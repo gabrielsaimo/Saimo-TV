@@ -39,6 +39,10 @@ lidos direto do repositório
   inteira (em pé a lista volta, sem recarregar o vídeo). O botão de tela
   cheia trava em paisagem no Android e usa o player nativo do vídeo no iPhone
   (`src/utils/telaCheia.ts`)
+- Abertura animada (`src/components/Abertura.tsx`): toda vez que a página inicial
+  abre, a logo se monta peça por peça em SVG (camadas em `public/abertura/`,
+  geradas por `SaimoPlayer/abertura`), no dobro da velocidade dos apps; clique
+  ou tecla pula.
 - Eventos (`src/services/eventos.ts`), como no TV Box: a agenda da embedtv
   (pela função `functions/api/events.ts`) e a do monitor (`/v1/eventos`, canais
   de streaming como CazéTV, Disney+, Prime e Paramount+, sem repetir) com os placares da ESPN, só jogos

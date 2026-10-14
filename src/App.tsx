@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useMemo, createContext, useContext, lazy, Suspense } from 'react';
 import { HashRouter, BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
+import { Abertura } from './components/Abertura';
 import { AppHeader } from './components/AppHeader';
 import { Toast } from './components/Toast';
 import { AtalhosAjuda } from './components/AtalhosAjuda';
@@ -87,9 +88,12 @@ function HomePage() {
   };
 
   return (
-    <Suspense fallback={<LoadingFallback />}>
-      <HomeSelector onSelect={handleSelect} />
-    </Suspense>
+    <>
+      <Abertura />
+      <Suspense fallback={<LoadingFallback />}>
+        <HomeSelector onSelect={handleSelect} />
+      </Suspense>
+    </>
   );
 }
 
