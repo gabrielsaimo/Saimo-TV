@@ -32,8 +32,8 @@
   object-fit: cover;
   object-position: center 25%;
   opacity: 0.85;
-  transition: opacity 0.38s ease-in-out, transform 0.5s ease-out;
-  animation: vod-destaque-fadein 0.4s ease;
+  transition: opacity 0.4s ease-in-out;
+  animation: vod-destaque-fadein 0.35s ease forwards;
 }
 
 .vod-fundo-destaque img.idle {
@@ -43,8 +43,8 @@
 }
 
 @keyframes vod-destaque-fadein {
-  from { opacity: 0; transform: scale(1.02); }
-  to { opacity: 0.85; transform: scale(1); }
+  from { opacity: 0; }
+  to { opacity: 0.85; }
 }
 
 .vod-fundo-destaque-veu-horiz {
@@ -74,35 +74,53 @@
 .vod-destaque-topo {
   position: relative;
   z-index: 2;
-  padding: 1.2rem clamp(1.2rem, 3.5vw, 3.5rem) 0.8rem;
-  max-width: 840px;
+  padding: 0.8rem clamp(1.2rem, 3.5vw, 3.5rem) 0.4rem;
+  max-width: 860px;
+  height: 175px;
+  min-height: 175px;
+  max-height: 175px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  contain: layout size;
 }
 
 .vod-destaque-titulo {
-  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-size: clamp(2rem, 3.8vw, 2.9rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.08;
+  line-height: 1.15;
   color: #fff;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.4rem;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
 .vod-destaque-meta {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 10px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #4fe3d0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.45rem;
+  height: 24px;
+  min-height: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .vod-destaque-meta span {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
 }
 
 .vod-destaque-meta span.com-nota {
@@ -110,16 +128,19 @@
 }
 
 .vod-destaque-sinopse {
-  font-size: 0.96rem;
-  line-height: 1.55;
+  font-size: 0.94rem;
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.85);
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  height: 3em;
+  min-height: 3em;
+  max-height: 3em;
 }
 
 /* ── Barra de Sub-Navegação (Pílulas de Categoria e Busca) ────────────────── */
@@ -537,11 +558,16 @@
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  height: 2.5em;
+  min-height: 2.5em;
 }
 
 .vod-card-poster-ano {
   font-size: 0.76rem;
   color: rgba(255, 255, 255, 0.55);
+  height: 1.2em;
+  min-height: 1.2em;
+  display: block;
 }
 
 /* ── Cartão "Ver Todos" no final das fileiras de gênero ───────────────────── */

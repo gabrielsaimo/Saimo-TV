@@ -218,6 +218,27 @@ export function VodCatalog({
   // Item atualmente sob o cursor do mouse para o Hero Destaque
   const [itemSobMouse, setItemSobMouse] = useState<ItemDestaque | null>(null);
   const fichaSobMouse = useFichaDe(itemSobMouse);
+  const timerLimparMouse = useRef<number | null>(null);
+
+  const passarItem = useCallback((item: ItemDestaque | null) => {
+    if (timerLimparMouse.current) {
+      window.clearTimeout(timerLimparMouse.current);
+      timerLimparMouse.current = null;
+    }
+    if (item) {
+      setItemSobMouse(item);
+    } else {
+      timerLimparMouse.current = window.setTimeout(() => {
+        setItemSobMouse(null);
+      }, 350);
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (timerLimparMouse.current) window.clearTimeout(timerLimparMouse.current);
+    };
+  }, []);
 
   // Título e Modais
   const [aberto, setAberto] = useState<Item | null>(null);
@@ -538,7 +559,7 @@ export function VodCatalog({
       }));
   }, [secao, generos]);
 
-  // Hero Destaque: título, selos, sinopse e fundo dinâmico
+  // Hero Destaque: título, selos e sinopse
   const heroiAtual = useMemo(() => {
     if (itemSobMouse) {
       const tituloLimpo = semAno(itemSobMouse.titulo);
@@ -556,8 +577,6 @@ export function VodCatalog({
         titulo: tituloLimpo,
         selos: selos.length ? selos : [itemSobMouse.tipo === 's' ? 'Série' : itemSobMouse.tipo === 'a' ? 'Anime' : itemSobMouse.tipo === 'd' ? 'Dorama' : 'Filme'],
         sinopse: fichaSobMouse?.sinopse || '',
-        fundo: fichaSobMouse?.fundo || itemSobMouse.capa || null,
-        isIdle: false,
       };
     }
 
@@ -567,8 +586,6 @@ export function VodCatalog({
         titulo: 'On Demand',
         selos: [`${contagens.totalGeral.toLocaleString('pt-BR')} títulos`],
         sinopse: 'Filmes, séries, animes e doramas. Lançamentos, clássicos e produções completas.',
-        fundo: colagens.filmes[0] || null,
-        isIdle: true,
       };
     }
 
@@ -578,10 +595,35 @@ export function VodCatalog({
       titulo: nome,
       selos: [`${total.toLocaleString('pt-BR')} títulos`],
       sinopse: SOBRE_SECAO[secao] || '',
-      fundo: colagens[secao]?.[0] || null,
-      isIdle: true,
     };
-  }, [itemSobMouse, fichaSobMouse, secao, contagens, colagens]);
+  }, [itemSobMouse, fichaSobMouse, secao, contagens]);
+
+  // Fundo de cinema dinâmico: nunca usa capa vertical de poster como fundo!
+  // Carrega apenas fundos 16:9 legítimos do TMDB, pré-carregados para evitar flash.
+  const backdropPadrao = useMemo(() => {
+    if (!secao) return colagens.filmes[0] || null;
+    return colagens[secao]?.[0] || colagens.filmes[0] || null;
+  }, [secao, colagens]);
+
+  const [backdropSobMouse, setBackdropSobMouse] = useState<string | null>(null);
+
+  // Pré-carrega o fundo 16:9 do TMDB quando a ficha chegar
+  useEffect(() => {
+    if (!itemSobMouse || !fichaSobMouse?.fundo) return;
+    let ativo = true;
+    const url = fichaSobMouse.fundo;
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      if (ativo) setBackdropSobMouse(url);
+    };
+    return () => { ativo = false; };
+  }, [itemSobMouse, fichaSobMouse]);
+
+  // Se o usuário está sobre um item e já carregou o backdrop 16:9 do TMDB, exibe-o sem blur;
+  // senão, exibe o backdrop padrão suave/ambient da seção.
+  const backdropAtivo = itemSobMouse && backdropSobMouse ? backdropSobMouse : backdropPadrao;
+  const backdropIsIdle = !itemSobMouse || !backdropSobMouse;
 
   // Abertura de títulos vindos do histórico de navegação
   useEffect(() => {
@@ -915,13 +957,13 @@ export function VodCatalog({
     <div className="vod-catalog">
       {/* ── Fundo Do Destaque (Cinema Backdrop) ── */}
       <div className="vod-fundo-destaque" aria-hidden="true">
-        {heroiAtual.fundo && (
+        {backdropAtivo && (
           <img
-            key={heroiAtual.fundo}
-            src={heroiAtual.fundo}
+            key={backdropAtivo}
+            src={backdropAtivo}
             alt=""
             referrerPolicy="no-referrer"
-            className={heroiAtual.isIdle ? 'idle' : ''}
+            className={backdropIsIdle ? 'idle' : ''}
           />
         )}
         <div className="vod-fundo-destaque-veu-horiz" />
@@ -930,19 +972,19 @@ export function VodCatalog({
 
       {/* ── Hero Destaque Topo (DestaqueTopo) ── */}
       <header className="vod-destaque-topo">
-        <h1 className="vod-destaque-titulo">{heroiAtual.titulo}</h1>
-        {heroiAtual.selos.length > 0 && (
-          <div className="vod-destaque-meta">
-            {heroiAtual.selos.map((s, idx) => (
-              <span key={idx} className={s.startsWith('★') ? 'com-nota' : ''}>
-                {s}
-              </span>
-            ))}
-          </div>
-        )}
-        {heroiAtual.sinopse && (
-          <p className="vod-destaque-sinopse">{heroiAtual.sinopse}</p>
-        )}
+        <h1 className="vod-destaque-titulo" title={heroiAtual.titulo}>
+          {heroiAtual.titulo}
+        </h1>
+        <div className="vod-destaque-meta">
+          {heroiAtual.selos.map((s, idx) => (
+            <span key={idx} className={s.startsWith('★') ? 'com-nota' : ''}>
+              {s}
+            </span>
+          ))}
+        </div>
+        <p className="vod-destaque-sinopse">
+          {heroiAtual.sinopse || '\u00A0'}
+        </p>
       </header>
 
       {/* ── Barra de Navegação / Sub-Categorias ── */}
@@ -1051,8 +1093,8 @@ export function VodCatalog({
                   <button
                     className="vod-card-secao secao-filmes"
                     onClick={() => { setSecao('filmes'); setModo('fileiras'); }}
-                    onMouseEnter={() => setItemSobMouse({ tipo: 'f', titulo: 'Filmes', letra: '#', ano: '', capa: colagens.filmes[0] || '' })}
-                    onMouseLeave={() => setItemSobMouse(null)}
+                    onMouseEnter={() => passarItem({ tipo: 'f', titulo: 'Filmes', letra: '#', ano: '', capa: colagens.filmes[0] || '' })}
+                    onMouseLeave={() => passarItem(null)}
                   >
                     <div className="vod-card-secao-colagem">
                       {colagens.filmes.map((c, i) => (
@@ -1077,8 +1119,8 @@ export function VodCatalog({
                   <button
                     className="vod-card-secao secao-series"
                     onClick={() => { setSecao('series'); setModo('fileiras'); }}
-                    onMouseEnter={() => setItemSobMouse({ tipo: 's', titulo: 'Séries', letra: '#', ano: '', capa: colagens.series[0] || '' })}
-                    onMouseLeave={() => setItemSobMouse(null)}
+                    onMouseEnter={() => passarItem({ tipo: 's', titulo: 'Séries', letra: '#', ano: '', capa: colagens.series[0] || '' })}
+                    onMouseLeave={() => passarItem(null)}
                   >
                     <div className="vod-card-secao-colagem">
                       {colagens.series.map((c, i) => (
@@ -1104,8 +1146,8 @@ export function VodCatalog({
                   <button
                     className="vod-card-secao secao-animes"
                     onClick={() => { setSecao('animes'); setModo('fileiras'); }}
-                    onMouseEnter={() => setItemSobMouse({ tipo: 'a', titulo: 'Animes', letra: '#', ano: '', capa: colagens.animes[0] || '' })}
-                    onMouseLeave={() => setItemSobMouse(null)}
+                    onMouseEnter={() => passarItem({ tipo: 'a', titulo: 'Animes', letra: '#', ano: '', capa: colagens.animes[0] || '' })}
+                    onMouseLeave={() => passarItem(null)}
                   >
                     <div className="vod-card-secao-colagem">
                       {colagens.animes.map((c, i) => (
@@ -1130,8 +1172,8 @@ export function VodCatalog({
                   <button
                     className="vod-card-secao secao-doramas"
                     onClick={() => { setSecao('doramas'); setModo('fileiras'); }}
-                    onMouseEnter={() => setItemSobMouse({ tipo: 'd', titulo: 'Doramas', letra: '#', ano: '', capa: colagens.doramas[0] || '' })}
-                    onMouseLeave={() => setItemSobMouse(null)}
+                    onMouseEnter={() => passarItem({ tipo: 'd', titulo: 'Doramas', letra: '#', ano: '', capa: colagens.doramas[0] || '' })}
+                    onMouseLeave={() => passarItem(null)}
                   >
                     <div className="vod-card-secao-colagem">
                       {colagens.doramas.map((c, i) => (
@@ -1162,7 +1204,7 @@ export function VodCatalog({
               titulo="Continue assistindo"
               itens={itensAndamento}
               aoAbrir={abrirItemDestaque}
-              aoPassar={setItemSobMouse}
+              aoPassar={passarItem}
             />
           )}
 
@@ -1178,7 +1220,7 @@ export function VodCatalog({
                 titulo={fila.titulo}
                 itens={itensDaFila}
                 aoAbrir={abrirItemDestaque}
-                aoPassar={setItemSobMouse}
+                aoPassar={passarItem}
               />
             );
           })}
@@ -1190,7 +1232,7 @@ export function VodCatalog({
               titulo={fg.titulo}
               itens={fg.itens}
               aoAbrir={abrirItemDestaque}
-              aoPassar={setItemSobMouse}
+              aoPassar={passarItem}
               verTodos={() => {
                 if (secao === 'series') setSecao('series');
                 else if (secao === 'animes') setSecao('animes');
@@ -1340,14 +1382,14 @@ export function VodCatalog({
                   key={item.chave}
                   className="vod-card-poster"
                   onClick={() => abrirItem(item)}
-                  onMouseEnter={() => setItemSobMouse({
+                  onMouseEnter={() => passarItem({
                     tipo: item.serie ? 's' : 'f',
                     titulo: item.titulo,
                     letra: item.letra,
                     ano: item.ano || '',
                     capa: capaSrc || '',
                   })}
-                  onMouseLeave={() => setItemSobMouse(null)}
+                  onMouseLeave={() => passarItem(null)}
                   onContextMenu={(e) => {
                     e.preventDefault();
                     alternarFavorito({
@@ -1867,6 +1909,7 @@ function CarrosselFileira({
           ref={trilhoRef}
           onScroll={medir}
           onWheel={onWheel}
+          onMouseLeave={() => aoPassar(null)}
         >
           {itens.map((item) => {
             const fav = ehFavorito(item);
