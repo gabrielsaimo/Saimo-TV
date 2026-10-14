@@ -42,10 +42,11 @@ const ativa = (a: Aba, caminho: string) =>
   caminho === a.rota || (a.prefixos?.some((p) => caminho.startsWith(p)) ?? false);
 
 interface BarraTopoProps {
+  /** Se `false`, força a barra a ficar oculta independente do mouse. Se omitido, auto-esconde com base no mouse. */
   visible?: boolean;
 }
 
-export const BarraTopo = memo(function BarraTopo({ visible = true }: BarraTopoProps = {}) {
+export const BarraTopo = memo(function BarraTopo({ visible: visibleProp }: BarraTopoProps = {}) {
   const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
   const navigate = useNavigate();
   const radio = useSyncExternalStore(assinar, atualRadio);
@@ -57,6 +58,65 @@ export const BarraTopo = memo(function BarraTopo({ visible = true }: BarraTopoPr
   const zerar = useRef<ReturnType<typeof setTimeout> | null>(null);
   const trilho = useRef<HTMLElement>(null);
   const [capsula, setCapsula] = useState<{ x: number; w: number } | null>(null);
+
+  // Auto-hide da barra: só aparece com mouse nos primeiros 68px da tela ou sobre a própria barra
+  const [mouseNoTopo, setMouseNoTopo] = useState(false);
+  const hoverRef = useRef(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const limparTimer = () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      // Perto do topo: mouse nos primeiros 68px da tela ou sobre a barra
+      const perto = (e.clientY >= 0 && e.clientY <= 68) || hoverRef.current;
+      if (perto) {
+        limparTimer();
+        setMouseNoTopo(true);
+      } else {
+        if (!timerRef.current) {
+          timerRef.current = setTimeout(() => {
+            setMouseNoTopo(false);
+            timerRef.current = null;
+          }, 300);
+        }
+      }
+    };
+
+    const onMouseLeaveDoc = (e: MouseEvent) => {
+      if (!e.relatedTarget) {
+        limparTimer();
+        timerRef.current = setTimeout(() => {
+          setMouseNoTopo(false);
+          timerRef.current = null;
+        }, 350);
+      }
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseleave', onMouseLeaveDoc);
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseleave', onMouseLeaveDoc);
+      limparTimer();
+    };
+  }, []);
+
+  // Quando o usuário clica em uma aba e a rota muda, garante que a barra suma após o clique
+  useEffect(() => {
+    hoverRef.current = false;
+    const t = window.setTimeout(() => {
+      setMouseNoTopo(false);
+    }, 1200);
+    return () => window.clearTimeout(t);
+  }, [pathname]);
+
+  const isVisivel = visibleProp === false ? false : (pedePin || mouseNoTopo);
 
   useEffect(() => {
     const id = window.setInterval(() => setHora(relogio()), 15_000);
@@ -88,7 +148,8 @@ export const BarraTopo = memo(function BarraTopo({ visible = true }: BarraTopoPr
     return () => document.removeEventListener('keydown', aoTeclar);
   }, [navigate]);
 
-  const aoClicarLogo = () => {
+  const aoClicarLogo = (e: React.MouseEvent<HTMLButtonElement>) => {
+    (e.currentTarget as HTMLElement)?.blur();
     navigate('/');
     if (isAdultUnlocked) { lockAdult(); return; }
     if (zerar.current) clearTimeout(zerar.current);
@@ -105,7 +166,26 @@ export const BarraTopo = memo(function BarraTopo({ visible = true }: BarraTopoPr
 
   return (
     <>
-      <header className={`barra-topo ${!visible ? 'oculta' : ''}`} role="banner">
+      <header
+        className={`barra-topo ${!isVisivel ? 'oculta' : ''}`}
+        role="banner"
+        onMouseEnter={() => {
+          hoverRef.current = true;
+          if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+          }
+          setMouseNoTopo(true);
+        }}
+        onMouseLeave={() => {
+          hoverRef.current = false;
+          if (timerRef.current) clearTimeout(timerRef.current);
+          timerRef.current = setTimeout(() => {
+            setMouseNoTopo(false);
+            timerRef.current = null;
+          }, 300);
+        }}
+      >
         <button className="barra-logo" onClick={aoClicarLogo} aria-label="Saimo TV — início">
           <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <defs>
@@ -127,7 +207,10 @@ export const BarraTopo = memo(function BarraTopo({ visible = true }: BarraTopoPr
               key={a.rota}
               className={ativa(a, pathname) ? 'on' : ''}
               data-ativa={ativa(a, pathname) ? '1' : '0'}
-              onClick={() => navigate(a.rota)}
+              onClick={(e) => {
+                navigate(a.rota);
+                (e.currentTarget as HTMLElement)?.blur();
+              }}
               title={`${a.rotulo} (Alt+${i + 1})`}
             >
               {a.icone}<span>{a.rotulo}</span>
@@ -138,7 +221,13 @@ export const BarraTopo = memo(function BarraTopo({ visible = true }: BarraTopoPr
         <div className="barra-direita">
           {radio.radio && radio.estado !== 'erro' && (
             <div className="barra-radio" title={radio.radio.nome}>
-              <button className="barra-radio-nome" onClick={() => navigate('/radios')}>
+              <button
+                className="barra-radio-nome"
+                onClick={(e) => {
+                  (e.currentTarget as HTMLElement)?.blur();
+                  navigate('/radios');
+                }}
+              >
                 <span className="equalizador"><i /><i /><i /></span>
                 <span>{radio.radio.nome}</span>
               </button>
@@ -147,7 +236,10 @@ export const BarraTopo = memo(function BarraTopo({ visible = true }: BarraTopoPr
           )}
           <button
             className={`barra-engrenagem ${pathname === '/ajustes' ? 'on' : ''}`}
-            onClick={() => navigate('/ajustes')}
+            onClick={(e) => {
+              (e.currentTarget as HTMLElement)?.blur();
+              navigate('/ajustes');
+            }}
             title="Ajustes (Alt+8)"
             aria-label="Ajustes"
           >

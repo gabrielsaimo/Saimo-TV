@@ -317,35 +317,10 @@ function TVPage() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isChannelsPanelOpen]);
 
-  // O nav bar só aparece se o usuário passar o mouse na parte superior da tela (para não tapar a programação)
-  const [mouseNoTopo, setMouseNoTopo] = useState(false);
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    const onMouseMove = (e: MouseEvent) => {
-      const pertoDoTopo = e.clientY <= 72;
-      if (pertoDoTopo) {
-        if (timer) clearTimeout(timer);
-        setMouseNoTopo(true);
-      } else {
-        if (!timer) {
-          timer = setTimeout(() => {
-            setMouseNoTopo(false);
-            timer = null;
-          }, 350);
-        }
-      }
-    };
-    window.addEventListener('mousemove', onMouseMove);
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      if (timer) clearTimeout(timer);
-    };
-  }, []);
-
   return (
     <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''} ${deitado ? 'deitado' : ''} ${deitado && (selectedMovie || selectedChannel) ? 'tocando' : ''}`}>
-      {/* Header Global aparece apenas ao passar o mouse no topo da tela */}
-      {!isTheaterMode && <BarraTopo visible={mouseNoTopo} />}
+      {/* Header Global com auto-hide (aparece apenas ao passar o mouse no topo da tela) */}
+      {!isTheaterMode && <BarraTopo />}
 
       <Suspense fallback={<LoadingFallback />}>
         {/* Celular: o vídeo fica no alto, e a lista de canais rola embaixo dele */}
