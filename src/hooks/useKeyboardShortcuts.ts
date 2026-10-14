@@ -11,6 +11,7 @@ interface ShortcutHandlers {
   onVolumeUp?: () => void;
   onVolumeDown?: () => void;
   onPlayPause?: () => void;
+  onMultiScreen?: () => void;
   onChannelNumber?: (channelNumber: number) => void;
 }
 
@@ -65,6 +66,10 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
       case 't':
         e.preventDefault();
         handlers.onTheater?.();
+        break;
+      case 'u':
+        e.preventDefault();
+        handlers.onMultiScreen?.();
         break;
       case 'p':
         e.preventDefault();

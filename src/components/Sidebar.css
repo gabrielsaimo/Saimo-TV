@@ -613,3 +613,39 @@
     display: none;
   }
 }
+
+/* Category Pills for quick mouse navigation */
+.category-pills {
+  display: flex;
+  gap: 6px;
+  padding: 0 24px 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.category-pills::-webkit-scrollbar {
+  display: none;
+}
+.category-pill {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+.category-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.category-pill.active {
+  background: linear-gradient(135deg, rgba(79, 243, 224, 0.25), rgba(163, 92, 240, 0.25));
+  border-color: #4ff3e0;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(79, 243, 224, 0.2);
+}

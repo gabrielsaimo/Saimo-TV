@@ -3,12 +3,11 @@
  * último, por estilo e de A a Z. A que toca aparece no alto com o equalizador.
  * Toca num player só dela (um <audio>), e para ao sair da tela.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Hls from 'hls.js';
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { BarraTopo } from '../components/BarraTopo';
 import { CampoBusca, Fileira } from '../components/Telas';
-import { baixar, chave, ESTILOS, estiloDe, locais, ouviu, recentes, type Radio } from '../services/radios';
-import { needsProxy, proxyUrl } from '../utils/streamUrl';
+import { baixar, chave, ESTILOS, estiloDe, locais, recentes, type Radio } from '../services/radios';
+import { assinar, atual as atualRadio, parar, tocar } from '../services/radioPlayer';
 import './Radios.css';
 
 function CartaoRadio({ radio, tocando, aoTocar }: { radio: Radio; tocando: boolean; aoTocar: () => void }) {
@@ -32,41 +31,13 @@ function Equalizador() {
 export function Radios() {
   const [lista, setLista] = useState<Radio[]>(locais);
   const [termo, setTermo] = useState('');
-  const [atual, setAtual] = useState<Radio | null>(null);
-  const [estado, setEstado] = useState<'parado' | 'carregando' | 'tocando' | 'erro'>('parado');
-  const [ouvidas, setOuvidas] = useState(recentes);
-  const audio = useRef<HTMLAudioElement>(null);
-  const hls = useRef<Hls | null>(null);
+  const { radio: atual, estado } = useSyncExternalStore(assinar, atualRadio);
+  const ouvidas = useMemo(() => {
+    void atual;
+    return recentes();
+  }, [atual]);
 
   useEffect(() => { void baixar().then((l) => { if (l) setLista(l); }); }, []);
-
-  const parar = useCallback(() => {
-    hls.current?.destroy();
-    hls.current = null;
-    const a = audio.current;
-    if (a) { a.pause(); a.removeAttribute('src'); a.load(); }
-  }, []);
-  useEffect(() => parar, [parar]);
-
-  const tocar = useCallback((radio: Radio) => {
-    const a = audio.current;
-    if (!a) return;
-    parar();
-    setAtual(radio);
-    setEstado('carregando');
-    const url = needsProxy({ url: radio.url }) ? proxyUrl({ url: radio.url }) : radio.url;
-    const ehHls = /\.m3u8(\?|$)/i.test(radio.url);
-    if (ehHls && !a.canPlayType('application/vnd.apple.mpegurl') && Hls.isSupported()) {
-      const h = new Hls();
-      hls.current = h;
-      h.loadSource(url);
-      h.attachMedia(a);
-      h.on(Hls.Events.ERROR, (_e, d) => { if (d.fatal) setEstado('erro'); });
-    } else {
-      a.src = url;
-    }
-    a.play().then(() => { ouviu(radio.nome); setOuvidas(recentes()); }).catch(() => setEstado('erro'));
-  }, [parar]);
 
   const filtradas = useMemo(() => {
     const t = chave(termo.trim());
@@ -90,13 +61,12 @@ export function Radios() {
 
   const cartao = (r: Radio) => (
     <CartaoRadio key={r.nome} radio={r} tocando={atual?.nome === r.nome && estado !== 'erro'}
-      aoTocar={() => (atual?.nome === r.nome && estado !== 'erro' ? (parar(), setAtual(null), setEstado('parado')) : tocar(r))} />
+      aoTocar={() => (atual?.nome === r.nome && estado !== 'erro' ? parar() : tocar(r))} />
   );
 
   return (
     <div className="tela tela-com-barra">
       <BarraTopo />
-      <audio ref={audio} onPlaying={() => setEstado('tocando')} onError={() => atual && setEstado('erro')} />
       <div className="tela-miolo">
         <section className="radio-topo">
           <div className="radio-agora">
@@ -111,7 +81,7 @@ export function Radios() {
                   <p>{estiloDe(atual)?.titulo ?? 'Rádio'}</p>
                 </div>
                 {estado === 'tocando' && <Equalizador />}
-                <button className="radio-parar" onClick={() => { parar(); setAtual(null); setEstado('parado'); }}>Parar</button>
+                <button className="radio-parar" onClick={parar}>Parar</button>
               </>
             ) : (
               <div><small>Rádios</small><h1>Escolha uma rádio</h1><p>{lista.length} estações ao vivo</p></div>

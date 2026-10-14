@@ -3,17 +3,18 @@ import { adultChannels, getAllChannels } from '../data/channels';
 import { cachedChannels, fetchChannels } from '../services/catalogService';
 import { atualizar as atualizarFontesDesativadas } from '../services/fontesDesativadas';
 import { fetchRealEPG, registerChannels } from '../services/epgService';
+import { aoMudar, locais } from '../services/canaisPersonalizados';
 import { useAdultMode } from '../contexts/adultoContexto';
 import type { Channel } from '../types/channel';
 
 /**
- * A grade de canais para as telas que não são o "Ao vivo": a guardada na hora,
- * a publicada por trás, e o guia de programação já registrado — é o que faz o
- * "Ao vivo agora" mostrar o programa no ar.
+ * A grade de canais para as telas: a guardada na hora, a publicada por trás,
+ * os canais personalizados importados e o guia de programação já registrado.
  */
 export function useCanais(): Channel[] {
   const { isAdultUnlocked } = useAdultMode();
   const [remotos, setRemotos] = useState<Channel[] | null>(() => cachedChannels());
+  const [personalizados, setPersonalizados] = useState<Channel[]>(locais);
 
   useEffect(() => {
     let vivo = true;
@@ -25,9 +26,14 @@ export function useCanais(): Channel[] {
     return () => { vivo = false; };
   }, []);
 
-  const canais = useMemo(() => remotos
-    ? (isAdultUnlocked ? [...remotos, ...adultChannels] : remotos)
-    : getAllChannels(isAdultUnlocked), [remotos, isAdultUnlocked]);
+  useEffect(() => aoMudar(() => setPersonalizados(locais())), []);
+
+  const canais = useMemo(() => {
+    const base = remotos
+      ? (isAdultUnlocked ? [...remotos, ...adultChannels] : remotos)
+      : getAllChannels(isAdultUnlocked);
+    return personalizados.length ? [...base, ...personalizados] : base;
+  }, [remotos, isAdultUnlocked, personalizados]);
 
   useEffect(() => {
     if (!canais.length) return;

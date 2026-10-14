@@ -1,13 +1,21 @@
 /**
- * Ajustes: o que abrir ao iniciar, modo adulto, atalhos, limpezas e links.
- * (Importar/exportar canais e a atualização do aplicativo são do app; no site
- * a lista vem sempre do repositório e a versão nova chega sozinha.)
+ * Ajustes: o que abrir ao iniciar, modo adulto, importar/exportar canais,
+ * atalhos, limpezas e links.
  */
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
 import { useAdultMode } from '../contexts/adultoContexto';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useCanais } from '../hooks/useCanais';
+import {
+  aoMudar as aoMudarPersonalizados,
+  exportarM3U,
+  importar,
+  limpar as limparPersonalizados,
+  locais as canaisLocais,
+} from '../services/canaisPersonalizados';
+import type { Channel } from '../types/channel';
 import './Ajustes.css';
 
 export type AoIniciar = 'inicio' | 'ultimo';
@@ -27,15 +35,59 @@ const LIMPAR: { rotulo: string; chaves: string[]; aviso: string }[] = [
 
 export function Ajustes() {
   const navigate = useNavigate();
+  const canais = useCanais();
+  const [favoritosIds] = useLocalStorage<string[]>('tv-favorites', []);
   const { isAdultUnlocked, lockAdult } = useAdultMode();
   const [aoIniciar, setAoIniciar] = useLocalStorage<AoIniciar>(CHAVE_AO_INICIAR, 'inicio');
   const [aviso, setAviso] = useState('');
+  const [personalizados, setPersonalizados] = useState<Channel[]>(canaisLocais);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const limpar = (chaves: string[], texto: string) => {
+  useEffect(() => aoMudarPersonalizados(() => setPersonalizados(canaisLocais())), []);
+
+  const notificar = (msg: string) => {
+    setAviso(msg);
+    window.setTimeout(() => setAviso(''), 3000);
+  };
+
+  const limparDados = (chaves: string[], texto: string) => {
     chaves.forEach((c) => localStorage.removeItem(c));
     window.dispatchEvent(new Event('saimo-vod-favoritos-mudou'));
-    setAviso(texto);
-    window.setTimeout(() => setAviso(''), 2500);
+    notificar(texto);
+  };
+
+  const handleExportarTodos = () => {
+    exportarM3U(canais, 'saimo-tv-todos-canais.m3u');
+    notificar('Lista de canais exportada!');
+  };
+
+  const handleExportarFavoritos = () => {
+    const favs = canais.filter((c) => favoritosIds.includes(c.id));
+    if (!favs.length) {
+      notificar('Você não tem canais favoritos para exportar');
+      return;
+    }
+    exportarM3U(favs, 'saimo-tv-favoritos.m3u');
+    notificar('Canais favoritos exportados!');
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const text = evt.target?.result;
+      if (typeof text === 'string') {
+        const qtd = importar(text);
+        if (qtd > 0) {
+          notificar(`${qtd} canal(is) importado(s) com sucesso!`);
+        } else {
+          notificar('Nenhum canal válido encontrado no arquivo.');
+        }
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
   };
 
   return (
@@ -55,6 +107,36 @@ export function Ajustes() {
         </section>
 
         <section className="ajustes-bloco">
+          <h2>Canais e listas (M3U / TXT)</h2>
+          <p>Exporte seus canais favoritos ou importe uma lista própria de IPTV.</p>
+          <div className="ajustes-botoes">
+            <button className="ajustes-botao" onClick={handleExportarTodos}>Exportar todos os canais (M3U)</button>
+            <button className="ajustes-botao" onClick={handleExportarFavoritos}>Exportar favoritos (M3U)</button>
+            <button className="ajustes-botao destaque" onClick={() => fileInputRef.current?.click()}>
+              Importar lista (.m3u / .txt)
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".m3u,.m3u8,.txt"
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
+            {personalizados.length > 0 && (
+              <button
+                className="ajustes-botao perigo"
+                onClick={() => {
+                  limparPersonalizados();
+                  notificar('Canais importados removidos.');
+                }}
+              >
+                Limpar {personalizados.length} canais importados
+              </button>
+            )}
+          </div>
+        </section>
+
+        <section className="ajustes-bloco">
           <h2>Modo adulto (+18)</h2>
           <p>{isAdultUnlocked
             ? 'Ligado: o catálogo mostra também o conteúdo adulto.'
@@ -63,11 +145,12 @@ export function Ajustes() {
         </section>
 
         <section className="ajustes-bloco">
-          <h2>Atalhos</h2>
+          <h2>Atalhos de teclado</h2>
           <dl className="ajustes-atalhos">
             {ATALHOS_TELAS.map(([k, v]) => <div key={k}><dt><kbd>{k}</kbd></dt><dd>{v}</dd></div>)}
-            <div><dt><kbd>?</kbd></dt><dd>Todos os atalhos do player</dd></div>
+            <div><dt><kbd>U</kbd></dt><dd>Multi tela (2 canais ao vivo)</dd></div>
             <div><dt><kbd>G</kbd></dt><dd>Guia de programação (Ao vivo)</dd></div>
+            <div><dt><kbd>?</kbd></dt><dd>Todos os atalhos do player</dd></div>
           </dl>
         </section>
 
@@ -75,7 +158,7 @@ export function Ajustes() {
           <h2>Dados deste navegador</h2>
           <div className="ajustes-botoes">
             {LIMPAR.map((l) => (
-              <button key={l.rotulo} className="ajustes-botao" onClick={() => limpar(l.chaves, l.aviso)}>{l.rotulo}</button>
+              <button key={l.rotulo} className="ajustes-botao" onClick={() => limparDados(l.chaves, l.aviso)}>{l.rotulo}</button>
             ))}
           </div>
         </section>

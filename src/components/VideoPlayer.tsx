@@ -19,6 +19,13 @@ interface VideoPlayerProps {
   isTheaterMode: boolean;
   onToggleTheater: () => void;
   onOpenGuide: () => void;
+  isMultiScreen?: boolean;
+  onToggleMultiScreen?: () => void;
+  isSplitActive?: boolean;
+  onActivateSplit?: () => void;
+  onCloseSplit?: () => void;
+  forceMuted?: boolean;
+  splitLabel?: string;
 }
 
 export const VideoPlayer = memo(function VideoPlayer({
@@ -26,6 +33,13 @@ export const VideoPlayer = memo(function VideoPlayer({
   isTheaterMode,
   onToggleTheater,
   onOpenGuide,
+  isMultiScreen = false,
+  onToggleMultiScreen,
+  isSplitActive = false,
+  onActivateSplit,
+  onCloseSplit,
+  forceMuted = false,
+  splitLabel,
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -48,11 +62,16 @@ export const VideoPlayer = memo(function VideoPlayer({
   const volumeRef = useRef(volume);
   const isMutedRef = useRef(isMuted);
   const pendingUnmuteRef = useRef(false);
+  const forceMutedRef = useRef(forceMuted);
   
   // Atualiza refs quando states mudam
   useEffect(() => {
     volumeRef.current = volume;
   }, [volume]);
+
+  useEffect(() => {
+    forceMutedRef.current = forceMuted;
+  }, [forceMuted]);
   
   useEffect(() => {
     isMutedRef.current = isMuted;
@@ -407,7 +426,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         setIsLoading(false);
         recoveryAttemptsRef.current = 0;
-        video.muted = false;
+        video.muted = forceMutedRef.current || isMutedRef.current;
         tocar();
       });
 
@@ -432,7 +451,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       video.src = url;
       video.addEventListener('loadedmetadata', () => {
         setIsLoading(false);
-        video.muted = false;
+        video.muted = forceMutedRef.current || isMutedRef.current;
         tocar();
       }, { once: true });
       video.addEventListener('error', () => falhar('safari'), { once: true });
@@ -454,10 +473,10 @@ export const VideoPlayer = memo(function VideoPlayer({
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.volume = volume;
-      videoRef.current.muted = isMuted;
+      videoRef.current.muted = forceMuted || isMuted;
     }
     localStorage.setItem('tv-volume', volume.toString());
-  }, [volume, isMuted]);
+  }, [volume, isMuted, forceMuted]);
 
   // Video event listeners
   useEffect(() => {
@@ -546,7 +565,7 @@ export const VideoPlayer = memo(function VideoPlayer({
     
     const handleUserInteraction = () => {
       const video = videoRef.current;
-      if (video && pendingUnmuteRef.current) {
+      if (video && pendingUnmuteRef.current && !forceMutedRef.current) {
         video.muted = false;
         setIsMuted(false);
         setPendingUnmute(false);
@@ -662,10 +681,11 @@ export const VideoPlayer = memo(function VideoPlayer({
   });
 
   const toggleMute = useCallback(() => {
+    if (forceMuted) return;
     // Se o usuário manualmente mutar/desmutar, cancela o pendingUnmute
     setPendingUnmute(false);
     setIsMuted((prev) => !prev);
-  }, []);
+  }, [forceMuted]);
 
   const toggleFullscreen = useCallback(async () => {
     const container = containerRef.current;
@@ -863,10 +883,39 @@ export const VideoPlayer = memo(function VideoPlayer({
   return (
     <div
       ref={containerRef}
-      className={`video-player-container ${isTheaterMode ? 'theater' : ''} ${showControls ? 'show-controls' : ''}`}
+      className={`video-player-container ${isTheaterMode ? 'theater' : ''} ${showControls ? 'show-controls' : ''} ${isMultiScreen ? 'multi-screen-mode' : ''} ${isSplitActive ? 'split-active' : ''}`}
+      onClick={onActivateSplit}
       onMouseMove={resetControlsTimeout}
       onMouseLeave={() => isPlaying && setShowControls(false)}
     >
+      {isMultiScreen && (
+        <div className="multi-screen-header">
+          <button
+            type="button"
+            className={`multi-badge ${isSplitActive ? 'active' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onActivateSplit?.();
+            }}
+          >
+            {isSplitActive ? '● ÁUDIO ATIVO' : 'MUDO (clique p/ ativar)'}
+          </button>
+          {splitLabel && <span className="multi-label">{splitLabel}</span>}
+          {onCloseSplit && (
+            <button
+              type="button"
+              className="multi-close-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onCloseSplit();
+              }}
+              title="Fechar divisão"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+      )}
       {!channel ? (
         <div className="no-channel">
           <div className="no-channel-content">
@@ -1083,6 +1132,21 @@ export const VideoPlayer = memo(function VideoPlayer({
                   <circle cx="2" cy="20" r="2" fill="currentColor" />
                 </svg>
               </button>
+
+              {onToggleMultiScreen && (
+                <button
+                  className={`control-btn ${isMultiScreen ? 'active' : ''}`}
+                  onClick={() => { resetControlsTimeout(); onToggleMultiScreen(); }}
+                  title={isMultiScreen ? 'Fechar Multi-Tela (U)' : 'Multi-Tela: 2 canais ao mesmo tempo (U)'}
+                  data-focusable="true"
+                  data-focus-key="btn-multiscreen"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="2" y="4" width="9" height="16" rx="2" />
+                    <rect x="13" y="4" width="9" height="16" rx="2" />
+                  </svg>
+                </button>
+              )}
 
               <button
                 className={`control-btn ${isTheaterMode ? 'active' : ''}`}

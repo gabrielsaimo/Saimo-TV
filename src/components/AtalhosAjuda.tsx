@@ -13,6 +13,7 @@ const ATALHOS: [string, string][] = [
   ['M', 'Sem som'],
   ['P', 'Imagem na imagem'],
   ['T', 'Modo cinema'],
+  ['U', 'Multi tela (2 canais ao vivo)'],
   ['N / B', 'Próximo / episódio anterior'],
   ['E', 'Lista de episódios'],
   ['?', 'Mostrar ou esconder esta ajuda'],

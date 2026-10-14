@@ -7,7 +7,9 @@ import { Eventos } from './telas/Eventos';
 import { Radios } from './telas/Radios';
 import { Favoritos } from './telas/Favoritos';
 import { Busca } from './telas/Busca';
+import { parar as pararRadio } from './services/radioPlayer';
 import { Ajustes } from './telas/Ajustes';
+import { locais as locaisPersonalizados, aoMudar as aoMudarPersonalizados } from './services/canaisPersonalizados';
 import { Toast } from './components/Toast';
 import { AtalhosAjuda } from './components/AtalhosAjuda';
 import { NavegacaoMobile } from './components/NavegacaoMobile';
@@ -75,6 +77,8 @@ function TVPage() {
   const { slug } = useParams<{slug?: string}>();
   const navigate = useNavigate();
   const { isAdultUnlocked } = useAdultMode();
+  // O ao vivo toma o som: a rádio para ao abrir esta tela.
+  useEffect(() => { pararRadio(); }, []);
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
   const [lastChannelId, setLastChannelId] = useLocalStorage<string | null>('tv-last-channel', null);
   // O canal escolhido guarda junto o link (/tv/:slug) em que foi escolhido:
@@ -90,15 +94,24 @@ function TVPage() {
   const [isMobile, setIsMobile] = useState(ehCelular);
   const [deitado, setDeitado] = useState(() => ehCelular() && window.innerWidth > window.innerHeight);
   const [remoteChannels, setRemoteChannels] = useState<Channel[] | null>(() => cachedChannels());
+  const [isMultiScreen, setIsMultiScreen] = useState(false);
+  const [secondChannel, setSecondChannel] = useState<Channel | null>(null);
+  const [activeSide, setActiveSide] = useState<'primary' | 'secondary'>('primary');
+  const [personalizados, setPersonalizados] = useState<Channel[]>(locaisPersonalizados);
+
+  useEffect(() => aoMudarPersonalizados(() => setPersonalizados(locaisPersonalizados())), []);
 
   /*
    * A grade vem do mesmo repositório que o aplicativo lê, para que um link
    * corrigido lá valha aqui sem publicar o site de novo. A lista compilada fica
    * de piso: se a rede falhar na primeira visita, ainda há canais na tela.
    */
-  const channels = useMemo(() => remoteChannels
-    ? (isAdultUnlocked ? [...remoteChannels, ...adultChannels] : remoteChannels)
-    : getAllChannels(isAdultUnlocked), [remoteChannels, isAdultUnlocked]);
+  const channels = useMemo(() => {
+    const base = remoteChannels
+      ? (isAdultUnlocked ? [...remoteChannels, ...adultChannels] : remoteChannels)
+      : getAllChannels(isAdultUnlocked);
+    return personalizados.length ? [...base, ...personalizados] : base;
+  }, [remoteChannels, isAdultUnlocked, personalizados]);
 
   // Sem canal escolhido nesta visita, vale o último da visita anterior — assim
   // que a lista (que vem da rede) o trouxer. Derivado, e não copiado para o
@@ -189,12 +202,36 @@ function TVPage() {
 
 
   const handleSelectChannel = useCallback((channel: Channel) => {
+    if (isMultiScreen && activeSide === 'secondary') {
+      setSecondChannel(channel);
+      setIsMobileMenuOpen(false);
+      showToast(`Tela 2: ${channel.name}`, 'info');
+      return;
+    }
     setSelectedChannel(channel);
     setSelectedMovie(null);
     setLastChannelId(channel.id);
     setIsMobileMenuOpen(false);
-    showToast(`Assistindo: ${channel.name}`, 'info');
-  }, [setLastChannelId, showToast, setSelectedChannel]);
+    showToast(isMultiScreen ? `Tela 1: ${channel.name}` : `Assistindo: ${channel.name}`, 'info');
+  }, [isMultiScreen, activeSide, setLastChannelId, showToast, setSelectedChannel]);
+
+  const handleToggleMultiScreen = useCallback(() => {
+    setIsMultiScreen((prev) => {
+      const next = !prev;
+      if (next) {
+        if (!secondChannel && channels.length > 0) {
+          const outro = channels.find((c) => c.id !== selectedChannel?.id) || channels[0];
+          setSecondChannel(outro);
+        }
+        setActiveSide('secondary');
+        showToast('Multi-Tela ativada (2 telas). Clique em uma tela para alternar o áudio.', 'info');
+      } else {
+        setActiveSide('primary');
+        showToast('Multi-Tela desativada', 'info');
+      }
+      return next;
+    });
+  }, [channels, selectedChannel, secondChannel, showToast]);
 
   const handleBackFromMovie = useCallback(() => {
     setSelectedMovie(null);
@@ -225,16 +262,18 @@ function TVPage() {
   }, []);
 
   const handleNextChannel = useCallback(() => {
-    const currentIndex = channels.findIndex((ch) => ch.id === selectedChannel?.id);
+    const cur = (isMultiScreen && activeSide === 'secondary') ? secondChannel : selectedChannel;
+    const currentIndex = channels.findIndex((ch) => ch.id === cur?.id);
     const nextIndex = (currentIndex + 1) % channels.length;
     handleSelectChannel(channels[nextIndex]);
-  }, [selectedChannel, handleSelectChannel, channels]);
+  }, [selectedChannel, secondChannel, isMultiScreen, activeSide, handleSelectChannel, channels]);
 
   const handlePrevChannel = useCallback(() => {
-    const currentIndex = channels.findIndex((ch) => ch.id === selectedChannel?.id);
+    const cur = (isMultiScreen && activeSide === 'secondary') ? secondChannel : selectedChannel;
+    const currentIndex = channels.findIndex((ch) => ch.id === cur?.id);
     const prevIndex = currentIndex <= 0 ? channels.length - 1 : currentIndex - 1;
     handleSelectChannel(channels[prevIndex]);
-  }, [selectedChannel, handleSelectChannel, channels]);
+  }, [selectedChannel, secondChannel, isMultiScreen, activeSide, handleSelectChannel, channels]);
 
   const handleChannelNumber = useCallback((channelNumber: number) => {
     const channel = channels.find((ch) => ch.channelNumber === channelNumber);
@@ -250,6 +289,7 @@ function TVPage() {
     onNextChannel: handleNextChannel,
     onPrevChannel: handlePrevChannel,
     onChannelNumber: handleChannelNumber,
+    onMultiScreen: handleToggleMultiScreen,
   });
 
   useEffect(() => {
@@ -277,7 +317,7 @@ function TVPage() {
           <div className={`sidebar-wrapper desktop-only ${isMobileMenuOpen ? 'open' : ''}`}>
             <Sidebar
               channels={channels}
-              activeChannelId={selectedChannel?.id || null}
+              activeChannelId={isMultiScreen && activeSide === 'secondary' ? (secondChannel?.id || null) : (selectedChannel?.id || null)}
               favorites={favorites}
               onSelectChannel={handleSelectChannel}
               onToggleFavorite={handleToggleFavorite}
@@ -328,15 +368,58 @@ function TVPage() {
 
         {/* Desktop Main Content */}
         {!isMobile && (
-          <main className="main-content">
+          <main className={`main-content ${isMultiScreen ? 'multi-screen-layout' : ''}`}>
             {selectedMovie ? (
               <MoviePlayer movie={selectedMovie} onBack={handleBackFromMovie} />
+            ) : isMultiScreen ? (
+              <div className="multi-screen-grid">
+                <div
+                  className={`multi-screen-slot ${activeSide === 'primary' ? 'active' : ''}`}
+                  onClick={() => setActiveSide('primary')}
+                >
+                  <VideoPlayer
+                    channel={selectedChannel}
+                    isTheaterMode={isTheaterMode}
+                    onToggleTheater={handleToggleTheater}
+                    onOpenGuide={() => setIsGuideOpen(true)}
+                    isMultiScreen={true}
+                    onToggleMultiScreen={handleToggleMultiScreen}
+                    isSplitActive={activeSide === 'primary'}
+                    onActivateSplit={() => setActiveSide('primary')}
+                    forceMuted={activeSide !== 'primary'}
+                    splitLabel="Tela 1"
+                  />
+                </div>
+                <div
+                  className={`multi-screen-slot ${activeSide === 'secondary' ? 'active' : ''}`}
+                  onClick={() => setActiveSide('secondary')}
+                >
+                  <VideoPlayer
+                    channel={secondChannel}
+                    isTheaterMode={isTheaterMode}
+                    onToggleTheater={handleToggleTheater}
+                    onOpenGuide={() => setIsGuideOpen(true)}
+                    isMultiScreen={true}
+                    onToggleMultiScreen={handleToggleMultiScreen}
+                    isSplitActive={activeSide === 'secondary'}
+                    onActivateSplit={() => setActiveSide('secondary')}
+                    onCloseSplit={() => {
+                      setIsMultiScreen(false);
+                      setActiveSide('primary');
+                    }}
+                    forceMuted={activeSide !== 'secondary'}
+                    splitLabel="Tela 2"
+                  />
+                </div>
+              </div>
             ) : (
               <VideoPlayer
                 channel={selectedChannel}
                 isTheaterMode={isTheaterMode}
                 onToggleTheater={handleToggleTheater}
                 onOpenGuide={() => setIsGuideOpen(true)}
+                isMultiScreen={false}
+                onToggleMultiScreen={handleToggleMultiScreen}
               />
             )}
           </main>

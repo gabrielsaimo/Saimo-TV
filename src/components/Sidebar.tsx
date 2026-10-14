@@ -30,6 +30,7 @@ export const Sidebar = memo(function Sidebar({
 }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<FilterType>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const channelsListRef = useRef<HTMLDivElement>(null);
   const activeChannelRef = useRef<HTMLDivElement>(null);
 
@@ -46,11 +47,25 @@ export const Sidebar = memo(function Sidebar({
     }
   }, [activeChannelId]);
 
+  const availableCategories = useMemo(() => {
+    const set = new Set<string>();
+    channels.forEach((c) => {
+      if (c.category) set.add(c.category);
+    });
+    const ordenadas = categoryOrder.filter((cat) => set.has(cat));
+    const extras = [...set].filter((cat) => !categoryOrder.includes(cat)).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    return [...ordenadas, ...extras];
+  }, [channels]);
+
   const filteredChannels = useMemo(() => {
     let result = channels;
 
     if (filter === 'favorites') {
       result = result.filter((ch) => favorites.includes(ch.id));
+    }
+
+    if (selectedCategory) {
+      result = result.filter((ch) => ch.category === selectedCategory);
     }
 
     if (searchQuery.trim()) {
@@ -63,7 +78,7 @@ export const Sidebar = memo(function Sidebar({
     }
 
     return result;
-  }, [channels, favorites, filter, searchQuery]);
+  }, [channels, favorites, filter, searchQuery, selectedCategory]);
 
   useEffect(() => {
     const achou = filteredChannels.length > 0;
@@ -178,6 +193,23 @@ export const Sidebar = memo(function Sidebar({
               Favoritos
               <span className="count">{favorites.length}</span>
             </button>
+          </div>
+          <div className="category-pills" aria-label="Filtrar por categoria">
+            <button
+              className={`category-pill ${selectedCategory === '' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('')}
+            >
+              Todas seções
+            </button>
+            {availableCategories.map((cat) => (
+              <button
+                key={cat}
+                className={`category-pill ${selectedCategory === cat ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(cat === selectedCategory ? '' : cat)}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </>
       )}

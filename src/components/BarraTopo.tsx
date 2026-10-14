@@ -6,9 +6,10 @@
  *
  * Vinte cliques no ícone abrem o PIN do modo adulto, como no site de sempre.
  */
-import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { memo, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAdultMode } from '../contexts/adultoContexto';
+import { assinar, atual as atualRadio, parar as pararRadio } from '../services/radioPlayer';
 import './AppHeader.css';
 import './BarraTopo.css';
 
@@ -43,6 +44,7 @@ const ativa = (a: Aba, caminho: string) =>
 export const BarraTopo = memo(function BarraTopo() {
   const { isAdultUnlocked, unlockAdult, lockAdult } = useAdultMode();
   const navigate = useNavigate();
+  const radio = useSyncExternalStore(assinar, atualRadio);
   const { pathname } = useLocation();
   const [hora, setHora] = useState(relogio);
   const [cliques, setCliques] = useState(0);
@@ -130,6 +132,15 @@ export const BarraTopo = memo(function BarraTopo() {
         </nav>
 
         <div className="barra-direita">
+          {radio.radio && radio.estado !== 'erro' && (
+            <div className="barra-radio" title={radio.radio.nome}>
+              <button className="barra-radio-nome" onClick={() => navigate('/radios')}>
+                <span className="equalizador"><i /><i /><i /></span>
+                <span>{radio.radio.nome}</span>
+              </button>
+              <button className="barra-radio-parar" onClick={pararRadio} aria-label="Parar a rádio">■</button>
+            </div>
+          )}
           <button
             className={`barra-engrenagem ${pathname === '/ajustes' ? 'on' : ''}`}
             onClick={() => navigate('/ajustes')}
