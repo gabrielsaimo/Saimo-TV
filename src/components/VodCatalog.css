@@ -983,6 +983,321 @@
   padding: 1.5rem clamp(1.5rem, 3.5vw, 2.5rem) 2.5rem;
 }
 
+/* ── Bloco de Episódios de Série (100% macOS SerieTela) ─────────────────── */
+
+.vod-episodios-bloco {
+  margin-bottom: 2.2rem;
+  padding: 0.5rem 0 0.5rem;
+}
+
+.vod-episodios-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.vod-episodios-cabecalho h3 {
+  display: inline-block;
+  font-size: 1.38rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.vod-episodios-cabecalho small {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.vod-pilulas-grupo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 1.1rem;
+}
+
+.vod-pilula {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 7px 18px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.88);
+  transition: all 0.16s ease;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vod-pilula:hover {
+  background: rgba(255, 255, 255, 0.24);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.vod-pilula.ativa {
+  background: #ffffff;
+  color: #0b0f19;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.28);
+}
+
+.vod-pilula-versao {
+  padding: 5px 14px;
+  font-size: 0.8rem;
+}
+
+.vod-episodios-setas {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vod-seta-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: bold;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.vod-seta-btn:hover {
+  background: rgba(255, 255, 255, 0.26);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.08);
+}
+
+.vod-episodios-trilha {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 6px 4px 16px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.vod-episodios-trilha::-webkit-scrollbar {
+  height: 6px;
+}
+
+.vod-episodios-trilha::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.vod-ep-card {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  width: 288px;
+  flex: 0 0 288px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.18s ease;
+}
+
+.vod-ep-card:hover {
+  transform: translateY(-3px);
+}
+
+.vod-ep-thumb {
+  position: relative;
+  width: 288px;
+  height: 162px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #141824;
+  border: 2px solid transparent;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  display: grid;
+  place-items: center;
+}
+
+.vod-ep-card:hover .vod-ep-thumb {
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.6);
+}
+
+.vod-ep-card.destaque .vod-ep-thumb {
+  border-color: #4fe3d0;
+  box-shadow: 0 0 20px rgba(79, 227, 208, 0.35);
+}
+
+.vod-ep-card.no-player .vod-ep-thumb {
+  border-color: #ff3366;
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+}
+
+.vod-ep-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vod-ep-numero-grande {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: rgba(79, 227, 208, 0.55);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.vod-ep-badge {
+  position: absolute;
+  z-index: 4;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.vod-ep-badge.continuar {
+  top: 8px;
+  left: 8px;
+  background: #4fe3d0;
+  color: #0a0b14;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.vod-ep-badge.assistido {
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #4fe3d0;
+  border: 1px solid rgba(79, 227, 208, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.vod-ep-progresso-trilho {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  z-index: 5;
+}
+
+.vod-ep-progresso-barra {
+  height: 100%;
+  background: #4fe3d0;
+  transition: width 0.2s ease;
+}
+
+.vod-ep-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  z-index: 3;
+}
+
+.vod-ep-card:hover .vod-ep-play-overlay {
+  opacity: 1;
+}
+
+.vod-ep-play-circulo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  color: #0b0f19;
+  transform: scale(0.9);
+  transition: transform 0.15s ease;
+}
+
+.vod-ep-card:hover .vod-ep-play-circulo {
+  transform: scale(1);
+}
+
+.vod-ep-play-circulo svg {
+  width: 20px;
+  height: 20px;
+  margin-left: 2px;
+  display: block;
+}
+
+.vod-ep-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.vod-ep-titulo {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.vod-ep-meta {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 500;
+}
+
+.vod-ep-sinopse {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 2px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
 /* Fontes Alternativas para Filmes */
 .vod-fontes-seletor {
   margin-bottom: 2rem;

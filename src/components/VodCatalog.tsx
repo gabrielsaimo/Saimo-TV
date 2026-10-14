@@ -208,6 +208,7 @@ export function VodCatalog({
   const [detalhesTemporada, setDetalhesTemporada] = useState<Record<number, EpisodioTmdb>>({});
   const [versaoFiltro, setVersaoFiltro] = useState<string>('todas');
   const trilhaEpisodiosRef = useRef<HTMLDivElement | null>(null);
+  const janelaRef = useRef<HTMLElement | null>(null);
   const aberturaRef = useRef(0);
 
   // Sincronizar se o modo adulto for bloqueado durante a navegação
@@ -221,6 +222,13 @@ export function VodCatalog({
   const [ator, setAtor] = useState<Pessoa | null>(null);
   const [filmografiaAchada, setFilmografiaAchada] = useState<{ ator: number; lista: Trabalho[] } | null>(null);
   const [perfilAchado, setPerfilAchado] = useState<{ ator: number; perfil: Perfil | null } | null>(null);
+
+  // Rolar modal para o topo sempre que abrir novo título
+  useEffect(() => {
+    if (aberto) {
+      janelaRef.current?.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [aberto]);
 
   // Paginação da Grade A-Z sem efeito cascata
   const filtroAtual = `${secao || 'ondemand'}:${generoFiltro}:${letraFiltro}:${termoBusca.trim()}:${modo}`;
@@ -718,6 +726,11 @@ export function VodCatalog({
       .catch(() => { if (!cancelado) setDetalhesTemporada({}); });
     return () => { cancelado = true; };
   }, [aberto, idTmdbAberto, temporadaAtiva]);
+
+  // Rolar início da trilha de episódios ao mudar de temporada
+  useEffect(() => {
+    trilhaEpisodiosRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
+  }, [temporadaAtiva]);
 
   // Lista da temporada ativa
   const episodiosDaTempAtiva = useMemo(() => {
@@ -1271,6 +1284,7 @@ export function VodCatalog({
           onMouseDown={playerOpen ? undefined : fecharModal}
         >
           <section
+            ref={janelaRef}
             className="vod-modal-janela"
             role="dialog"
             aria-modal="true"
@@ -1470,16 +1484,17 @@ export function VodCatalog({
                 <div className="vod-ficha-corpo">
                   {/* Bloco de Episódios (Para Séries) */}
                   {aberto.serie && temporadas.length > 0 && (
-                    <div className="vod-episodios-bloco" ref={trilhaEpisodiosRef}>
+                    <div className="vod-episodios-bloco">
                       <div className="vod-episodios-cabecalho">
                         <div>
                           <h3>Episódios</h3>
                           <small>{filmesDaSerie.length} episódio{filmesDaSerie.length > 1 ? 's' : ''}</small>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div className="vod-episodios-acoes-topo">
                           {versoesDisponiveis.length > 1 && (
-                            <div className="vod-pilulas-grupo">
+                            <div className="vod-pilulas-grupo" role="tablist">
                               <button
+                                type="button"
                                 className={`vod-pilula vod-pilula-versao${versaoFiltro === 'todas' ? ' ativa' : ''}`}
                                 onClick={() => setVersaoFiltro('todas')}
                               >
@@ -1488,6 +1503,7 @@ export function VodCatalog({
                               {versoesDisponiveis.map((v) => (
                                 <button
                                   key={v}
+                                  type="button"
                                   className={`vod-pilula vod-pilula-versao${versaoFiltro === v ? ' ativa' : ''}`}
                                   onClick={() => setVersaoFiltro(v)}
                                 >
@@ -1498,6 +1514,7 @@ export function VodCatalog({
                           )}
                           <div className="vod-episodios-setas">
                             <button
+                              type="button"
                               className="vod-seta-btn"
                               onClick={() => trilhaEpisodiosRef.current?.scrollBy({ left: -580, behavior: 'smooth' })}
                               aria-label="Episódios anteriores"
@@ -1505,6 +1522,7 @@ export function VodCatalog({
                               ‹
                             </button>
                             <button
+                              type="button"
                               className="vod-seta-btn"
                               onClick={() => trilhaEpisodiosRef.current?.scrollBy({ left: 580, behavior: 'smooth' })}
                               aria-label="Próximos episódios"
@@ -1524,6 +1542,9 @@ export function VodCatalog({
                             return (
                               <button
                                 key={t}
+                                type="button"
+                                role="tab"
+                                aria-selected={ativa}
                                 className={`vod-pilula${ativa ? ' ativa' : ''}`}
                                 onClick={() => setTemporada(t)}
                               >
@@ -1535,7 +1556,15 @@ export function VodCatalog({
                       )}
 
                       {/* Trilha horizontal de cartões 16:9 de episódios */}
-                      <div className="vod-episodios-trilha">
+                      <div
+                        className="vod-episodios-trilha"
+                        ref={trilhaEpisodiosRef}
+                        onWheel={(e) => {
+                          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                            e.currentTarget.scrollLeft += e.deltaY;
+                          }
+                        }}
+                      >
                         {episodiosDaTempAtiva.map((e) => {
                           const id = `series-${aberto.chave}-s${e.temporada}e${e.numero}`;
                           const infoEp = detalhesTemporada[e.numero];
@@ -1560,6 +1589,7 @@ export function VodCatalog({
                           return (
                             <button
                               key={`${e.temporada}-${e.numero}`}
+                              type="button"
                               className={`vod-ep-card${ehNoPlayer ? ' no-player' : ''}${ehDestaque ? ' destaque' : ''}`}
                               onClick={() => tocarEpisodio(e)}
                             >
@@ -1583,10 +1613,12 @@ export function VodCatalog({
                                     />
                                   </div>
                                 )}
-                                <div className="vod-ep-play-overlay">
-                                  <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z" />
-                                  </svg>
+                                <div className="vod-ep-play-overlay" aria-hidden="true">
+                                  <div className="vod-ep-play-circulo">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                  </div>
                                 </div>
                               </div>
                               <div className="vod-ep-info">
