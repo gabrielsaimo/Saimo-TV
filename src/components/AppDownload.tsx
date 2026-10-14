@@ -76,8 +76,8 @@ const APPS: App[] = [
     passos: [
       { titulo: 'Baixe o arquivo', texto: 'Clique no botão acima. O navegador pode avisar que o arquivo é pouco baixado: mande manter.' },
       { titulo: 'Extraia o arquivo', texto: 'Clique com o botão direito no “SaimoTV-Windows.zip” baixado e escolha "Extrair Tudo..." para descompactar a pasta.' },
-      { titulo: 'Rode o aplicativo', texto: 'Abra a pasta extraída e dê um duplo clique no arquivo “SaimoTV.exe”. Você pode enviar um atalho dele para a Área de Trabalho se quiser.' },
-      { titulo: 'Se o Windows avisar', texto: 'Na tela azul do Windows Defender, clique em “Mais informações” e depois em “Executar assim mesmo”: o app não tem assinatura paga da Microsoft.' },
+      { titulo: 'Rode o aplicativo', texto: 'Abra a pasta extraída e dê um duplo clique em “Saimo TV.exe”. Mantenha os arquivos .dll na mesma pasta do executável.' },
+      { titulo: 'Se o Windows avisar', texto: 'Na tela do Windows Defender, clique em “Mais informações” e depois em “Executar assim mesmo”. Se pedir DLL, clique com o botão direito na DLL > Propriedades > marque "Desbloquear".' },
     ],
   },
   {
