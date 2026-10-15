@@ -264,6 +264,34 @@ export const onRequest = async ({ request }: { request: Request }): Promise<Resp
     const originalOrigin = clientHeaders['Origin'];
 
     let currentUrl = decodedUrl;
+    if (decodedUrl.includes('dadinhodetapioca.fun/play/')) {
+      try {
+        const pageRes = await fetch(decodedUrl, {
+          method: 'GET',
+          headers: {
+            Referer: 'https://rdcanais.org/',
+            'User-Agent': clientHeaders['User-Agent'] || DEFAULT_UA,
+          },
+        });
+        if (pageRes.ok) {
+          const html = await pageRes.text();
+          const match = html.match(/STREAM_URLS\s*=\s*\[\s*"([^"]+)"/);
+          if (match) {
+            currentUrl = match[1].replace(/\\\//g, '/');
+            clientHeaders['Referer'] = 'https://dadinhodetapioca.fun/';
+            clientHeaders['Origin'] = 'https://dadinhodetapioca.fun';
+          }
+        }
+      } catch {
+        // se falhar a resolução dinâmica, tenta a URL original
+      }
+    }
+
+    if (currentUrl.includes('tiktokcdn.live') || currentUrl.includes('tiktokcdn.com')) {
+      clientHeaders['Referer'] = 'https://dadinhodetapioca.fun/';
+      clientHeaders['Origin'] = 'https://dadinhodetapioca.fun';
+    }
+
     let finalResponse: Response | null = null;
     const maxRedirects = 15;
 
@@ -450,6 +478,29 @@ export const onRequest = async ({ request }: { request: Request }): Promise<Resp
     responseHeaders.set('Cache-Control', 'no-store, no-cache, must-revalidate');
     responseHeaders.set('Accept-Ranges', 'bytes');
     copyStreamingHeaders(finalResponse.headers, responseHeaders);
+
+    // Segmentos MPEG-TS mascarados como imagem PNG pelo TikTok CDN:
+    // os primeiros 67 bytes contêm um cabeçalho PNG falso seguido por 0x47 (sync byte do TS).
+    if (finalResponse.body && (currentUrl.includes('tiktokcdn.com') || currentUrl.includes('tiktokcdn.live'))) {
+      const arrayBuf = await finalResponse.arrayBuffer();
+      const u8 = new Uint8Array(arrayBuf);
+      if (
+        u8.length > 68 &&
+        u8[0] === 0x89 && u8[1] === 0x50 && u8[2] === 0x4e && u8[3] === 0x47 &&
+        u8[67] === 0x47
+      ) {
+        responseHeaders.set('Content-Type', 'video/mp2t');
+        responseHeaders.set('Content-Length', String(u8.byteLength - 67));
+        return new Response(u8.subarray(67), {
+          status: finalResponse.status,
+          headers: responseHeaders,
+        });
+      }
+      return new Response(arrayBuf, {
+        status: finalResponse.status,
+        headers: responseHeaders,
+      });
+    }
 
     return new Response(finalResponse.body, {
       status: finalResponse.status,

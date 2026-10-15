@@ -19,7 +19,7 @@ export function isDash(url: string): boolean {
 
 export function isHls(url: string): boolean {
   const path = url.toLowerCase().split('?')[0];
-  return path.includes('.m3u8') || path.endsWith('.txt');
+  return path.includes('.m3u8') || path.endsWith('.txt') || path.includes('dadinhodetapioca.fun');
 }
 
 /** Fluxo MPEG-TS cru, servido sem playlist. */
@@ -36,7 +36,9 @@ export function needsProxy(source: ChannelSource | { url: string }): boolean {
   // Masters `.txt` costumam vir como text/plain e sem CORS (como os de
   // embedplayer2). Começar pelo proxy evita uma tentativa direta que o browser
   // obrigatoriamente bloquearia e garante que os filhos também sejam reescritos.
-  return source.url.startsWith('http://') || source.url.split('?')[0].toLowerCase().endsWith('.txt');
+  return source.url.startsWith('http://') ||
+         source.url.split('?')[0].toLowerCase().endsWith('.txt') ||
+         source.url.includes('dadinhodetapioca.fun');
 }
 
 /**
