@@ -17,9 +17,9 @@ import { normalise } from '../utils/nomes';
 import type { Grade, PlutoDoCanal, WorkerProgramme } from '../workers/epgWorker';
 import { proxyBase } from '../utils/streamUrl';
 
-const CACHE_KEY = 'saimo-epg-v5';
-/** Chaves de versões antigas, que guardavam três dias (cinco megabytes). */
-const CACHES_VELHOS = ['saimo-epg-v4', 'saimo-epg-v3'];
+const CACHE_KEY = 'saimo-epg-v6';
+/** Chaves de versões antigas, invalidadas a cada mudança de arquitetura do guia. */
+const CACHES_VELHOS = ['saimo-epg-v5', 'saimo-epg-v4', 'saimo-epg-v3'];
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 /** Programa que acabou há mais que isto não interessa a tela nenhuma. */
 const PASSADO_UTIL_MS = 3 * 60 * 60 * 1000;

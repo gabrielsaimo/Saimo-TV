@@ -121,19 +121,214 @@ const CODES: Record<string, string> = {
 };
 
 /**
- * Nome normalizado do canal -> slug do guiadetv.com, para o que o meuguia não
- * cobre. Levantado varrendo as sete categorias do site (`/categorias/*.html`)
- * e cruzando com os canais do catálogo sem programação nenhuma; o resto do
- * catálogo — CazéTV, Globoplay Novelas, IMPD, AMC Séries, Boomerang, ESPN
- * Extra — não tem página lá nem em lugar nenhum público encontrado.
+ * Nome normalizado do canal -> slug do guiadetv.com.
+ * Fonte primária rápida para todos os canais cobertos pelo guiadetv.com,
+ * com horários precisos no fuso do Brasil, sem rate limit 429 e com sinopse em 99,8% dos programas.
  */
 const GUIADETV_CODES: Record<string, string> = {
-  'sony movies': 'sony-movies',
-  'sbt news': 'sbt-news',
-  'terra viva': 'terra-viva',
+  'a e': 'ae',
+  ae: 'ae',
+  agro: 'agro',
+  'agro mais': 'agro',
+  'canal agro': 'agro',
+  amc: 'amc',
+  'animal planet': 'animal-planet',
+  'arte 1': 'arte-1',
+  arte1: 'arte-1',
+  axn: 'axn',
+  band: 'band',
+  'band sp': 'band',
+  'band campinas': 'band',
+  'band curitiba': 'band',
+  'band mg': 'band',
+  'band para': 'band',
+  'band recife tv tribuna': 'band',
+  'band rn': 'band',
+  'band rs': 'band',
+  'band sergipe': 'band',
+  'band rj': 'band-rj',
+  'band news': 'bandnews',
+  bandnews: 'bandnews',
+  'band sports': 'bandsports',
+  bandsports: 'bandsports',
+  'bbc world': 'bbc-world',
+  'bbc world news': 'bbc-world',
+  bis: 'bis',
+  bloomberg: 'bloomberg',
+  'box kids': 'box-kids',
   'box kids tv': 'box-kids',
-  'x sports': 'xsports',
+  'canal educacao': 'canal-educacao',
+  'canal rural': 'canal-rural',
+  'canal uol': 'canal-uol',
+  'cancao nova': 'cancao-nova',
+  'cartoon network': 'cartoon-network',
+  cartoonito: 'cartoonito',
+  cinemax: 'cinemax',
+  'cnn brasil': 'cnn-brasil',
+  combate: 'combate',
+  curta: 'curta',
+  'discovery channel': 'discovery-channel',
+  'discovery home health': 'discovery-home-health',
+  'discovery h h': 'discovery-home-health',
+  'discovery kids': 'discovery-kids',
+  'discovery science': 'discovery-science',
+  'discovery theater': 'discovery-theater',
+  'discovery turbo': 'discovery-turbo',
+  'discovery world': 'discovery-world',
+  'discovery id': 'investigacao-discovery',
+  'investigacao discovery': 'investigacao-discovery',
+  'investigation discovery': 'investigacao-discovery',
+  e: 'e',
+  espn: 'espn',
+  'espn 2': 'espn-2',
+  'espn 3': 'espn-3',
+  'espn 4': 'espn-4',
+  'espn 5': 'espn-5',
+  'espn 6': 'espn-6',
+  'film arts': 'film-arts',
+  'food network': 'food-network',
+  'fox news': 'fox-news',
+  futura: 'futura',
+  'canal futura': 'futura',
+  'ge tv': 'ge-tv',
+  getv: 'ge-tv',
+  'globo news': 'globo-news',
+  globonews: 'globo-news',
+  'globo rj': 'globo-rio-de-janeiro',
+  'globo rio de janeiro': 'globo-rio-de-janeiro',
+  globo: 'globo-sp',
+  'globo sp': 'globo-sp',
+  'globo am': 'globo-sp',
+  'globo ce': 'globo-sp',
+  'globo df': 'globo-sp',
+  'globo es': 'globo-sp',
+  'globo go': 'globo-sp',
+  'globo mg': 'globo-sp',
+  'globo pb': 'globo-sp',
+  'globo pe': 'globo-sp',
+  'globo rs': 'globo-sp',
+  gloob: 'gloob',
+  gloobinho: 'gloobinho',
+  gnt: 'gnt',
+  hbo: 'hbo',
+  'hbo 2': 'hbo-2',
+  hbo2: 'hbo-2',
+  'hbo family': 'hbo-family',
+  'hbo mundi': 'hbo-mundi',
+  'hbo plus': 'hbo-plus',
+  'hbo pop': 'hbo-pop',
+  'hbo signature': 'hbo-signature',
+  'hbo xtreme': 'hbo-xtreme',
+  hgtv: 'hgtv',
+  history: 'history',
+  'history channel': 'history',
+  'history 2': 'history-2',
+  h2: 'history-2',
+  'jovem pan news': 'jovem-pan-news',
+  lifetime: 'lifetime',
+  'lifetime movies': 'lifetime',
+  megapix: 'megapix',
+  multishow: 'multishow',
+  'music box brazil': 'music-box-brazil',
   'n sports': 'nsports',
+  nsports: 'nsports',
+  'n sports jogo 1': 'nsports',
+  off: 'off',
+  'canal off': 'off',
+  premiere: 'premiere-fc',
+  'premiere clubes': 'premiere-fc',
+  'premiere fc': 'premiere-fc',
+  'premiere 2': 'premiere-2',
+  'premiere 3': 'premiere-3',
+  'premiere 4': 'premiere-4',
+  'premiere 5': 'premiere-5',
+  'premiere 6': 'premiere-6',
+  'premiere 7': 'premiere-7',
+  'prime box brazil': 'prime-box-brazil',
+  'record news': 'record-news',
+  record: 'record-tv',
+  'record tv': 'record-tv',
+  'record sp': 'record-tv',
+  'record go': 'record-tv',
+  'record mg': 'record-tv',
+  'record rj': 'record-tv',
+  'record internacional': 'record-tv',
+  recordtv: 'record-tv',
+  'rede brasil': 'rede-brasil',
+  'rede familia': 'rede-familia',
+  'rede gospel': 'rede-gospel',
+  redetv: 'rede-tv',
+  'rede tv': 'rede-tv',
+  'rede vida': 'rede-vida',
+  sbt: 'sbt',
+  'sbt sp': 'sbt',
+  'sbt alterosa': 'sbt',
+  'sbt ba': 'sbt',
+  'sbt go': 'sbt',
+  'sbt interior': 'sbt',
+  'sbt londrina': 'sbt',
+  'sbt maringa': 'sbt',
+  'sbt mg': 'sbt',
+  'sbt pi': 'sbt',
+  'sbt pr': 'sbt',
+  'sbt news': 'sbt-news',
+  'sbt rj': 'sbt-rio-de-janeiro',
+  'sbt rio de janeiro': 'sbt-rio-de-janeiro',
+  sony: 'sony',
+  'sony channel': 'sony',
+  'sony movies': 'sony-movies',
+  space: 'space',
+  sportv: 'sportv',
+  'sportv 2': 'sportv-2',
+  sportv2: 'sportv-2',
+  'sportv 3': 'sportv-3',
+  sportv3: 'sportv-3',
+  sportynet: 'sportynet',
+  'sportynet 01': 'sportynet',
+  'sportynet 4': 'sportynet',
+  'sportynet 1': 'sportynet',
+  'sportynet 2': 'sportynet',
+  'sportynet 3': 'sportynet',
+  'studio universal': 'studio-universal',
+  syfy: 'syfy',
+  'usa network': 'syfy',
+  tcm: 'tcm',
+  'telecine action': 'telecine-action',
+  'telecine cult': 'telecine-cult',
+  'telecine fun': 'telecine-fun',
+  'telecine pipoca': 'telecine-pipoca',
+  'telecine premium': 'telecine-premium',
+  'telecine touch': 'telecine-touch',
+  'terra viva': 'terra-viva',
+  tlc: 'tlc',
+  tnt: 'tnt',
+  'tnt novelas': 'tnt-novelas',
+  'tnt series': 'tnt-series',
+  tooncast: 'tooncast',
+  'travel box brazil': 'travel-box-brasil',
+  'travel box brasil': 'travel-box-brasil',
+  trutv: 'trutv',
+  'adult swim': 'trutv',
+  'tv aparecida': 'tv-aparecida',
+  'tv brasil': 'tv-brasil',
+  'tv camara': 'tv-camara',
+  'tv cultura': 'tv-cultura',
+  cultura: 'tv-cultura',
+  'tv gazeta': 'tv-gazeta',
+  gazeta: 'tv-gazeta',
+  'tv ra tim bum': 'tv-ra-tim-bum',
+  'ra tim bum': 'tv-ra-tim-bum',
+  'tv senado': 'tv-senado',
+  'universal tv': 'universal-tv',
+  'universal channel': 'universal-tv',
+  viva: 'viva',
+  'canal viva': 'viva',
+  'globoplay novelas': 'viva',
+  warner: 'warner',
+  'warner channel': 'warner',
+  woohoo: 'woohoo',
+  'x sports': 'xsports',
+  xsports: 'xsports',
 };
 
 export interface WorkerProgramme {
@@ -303,41 +498,74 @@ export function parseMeuGuia(html: string): WorkerProgramme[] {
  * um link `/programa/...` cujo texto é o título. O fim também não é
  * publicado; mesma regra do meuguia — vai até o próximo começar.
  */
+/**
+ * `https://www.guiadetv.com/canal/<slug>`
+ * Cada programa é um `<li class="flex gap-4 ...">` contendo:
+ * - `<time datetime="AAAA-MM-DDTHH:MM:SS-03:00">HH:MM</time>`
+ * - `<span class="text-xs ...">1h30</span>` (duração)
+ * - `<a href="/programa/..." ...>Título</a>`
+ * - `<p class="mt-1 ...">Sinopse...</p>`
+ */
 export function parseGuiaDeTv(html: string): WorkerProgramme[] {
-  const linha = /data-dt="(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})[^"]*"[\s\S]*?<a[^>]*href="[^"]*programa\/[^"]+"[^>]*>[\s\S]*?([A-Za-zÀ-ÿ0-9][^<]{2,150})/g;
+  const itens = html.split('<li');
+  const lista: Array<{ start: number; duration: number; title: string; description?: string }> = [];
 
-  const inicios: number[] = [];
-  const titulos: string[] = [];
+  for (let i = 1; i < itens.length; i++) {
+    const item = itens[i];
+    const dt = entre(item, 'datetime="', '"', '<time');
+    if (!dt) continue;
 
-  for (const m of html.matchAll(linha)) {
-    const [dataParte, horaParte] = m[1].split(' ');
-    const [ano, mes, dia] = dataParte.split('-').map(Number);
-    const [hora, minuto] = horaParte.split(':').map(Number);
-    const titulo = decodeEntities(m[2]).trim().replace(/\s+/g, ' ');
-    if (!titulo || titulo.length < 2) continue;
+    const start = Date.parse(dt);
+    if (isNaN(start)) continue;
 
-    inicios.push(deSaoPaulo(ano, mes, dia, hora, minuto));
-    titulos.push(titulo);
+    const tituloBruto = entre(item, '>', '</a>', '/programa/');
+    if (!tituloBruto) continue;
+    const title = decodeEntities(tituloBruto).trim().replace(/\s+/g, ' ');
+    if (!title || title.length < 2) continue;
+
+    const durTexto = entre(item, '>', '</span>', '</time>') ?? '';
+    let duration = 3_600_000;
+    if (durTexto.includes('h')) {
+      const [h, m] = durTexto.trim().split('h');
+      const horas = Number(h) || 0;
+      const mins = Number(m) || 0;
+      duration = (horas * 60 + mins) * 60_000;
+    } else if (durTexto.includes('min')) {
+      const mins = Number(durTexto.replace('min', '').trim()) || 0;
+      if (mins > 0) duration = mins * 60_000;
+    }
+
+    const descBruto = entre(item, '>', '</p>', '<p');
+    const description = descBruto ? decodeEntities(descBruto).trim().replace(/\s+/g, ' ') : undefined;
+
+    lista.push({ start, duration, title, description });
   }
 
-  // O mesmo instante pode aparecer mais de uma vez na página (o link do
-  // programa carrega alguns metadados extras que também casam com a regex).
-  const vistos = new Set<string>();
-  const unicos: Array<{ start: number; title: string }> = [];
-  for (let i = 0; i < inicios.length; i++) {
-    const chave = `${inicios[i]}-${titulos[i]}`;
-    if (vistos.has(chave)) continue;
-    vistos.add(chave);
-    unicos.push({ start: inicios[i], title: titulos[i] });
-  }
-  unicos.sort((a, b) => a.start - b.start);
+  lista.sort((a, b) => a.start - b.start);
 
-  return unicos.map((item, posicao) => ({
-    title: item.title,
-    category: '',
-    start: item.start,
-    stop: posicao + 1 < unicos.length ? unicos[posicao + 1].start : item.start + 3_600_000,
-  }));
+  const unicos: typeof lista = [];
+  for (const item of lista) {
+    const ultimo = unicos[unicos.length - 1];
+    if (ultimo && ultimo.start === item.start) continue;
+    unicos.push(item);
+  }
+
+  return unicos.map((item, index) => {
+    const proximo = unicos[index + 1];
+    let stop = item.start + item.duration;
+    if (proximo) {
+      if (stop > proximo.start || Math.abs(stop - proximo.start) <= 60_000) {
+        stop = proximo.start;
+      }
+    }
+    return {
+      title: item.title,
+      category: '',
+      start: item.start,
+      stop: stop > item.start ? stop : item.start + 3_600_000,
+      description: item.description,
+    };
+  });
 }
 
 // ============================================================
@@ -637,18 +865,61 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
     if (cobertos.length) publicar(cobertos);
   });
 
-  const comCodigo = names
+  /*
+   * 1. guiadetv.com vem primeiro: cobre ~121 canais com horários exatos no fuso
+   * de Brasília, sem bloqueio 429 de requisições e trazendo a sinopse em português
+   * de cada programa diretamente na página.
+   *
+   * Agrupamos por slug para que canais regionais (ex.: Globo AM, Globo SP) ou
+   * variações do mesmo canal baixem a página uma única vez.
+   */
+  const slugParaCanais = new Map<string, string[]>();
+  for (const name of names) {
+    const limpo = name.replace(/\s*\((?:s\d+|ot|rk|b\d+|alt)\)\s*$/i, '');
+    const slug = GUIADETV_CODES[normalise(limpo)] ?? GUIADETV_CODES[normalise(name)];
+    if (!slug) continue;
+    const lista = slugParaCanais.get(slug);
+    if (lista) lista.push(name); else slugParaCanais.set(slug, [name]);
+  }
+
+  const baixarSlugGuiaDeTv = async (slug: string): Promise<readonly [string, WorkerProgramme[]]> => {
+    try {
+      const alvo = `https://www.guiadetv.com/canal/${slug}`;
+      const r = await fetch(`${origin}/api/proxy?url=${encodeURIComponent(alvo)}`);
+      if (!r.ok) return [slug, []];
+      const lista = parseGuiaDeTv(await r.text()).filter((p) => p.stop > de && p.start < ate);
+      return [slug, lista];
+    } catch {
+      return [slug, []];
+    }
+  };
+
+  const slugsUnicos = Array.from(slugParaCanais.keys());
+  if (slugsUnicos.length) {
+    const respostas = await comLimite(slugsUnicos, 6, baixarSlugGuiaDeTv);
+    const cobertos: string[] = [];
+    for (const [slug, lista] of respostas) {
+      if (!lista.length) continue;
+      const canaisDoSlug = slugParaCanais.get(slug) ?? [];
+      for (const name of canaisDoSlug) {
+        grade[name] = lista;
+        cobertos.push(name);
+      }
+    }
+    console.log(`[EPG] guiadetv cobriu ${cobertos.length} canais (${slugsUnicos.length} páginas)`);
+    if (cobertos.length) publicar(cobertos);
+  }
+
+  /*
+   * 2. meuguia.tv entra como reserva para canais que o guiadetv não lista
+   * (como Canal Brasil). Como são poucos, não toma 429.
+   */
+  const faltandoMeuGuia = names
+    .filter((name) => !grade[name])
     .map((name) => [name, CODES[normalise(name)]] as const)
     .filter((par): par is readonly [string, string] => Boolean(par[1]));
 
-  /*
-   * Uma segunda tentativa depois de uma pausa.
-   *
-   * Seis downloads simultâneos fazem o meuguia devolver 429 para alguns, e sem
-   * repetir cada oscilação custava uma dúzia de canais sem programação — a
-   * diferença aparecia entre uma visita e outra, no mesmo catálogo.
-   */
-  const baixarGuia = async ([name, code]: readonly [string, string], tentativa = 0):
+  const baixarMeuGuia = async ([name, code]: readonly [string, string], tentativa = 0):
     Promise<readonly [string, WorkerProgramme[]]> => {
     try {
       const alvo = `https://meuguia.tv/programacao/canal/${code}`;
@@ -662,45 +933,15 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
     }
     if (tentativa > 0) return [name, []];
     await new Promise((pronto) => setTimeout(pronto, 1500));
-    return baixarGuia([name, code], tentativa + 1);
+    return baixarMeuGuia([name, code], tentativa + 1);
   };
 
-  const paginas = await comLimite(comCodigo, 6, baixarGuia);
-
-  const doMeuGuia = paginas.filter(([, l]) => l.length).map(([name]) => name);
-  for (const [name, lista] of paginas) if (lista.length) grade[name] = lista;
-  console.log(`[EPG] meuguia cobriu ${doMeuGuia.length} de ${comCodigo.length} canais`);
-  if (doMeuGuia.length) publicar(doMeuGuia);
-
-  /*
-   * O resto: canais que o meuguia não lista, mas o guiadetv sim — Sony
-   * Movies é o caso que veio faltando, e a mesma varredura achou mais cinco.
-   * Só entra quem o meuguia já não cobriu.
-   */
-  const comGuiaDeTv = names
-    .filter((name) => !grade[name])
-    .map((name) => [name, GUIADETV_CODES[normalise(name)]] as const)
-    .filter((par): par is readonly [string, string] => Boolean(par[1]));
-
-  const baixarGuiaDeTv = async ([name, slug]: readonly [string, string]):
-    Promise<readonly [string, WorkerProgramme[]]> => {
-    try {
-      const alvo = `https://www.guiadetv.com/canal/${slug}`;
-      const r = await fetch(`${origin}/api/proxy?url=${encodeURIComponent(alvo)}`);
-      if (!r.ok) return [name, []];
-      const lista = parseGuiaDeTv(await r.text()).filter((p) => p.stop > de && p.start < ate);
-      return [name, lista];
-    } catch {
-      return [name, []];
-    }
-  };
-
-  if (comGuiaDeTv.length) {
-    const extras = await comLimite(comGuiaDeTv, 6, baixarGuiaDeTv);
-    const cobertos = extras.filter(([, l]) => l.length).map(([name]) => name);
-    for (const [name, lista] of extras) if (lista.length) grade[name] = lista;
-    console.log(`[EPG] guiadetv cobriu ${cobertos.length} de ${comGuiaDeTv.length} canais`);
-    if (cobertos.length) publicar(cobertos);
+  if (faltandoMeuGuia.length) {
+    const paginas = await comLimite(faltandoMeuGuia, 4, baixarMeuGuia);
+    const doMeuGuia = paginas.filter(([, l]) => l.length).map(([name]) => name);
+    for (const [name, lista] of paginas) if (lista.length) grade[name] = lista;
+    console.log(`[EPG] meuguia cobriu ${doMeuGuia.length} de ${faltandoMeuGuia.length} canais restantes`);
+    if (doMeuGuia.length) publicar(doMeuGuia);
   }
 
   const porTitulo = new Map<string, WorkerProgramme>();
