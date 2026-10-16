@@ -1,10 +1,11 @@
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { onRequest } from './functions/api/proxy'
+import { onRequestGet as onResolveVod } from './functions/api/resolve-vod'
 
 /**
- * Serve `/api/proxy` no servidor de desenvolvimento com a mesma função que roda
- * em produção.
+ * Serve `/api/proxy` e `/api/resolve-vod` no servidor de desenvolvimento com a
+ * mesma função que roda em produção.
  *
  * Sem isto o desenvolvimento tocaria por um caminho que o visitante nunca usa —
  * era assim que uma correção de CDN passava no `bun run dev` e falhava no ar.
@@ -13,6 +14,20 @@ function proxyDev(): Plugin {
   return {
     name: 'saimo-proxy-dev',
     configureServer(server) {
+      server.middlewares.use('/api/resolve-vod', async (req, res) => {
+        const url = `http://${req.headers.host ?? 'localhost'}${req.originalUrl ?? req.url ?? ''}`
+        try {
+          const response = await onResolveVod({
+            request: new Request(url, { method: req.method ?? 'GET' }),
+          })
+          res.statusCode = response.status
+          response.headers.forEach((value, key) => res.setHeader(key, value))
+          res.end(await response.text())
+        } catch (error) {
+          res.statusCode = 500
+          res.end(String(error))
+        }
+      })
       server.middlewares.use('/api/proxy', async (req, res) => {
         const url = `http://${req.headers.host ?? 'localhost'}${req.originalUrl ?? req.url ?? ''}`
         const headers = new Headers()

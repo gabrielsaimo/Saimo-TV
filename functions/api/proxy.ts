@@ -308,6 +308,20 @@ export const onRequest = async ({ request }: { request: Request }): Promise<Resp
           try { await response.body?.cancel(); } catch { /* corpo já descartado */ }
 
           currentUrl = resolveUrl(locationHeader, currentUrl);
+          try {
+            const nextParsed = new URL(currentUrl);
+            if (
+              nextParsed.hostname === 'www-fontedecanais-live.77zzhf54vdll71.com' ||
+              nextParsed.hostname.endsWith('.77zzhf54vdll71.com')
+            ) {
+              nextParsed.port = '';
+              nextParsed.protocol = 'https:';
+              return new Response(null, {
+                status: 302,
+                headers: { Location: nextParsed.href, 'Cache-Control': 'no-store', ...CORS_HEADERS },
+              });
+            }
+          } catch { /* segue fluxo normal */ }
 
           const setCookie = response.headers.get('set-cookie');
           if (setCookie) {

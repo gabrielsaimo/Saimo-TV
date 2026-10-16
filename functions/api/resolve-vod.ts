@@ -1,13 +1,24 @@
-// Resolve apenas a origem conhecida; nunca funciona como proxy arbitrário.
-const ORIGIN = 'dbonline.tech-cdn.top';
-const TARGET = 'dark-glade-b156.aa4f20382505.workers.dev';
+// Resolve apenas as origens conhecidas; nunca funciona como proxy arbitrário.
+const DBONLINE_ORIGIN = 'dbonline.tech-cdn.top';
+const DBONLINE_TARGET = 'dark-glade-b156.aa4f20382505.workers.dev';
+const HUBBY_ORIGIN = 'hubby-dmca.com';
+const HUBBY_TARGET_SUFFIX = '.77zzhf54vdll71.com';
+
+function isHubbyTargetHost(hostname: string): boolean {
+  return hostname === 'www-fontedecanais-live.77zzhf54vdll71.com' || hostname.endsWith(HUBBY_TARGET_SUFFIX);
+}
 
 export function allowedVodUrl(value: string): boolean {
   try {
     const u = new URL(value);
-    return !u.username && !u.password && (!u.port || u.port === '80')
-      && u.protocol === 'http:' && u.hostname === ORIGIN
-      && /^\/(movie|series)\//.test(u.pathname);
+    if (u.username || u.password || !/^\/(movie|series)\//.test(u.pathname)) return false;
+    if (u.hostname === DBONLINE_ORIGIN) {
+      return u.protocol === 'http:' && (!u.port || u.port === '80');
+    }
+    if (u.hostname === HUBBY_ORIGIN) {
+      return ['http:', 'https:'].includes(u.protocol) && (!u.port || u.port === '80' || u.port === '443');
+    }
+    return false;
   } catch { return false; }
 }
 
@@ -21,7 +32,12 @@ export async function onRequestGet({ request }: { request: Request }): Promise<R
   try {
     // Não segue automaticamente redirecionamentos para destinos desconhecidos.
     const headers = { Range: 'bytes=0-31', 'User-Agent': 'Mozilla/5.0' };
-    let current = input;
+    const startUrl = new URL(input);
+    if (startUrl.hostname === HUBBY_ORIGIN) {
+      startUrl.port = '';
+      startUrl.protocol = 'https:';
+    }
+    let current = startUrl.href;
     let target: URL | null = null;
     for (let hop = 0; hop < 3; hop++) {
       const origin = await fetch(current, { headers, redirect: 'manual', signal });
@@ -29,7 +45,10 @@ export async function onRequestGet({ request }: { request: Request }): Promise<R
       await origin.body?.cancel();
       if (origin.status < 300 || origin.status >= 400 || !location) return reply(null);
       const next = new URL(location, current);
-      if (next.hostname === TARGET) { target = next; break; }
+      if (next.hostname === DBONLINE_TARGET || isHubbyTargetHost(next.hostname)) {
+        target = next;
+        break;
+      }
       // Intermediário observado nessa fonte. Não aceita outros hosts/portas.
       if (next.hostname !== 'zjo.lat' || next.username || next.password
         || (next.port && next.port !== '80') || !['http:', 'https:'].includes(next.protocol)
@@ -37,7 +56,19 @@ export async function onRequestGet({ request }: { request: Request }): Promise<R
       current = next.href;
     }
     if (!target) return reply(null);
-    if (target.hostname !== TARGET || target.username || target.password || target.port
+
+    if (isHubbyTargetHost(target.hostname)) {
+      if (target.username || target.password
+        || (target.port && target.port !== '80' && target.port !== '443')
+        || !['http:', 'https:'].includes(target.protocol)
+        || !/^\/(movies|series)\//.test(target.pathname)
+        || !target.searchParams.get('token')) return reply(null);
+      target.port = '';
+      target.protocol = 'https:';
+      return reply(target.href);
+    }
+
+    if (target.hostname !== DBONLINE_TARGET || target.username || target.password || target.port
       || !['http:', 'https:'].includes(target.protocol)
       || !target.pathname.startsWith('/t/')) return reply(null);
     target.protocol = 'https:';

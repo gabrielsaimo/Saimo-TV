@@ -11,6 +11,12 @@ export function httpsFirst<T extends { url: string }>(sources: readonly T[]): T[
 }
 
 /** Uma escolha explícita do usuário não muda a ordem exibida das fontes. */
-export function initialSourceIndex(sources: readonly { url: string }[], selected?: string): number {
-  return Math.max(0, sources.findIndex(source => source.url === selected));
+export function initialSourceIndex(
+  sources: readonly { url: string; originalUrl?: string }[],
+  selected?: string,
+): number {
+  return Math.max(
+    0,
+    sources.findIndex(source => source.url === selected || (!!selected && source.originalUrl === selected)),
+  );
 }
