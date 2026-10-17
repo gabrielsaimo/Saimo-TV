@@ -532,11 +532,20 @@ body:has(.tv-page.deitado.tocando) .navegacao-mobile {
 
 /* ── Super Resolução (Upscaling via SVG Convolution Filter) ── */
 html[data-upscaling="hd"] .video-element,
-html[data-upscaling="hd"] .movie-player video {
+html[data-upscaling="hd"] .movie-player video,
+html[data-upscaling="hd"] video.movie-video,
+html[data-upscaling="hd"] .movie-video,
+html[data-upscaling="hd"] :fullscreen video,
+html[data-upscaling="hd"] video:fullscreen {
   filter: url(#saimo-upscale-hd) contrast(1.02) saturate(1.03);
 }
 
 html[data-upscaling="4k"] .video-element,
-html[data-upscaling="4k"] .movie-player video {
+html[data-upscaling="4k"] .movie-player video,
+html[data-upscaling="4k"] video.movie-video,
+html[data-upscaling="4k"] .movie-video,
+html[data-upscaling="4k"] :fullscreen video,
+html[data-upscaling="4k"] video:fullscreen {
   filter: url(#saimo-upscale-4k) contrast(1.04) saturate(1.05);
 }
+

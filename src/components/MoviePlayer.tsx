@@ -17,6 +17,8 @@ import { episodiosDaTemporada, type EpisodioTmdb } from '../services/tmdbService
 import './MoviePlayer.css';
 import './AvisoApp.css';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { CHAVE_UPSCALING, type ModoUpscaling } from '../telas/Ajustes';
 
 interface MoviePlayerProps {
   movie: Movie | null;
@@ -97,6 +99,30 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     return saved ? parseInt(saved) : 10;
   });
   const [brightness, setBrightness] = useState(100);
+  const [upscaling, setUpscaling] = useLocalStorage<ModoUpscaling>(CHAVE_UPSCALING, 'off');
+
+  useEffect(() => {
+    const sync = () => {
+      try {
+        const raw = localStorage.getItem(CHAVE_UPSCALING);
+        const val = raw ? JSON.parse(raw) : 'off';
+        setUpscaling((val === 'hd' || val === '4k') ? val : 'off');
+      } catch {
+        setUpscaling('off');
+      }
+    };
+    window.addEventListener('saimo-upscaling-mudou', sync);
+    return () => {
+      window.removeEventListener('saimo-upscaling-mudou', sync);
+    };
+  }, [setUpscaling]);
+
+  const alterarUpscaling = (modo: ModoUpscaling) => {
+    setUpscaling(modo);
+    document.documentElement.dataset.upscaling = modo;
+    window.dispatchEvent(new Event('saimo-upscaling-mudou'));
+  };
+
   const [trechos, setTrechos] = useState<Trecho[]>([]);
   const [trechoPulado, setTrechoPulado] = useState<Trecho | null>(null);
   const [aspectRatio, setAspectRatio] = useState<'auto' | '16:9' | '4:3' | '21:9'>('auto');
@@ -1053,7 +1079,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       onClick={togglePlay}
     >
       {/* Video Container - com tamanho máximo fixo */}
-      <div className="video-container" style={{ filter: `brightness(${brightness}%)` }}>
+      <div className="video-container" style={brightness !== 100 ? { filter: `brightness(${brightness}%)` } : undefined}>
         <video
           ref={videoRef}
           data-monitor="1"
@@ -1753,7 +1779,10 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                   {formatTime(currentTime)} / {formatTime(duration)}
                 </span>
                 {videoResolution && (
-                  <span className="video-resolution">{videoResolution}</span>
+                  <span className="video-resolution">
+                    {videoResolution}
+                    {upscaling === 'hd' ? ' · Upscale FHD' : upscaling === '4k' ? ' · Upscale 4K' : ''}
+                  </span>
                 )}
               </div>
             </div>
@@ -1977,6 +2006,19 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                         <option value="16:9">16:9</option>
                         <option value="4:3">4:3</option>
                         <option value="21:9">21:9 (Cinema)</option>
+                      </select>
+                    </div>
+                    <div className="settings-section">
+                      <label>Super Resolução (Upscaling)</label>
+                      <select
+                        value={upscaling}
+                        onChange={(e) => alterarUpscaling(e.target.value as ModoUpscaling)}
+                        data-focusable="true"
+                        data-nav-group="settings-menu"
+                      >
+                        <option value="off">Desligado</option>
+                        <option value="hd">Nitidez HD (720p → Full HD)</option>
+                        <option value="4k">Super Resolução Ultra (Full HD → 4K)</option>
                       </select>
                     </div>
                     <div className="settings-section">
