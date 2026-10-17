@@ -1,0 +1,32 @@
+# Produção (padrão):            docker compose up --build      -> http://localhost:3000
+# Desenvolvimento (Vite + API):  docker compose up dev          -> http://localhost:5173
+services:
+  saimo-tv:
+    build:
+      context: .
+      args:
+        # Lido em tempo de build. Aponte para outro proxy (ex.: Vercel) se os
+        # CDNs recusarem os IPs da Cloudflare. Ex.: VITE_PROXY_BASE=https://... docker compose up --build
+        VITE_PROXY_BASE: "${VITE_PROXY_BASE:-}"
+    container_name: saimo-tv
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: "3000"
+    restart: unless-stopped
+
+  # Servidor de desenvolvimento: Vite com as mesmas Pages Functions em /api/*.
+  # O código é montado do host; as dependências ficam num volume próprio.
+  dev:
+    profiles: ["dev"]
+    image: oven/bun:1-slim
+    working_dir: /app
+    command: sh -c "bun install && bun run dev --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+
+volumes:
+  node_modules:
