@@ -21,6 +21,9 @@ import './Ajustes.css';
 export type AoIniciar = 'inicio' | 'ultimo';
 export const CHAVE_AO_INICIAR = 'saimo-ao-iniciar';
 
+export type ModoUpscaling = 'off' | 'hd' | '4k';
+export const CHAVE_UPSCALING = 'saimo-upscaling';
+
 
 const LIMPAR: { rotulo: string; chaves: string[]; aviso: string }[] = [
   { rotulo: 'Limpar “Continue assistindo”', chaves: ['saimo-continuar'], aviso: 'Histórico limpo' },
@@ -35,9 +38,16 @@ export function Ajustes() {
   const [favoritosIds] = useLocalStorage<string[]>('tv-favorites', []);
   const { isAdultUnlocked, lockAdult } = useAdultMode();
   const [aoIniciar, setAoIniciar] = useLocalStorage<AoIniciar>(CHAVE_AO_INICIAR, 'inicio');
+  const [upscaling, setUpscaling] = useLocalStorage<ModoUpscaling>(CHAVE_UPSCALING, 'off');
   const [aviso, setAviso] = useState('');
   const [personalizados, setPersonalizados] = useState<Channel[]>(canaisLocais);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const alterarUpscaling = (modo: ModoUpscaling) => {
+    setUpscaling(modo);
+    document.documentElement.dataset.upscaling = modo;
+    window.dispatchEvent(new Event('saimo-upscaling-mudou'));
+  };
 
   useEffect(() => aoMudarPersonalizados(() => setPersonalizados(canaisLocais())), []);
 
@@ -99,6 +109,16 @@ export function Ajustes() {
           <div className="pilulas">
             <button className={aoIniciar === 'inicio' ? 'on' : ''} onClick={() => setAoIniciar('inicio')}>Início</button>
             <button className={aoIniciar === 'ultimo' ? 'on' : ''} onClick={() => setAoIniciar('ultimo')}>Último canal assistido</button>
+          </div>
+        </section>
+
+        <section className="ajustes-bloco">
+          <h2>Super Resolução (Upscaling)</h2>
+          <p>Reconstrói bordas e realça a nitidez do vídeo em tempo real (HD → Full HD e Full HD → 4K).</p>
+          <div className="pilulas">
+            <button className={upscaling === 'off' ? 'on' : ''} onClick={() => alterarUpscaling('off')}>Desligado</button>
+            <button className={upscaling === 'hd' ? 'on' : ''} onClick={() => alterarUpscaling('hd')}>Nitidez HD (720p → Full HD)</button>
+            <button className={upscaling === '4k' ? 'on' : ''} onClick={() => alterarUpscaling('4k')}>Super Resolução Ultra (Full HD → 4K)</button>
           </div>
         </section>
 

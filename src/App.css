@@ -530,3 +530,13 @@ body:has(.tv-page.deitado.tocando) .navegacao-mobile {
   display: none;
 }
 
+/* ── Super Resolução (Upscaling via SVG Convolution Filter) ── */
+html[data-upscaling="hd"] .video-element,
+html[data-upscaling="hd"] .movie-player video {
+  filter: url(#saimo-upscale-hd) contrast(1.02) saturate(1.03);
+}
+
+html[data-upscaling="4k"] .video-element,
+html[data-upscaling="4k"] .movie-player video {
+  filter: url(#saimo-upscale-4k) contrast(1.04) saturate(1.05);
+}

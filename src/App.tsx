@@ -730,10 +730,47 @@ if (noSite && window.location.hash.startsWith('#/')) {
 const Roteador = noSite ? BrowserRouter : HashRouter;
 
 function App() {
+  useEffect(() => {
+    const syncUpscaling = () => {
+      try {
+        const raw = localStorage.getItem('saimo-upscaling');
+        const val = raw ? JSON.parse(raw) : 'off';
+        document.documentElement.dataset.upscaling = (val === 'hd' || val === '4k') ? val : 'off';
+      } catch {
+        document.documentElement.dataset.upscaling = 'off';
+      }
+    };
+    syncUpscaling();
+    window.addEventListener('saimo-upscaling-mudou', syncUpscaling);
+    window.addEventListener('storage', syncUpscaling);
+    return () => {
+      window.removeEventListener('saimo-upscaling-mudou', syncUpscaling);
+      window.removeEventListener('storage', syncUpscaling);
+    };
+  }, []);
+
   return (
     <Roteador>
       <DpadNavigationProvider>
         <AdultModeProvider>
+          <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }} aria-hidden="true">
+            <defs>
+              <filter id="saimo-upscale-hd" colorInterpolationFilters="sRGB">
+                <feConvolveMatrix
+                  order="3"
+                  kernelMatrix="0 -0.45 0 -0.45 2.8 -0.45 0 -0.45 0"
+                  preserveAlpha="true"
+                />
+              </filter>
+              <filter id="saimo-upscale-4k" colorInterpolationFilters="sRGB">
+                <feConvolveMatrix
+                  order="3"
+                  kernelMatrix="-0.15 -0.55 -0.15 -0.55 3.8 -0.55 -0.15 -0.55 -0.15"
+                  preserveAlpha="true"
+                />
+              </filter>
+            </defs>
+          </svg>
           <AppLayout />
         </AdultModeProvider>
       </DpadNavigationProvider>
