@@ -132,10 +132,15 @@ function TVPage() {
       ?? channels.find((c) => c.name.replace(/[\s-]/g, '').toLowerCase() === slugLimpo)
       ?? null;
   }, [slug, channels]);
-  const canalEscolhido = escolha && escolha.slug === slug ? escolha.canal : null;
+  const canalEscolhido = escolha && escolha.slug === slug
+    ? (channels.find((ch) => ch.id === escolha.canal.id) ?? escolha.canal)
+    : null;
+  const canalDaEscolha = escolha
+    ? (channels.find((ch) => ch.id === escolha.canal.id) ?? escolha.canal)
+    : null;
   const selectedChannel = canalEscolhido
     ?? canalDoLink
-    ?? escolha?.canal
+    ?? canalDaEscolha
     ?? (lastChannelId ? channels.find((ch) => ch.id === lastChannelId) ?? null : null);
   const setSelectedChannel = useCallback((canal: Channel | null) => {
     setEscolha(canal ? { canal, slug } : null);

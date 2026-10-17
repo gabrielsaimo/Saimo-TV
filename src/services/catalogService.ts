@@ -24,7 +24,7 @@ const BASE = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/';
 const CATALOG_URL = `${BASE}catalogo.txt`;
 const EXTRAS_URL = `${BASE}canais.txt`;
 
-const CACHE_KEY = 'saimo-catalogo-v1';
+const CACHE_KEY = 'saimo-catalogo-v2';
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 
 interface ParsedChannel {
@@ -298,7 +298,8 @@ function writeCache(cache: CachedCatalog): void {
 }
 
 async function baixar(url: string): Promise<string> {
-  const response = await fetch(url, { cache: 'no-cache' });
+  const targetUrl = `${url}${url.includes('?') ? '&' : '?'}t=${Date.now()}`;
+  const response = await fetch(targetUrl, { cache: 'no-store' });
   if (!response.ok) throw new Error(`HTTP ${response.status} em ${url}`);
   return response.text();
 }

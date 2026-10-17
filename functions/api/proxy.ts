@@ -516,6 +516,10 @@ export const onRequest = async ({ request }: { request: Request }): Promise<Resp
       });
     }
 
+    if (currentUrl.includes('s1001604.lat') && currentUrl.split('?')[0].toLowerCase().endsWith('.png')) {
+      responseHeaders.set('Content-Type', 'video/mp2t');
+    }
+
     return new Response(finalResponse.body, {
       status: finalResponse.status,
       headers: responseHeaders,
