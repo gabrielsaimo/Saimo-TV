@@ -258,14 +258,6 @@ export const Sidebar = memo(function Sidebar({
           ))
         )}
       </div>
-
-      <div className="sidebar-footer">
-        {!isCollapsed && (
-          <div className="shortcuts-hint">
-            <span>F: tela cheia • M: mudo • T: teatro</span>
-          </div>
-        )}
-      </div>
     </aside>
   );
 });

@@ -46,9 +46,6 @@ const ABAS: Aba[] = [
   },
 ];
 
-/** Alt+1…Alt+9: as oito abas e depois os Ajustes. */
-const ATALHOS = [...ABAS.map((a) => a.rota), '/ajustes'];
-
 const relogio = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
 const ativa = (a: Aba, caminho: string) =>
@@ -171,20 +168,6 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
     window.addEventListener('resize', medir);
     return () => window.removeEventListener('resize', medir);
   }, [pathname]);
-
-  useEffect(() => {
-    const aoTeclar = (e: KeyboardEvent) => {
-      if (!e.altKey || e.metaKey || e.ctrlKey) return;
-      const alvo = e.target as HTMLElement | null;
-      if (alvo && (alvo.tagName === 'INPUT' || alvo.tagName === 'TEXTAREA' || alvo.isContentEditable)) return;
-      const n = /^Digit([1-9])$/.exec(e.code);
-      if (!n) return;
-      e.preventDefault();
-      navigate(ATALHOS[Number(n[1]) - 1]);
-    };
-    document.addEventListener('keydown', aoTeclar);
-    return () => document.removeEventListener('keydown', aoTeclar);
-  }, [navigate]);
 
   const aoClicarLogo = (e: React.MouseEvent<HTMLButtonElement>) => {
     (e.currentTarget as HTMLElement)?.blur();

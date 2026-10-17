@@ -16,7 +16,7 @@ import * as telemetria from '../services/telemetria';
 import { episodiosDaTemporada, type EpisodioTmdb } from '../services/tmdbService';
 import './MoviePlayer.css';
 import './AvisoApp.css';
-import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, sairDaTelaCheia, soltarOrientacao } from '../utils/telaCheia';
+import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
 
 interface MoviePlayerProps {
   movie: Movie | null;
@@ -927,135 +927,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     aoProximo: nextEpisode ? handleNextEpisode : undefined,
     aoAnterior: previousEpisode ? handlePreviousEpisode : undefined,
   });
-
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!videoRef.current) return;
-      
-      switch (e.key) {
-        case ' ':
-        case 'k':
-          e.preventDefault();
-          togglePlay();
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          seek(-skipTime);
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          seek(skipTime);
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          setVolume(v => Math.min(1, v + 0.1));
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          setVolume(v => Math.max(0, v - 0.1));
-          break;
-        case 'm':
-          e.preventDefault();
-          setIsMuted(m => !m);
-          break;
-        case 'f':
-          e.preventDefault();
-          toggleFullscreen();
-          break;
-        case 'n':
-          if (nextEpisode) {
-            e.preventDefault();
-            handleNextEpisode();
-          }
-          break;
-        case 'b':
-          if (previousEpisode) {
-            e.preventDefault();
-            handlePreviousEpisode();
-          }
-          break;
-        case 'e':
-          if (seriesInfo) {
-            e.preventDefault();
-            setShowEpisodeMenu((aberto) => !aberto);
-          }
-          break;
-        case 'p':
-          e.preventDefault();
-          togglePiP();
-          break;
-        case 'c':
-          e.preventDefault();
-          toggleCast();
-          break;
-        case 'j':
-          e.preventDefault();
-          seek(-10);
-          break;
-        case 'l':
-          e.preventDefault();
-          seek(10);
-          break;
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-          e.preventDefault();
-          if (videoRef.current) {
-            const percent = parseInt(e.key) * 10;
-            videoRef.current.currentTime = (percent / 100) * videoRef.current.duration;
-          }
-          break;
-        case 'Home':
-          e.preventDefault();
-          if (videoRef.current) videoRef.current.currentTime = 0;
-          break;
-        case 'End':
-          e.preventDefault();
-          if (videoRef.current) videoRef.current.currentTime = videoRef.current.duration - 1;
-          break;
-        case 's':
-          e.preventDefault();
-          skipIntro();
-          break;
-        case ',':
-          e.preventDefault();
-          if (videoRef.current) videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 1/30);
-          break;
-        case '.':
-          e.preventDefault();
-          if (videoRef.current) videoRef.current.currentTime = Math.min(videoRef.current.duration, videoRef.current.currentTime + 1/30);
-          break;
-        case '<':
-          e.preventDefault();
-          setPlaybackRate(r => Math.max(0.25, r - 0.25));
-          break;
-        case '>':
-          e.preventDefault();
-          setPlaybackRate(r => Math.min(3, r + 0.25));
-          break;
-        case 'Escape':
-          if (showEpisodeMenu) {
-            setShowEpisodeMenu(false);
-          } else if (isFullscreen) {
-            void sairDaTelaCheia();
-          } else {
-            onBack();
-          }
-          break;
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isFullscreen, onBack, skipTime, togglePiP, toggleCast, skipIntro, togglePlay, seek, toggleFullscreen, nextEpisode, previousEpisode, handleNextEpisode, handlePreviousEpisode, seriesInfo, showEpisodeMenu]);
 
   /*
    * Arrastar e clicar na barra.
@@ -2121,23 +1992,6 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                         data-nav-group="settings-menu"
                       />
                     </div>
-                    <hr />
-                    <div className="settings-shortcuts">
-                      <h4>Atalhos de Teclado</h4>
-                      <ul>
-                        <li><kbd>Espaço</kbd> / <kbd>K</kbd> - Play/Pause</li>
-                        <li><kbd>←</kbd> / <kbd>→</kbd> - Pular {skipTime}s</li>
-                        <li><kbd>J</kbd> / <kbd>L</kbd> - Pular 10s</li>
-                        <li><kbd>↑</kbd> / <kbd>↓</kbd> - Volume</li>
-                        <li><kbd>M</kbd> - Mudo</li>
-                        <li><kbd>F</kbd> - Tela cheia</li>
-                        <li><kbd>P</kbd> - Picture-in-Picture</li>
-                        <li><kbd>S</kbd> - Pular intro</li>
-                        <li><kbd>0-9</kbd> - Pular para %</li>
-                        <li><kbd>&lt;</kbd> / <kbd>&gt;</kbd> - Velocidade</li>
-                        <li><kbd>,</kbd> / <kbd>.</kbd> - Frame a frame</li>
-                      </ul>
-                    </div>
                   </div>
                 )}
               </div>
@@ -2147,7 +2001,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
                 <button 
                   className="control-btn" 
                   onClick={togglePiP} 
-                  title="Picture-in-Picture (P)"
+                  title="Picture-in-Picture"
                   data-focusable="true"
                   data-nav-group="player-controls"
                   onKeyDown={(e) => {

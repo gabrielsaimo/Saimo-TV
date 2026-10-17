@@ -71,7 +71,7 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
   const navigate = useNavigate();
   const location = useLocation();
   const [focusedElement, setFocusedElement] = useState<HTMLElement | null>(null);
-  const [isEnabled, setEnabled] = useState(true);
+  const [isEnabled, setEnabled] = useState(false);
   const [isUsingDpad, setIsUsingDpad] = useState(false);
   const [showHint, setShowHint] = useState(false);
   

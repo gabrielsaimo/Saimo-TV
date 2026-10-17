@@ -11,7 +11,6 @@ import { parar as pararRadio } from './services/radioPlayer';
 import { Ajustes } from './telas/Ajustes';
 import { locais as locaisPersonalizados, aoMudar as aoMudarPersonalizados } from './services/canaisPersonalizados';
 import { Toast } from './components/Toast';
-import { AtalhosAjuda } from './components/AtalhosAjuda';
 import { NavegacaoMobile } from './components/NavegacaoMobile';
 import { useVoltarFecha } from './hooks/useVoltarFecha';
 import { getAllChannels, adultChannels } from './data/channels';
@@ -21,7 +20,6 @@ import { registerChannels, fetchRealEPG } from './services/epgService';
 import type { Channel } from './types/channel';
 import type { Movie, SeriesEpisodeInfo } from './types/movie';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { DpadNavigationProvider } from './contexts/DpadContext';
 import './App.css';
 
@@ -277,43 +275,6 @@ function TVPage() {
     const prevIndex = currentIndex <= 0 ? channels.length - 1 : currentIndex - 1;
     handleSelectChannel(channels[prevIndex]);
   }, [selectedChannel, secondChannel, isMultiScreen, activeSide, handleSelectChannel, channels]);
-
-  const handleChannelNumber = useCallback((channelNumber: number) => {
-    const channel = channels.find((ch) => ch.channelNumber === channelNumber);
-    if (channel) {
-      handleSelectChannel(channel);
-    } else {
-      showToast(`Canal ${channelNumber} não encontrado`, 'error');
-    }
-  }, [channels, handleSelectChannel, showToast]);
-
-  useKeyboardShortcuts({
-    onTheater: handleToggleTheater,
-    onNextChannel: handleNextChannel,
-    onPrevChannel: handlePrevChannel,
-    onChannelNumber: handleChannelNumber,
-    onMultiScreen: handleToggleMultiScreen,
-  });
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Um "g" ou "c" digitado na busca do guia (ou em qualquer campo) é texto, não atalho.
-      const alvo = e.target as HTMLElement | null;
-      if (alvo && (alvo.tagName === 'INPUT' || alvo.tagName === 'TEXTAREA' || alvo.isContentEditable)) return;
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.key === 'g' || e.key === 'G') {
-        setIsGuideOpen((prev) => !prev);
-      }
-      if (e.key === 'c' || e.key === 'C') {
-        setIsChannelsPanelOpen((prev) => !prev);
-      }
-      if (e.key === 'Escape' && isChannelsPanelOpen) {
-        setIsChannelsPanelOpen(false);
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isChannelsPanelOpen]);
 
   return (
     <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''} ${deitado ? 'deitado' : ''} ${deitado && (selectedMovie || selectedChannel) ? 'tocando' : ''}`}>
@@ -774,7 +735,6 @@ function App() {
       <DpadNavigationProvider>
         <AdultModeProvider>
           <AppLayout />
-          <AtalhosAjuda />
         </AdultModeProvider>
       </DpadNavigationProvider>
     </Roteador>

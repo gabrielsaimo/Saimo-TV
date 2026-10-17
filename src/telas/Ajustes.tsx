@@ -21,10 +21,6 @@ import './Ajustes.css';
 export type AoIniciar = 'inicio' | 'ultimo';
 export const CHAVE_AO_INICIAR = 'saimo-ao-iniciar';
 
-const ATALHOS_TELAS: [string, string][] = [
-  ['Alt+1', 'Buscar'], ['Alt+2', 'Início'], ['Alt+3', 'Ao vivo'], ['Alt+4', 'Eventos'],
-  ['Alt+5', 'On Demand'], ['Alt+6', 'Favoritos'], ['Alt+7', 'Rádios'], ['Alt+8', 'Ajustes'],
-];
 
 const LIMPAR: { rotulo: string; chaves: string[]; aviso: string }[] = [
   { rotulo: 'Limpar “Continue assistindo”', chaves: ['saimo-continuar'], aviso: 'Histórico limpo' },
@@ -144,15 +140,6 @@ export function Ajustes() {
           {isAdultUnlocked && <button className="ajustes-botao" onClick={lockAdult}>Desligar</button>}
         </section>
 
-        <section className="ajustes-bloco">
-          <h2>Atalhos de teclado</h2>
-          <dl className="ajustes-atalhos">
-            {ATALHOS_TELAS.map(([k, v]) => <div key={k}><dt><kbd>{k}</kbd></dt><dd>{v}</dd></div>)}
-            <div><dt><kbd>U</kbd></dt><dd>Multi tela (2 canais ao vivo)</dd></div>
-            <div><dt><kbd>G</kbd></dt><dd>Guia de programação (Ao vivo)</dd></div>
-            <div><dt><kbd>?</kbd></dt><dd>Todos os atalhos do player</dd></div>
-          </dl>
-        </section>
 
         <section className="ajustes-bloco">
           <h2>Dados deste navegador</h2>

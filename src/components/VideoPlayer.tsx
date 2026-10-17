@@ -12,13 +12,13 @@ import { playDash, type DashHandle } from '../services/dashPlayer';
 import * as telemetria from '../services/telemetria';
 import './VideoPlayer.css';
 import './AvisoApp.css';
-import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, sairDaTelaCheia, soltarOrientacao } from '../utils/telaCheia';
+import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
 
 interface VideoPlayerProps {
   channel: Channel | null;
   channelNumber?: number;
   isTheaterMode: boolean;
-  onToggleTheater: () => void;
+  onToggleTheater?: () => void;
   onOpenGuide: () => void;
   isMultiScreen?: boolean;
   onToggleMultiScreen?: () => void;
@@ -38,7 +38,7 @@ interface VideoPlayerProps {
 export const VideoPlayer = memo(function VideoPlayer({
   channel,
   isTheaterMode,
-  onToggleTheater,
+  onToggleTheater: _onToggleTheater,
   onOpenGuide,
   isMultiScreen = false,
   onToggleMultiScreen,
@@ -93,7 +93,7 @@ export const VideoPlayer = memo(function VideoPlayer({
     pendingUnmuteRef.current = pendingUnmute;
   }, [pendingUnmute]);
   
-  const [isMirrored, setIsMirrored] = useState(false);
+  const isMirrored = false;
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPiP, setIsPiP] = useState(false);
   const [castState, setCastState] = useState<CastState>({ isConnected: false, deviceName: null, method: null });
@@ -105,8 +105,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const [error, setError] = useState<string | null>(null);
   const [showControls, setShowControls] = useState(true);
   const [videoResolution, setVideoResolution] = useState<string | null>(null);
-  const [aspectRatio, setAspectRatio] = useState<'auto' | '16:9' | '4:3' | 'fill'>('auto');
-  const [aspectRatioToast, setAspectRatioToast] = useState<string | null>(null);
+  const aspectRatio = 'auto';
   const [audioTracks, setAudioTracks] = useState<Array<{ id: number; label: string }>>([]);
   const [selectedAudio, setSelectedAudio] = useState(-1);
   const [showAudioMenu, setShowAudioMenu] = useState(false);
@@ -118,15 +117,6 @@ export const VideoPlayer = memo(function VideoPlayer({
   const recoveryAttemptsRef = useRef(0);
   const maxRecoveryAttempts = 3;
 
-  const toggleAspectRatio = useCallback(() => {
-    setAspectRatio((prev) => {
-      const next = prev === 'auto' ? '16:9' : prev === '16:9' ? '4:3' : prev === '4:3' ? 'fill' : 'auto';
-      const label = next === 'auto' ? 'Auto (Padrão)' : next === '16:9' ? '16:9 (Widescreen)' : next === '4:3' ? '4:3 (Clássico)' : 'Preencher Tela';
-      setAspectRatioToast(label);
-      setTimeout(() => setAspectRatioToast(null), 1800);
-      return next;
-    });
-  }, []);
 
   /*
    * As fontes do canal, HTTPS primeiro e depois na ordem publicada. Um canal antigo, guardado antes de
@@ -818,10 +808,6 @@ export const VideoPlayer = memo(function VideoPlayer({
     setShowCastModal(false);
   }, []);
 
-  const toggleMirror = useCallback(() => {
-    setIsMirrored((prev) => !prev);
-  }, []);
-
   const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
@@ -871,93 +857,6 @@ export const VideoPlayer = memo(function VideoPlayer({
       resetControlsTimeout();
     }
   }, [isChannelsPanelOpen, resetControlsTimeout, onControlsVisibilityChange]);
-
-  // Keyboard controls for showing controls
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Mostrar controles em qualquer tecla de navegação
-      const navigationKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'Enter', 'Escape'];
-      if (navigationKeys.includes(e.key) || e.key.length === 1) {
-        resetControlsTimeout();
-      }
-
-      // Ações específicas de teclas
-      switch (e.key) {
-        case ' ':
-        case 'Space':
-        case 'k':
-        case 'K':
-          // Ao vivo não pode pausar nunca
-          e.preventDefault();
-          if (videoRef.current?.paused) {
-            void videoRef.current.play().catch(() => {});
-          }
-          break;
-        case 'f':
-        case 'F':
-          e.preventDefault();
-          toggleFullscreen();
-          break;
-        case 'm':
-        case 'M':
-          e.preventDefault();
-          toggleMute();
-          break;
-        case 'c':
-        case 'C':
-          e.preventDefault();
-          toggleCast();
-          break;
-        case 'a':
-        case 'A':
-          e.preventDefault();
-          toggleAspectRatio();
-          break;
-        case 'r':
-        case 'R':
-          e.preventDefault();
-          toggleMirror();
-          break;
-        case 'p':
-        case 'P':
-          e.preventDefault();
-          togglePiP();
-          break;
-        case 't':
-        case 'T':
-          e.preventDefault();
-          onToggleTheater();
-          break;
-        case 'u':
-        case 'U':
-          if (onToggleMultiScreen) {
-            e.preventDefault();
-            onToggleMultiScreen();
-          }
-          break;
-        case 'g':
-        case 'G':
-          e.preventDefault();
-          onOpenGuide();
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          setVolume((v) => Math.min(1, v + 0.1));
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          setVolume((v) => Math.max(0, v - 0.1));
-          break;
-        case 'Escape':
-          if (elementoEmTelaCheia()) void sairDaTelaCheia();
-          break;
-      }
-    };
-
-    // Global keyboard listener
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [resetControlsTimeout, toggleFullscreen, toggleMute, toggleCast, toggleAspectRatio, toggleMirror, togglePiP, onToggleTheater, onToggleMultiScreen, onOpenGuide]);
 
   // Show controls on initial load
   useEffect(() => {
@@ -1063,16 +962,6 @@ export const VideoPlayer = memo(function VideoPlayer({
             onClick={handleVideoClick}
             onDoubleClick={handleVideoDoubleClick}
           />
-
-          {aspectRatioToast && (
-            <div className="aspect-ratio-hud">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="M7 8h10M7 16h10" />
-              </svg>
-              <span>{aspectRatioToast}</span>
-            </div>
-          )}
 
           {/* Só aparece se o navegador barrou o play automático: ao vivo
               não tem pausa. */}

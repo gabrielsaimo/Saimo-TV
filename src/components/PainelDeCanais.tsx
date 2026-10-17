@@ -139,14 +139,11 @@ export const PainelDeCanais = memo(function PainelDeCanais({
     return numeros.get(activeChannelId) ?? null;
   }, [activeChannelId, numeros]);
 
-  // Fecha no Esc e foca busca no /
+  // Fecha no Esc
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen && !isMobileInline) {
         onClose();
-      } else if (e.key === '/' && (isOpen || isMobileInline) && document.activeElement !== buscaRef.current) {
-        e.preventDefault();
-        buscaRef.current?.focus();
       }
     };
     window.addEventListener('keydown', handleKey);
