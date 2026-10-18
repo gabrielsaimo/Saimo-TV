@@ -32,6 +32,10 @@ lidos direto do repositório
 - Legendas do OpenSubtitles em filmes e séries (Português do Brasil e de Portugal, inglês, espanhol),
   com ajuste de sincronia, em `src/services/legendas.ts`; sem chave nem cadastro
 - Continuar assistindo, com a fileira na tela do acervo
+- Filme que não toca no site (fonte http ou servidor que recusa) mostra o aviso
+  para abrir numa página separada, com a lista de fontes. O topo do player,
+  com o voltar, fica sempre livre; com muitas fontes o aviso rola desde o
+  título, e a barra de baixo some enquanto o erro está na tela
 - Controles do sistema e da tela de bloqueio (Media Session)
 - Chromecast (SDK carregado só quando alguém usa)
 - Instalável como app (PWA, com `manifest.webmanifest` e service worker)

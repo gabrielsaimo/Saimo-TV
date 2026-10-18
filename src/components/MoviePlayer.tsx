@@ -1458,7 +1458,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
       {/* Controls */}
       {/* Com erro na tela os controles ficam à vista: é por eles que se volta. */}
-      <div className={`player-controls ${showControls || isLoading || error ? 'visible' : ''}`} onClick={(e) => e.stopPropagation()}>
+      <div className={`player-controls ${showControls || isLoading || error ? 'visible' : ''}${error ? ' com-erro' : ''}`} onClick={(e) => e.stopPropagation()}>
         {/* Top bar */}
         <div className="controls-top">
           <button 
