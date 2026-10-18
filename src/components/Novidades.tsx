@@ -4,9 +4,10 @@
  * em lugar nenhum: o endereço é /novidades.
  */
 import { useEffect, useState } from 'react';
+import { FILMES } from '../services/enderecos';
 import './Novidades.css';
 
-const ENDERECO = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/vod/novidades.json';
+const ENDERECO = `${FILMES}novidades.json`;
 
 interface Titulo {
   t: string;

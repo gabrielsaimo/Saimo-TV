@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { buscarVersao, type Plataforma, type Versao } from '../services/versao';
 import { descreverAparelho } from '../services/telemetria';
 import { BarraTopo } from './BarraTopo';
 import './AppDownload.css';
@@ -7,14 +8,10 @@ import './AppDownload.css';
 /**
  * Download dos apps: TV Box, celular e Mac, com o do aparelho já escolhido.
  *
- * Os links usam /releases/latest/download/<arquivo>, que o GitHub redireciona
- * para o release mais novo: a página nunca fica apontando para versão velha.
- * A consulta à API só serve para mostrar número e tamanho; se ela falhar (limite
- * de 60 por hora por IP), os botões continuam funcionando.
+ * Os links e a versão vêm do versao.json publicado (services/versao.ts): a
+ * página nunca aponta para versão velha e não sabe em que GitHub os arquivos
+ * moram. Sem o arquivo, o botão vira "Tentar novamente" em vez de ficar morto.
  */
-
-const REPO = 'gabrielsaimo/SaimoPlayer';
-const LATEST = `https://github.com/${REPO}/releases/latest/download`;
 
 type AppId = 'tvbox' | 'cell' | 'mac' | 'windows';
 
@@ -149,10 +146,7 @@ function detectar(): Deteccao {
     aviso: 'Não há app para Linux. No computador, assista por este site mesmo.' };
 }
 
-interface Lancamento {
-  versao: string;
-  tamanhos: Record<string, number>;
-}
+const PLATAFORMA: Record<AppId, Plataforma> = { tvbox: 'tvbox', cell: 'celular', mac: 'mac', windows: 'windows' };
 
 function megas(bytes?: number): string {
   return bytes ? `${Math.round(bytes / 1024 / 1024)} MB` : '';
@@ -179,30 +173,27 @@ export function AppDownload() {
   const navigate = useNavigate();
   const deteccao = useMemo(() => detectar(), []);
   const [aba, setAba] = useState<AppId>(deteccao.recomendado ?? 'tvbox');
-  const [lancamento, setLancamento] = useState<Lancamento | null>(null);
+  const [lancamento, setLancamento] = useState<Versao | null>(null);
+  const [estado, setEstado] = useState<'carregando' | 'pronto' | 'erro'>('carregando');
+  const [tentativa, setTentativa] = useState(0);
 
   useEffect(() => {
-    const controle = new AbortController();
-    fetch(`https://api.github.com/repos/${REPO}/releases/latest`, {
-      signal: controle.signal,
-      headers: { Accept: 'application/vnd.github+json' },
-    })
-      .then(r => (r.ok ? r.json() : null))
-      .then(dados => {
-        if (!dados?.tag_name) return;
-        const tamanhos: Record<string, number> = {};
-        for (const a of dados.assets ?? []) tamanhos[a.name] = a.size;
-        setLancamento({ versao: String(dados.tag_name).replace(/^v/i, ''), tamanhos });
-      })
-      .catch(() => {});
-    return () => controle.abort();
-  }, []);
+    let vivo = true;
+    setEstado('carregando');
+    buscarVersao().then(v => {
+      if (!vivo) return;
+      setLancamento(v);
+      setEstado(v ? 'pronto' : 'erro');
+    });
+    return () => { vivo = false; };
+  }, [tentativa]);
 
   const app = APPS.find(a => a.id === aba)!;
   const linkCurto = `${window.location.host}${app.atalho}`;
+  const arquivo = lancamento?.arquivos[PLATAFORMA[app.id]];
   const detalhes = [
     lancamento ? `Versão ${lancamento.versao}` : '',
-    megas(lancamento?.tamanhos[app.arquivo]),
+    megas(arquivo?.bytes),
   ].filter(Boolean).join(' · ');
 
   return (
@@ -257,20 +248,33 @@ export function AppDownload() {
             </div>
           </div>
 
-          <a
-            className="download-button"
-            href={`${LATEST}/${app.arquivo}`}
-            rel="noopener"
-            data-focusable="true"
-            data-focus-key="download-button"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            <span>{app.botao}</span>
-          </a>
+          {arquivo ? (
+            <a
+              className="download-button"
+              href={arquivo.url}
+              rel="noopener"
+              data-focusable="true"
+              data-focus-key="download-button"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span>{app.botao}</span>
+            </a>
+          ) : (
+            <button
+              type="button"
+              className="download-button"
+              disabled={estado === 'carregando'}
+              onClick={() => setTentativa(t => t + 1)}
+              data-focusable="true"
+              data-focus-key="download-button"
+            >
+              <span>{estado === 'carregando' ? 'Carregando…' : 'Não consegui buscar o download. Tentar novamente'}</span>
+            </button>
+          )}
           {detalhes && <p className="download-meta">{detalhes}</p>}
 
           <p className="download-short">

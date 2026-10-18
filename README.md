@@ -8,9 +8,15 @@ Canais ao vivo, guia de programação, filmes e séries no navegador:
 **<https://saimo-tv.pages.dev>**. Versão atual: **2.1.1**.
 
 Mesma lista de canais e mesmo acervo dos apps de TV Box, celular, Windows e Mac,
-lidos direto do repositório
-[SaimoPlayer](https://github.com/gabrielsaimo/SaimoPlayer) (`catalogo.txt` e
-`vod/`). Nada de lista própria para manter aqui.
+lidos de dois endereços fixos do Cloudflare Pages, definidos só em
+`src/services/enderecos.ts`: `saimo-canais.pages.dev` (`catalogo.txt`, `canais.txt`,
+`radios.txt`, `versao.json`) e `saimo-filmes.pages.dev` (espelho da pasta `vod/`
+do SaimoPlayer). O site não escreve nenhum endereço do GitHub: os botões de
+download e os atalhos `/tvbox`, `/celular`, `/mac` e `/windows` usam os links do
+`versao.json`. Nada de lista própria para manter aqui.
+
+Publicar o site: `scripts/publicar_site.sh` (upload direto, sem GitHub). A troca
+do projeto Git-conectado para esse modo está em [docs/TROCA-DO-SITE.md](docs/TROCA-DO-SITE.md).
 
 ## O que tem
 
@@ -88,9 +94,11 @@ bun run lint
 
 ## Publicar
 
-Push em `main` publica. O site no ar é servido pelo Cloudflare Pages
-(`saimo-tv.pages.dev`); `_redirects` em `public/` cuida das rotas, e `/baixar`
-leva para a página de download dos apps.
+`scripts/publicar_site.sh` faz o build e o upload direto para o Cloudflare Pages
+(`saimo-tv.pages.dev`), sem depender do GitHub. `_redirects` em `public/` cuida
+das rotas, `/baixar` leva para a página de download dos apps e `functions/`
+traz o proxy (`/api/*`) e os atalhos de download (`/tvbox`, `/celular`, `/mac`,
+`/windows`, que leem o `versao.json`).
 
 As rotas usam endereços normais (`/filmes`, `/canal/...`) no navegador e `#` no
 app de desktop, que abre o mesmo `index.html`. Endereços antigos com `#` são

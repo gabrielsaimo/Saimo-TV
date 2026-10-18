@@ -11,7 +11,9 @@
  * o arquivo .srt (~40 KB) só vem quando a pessoa escolhe uma legenda.
  */
 
-const VOD = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/vod/';
+import { FILMES } from './enderecos';
+
+const VOD = FILMES;
 const OPENSUBTITLES = 'https://opensubtitles-v3.strem.io/subtitles';
 const FRAGMENTOS = 100;
 

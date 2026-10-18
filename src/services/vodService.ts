@@ -14,10 +14,11 @@
  * torna a busca confiável o bastante para usar sem checagem manual.
  */
 
+import { FILMES } from './enderecos';
 import { melhorMatch, posterUrl, type TmdbTipo } from './tmdbService';
 import { peneirar as semDesligados } from './fontesDesativadas';
 
-const BASE = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/vod/';
+const BASE = FILMES;
 
 export const LETRAS = [
   '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',

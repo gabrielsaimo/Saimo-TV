@@ -5,6 +5,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
+import { CANAIS } from '../services/enderecos';
 import { useAdultMode } from '../contexts/adultoContexto';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useCanais } from '../hooks/useCanais';
@@ -176,7 +177,7 @@ export function Ajustes() {
             <button className="ajustes-botao" onClick={() => navigate('/app')}>Baixar o app (TV Box, celular, Mac, Windows)</button>
             <button className="ajustes-botao" onClick={() => navigate('/novidades')}>Novidades</button>
             <a className="ajustes-botao" href="https://discord.gg/8DKqT3xJvD" target="_blank" rel="noreferrer noopener">Comunidade no Discord</a>
-            <a className="ajustes-botao" href="https://github.com/gabrielsaimo/SaimoPlayer" target="_blank" rel="noreferrer noopener">Lista de canais no GitHub</a>
+            <a className="ajustes-botao" href={`${CANAIS}catalogo.txt`} target="_blank" rel="noreferrer noopener">Lista de canais (texto)</a>
           </div>
         </section>
       </div>

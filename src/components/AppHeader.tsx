@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { EventsModal } from "./EventsModal";
 import { useState, useEffect, memo, useRef } from 'react';
+import { CANAIS } from '../services/enderecos';
 import './AppHeader.css';
 
 interface AppHeaderProps {
@@ -254,11 +255,11 @@ export const AppHeader = memo(function AppHeader({
 
           <a
             className="header-link-btn github"
-            href="https://github.com/gabrielsaimo/SaimoPlayer"
+            href={`${CANAIS}catalogo.txt`}
             target="_blank"
             rel="noreferrer noopener"
-            title="Lista de canais no GitHub"
-            aria-label="Lista de canais no GitHub"
+            title="Lista de canais (texto)"
+            aria-label="Lista de canais (texto)"
             data-focusable="true"
             data-focus-key="header-github"
           >

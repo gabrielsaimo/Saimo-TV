@@ -16,13 +16,13 @@ import { httpsFirst } from '../utils/sourceOrder';
 import { channels as localChannels, adultChannels, categoryOrder } from '../data/channels';
 import { restrictedChannels } from '../data/restrictedChannels';
 import { normalise } from '../utils/nomes';
+import { CANAIS } from './enderecos';
 import { peneirarCanais } from './fontesDesativadas';
 
 export { normalise };
 
-const BASE = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/';
-const CATALOG_URL = `${BASE}catalogo.txt`;
-const EXTRAS_URL = `${BASE}canais.txt`;
+const CATALOG_URL = `${CANAIS}catalogo.txt`;
+const EXTRAS_URL = `${CANAIS}canais.txt`;
 
 const CACHE_KEY = 'saimo-catalogo-v2';
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;

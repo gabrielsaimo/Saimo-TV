@@ -5,6 +5,8 @@
  * A última lista baixada fica em disco para a tela abrir na hora, e a do
  * repositório é buscada por trás.
  */
+import { CANAIS } from './enderecos';
+
 export interface Radio {
   nome: string;
   url: string;
@@ -16,7 +18,7 @@ export interface Estilo {
   palavras: string[];
 }
 
-const URL_LISTA = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/vod/radios.txt';
+const URL_LISTA = `${CANAIS}radios.txt`;
 const GUARDADA = 'saimo-radios-lista';
 const RECENTES = 'saimo-radios-recentes';
 
