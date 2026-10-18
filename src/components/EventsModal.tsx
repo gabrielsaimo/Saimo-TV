@@ -12,7 +12,9 @@ interface EventsModalProps {
 
 const HORA = 3_600_000;
 /** O placar anda: com o painel aberto e a aba à vista, busca de novo a cada minuto. */
-const INTERVALO = 60_000;
+// Três minutos: a agenda do monitor é cobrada por pedido, e o placar não
+// precisa de mais que isso.
+const INTERVALO = 180_000;
 const GRUPOS = ['Ao vivo agora', 'Começa em breve', 'Hoje mais tarde', 'Amanhã', 'Próximos dias'];
 
 function diaDe(ms: number): number {

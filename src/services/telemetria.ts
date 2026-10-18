@@ -71,6 +71,49 @@ function idDoAparelho(): string {
 
 const id = idDoAparelho();
 
+/*
+ * Amostra. Só uma fração fixa dos aparelhos fala com o monitor — o servidor
+ * cobra por pedido, e com milhares de abas abertas a conta passava da franquia.
+ * Os escolhidos são sempre os mesmos: FNV-1a de 32 bits sobre o id (o mesmo
+ * cálculo do worker), dentro quando `hash % 10000 < pct * 100`. O percentual
+ * vem de `telemetria.json`, arquivo estático do monitor (não conta pedido),
+ * relido no máximo uma vez por dia; vale na próxima abertura.
+ */
+const CHAVE_PCT = 'saimo-telemetria-amostra';
+const PCT_PADRAO = 5;
+
+function fnv1a(texto: string): number {
+  let h = 0x811c9dc5;
+  for (const b of new TextEncoder().encode(texto)) {
+    h ^= b;
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h;
+}
+
+function percentualGuardado(): number {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(CHAVE_PCT) || 'null') as { pct?: number; em?: number } | null;
+    const pct = Number(salvo?.pct);
+    if (!salvo || !Number.isFinite(pct) || pct <= 0 || pct > 100 || Date.now() - Number(salvo.em || 0) > 86_400_000) {
+      void fetch(BASE.replace(/\/v1$/, '/telemetria.json'), { cache: 'no-store' })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          const novo = Number(d?.amostraPct);
+          if (Number.isFinite(novo) && novo > 0 && novo <= 100) {
+            localStorage.setItem(CHAVE_PCT, JSON.stringify({ pct: novo, em: Date.now() }));
+          }
+        })
+        .catch(() => {});
+    }
+    return Number.isFinite(pct) && pct > 0 && pct <= 100 ? pct : PCT_PADRAO;
+  } catch {
+    return PCT_PADRAO;
+  }
+}
+
+export const amostrado = fnv1a(id.toLowerCase()) % 10000 < percentualGuardado() * 100;
+
 function host(url?: string | null): string | null {
   if (!url) return null;
   try { return new URL(url).host.replace(/^www\./, ''); } catch { return null; }
@@ -177,6 +220,8 @@ async function aparelhoDesteNavegador(): Promise<Aparelho> {
 }
 
 function enviar(rota: string, corpo: Record<string, unknown>, beacon = true): Promise<Response | null> {
+  // Fora da amostra, nada sai deste navegador.
+  if (!amostrado) return Promise.resolve(null);
   const texto = JSON.stringify({ ...corpo, deviceId: id, platform: PLATAFORMA, version: VERSAO });
   const url = `${BASE}/${rota}`;
   if (beacon && typeof navigator.sendBeacon === 'function') {
@@ -188,7 +233,13 @@ function enviar(rota: string, corpo: Record<string, unknown>, beacon = true): Pr
     .catch(() => null);
 }
 
-function baterAgora() {
+/** Batida fora do relógio (pausa, troca, parada): no máximo uma a cada 30 s. */
+const INTERVALO_MINIMO_MS = 30_000;
+let ultimaBatida = 0;
+
+function baterAgora(forcar = false) {
+  if (!forcar && Date.now() - ultimaBatida < INTERVALO_MINIMO_MS) return;
+  ultimaBatida = Date.now();
   const segundos = tocando ? Math.round(rodandoMs() / 1000) : 0;
   acumuladoMs = 0;
   if (rodandoDesde) rodandoDesde = Date.now();
@@ -197,7 +248,7 @@ function baterAgora() {
 
 function agendar() {
   if (relogio !== undefined) window.clearInterval(relogio);
-  relogio = window.setInterval(baterAgora, intervaloMs);
+  relogio = window.setInterval(() => baterAgora(true), intervaloMs);
 }
 
 function evento(type: string, extra: Record<string, unknown> = {}) {
@@ -230,7 +281,7 @@ export function iniciar() {
 
   // Aba fechando: a última batida e o "parou", pelo beacon que sobrevive à saída.
   window.addEventListener('pagehide', () => {
-    baterAgora();
+    baterAgora(true);
     if (tocando) void enviar('event', { type: 'play_stop' });
   });
 

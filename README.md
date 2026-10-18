@@ -64,6 +64,17 @@ lidos direto do repositório
 - Atalhos de teclado: aperte **?** para ver todos
 - Prévia de link com imagem ao compartilhar (Open Graph)
 
+## Telemetria por amostra
+
+O Saimo Monitor cobra por pedido, então só uma fração fixa dos navegadores fala
+com ele (`src/services/telemetria.ts`): FNV-1a de 32 bits sobre o id, dentro
+quando `hash % 10000 < pct * 100` — a mesma conta do servidor. O percentual vem
+de `telemetria.json`, arquivo estático do monitor (não conta pedido), relido uma
+vez por dia. Fora da amostra nada sai do navegador. Na amostra, batida fora do
+relógio (pausa, troca) no máximo a cada 30 s. A lista de servidores desligados
+fica guardada por uma hora, e a agenda de jogos atualiza a cada 3 min com a tela
+aberta.
+
 ## Rodar
 
 Com [Bun](https://bun.sh) (ou npm):

@@ -13,7 +13,9 @@ import { acabou, aoVivo, buscarJogos, type Jogo } from '../services/eventos';
 import './Eventos.css';
 
 const HORA = 3_600_000;
-const INTERVALO = 60_000;
+// Três minutos: a agenda do monitor é cobrada por pedido, e o placar não
+// precisa de mais que isso.
+const INTERVALO = 180_000;
 const GRUPOS = ['Ao vivo agora', 'Começa em breve', 'Hoje mais tarde', 'Amanhã', 'Próximos dias'];
 
 const diaDe = (ms: number) => {

@@ -46,6 +46,16 @@ const SIGLAS = new Set(['fc', 'ec', 'sc', 'ac', 'afc', 'cf', 'cd', 'club', 'club
     'futebol', 'de', 'do', 'da', 'sp', 'rj', 'mg', 'rs', 'pr', 'ba', 'pe', 'ce', 'go', 'sad']);
 const HORA = 3_600_000;
 
+/** A agenda do monitor, reaproveitada por um minuto: abrir, fechar e voltar à
+ *  tela não vira um pedido a cada vez (o monitor cobra por pedido). */
+let doMonitorGuardado: { em: number; dados: unknown } | null = null;
+async function doMonitor(): Promise<unknown> {
+    if (doMonitorGuardado && Date.now() - doMonitorGuardado.em < 60_000) return doMonitorGuardado.dados;
+    const dados = await json(STREAMING);
+    if (dados != null) doMonitorGuardado = { em: Date.now(), dados };
+    return dados;
+}
+
 interface Placar {
     casa: string; fora: string; casaLogo: string; foraLogo: string; ligaLogo: string;
     inicio: number; estado: string; golsCasa: string; golsFora: string; tempo: string;
@@ -196,7 +206,7 @@ function mesmoTime(a: string, b: string): boolean {
 export async function buscarJogos(canais: Channel[]): Promise<Jogo[] | null> {
     const [agenda, streaming, ...placares] = await Promise.all([
         json(EMBED),
-        json(STREAMING),
+        doMonitor(),
         ...ESPN.map(l => json(`https://site.api.espn.com/apis/site/v2/sports/${l}/scoreboard`)),
     ]);
     // A função do site devolve {error} quando a embedtv falha; aí a tela segue só
