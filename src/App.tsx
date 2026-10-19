@@ -227,7 +227,8 @@ function TVPage() {
     fecharPainel: () => setIsChannelsPanelOpen(false),
     proximo: handleNextChannel,
     anterior: handlePrevChannel,
-    voltar: () => navigate('/'),
+    // Volta para a tela de onde veio (On Demand, Busca…); só sem histórico cai no Início.
+    voltar: () => (((window.history.state as { idx?: number } | null)?.idx ?? 0) > 0 ? navigate(-1) : navigate('/')),
   });
 
   return (
