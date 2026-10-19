@@ -76,6 +76,8 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
   const deveAutoEsconder = autoHide ?? pathname.startsWith('/tv');
 
   const [mouseNoTopo, setMouseNoTopo] = useState(() => !deveAutoEsconder);
+  // Controle remoto (TV): sem mouse para chegar ao topo, a barra aparece quando o foco entra nela.
+  const [focoDentro, setFocoDentro] = useState(false);
   const hoverRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -140,7 +142,7 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
     }
   }, [pathname, deveAutoEsconder]);
 
-  const isVisivel = visibleProp === false ? false : (deveAutoEsconder ? (pedePin || mouseNoTopo) : true);
+  const isVisivel = visibleProp === false ? false : (deveAutoEsconder ? (pedePin || mouseNoTopo || focoDentro) : true);
 
   useEffect(() => {
     if (!isVisivel) {
@@ -189,6 +191,8 @@ export const BarraTopo = memo(function BarraTopo({ visible: visibleProp, autoHid
     <>
       <header
         className={`barra-topo ${!isVisivel ? 'oculta' : ''}`}
+        onFocus={() => setFocoDentro(true)}
+        onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocoDentro(false); }}
         role="banner"
         onMouseEnter={() => {
           hoverRef.current = true;
