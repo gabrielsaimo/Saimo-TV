@@ -228,6 +228,14 @@ function TVPage() {
     proximo: handleNextChannel,
     anterior: handlePrevChannel,
     // Volta para a tela de onde veio (On Demand, Busca…); só sem histórico cai no Início.
+    multiTela: isMultiScreen,
+    trocarLado: () => setActiveSide((lado) => (lado === 'primary' ? 'secondary' : 'primary')),
+    sairDaMultiTela: () => {
+      setIsMultiScreen(false);
+      setSecondChannel(null);
+      setActiveSide('primary');
+      showToast('Multi-Tela desativada', 'info');
+    },
     voltar: () => (((window.history.state as { idx?: number } | null)?.idx ?? 0) > 0 ? navigate(-1) : navigate('/')),
   });
 
@@ -705,10 +713,31 @@ function App() {
     };
     syncUpscaling();
     window.addEventListener('saimo-upscaling-mudou', syncUpscaling);
+
+    // Vídeo que já tem a resolução do alvo não recebe o filtro de nitidez (data-nativo="1").
+    // Alvo: a altura real da tela no modo 4K; até 1080 no modo HD.
+    const marcarNativo = (alvo: EventTarget | null) => {
+      const video = alvo as HTMLVideoElement | null;
+      if (!video || video.tagName !== 'VIDEO' || !video.videoHeight) return;
+      const modo = document.documentElement.dataset.upscaling;
+      const tela = Math.round(Math.min(window.screen.width, window.screen.height) * (window.devicePixelRatio || 1));
+      const meta = modo === '4k' ? tela : Math.min(1080, tela);
+      if (video.videoHeight >= meta) video.dataset.nativo = '1';
+      else delete video.dataset.nativo;
+    };
+    const aoMudarVideo = (e: Event) => marcarNativo(e.target);
+    const reavaliarTodos = () => document.querySelectorAll('video').forEach((v) => marcarNativo(v));
+    // Eventos de mídia não sobem: na fase de captura o documento recebe todos.
+    document.addEventListener('loadedmetadata', aoMudarVideo, true);
+    document.addEventListener('resize', aoMudarVideo, true);
+    window.addEventListener('saimo-upscaling-mudou', reavaliarTodos);
     window.addEventListener('storage', syncUpscaling);
     return () => {
       window.removeEventListener('saimo-upscaling-mudou', syncUpscaling);
       window.removeEventListener('storage', syncUpscaling);
+      document.removeEventListener('loadedmetadata', aoMudarVideo, true);
+      document.removeEventListener('resize', aoMudarVideo, true);
+      window.removeEventListener('saimo-upscaling-mudou', reavaliarTodos);
     };
   }, []);
 

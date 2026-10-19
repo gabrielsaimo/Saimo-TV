@@ -716,3 +716,14 @@
 }
 .modo-tv *:focus { outline: none; }
 .modo-tv .dpad-focused:focus { outline: 5px solid #a78bfa; }
+
+/* TV: o que não serve no controle remoto sai da barra do player. O volume é o da própria TV
+   (o controle deslizante prendia as setas), e transmitir, picture-in-picture e tela cheia não
+   existem no app da TV (ele já ocupa a tela toda). Sem eles a seta anda direto até a multi tela. */
+.modo-tv .volume-slider-mac,
+.modo-tv .video-player-container [title^="Transmitir"],
+.modo-tv .video-player-container [title^="Picture in Picture"],
+.modo-tv .video-player-container [title^="Tela cheia"],
+.modo-tv .video-player-container [title^="Sair da tela cheia"] {
+  display: none !important;
+}
