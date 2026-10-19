@@ -154,4 +154,7 @@ O mesmo código do site roda como app nas TVs de 2020 em diante: `./scripts/mont
 do app; ao abrir, o carregador (`tv/comum/carregador.js`) baixa a versão atual de
 `saimo-tv.pages.dev/tv/`, que o `publicar_site.sh` atualiza junto com o site. Na TV os vídeos abrem
 direto (http inclusive, HLS pelo decodificador da TV), sem o proxy. Plano, estado e o que falta testar
-em TV de verdade: `docs/PLANO-TIZEN-WEBOS.md`. Build: `vite build --mode tv`.
+em TV de verdade: `docs/PLANO-TIZEN-WEBOS.md`. Build: `vite build --mode tv`, depois `scripts/tv_es5.mjs`
+(ES5 conferido com acorn, para TVs antigas/fracas a partir do Chromium 38) e polyfills em
+`src/entrada-tv.ts` / `src/plataforma/polyfills-tv.ts`. Se a TV não abrir em 1 minuto, o carregador mostra o
+motivo na tela e manda um evento `crash` ao monitor (plataformas `tizen` e `webos`).
