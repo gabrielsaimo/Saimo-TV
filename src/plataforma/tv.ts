@@ -61,10 +61,20 @@ function tecla(alvo: EventTarget | null, key: string, keyCode: number): boolean 
   return !(alvo ?? document).dispatchEvent(evento);
 }
 
+/** Setas e OK do controle, por código: `key` pode vir vazio ou "Unidentified" em TV antiga. */
+const POR_CODIGO: Record<number, string> = { 37: 'ArrowLeft', 38: 'ArrowUp', 39: 'ArrowRight', 40: 'ArrowDown', 13: 'Enter' };
+
 function aoApertar(e: KeyboardEvent): void {
   const codigo = e.keyCode;
   // Já é a tecla traduzida por nós: deixa seguir.
   if (!e.isTrusted) return;
+  const certa = POR_CODIGO[codigo];
+  if (certa && e.key !== certa) {
+    e.preventDefault();
+    e.stopPropagation();
+    tecla(e.target, certa, codigo);
+    return;
+  }
   if (VOLTAR.has(codigo) && e.key !== 'Escape') {
     e.preventDefault();
     e.stopPropagation();
