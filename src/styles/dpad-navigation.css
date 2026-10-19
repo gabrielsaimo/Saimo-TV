@@ -702,3 +702,17 @@
   outline: 2px solid red !important;
 }
 */
+
+
+/* TV (Samsung/LG): qualquer controle pode receber o foco do controle remoto, então o
+   destaque vale para todos, bem visível a três metros de distância. */
+.modo-tv .dpad-focused {
+  outline: 5px solid #a78bfa !important;
+  outline-offset: 3px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 8px rgba(167, 139, 250, 0.28);
+  position: relative;
+  z-index: 5;
+}
+.modo-tv *:focus { outline: none; }
+.modo-tv .dpad-focused:focus { outline: 5px solid #a78bfa; }

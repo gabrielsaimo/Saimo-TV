@@ -1,12 +1,20 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { DpadContext, type Direction, type DpadContextValue } from './dpadContexto';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { ehTv } from '../plataforma/tv';
 
 // Tipos
 
 
 // Seletor para elementos focáveis
 const FOCUSABLE_SELECTOR = '[data-focusable="true"]:not([disabled]):not([data-disabled="true"]):not([aria-hidden="true"])';
+// Na TV não há mouse: todo controle da tela precisa ser alcançável pelo controle remoto, tenha
+// ou não o atributo data-focusable (só as telas feitas para o D-pad o tinham).
+const FOCUSAVEIS_NA_TV = [
+  '[data-focusable="true"]', 'button', 'a[href]', '[role="button"]', '[role="tab"]', '[role="menuitem"]',
+  'input:not([type="hidden"])', 'select', 'textarea', '[tabindex]:not([tabindex="-1"])',
+].map((q) => `${q}:not([disabled]):not([data-disabled="true"]):not([aria-hidden="true"])`).join(',');
+const seletorFocavel = () => (ehTv() ? FOCUSAVEIS_NA_TV : FOCUSABLE_SELECTOR);
 
 // Zonas de navegação - define como navegação entre áreas funciona
 interface NavigationZone {
@@ -71,8 +79,9 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
   const navigate = useNavigate();
   const location = useLocation();
   const [focusedElement, setFocusedElement] = useState<HTMLElement | null>(null);
-  const [isEnabled, setEnabled] = useState(false);
-  const [isUsingDpad, setIsUsingDpad] = useState(false);
+  // Na TV (Samsung/LG) o controle remoto é o único jeito de navegar: nasce ligado.
+  const [isEnabled, setEnabled] = useState(() => ehTv());
+  const [isUsingDpad, setIsUsingDpad] = useState(() => ehTv());
   const [showHint, setShowHint] = useState(false);
   
   const currentFocusRef = useRef<HTMLElement | null>(null);
@@ -96,7 +105,7 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
   // Função para obter todos os elementos focáveis em um container
   const getFocusableElements = useCallback((container?: HTMLElement | Document | null): HTMLElement[] => {
     const scope = container || document;
-    return Array.from(scope.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
+    return Array.from(scope.querySelectorAll<HTMLElement>(seletorFocavel()))
       .filter(isElementVisible);
   }, [isElementVisible]);
 
@@ -640,7 +649,7 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
 
     const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      const focusable = target.closest<HTMLElement>(FOCUSABLE_SELECTOR);
+      const focusable = target.closest<HTMLElement>(seletorFocavel());
       if (focusable) {
         setFocus(focusable, false);
         // NÃO desativa D-pad no clique - permite continuar usando D-pad após clique
@@ -720,6 +729,20 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
+
+  // Na TV a tela não pode ficar sem foco: o controle precisa responder já na primeira tecla,
+  // e de novo a cada tela nova (o foco antigo pode ter saído de cena).
+  useEffect(() => {
+    if (!isEnabled || !ehTv()) return;
+    const timer = setTimeout(() => {
+      if (!currentFocusRef.current || !isElementVisible(currentFocusRef.current)) {
+        const elementos = getFocusableElements();
+        if (elementos.length > 0) setFocus(elementos[0]);
+      }
+    }, 1500);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEnabled, location.pathname]);
 
   const contextValue: DpadContextValue = {
     focusedElement,
