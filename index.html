@@ -29,8 +29,62 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <!-- O SDK do Chromecast só é baixado quando alguém usa o player (castService). -->
     <title>Saimo TV</title>
+    <style>
+      /* Aviso de mudança de endereço: tela cheia, por cima de tudo, independente do React. */
+      #aviso-mudanca{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;
+        padding:24px;overflow-y:auto;background:radial-gradient(ellipse at 50% 20%,#1b1033 0%,#0a0a0a 65%);
+        color:#fff;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center}
+      #aviso-mudanca[hidden]{display:none}
+      #aviso-mudanca .caixa{max-width:720px;width:100%;margin:auto}
+      #aviso-mudanca .selo{display:inline-block;padding:6px 14px;border-radius:999px;background:#7c3aed33;color:#c4b5fd;
+        font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+      #aviso-mudanca h1{margin:18px 0 14px;font-size:clamp(32px,7vw,56px);line-height:1.1;font-weight:700}
+      #aviso-mudanca p{margin:0 auto 14px;max-width:600px;font-size:clamp(17px,3.4vw,21px);line-height:1.5;color:#d4d4d8}
+      #aviso-mudanca p strong{color:#fff}
+      #aviso-mudanca .endereco{display:block;margin:26px auto 22px;padding:18px 20px;border-radius:16px;background:#ffffff0f;
+        border:1px solid #ffffff26;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        font-size:clamp(20px,5vw,34px);font-weight:600;color:#fff;word-break:break-all;text-decoration:none}
+      #aviso-mudanca .botao{display:inline-block;padding:18px 34px;border-radius:14px;background:#7c3aed;color:#fff;
+        font-size:clamp(18px,4vw,22px);font-weight:700;text-decoration:none;box-shadow:0 10px 30px #7c3aed66}
+      #aviso-mudanca .botao:hover,#aviso-mudanca .botao:focus-visible{background:#8b5cf6;outline:3px solid #fff}
+      #aviso-mudanca .nota{margin-top:26px;font-size:15px;color:#a1a1aa}
+      #aviso-mudanca .seguir{margin-top:22px;background:none;border:0;color:#a1a1aa;font:inherit;font-size:15px;
+        text-decoration:underline;cursor:pointer;padding:8px}
+      #aviso-mudanca .seguir:hover{color:#fff}
+    </style>
   </head>
   <body>
+    <!-- Aviso de mudança de endereço (tela cheia). Some só na sessão atual, se a pessoa escolher continuar. -->
+    <div id="aviso-mudanca" role="alertdialog" aria-modal="true" aria-labelledby="aviso-titulo" hidden>
+      <div class="caixa">
+        <span class="selo">Aviso importante</span>
+        <h1 id="aviso-titulo">O Saimo TV mudou de endereço</h1>
+        <p>Este endereço <strong>vai sair do ar nas próximas semanas</strong>. O <strong>novo endereço vai ficar no lugar dele</strong>.</p>
+        <p>Abra o novo agora e salve nos favoritos do navegador:</p>
+        <a class="endereco" id="aviso-endereco" href="https://saimo-tv2.pages.dev/">saimo-tv2.pages.dev</a>
+        <a class="botao" id="aviso-botao" href="https://saimo-tv2.pages.dev/">Abrir o novo endereço</a>
+        <p class="nota">Seus favoritos e o que você já assistiu ficam guardados neste endereço e não passam sozinhos para o novo.</p>
+        <button class="seguir" id="aviso-seguir" type="button">Continuar neste endereço por enquanto</button>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var caixa = document.getElementById('aviso-mudanca');
+        var seguiu = false;
+        try { seguiu = sessionStorage.getItem('aviso-mudanca-seguir') === '1'; } catch (e) {}
+        if (!seguiu) {
+          caixa.hidden = false;
+          document.documentElement.style.overflow = 'hidden';
+          // O botão novo já nasce em foco: quem usa o teclado ou o controle da TV só aperta Enter.
+          setTimeout(function () { var b = document.getElementById('aviso-botao'); if (b) b.focus(); }, 0);
+        }
+        document.getElementById('aviso-seguir').addEventListener('click', function () {
+          try { sessionStorage.setItem('aviso-mudanca-seguir', '1'); } catch (e) {}
+          caixa.hidden = true;
+          document.documentElement.style.overflow = '';
+        });
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
