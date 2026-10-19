@@ -5,7 +5,7 @@
 </p>
 
 Canais ao vivo, guia de programação, filmes e séries no navegador:
-**<https://saimo-tv2.pages.dev>**. Versão atual: **2.1.1**.
+**<https://saimo-tv.pages.dev>**. Versão atual: **2.1.1**.
 
 O site não embute lista nenhuma (nem de canais, nem de filmes, nem tabelas do guia).
 Só há dois endereços padrão, as constantes `PADRAO` de `src/services/listas.ts`
@@ -99,7 +99,7 @@ bun run lint
 ## Publicar
 
 `scripts/publicar_site.sh` faz o build e o upload direto para o Cloudflare Pages
-(`saimo-tv2.pages.dev`), sem depender do GitHub. `_redirects` em `public/` cuida
+(`saimo-tv.pages.dev`), sem depender do GitHub. `_redirects` em `public/` cuida
 das rotas, `/baixar` leva para a página de download dos apps e `functions/`
 traz o proxy (`/api/*`) e os atalhos de download (`/tvbox`, `/celular`, `/mac`,
 `/windows`, que leem o `versao.json`).
@@ -152,6 +152,6 @@ O workflow `Build Windows Desktop` gera MSI e NSIS ao receber uma tag
 O mesmo código do site roda como app nas TVs de 2020 em diante: `./scripts/montar_tv.sh` gera
 `build/tv/SaimoTV-Samsung.wgt` e `build/tv/SaimoTV-LG.ipk`. O pacote guarda só uma casca e uma cópia
 do app; ao abrir, o carregador (`tv/comum/carregador.js`) baixa a versão atual de
-`saimo-tv2.pages.dev/tv/`, que o `publicar_site.sh` atualiza junto com o site. Na TV os vídeos abrem
+`saimo-tv.pages.dev/tv/`, que o `publicar_site.sh` atualiza junto com o site. Na TV os vídeos abrem
 direto (http inclusive, HLS pelo decodificador da TV), sem o proxy. Plano, estado e o que falta testar
 em TV de verdade: `docs/PLANO-TIZEN-WEBOS.md`. Build: `vite build --mode tv`.

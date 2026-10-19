@@ -2,6 +2,10 @@
 #
 # Publica o site no Cloudflare Pages sem passar pelo GitHub (upload direto).
 #
+# ATENÇÃO: o site de verdade (saimo-tv.pages.dev) é um projeto ligado ao Git e publica sozinho
+# a cada push na `main` de gabrielsaimo/Saimo-TV. Este script serve para publicar noutro
+# projeto por upload (SAIMO_PROJETO_SITE) quando o Git não puder ser usado.
+#
 #   ./scripts/publicar_site.sh
 #
 # Faz o build (bun, por causa do bun.lock) e envia dist/ com a pasta functions/

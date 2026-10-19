@@ -1,3 +1,7 @@
+> **Atualização (19/10/2026):** o endereço do site é `saimo-tv.pages.dev`, o projeto antigo da
+> Cloudflare (conta antiga), ligado ao GitHub antigo: publicar é dar push na `main` de
+> `gabrielsaimo/Saimo-TV`. O `saimo-tv2` foi abandonado; o texto abaixo é histórico.
+
 # Trocar o site de GitHub (ou largar o GitHub)
 
 O site não embute lista nenhuma. Os endereços de canais
@@ -10,7 +14,7 @@ ou restaura o padrão, e isso fica no `localStorage`. Fora isso, o único endere
 atalhos `/tvbox`, `/celular`, `/mac`, `/windows` leem os links dele (só aceitam
 `https://github.com/<dono>/<repo>/releases/download/…`).
 
-O projeto final do Cloudflare Pages é `saimo-tv2` (`saimo-tv2.pages.dev`), o padrão de
+O projeto final do Cloudflare Pages é `saimo-tv2` (`saimo-tv.pages.dev`), o padrão de
 `scripts/publicar_site.sh`.
 
 Falta só o deploy. O projeto antigo `saimo-tv` do Cloudflare Pages é conectado ao
@@ -28,7 +32,7 @@ wrangler pages project create saimo-tv2 --production-branch main
 scripts/publicar_site.sh
 ```
 
-O endereço novo é `saimo-tv2.pages.dev`; domínio próprio, se houver, precisa ser
+O endereço novo é `saimo-tv.pages.dev`; domínio próprio, se houver, precisa ser
 ligado ao projeto novo.
 
 Depois disso, publicar é sempre `scripts/publicar_site.sh`; push no GitHub não

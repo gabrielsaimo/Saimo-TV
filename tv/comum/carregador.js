@@ -12,7 +12,7 @@
  * Os scripts são clássicos (nada de type="module"): o webOS bloqueia módulo em file://.
  */
 (function () {
-  var SITE = 'https://saimo-tv2.pages.dev/tv/';
+  var SITE = 'https://saimo-tv.pages.dev/tv/';
   var CASCA = 1; // sobe só quando o pacote instalado muda (permissões, ícones, este arquivo)
   var LIMITE_MS = 6000;
   var info = document.getElementById('carregando');
@@ -55,7 +55,7 @@
     if (feito) return;
     feito = true;
     if (m && m.minimoCasca && m.minimoCasca > CASCA) {
-      aviso('Esta versão do aplicativo ficou antiga. Instale a nova em saimo-tv2.pages.dev' + (window.__SAIMO_TV__ === 'webos' ? '/lg' : '/samsung'));
+      aviso('Esta versão do aplicativo ficou antiga. Instale a nova em saimo-tv.pages.dev' + (window.__SAIMO_TV__ === 'webos' ? '/lg' : '/samsung'));
       return local();
     }
     if (m && m.js && m.css && m.versao) return remoto(m);
