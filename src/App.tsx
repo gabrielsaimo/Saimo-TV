@@ -19,6 +19,7 @@ import type { Channel } from './types/channel';
 import type { Movie, SeriesEpisodeInfo } from './types/movie';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { DpadNavigationProvider } from './contexts/DpadContext';
+import { useControleTv } from './hooks/useControleTv';
 import './App.css';
 
 /**
@@ -217,6 +218,17 @@ function TVPage() {
     const prevIndex = currentIndex <= 0 ? channels.length - 1 : currentIndex - 1;
     handleSelectChannel(channels[prevIndex]);
   }, [selectedChannel, secondChannel, isMultiScreen, activeSide, handleSelectChannel, channels]);
+
+  useControleTv({
+    ativo: !!selectedChannel,
+    painelAberto: isChannelsPanelOpen,
+    controlesVisiveis: controlsVisible,
+    abrirPainel: () => setIsChannelsPanelOpen(true),
+    fecharPainel: () => setIsChannelsPanelOpen(false),
+    proximo: handleNextChannel,
+    anterior: handlePrevChannel,
+    voltar: () => navigate('/'),
+  });
 
   return (
     <div className={`page-container tv-page ${isTheaterMode ? 'theater-mode' : ''} ${deitado ? 'deitado' : ''} ${deitado && (selectedMovie || selectedChannel) ? 'tocando' : ''}`}>
