@@ -3,7 +3,7 @@
  * na TV. O destino sai do versao.json da última release; só segue link de
  * release do GitHub.
  */
-const VERSAO = 'https://github.com/saimo-tv/saimo-downloads/releases/latest/download/versao.json';
+const VERSAO = 'https://canais-saimo.pages.dev/versao.json';
 
 export function atalho(plataforma: string) {
   return async ({ request }: { request: Request }): Promise<Response> => {

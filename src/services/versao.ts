@@ -20,7 +20,7 @@ export interface Versao {
 
 /** Endereço único e fixo do arquivo de versão. */
 export const URL_VERSAO =
-  'https://github.com/saimo-tv/saimo-downloads/releases/latest/download/versao.json';
+  'https://canais-saimo.pages.dev/versao.json';
 
 const PLATAFORMAS: Plataforma[] = ['tvbox', 'celular', 'mac', 'windows'];
 
