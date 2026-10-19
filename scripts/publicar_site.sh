@@ -41,11 +41,4 @@ else
   npm run build
 fi
 
-# O app das TVs Samsung/LG baixa o código daqui ao abrir (ver docs/PLANO-TIZEN-WEBOS.md).
-bash scripts/tv_codigo.sh
-mkdir -p dist/tv
-cp dist-tv/saimo.js dist-tv/saimo.css dist-tv/manifesto.json dist/tv/
-# O carregador lê o manifesto por XHR de outra origem (file://): precisa de CORS.
-printf '/tv/*\n  Access-Control-Allow-Origin: *\n  Cache-Control: public, max-age=60\n' > dist/_headers
-
 "$WRANGLER" pages deploy dist --project-name "$PROJETO" --branch main --commit-dirty=true
