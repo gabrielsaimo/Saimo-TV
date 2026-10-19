@@ -9,8 +9,8 @@ import { useDpad } from '../contexts/dpadContexto';
  * para focar: setas e OK não faziam nada, e o Voltar saía do app. Aqui:
  * - setas cima/baixo trocam de canal (como o CH+/CH− da TV, que também vale);
  * - OK e setas laterais abrem a lista de canais, já com o foco no canal no ar;
- * - Voltar com a lista aberta fecha a lista (vídeo em tela cheia); em tela cheia, volta ao
- *   Início (nunca sai do app daqui).
+ * - Voltar com a lista aberta fecha a lista (vídeo em tela cheia); em tela cheia, volta à
+ *   tela anterior (nunca sai do app daqui).
  */
 export function useControleTv(o: {
   ativo: boolean;

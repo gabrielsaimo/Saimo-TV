@@ -75,6 +75,40 @@ const NavigationHint = React.memo(function NavigationHint({ show }: { show: bool
 });
 
 // Provider do contexto D-pad
+/**
+ * Deixa o elemento focado à vista: primeiro dentro da fileira que rola de lado (os trilhos de
+ * capas do On Demand, do Início…), depois na página. A conta é feita contra a caixa de quem rola,
+ * e não contra a janela: o trilho costuma ser mais estreito que a tela, e o cartão "fora" dele
+ * ainda parecia dentro da janela — a fileira ficava parada e o foco sumia para a direita.
+ */
+function rolarAteVer(el: HTMLElement): void {
+  const suave = 'smooth' as ScrollBehavior;
+  // Fileira horizontal mais próxima.
+  for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
+    if (p.scrollWidth <= p.clientWidth + 1) continue;
+    const ox = window.getComputedStyle(p).overflowX;
+    if (ox === 'visible') continue;
+    const r = el.getBoundingClientRect();
+    const c = p.getBoundingClientRect();
+    const margem = Math.min(140, c.width * 0.12);
+    if (r.left < c.left + margem) p.scrollBy({ left: r.left - c.left - margem, behavior: suave });
+    else if (r.right > c.right - margem) p.scrollBy({ left: r.right - c.right + margem, behavior: suave });
+    break;
+  }
+  // Na vertical: a página (ou o painel que rola) leva a fileira para perto do meio.
+  const r = el.getBoundingClientRect();
+  if (r.top < 120 || r.bottom > window.innerHeight - 60) {
+    el.scrollIntoView({ behavior: suave, block: 'center', inline: 'nearest' });
+  }
+}
+
+/** A janela de cima (dialog visível mais recente), se houver. */
+function janelaAberta(): HTMLElement | null {
+  const todas = Array.from(document.querySelectorAll<HTMLElement>('[role="dialog"], [aria-modal="true"]'))
+    .filter((d) => d.getClientRects().length > 0 && window.getComputedStyle(d).visibility !== 'hidden');
+  return todas.length ? todas[todas.length - 1] : null;
+}
+
 export function DpadNavigationProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -104,9 +138,14 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
 
   // Função para obter todos os elementos focáveis em um container
   const getFocusableElements = useCallback((container?: HTMLElement | Document | null): HTMLElement[] => {
-    const scope = container || document;
-    return Array.from(scope.querySelectorAll<HTMLElement>(seletorFocavel()))
+    // Na TV, com uma janela aberta por cima (ficha do título, ator…), o controle anda só
+    // dentro dela: antes as setas continuavam nos cartões que ficaram atrás.
+    const scope = container || (ehTv() ? janelaAberta() : null) || document;
+    const dentro = Array.from(scope.querySelectorAll<HTMLElement>(seletorFocavel()))
       .filter(isElementVisible);
+    // Zona vizinha fora da janela aberta: não vale.
+    const janela = ehTv() ? janelaAberta() : null;
+    return janela && container && !janela.contains(container as Node) ? [] : dentro;
   }, [isElementVisible]);
 
   // Função para calcular a distância entre elementos na direção especificada
@@ -221,39 +260,7 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
       element.focus({ preventScroll: true });
 
       if (scrollIntoView) {
-        // Scroll customizado mais suave e inteligente
-        requestAnimationFrame(() => {
-          const rect = element.getBoundingClientRect();
-          const viewHeight = window.innerHeight;
-          const viewWidth = window.innerWidth;
-          
-          // Verifica se precisa de scroll vertical
-          const needsVerticalScroll = rect.top < 120 || rect.bottom > viewHeight - 50;
-          // Verifica se precisa de scroll horizontal
-          const needsHorizontalScroll = rect.left < 50 || rect.right > viewWidth - 50;
-          
-          if (needsVerticalScroll || needsHorizontalScroll) {
-            // Primeiro tenta scroll do container pai (carrossel)
-            const carousel = element.closest('.category-carousel, .carousel-wrapper, .movies-grid');
-            if (carousel && needsHorizontalScroll) {
-              const carouselRect = carousel.getBoundingClientRect();
-              const scrollLeft = element.offsetLeft - (carouselRect.width / 2) + (rect.width / 2);
-              carousel.scrollTo({
-                left: scrollLeft,
-                behavior: 'smooth'
-              });
-            }
-            
-            // Depois faz scroll da página se necessário
-            if (needsVerticalScroll) {
-              element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'nearest',
-              });
-            }
-          }
-        });
+        requestAnimationFrame(() => rolarAteVer(element));
       }
     }
   }, []);
@@ -743,6 +750,34 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEnabled, location.pathname]);
+
+  // Na TV: janela abriu, o foco entra nela; fechou, volta para onde estava (o cartão).
+  useEffect(() => {
+    if (!isEnabled || !ehTv()) return;
+    let atual: HTMLElement | null = janelaAberta();
+    const pilha: (HTMLElement | null)[] = [];
+    let agendado = 0;
+    const conferir = () => {
+      agendado = 0;
+      const nova = janelaAberta();
+      if (nova === atual) return;
+      if (nova && (!atual || !nova.contains(atual))) {
+        pilha.push(currentFocusRef.current);
+        const alvo = nova.querySelector<HTMLElement>('[data-autofocus], .vod-btn-assistir, button.primario')
+          ?? Array.from(nova.querySelectorAll<HTMLElement>(seletorFocavel())).find(isElementVisible) ?? null;
+        if (alvo) setFocus(alvo);
+      } else if (!nova || (atual && atual.contains(nova))) {
+        const antes = pilha.pop();
+        if (antes && antes.isConnected && isElementVisible(antes)) setFocus(antes);
+      }
+      atual = nova;
+    };
+    const obs = new MutationObserver(() => {
+      if (!agendado) agendado = window.setTimeout(conferir, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+    return () => { obs.disconnect(); if (agendado) clearTimeout(agendado); };
+  }, [isEnabled, setFocus, isElementVisible]);
 
   const contextValue: DpadContextValue = {
     focusedElement,
