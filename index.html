@@ -63,7 +63,7 @@
         <p>Abra o novo agora e salve nos favoritos do navegador:</p>
         <a class="endereco" id="aviso-endereco" href="https://saimo-tv2.pages.dev/">saimo-tv2.pages.dev</a>
         <a class="botao" id="aviso-botao" href="https://saimo-tv2.pages.dev/">Abrir o novo endereço</a>
-        <p class="nota">Seus favoritos e o que você já assistiu ficam guardados neste endereço e não passam sozinhos para o novo.</p>
+        <p class="nota">Ao abrir o novo endereço por este botão, o site pergunta se você quer trazer seus favoritos, o que estava assistindo e seus canais próprios.</p>
         <button class="seguir" id="aviso-seguir" type="button">Continuar neste endereço por enquanto</button>
       </div>
     </div>
@@ -78,6 +78,36 @@
           // O botão novo já nasce em foco: quem usa o teclado ou o controle da TV só aperta Enter.
           setTimeout(function () { var b = document.getElementById('aviso-botao'); if (b) b.focus(); }, 0);
         }
+        // Dados do usuário que vão junto para o endereço novo (no trecho # do link, sem passar por servidor).
+        // Fica de fora: desbloqueio adulto, caches e endereços das listas.
+        (function () {
+          var CHAVES = ['tv-favorites', 'tv-last-channel', 'tv-volume', 'movie-volume', 'movie-skip-time', 'current-movie-id',
+            'saimo-vod-favoritos', 'saimo-continuar', 'saimo-canais-personalizados', 'saimo-ao-iniciar', 'saimo-upscaling',
+            'saimo-upscale-4k', 'saimo-upscale-hd', 'saimo-buscas-recentes', 'saimo-radios-recentes', 'saimo-entrada',
+            'saimo-telemetria-id'];
+          var BASE = 'https://saimo-tv2.pages.dev/';
+          function montar(comProgresso) {
+            var o = {}, n = 0;
+            try {
+              for (var i = 0; i < localStorage.length; i++) {
+                var k = localStorage.key(i);
+                var prog = k.indexOf('movie-progress-') === 0;
+                if (CHAVES.indexOf(k) < 0 && !(prog && comProgresso)) continue;
+                var v = localStorage.getItem(k);
+                if (typeof v === 'string' && v.length <= 200000) { o[k] = v; n++; }
+              }
+            } catch (e) { return ''; }
+            if (!n) return '';
+            var b = btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+            return '#migrar=1.' + b.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+          }
+          var h = montar(true);
+          if (h.length > 60000) h = montar(false);
+          if (h.length > 60000) h = '';
+          if (h) ['aviso-botao', 'aviso-endereco'].forEach(function (id) {
+            var el = document.getElementById(id); if (el) el.href = BASE + h;
+          });
+        })();
         document.getElementById('aviso-seguir').addEventListener('click', function () {
           try { sessionStorage.setItem('aviso-mudanca-seguir', '1'); } catch (e) {}
           caixa.hidden = true;
