@@ -13,6 +13,9 @@ import './AppDownload.css';
  * moram. Sem o arquivo, o botão vira "Tentar novamente" em vez de ficar morto.
  */
 
+/** Código do Saimo TV no app Downloader (AFTVnews): digitar no lugar do endereço. */
+const CODIGO_DOWNLOADER = '3630056';
+
 type AppId = 'tvbox' | 'cell' | 'mac' | 'windows' | 'samsung' | 'lg';
 
 interface App {
@@ -40,7 +43,7 @@ const APPS: App[] = [
     requisitos: ['Android 5.0 ou mais novo', 'Controle remoto com setas e OK', 'Conexão com a internet'],
     passos: [
       { titulo: 'Instale o Downloader', texto: 'Na loja do aparelho (Play Store ou Amazon Appstore), procure por “Downloader” e instale.' },
-      { titulo: 'Digite o endereço', texto: 'Abra o Downloader e digite o endereço curto mostrado acima. O download começa sozinho.' },
+      { titulo: 'Digite o código ou o endereço', texto: 'Abra o Downloader e digite o código 3630056 (ou o endereço curto mostrado acima). O download começa sozinho.' },
       { titulo: 'Permita a instalação', texto: 'Se o aparelho pedir, ative “Instalar apps desconhecidos” para o Downloader.' },
       { titulo: 'Pronto', texto: 'Instale e abra o Saimo TV. As próximas versões são oferecidas dentro do próprio app.' },
     ],
@@ -319,6 +322,11 @@ export function AppDownload() {
           <p className="download-short">
             {app.id === 'tvbox' ? 'No Downloader, digite:' : 'Para baixar em outro aparelho, abra:'} <code>{linkCurto}</code>
           </p>
+          {app.id === 'tvbox' && (
+            <p className="download-short">
+              Ou, no Downloader, digite o código: <code>{CODIGO_DOWNLOADER}</code>
+            </p>
+          )}
           {app.id === 'windows' && (
             <p className="download-short">
               Aplicativo de verdade, não é o site numa janela: a lista, o guia e o vídeo rodam no próprio PC.
