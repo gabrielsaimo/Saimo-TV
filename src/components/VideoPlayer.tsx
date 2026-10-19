@@ -12,6 +12,7 @@ import { playDash, type DashHandle } from '../services/dashPlayer';
 import * as telemetria from '../services/telemetria';
 import './VideoPlayer.css';
 import './AvisoApp.css';
+import { ehTv } from '../plataforma/tv';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
 
 interface VideoPlayerProps {
@@ -179,7 +180,8 @@ export const VideoPlayer = memo(function VideoPlayer({
    * separada, e o aviso aparece de saída.
    */
   const tentavel = useCallback(
-    (a: Attempt | undefined) => !!a && !a.source.url.startsWith('http://'),
+    // Na TV o app é instalado: http abre direto, sem a regra da página https.
+    (a: Attempt | undefined) => !!a && (ehTv() || !a.source.url.startsWith('http://')),
     [],
   );
   const semCaminhoNoSite = attempts.length > 0 && !attempts.some(tentavel);
@@ -258,7 +260,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       setIsLoading(false);
       return;
     }
-    const { source, url, viaProxy } = attempt;
+    const { source, url, viaProxy, nativo } = attempt;
 
     // Monitor: trocar de canal ou escolher fonte à mão é uma abertura; descer
     // para a próxima tentativa depois de uma falha, não.
@@ -400,7 +402,18 @@ export const VideoPlayer = memo(function VideoPlayer({
       });
     };
 
-    if (isDash(source.url)) {
+    if (nativo) {
+      // TV: o decodificador da TV abre o HLS sozinho (sem CORS, com aceleração).
+      video.src = url;
+      video.addEventListener('loadedmetadata', () => {
+        setIsLoading(false);
+        video.muted = forceMutedRef.current || isMutedRef.current;
+        tocar();
+      }, { once: true });
+      video.addEventListener('error', () => falhar('nativo'), { once: true });
+      video.load();
+      retomar = () => { try { void video.play(); } catch { /* o vigia decide depois */ } };
+    } else if (isDash(source.url)) {
       playDash(video, url, source, falhar)
         .then((handle) => {
           if (cancelado) { handle.destroy(); return; }
@@ -517,6 +530,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       window.clearInterval(vigia);
       video.removeEventListener('timeupdate', marcarAvanco);
       limpar();
+      if (nativo) { video.removeAttribute('src'); video.load(); }
     };
   }, [channel, attempts, sourceIndex, reloadTick, semCaminhoNoSite, tentavel]);
 

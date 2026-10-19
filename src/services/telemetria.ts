@@ -10,8 +10,10 @@
  * CORS, nada que atrase o vídeo, e a última batida ainda sai quando a aba fecha.
  */
 
+import { marcaTv } from '../plataforma/tv';
+
 const BASE = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1';
-const PLATAFORMA = 'site';
+const PLATAFORMA = marcaTv() ?? 'site';
 const VERSAO = 'web';
 /** Zapeando, cada canal que passa não vira batida: só quem ficou. */
 const MINIMO_PARA_CONTAR_MS = 20_000;

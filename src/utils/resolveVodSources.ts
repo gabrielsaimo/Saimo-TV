@@ -1,5 +1,6 @@
 import type { MovieSource } from '../types/movie';
 import { httpsFirst } from './sourceOrder';
+import { proxyBase } from './streamUrl';
 
 function isAllowedTargetHost(hostname: string): boolean {
   return (
@@ -21,7 +22,7 @@ export async function resolveVodSources(sources: MovieSource[], signal: AbortSig
   }).slice(0, 3);
   const resolvedPairs = await Promise.all(candidates.map(async source => {
     try {
-      const response = await fetch(`/api/resolve-vod?url=${encodeURIComponent(source.url)}`, { signal });
+      const response = await fetch(`${proxyBase()}/api/resolve-vod?url=${encodeURIComponent(source.url)}`, { signal });
       if (!response.ok) return null;
       const data = await response.json();
       const url = new URL(data.url);

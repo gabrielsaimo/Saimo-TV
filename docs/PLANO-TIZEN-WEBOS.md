@@ -1,6 +1,8 @@
 # Saimo TV para Samsung (Tizen) e LG (webOS) — plano
 
-Escrito em 19/10/2026. Nada disto foi implementado ainda.
+Escrito em 19/10/2026. **Status (19/10/2026): as fases 1, 2 e 5 estão feitas; a fase 3 foi feita
+sem o AVPlay; a fase 0 (prova nas TVs reais) e a fase 4 (desempenho) dependem de uma TV de
+verdade e ainda não foram executadas.** O que existe hoje está em "Estado atual" no fim.
 
 ## 1. Decisão principal: reaproveitar o site, não escrever app novo
 
@@ -183,3 +185,37 @@ empacotado puro (atualização reinstalando) naquela marca.
 - LG fórum — módulo bloqueado em `file://`: https://forum.webostv.developer.lge.com/t/module-script-loads-blocked-under-file-origin-for-installed-webos-app-no-cors-workaround-found/28351
 - Modo desenvolvedor LG e expiração: https://elis.nu/blog/2022/07/keeping-webos-developer-mode-alive-with-home-assistant/
 - Instalação Samsung sem Tizen Studio: https://jellywatch.app/blog/jellyfin-samsung-tv-tizen-install-sideload-guide-2026
+
+
+## Estado atual (implementado em 19/10/2026)
+
+| Item | Onde | Situação |
+|---|---|---|
+| Detecção Samsung/LG, teclas do controle (Voltar 10009/461, Play/Pausa, números), sair do app | `src/plataforma/tv.ts` | feito, ligado em `src/main.tsx` |
+| HTTP e CORS: na TV nada começa pelo proxy; `http://` abre direto; proxy do site fica como última tentativa | `src/utils/streamUrl.ts`, `VideoPlayer.tsx`, `MoviePlayer.tsx` | feito e coberto por `tests/modoTv.test.mjs` |
+| HLS nativo da TV como primeira tentativa (sem CORS, com aceleração) e hls.js depois | `streamUrl.ts` (`Attempt.nativo`), `VideoPlayer.tsx` | feito |
+| Build de TV: um `saimo.js` clássico (IIFE), alvo Chrome 68 e polyfills (core-js), worker do guia embutido | `vite build --mode tv`, `src/entrada-tv.ts`, `vite.config.ts` | feito |
+| Carregador (código novo do site ao abrir, cópia de reserva no pacote) | `tv/comum/carregador.js` | feito e testado contra o site publicado |
+| Pacotes `.wgt` (Samsung) e `.ipk` (LG) | `scripts/montar_tv.sh` | feito; o `.wgt` sai sem assinatura |
+| Código das TVs publicado em `/tv/` + manifesto | `scripts/publicar_site.sh`, `scripts/tv_codigo.sh` | feito |
+| Links curtos `/samsung` e `/lg`, abas Samsung/LG na página de download | `functions/`, `AppDownload.tsx` | feito |
+| `release.sh` coloca os pacotes no release e `tizen`/`webos` no `versao.json` | `SaimoPlayer/release.sh` | feito |
+
+### O que NÃO foi feito (e por quê)
+- **Nenhum teste em TV de verdade.** Tudo foi verificado no navegador (pacote servido por
+  localhost, com o modo TV forçado) e nos testes automáticos. Não dá para garantir, sem uma
+  Samsung e uma LG, que cada fonte toque: depende do Chromium da TV, de CORS no webOS e de
+  codecs. O desenho abre várias saídas (HLS nativo, hls.js direto, proxy do site) justamente
+  para isso, mas a prova é a Fase 0.
+- **AVPlay (Samsung).** Fica como reserva para fontes que o `<video>` não abrir (cabeçalhos
+  Referer/User-Agent, áudio AC3/E-AC3). Só vale a pena medir depois da Fase 0.
+- **Serviço local no webOS** (proxy dentro da TV): plano B se o webOS bloquear CORS no pacote.
+- **Assinatura do `.wgt`**: precisa do certificado Samsung ligado ao ID da TV (Tizen Studio).
+  O `montar_tv.sh` assina sozinho se houver o comando `tizen` e `SAIMO_TIZEN_PERFIL`.
+- **Instalador automático** (botão no app do Mac/Windows) e a **loja oficial**.
+
+### Como testar na TV
+1. `./scripts/montar_tv.sh` gera `build/tv/SaimoTV-Samsung.wgt` e `build/tv/SaimoTV-LG.ipk`.
+2. Samsung: assinar e instalar (passos na página `/app`, aba Samsung). LG: `ares-install`.
+3. Abrir um canal https, um canal http e um filme. Se algo não tocar, ver no console da TV
+   (`tizen` Web Inspector / `ares-inspect`) qual tentativa falhou.

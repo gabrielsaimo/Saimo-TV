@@ -289,6 +289,18 @@ export async function fetchRealEPG(): Promise<boolean> {
   return true;
 }
 
+/**
+ * No pacote de TV a página vem de file://, onde o navegador não abre worker por
+ * arquivo nem módulo: o código do worker vai embutido e sobe por um blob.
+ */
+async function criarWorker(): Promise<Worker> {
+  if (import.meta.env.VITE_TV) {
+    const { default: WorkerEmbutido } = await import('../workers/epgWorker?worker&inline');
+    return new WorkerEmbutido();
+  }
+  return new Worker(new URL('../workers/epgWorker.ts', import.meta.url), { type: 'module' });
+}
+
 async function iniciarWorker(): Promise<void> {
   const sigPedida = assinatura();
   const tabelas = await carregarTabelas();
@@ -296,7 +308,7 @@ async function iniciarWorker(): Promise<void> {
   // a lista nova já reiniciou o guia por conta própria.
   if (sigPedida !== assinatura()) return;
   try {
-    worker = new Worker(new URL('../workers/epgWorker.ts', import.meta.url), { type: 'module' });
+    worker = await criarWorker();
   } catch (e) {
     console.error('[EPG] não foi possível iniciar o worker', e);
     marcarPronto();

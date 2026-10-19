@@ -9,6 +9,7 @@
  * placar e o tempo de jogo, e trazem escudos melhores. Só entra jogo que tem canal (sem canal não há o que
  * assistir), e jogo encerrado sai.
  */
+import { proxyBase } from '../utils/streamUrl';
 import type { Channel } from '../types/channel';
 
 export interface Jogo {
@@ -33,7 +34,7 @@ export const acabou = (j: Jogo, agora: number) => j.estado === 'post' || agora >
 
 // A agenda passa pela função do site (functions/api/events.ts): a embedtv
 // não manda o cabeçalho de CORS. A ESPN manda, então vai direto.
-const EMBED = '/api/events';
+const EMBED = `${proxyBase()}/api/events`;
 const STREAMING = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1/eventos';
 const ESPN = [
     'soccer/bra.1', 'soccer/bra.2', 'soccer/bra.copa_do_brazil', 'soccer/conmebol.libertadores',

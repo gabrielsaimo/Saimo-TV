@@ -30,3 +30,7 @@ dist-ssr
 # Build do app desktop (Tauri)
 desktop/src-tauri/target
 desktop/src-tauri/gen/schemas
+
+# Pacotes de TV (scripts/montar_tv.sh)
+build/
+dist-tv/

@@ -145,3 +145,13 @@ O workflow `Build Windows Desktop` gera MSI e NSIS ao receber uma tag
 | `functions/`, `api/` | proxy para fontes sem CORS |
 | `public/` | ícones, manifest, service worker, redirecionamentos |
 | `desktop/` | configuração do Tauri |
+
+
+## TV Samsung (Tizen) e LG (webOS)
+
+O mesmo código do site roda como app nas TVs de 2020 em diante: `./scripts/montar_tv.sh` gera
+`build/tv/SaimoTV-Samsung.wgt` e `build/tv/SaimoTV-LG.ipk`. O pacote guarda só uma casca e uma cópia
+do app; ao abrir, o carregador (`tv/comum/carregador.js`) baixa a versão atual de
+`saimo-tv2.pages.dev/tv/`, que o `publicar_site.sh` atualiza junto com o site. Na TV os vídeos abrem
+direto (http inclusive, HLS pelo decodificador da TV), sem o proxy. Plano, estado e o que falta testar
+em TV de verdade: `docs/PLANO-TIZEN-WEBOS.md`. Build: `vite build --mode tv`.

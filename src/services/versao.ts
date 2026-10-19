@@ -5,7 +5,7 @@
  * github.com, /<dono>/<repo>/releases/download/…).
  */
 
-export type Plataforma = 'tvbox' | 'celular' | 'mac' | 'windows';
+export type Plataforma = 'tvbox' | 'celular' | 'mac' | 'windows' | 'tizen' | 'webos';
 
 export interface ArquivoApp {
   nome: string;
@@ -22,7 +22,7 @@ export interface Versao {
 export const URL_VERSAO =
   'https://canais-saimo.pages.dev/versao.json';
 
-const PLATAFORMAS: Plataforma[] = ['tvbox', 'celular', 'mac', 'windows'];
+const PLATAFORMAS: Plataforma[] = ['tvbox', 'celular', 'mac', 'windows', 'tizen', 'webos'];
 
 /** Só vale link https de release do GitHub; qualquer outro é ignorado. */
 export function linkPermitido(url: unknown): url is string {
