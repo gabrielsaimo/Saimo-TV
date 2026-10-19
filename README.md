@@ -7,10 +7,12 @@
 Canais ao vivo, guia de programação, filmes e séries no navegador:
 **<https://saimo-tv2.pages.dev>**. Versão atual: **2.1.1**.
 
-O site não traz lista nenhuma (nem de canais, nem de filmes, nem tabelas do guia):
-na primeira abertura pergunta o endereço da lista de canais e o da lista de filmes e
-séries (também em Ajustes > Listas), guardados no `localStorage`. Sem endereço ele
-abre vazio, sem pedir nada à rede. A lista de canais serve `catalogo.txt`,
+O site não embute lista nenhuma (nem de canais, nem de filmes, nem tabelas do guia).
+Só há dois endereços padrão, as constantes `PADRAO` de `src/services/listas.ts`
+(`canais-saimo.pages.dev` e `filmes-saimo.pages.dev`), ativos sem a pessoa digitar
+nada. Em Ajustes > Listas ela pode trocá-los, restaurar o padrão ou deixar um em
+branco e salvar, o que desliga aquela lista (estado vazio, nenhum pedido de rede);
+os valores ficam no `localStorage`. A lista de canais serve `catalogo.txt`,
 `canais.txt`, `restritos.txt`, `radios.txt` e `guia.txt` (tabelas do guia); a de
 filmes serve a pasta `vod/`. A normalização do endereço está em
 `src/utils/enderecoLista.ts` (testes em `tests/`). O único endereço fixo é o do

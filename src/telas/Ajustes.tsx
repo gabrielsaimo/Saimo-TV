@@ -108,12 +108,13 @@ export function Ajustes() {
 
         <section className="ajustes-bloco" id="listas">
           <h2>Listas</h2>
-          <p>Os endereços de onde o site lê os canais e os filmes e séries. Sem eles o site abre vazio.</p>
+          <p>Os endereços de onde o site lê os canais e os filmes e séries. Já vêm preenchidos; troque por outros, ou deixe em branco e salve para desligar uma lista (o site fica vazio naquela parte).</p>
           <FormListas
             key={`${listas.canais}|${listas.filmes}`}
             permitirApagar
             aoSalvar={() => notificar('Listas salvas')}
-            aoApagar={() => notificar('Endereço apagado')}
+            aoApagar={() => notificar('Lista desligada')}
+            aoRestaurar={() => notificar('Endereço padrão restaurado')}
           />
         </section>
 

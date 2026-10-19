@@ -1,19 +1,25 @@
 /**
  * Os dois endereços de onde o site lê tudo o que não é dele: a lista de canais
- * e a de filmes e séries. O site não traz endereço nenhum de fábrica — quem
- * informa é a pessoa, na primeira abertura ou em Ajustes > Listas — e guarda
- * no armazenamento do navegador.
+ * e a de filmes e séries. Já vêm preenchidos (as duas constantes abaixo, o único
+ * lugar do site com endereço de lista), e a pessoa pode trocá-los, desligá-los
+ * ou restaurá-los em Ajustes > Listas.
  *
  *   linkCanais  catalogo.txt, canais.txt, restritos.txt, radios.txt, guia.txt
  *   linkFilmes  a pasta vod/: indice.txt, filmes-A.txt, imdb/…, novidades.json
  *
- * Sem endereço nenhuma tela faz pedido de rede para listas: elas mostram o
- * estado vazio, com atalho para Ajustes.
+ * No armazenamento do navegador: valor ausente = padrão; texto vazio guardado
+ * = lista desligada de propósito (estado vazio, nenhum pedido de rede).
  */
 import { useSyncExternalStore } from 'react';
-import { normalizarEndereco } from '../utils/enderecoLista';
+import { normalizarEndereco, resolverEndereco } from '../utils/enderecoLista';
 
 export { normalizarEndereco };
+
+/** Endereços padrão: as únicas listas conhecidas do site. */
+export const PADRAO: Record<'canais' | 'filmes', string> = {
+  canais: 'https://canais-saimo.pages.dev/',
+  filmes: 'https://filmes-saimo.pages.dev/',
+};
 
 const CHAVE_CANAIS = 'saimo-link-canais';
 const CHAVE_FILMES = 'saimo-link-filmes';
@@ -25,19 +31,19 @@ export type Lista = 'canais' | 'filmes';
 /** Arquivo que prova que o endereço é de uma lista de verdade. */
 const ARQUIVO_DE_TESTE: Record<Lista, string> = { canais: 'catalogo.txt', filmes: 'indice.txt' };
 
-function ler(chave: string): string {
-  try { return normalizarEndereco(localStorage.getItem(chave)) ?? ''; } catch { return ''; }
+function ler(chave: string, padrao: string): string {
+  try { return resolverEndereco(localStorage.getItem(chave), padrao); } catch { return padrao; }
 }
 
 // Sem localStorage (aba privada estrita) o endereço vale só até recarregar.
-const memoria: Record<Lista, string> = { canais: '', filmes: '' };
+const memoria: Record<Lista, string> = { ...PADRAO };
 let lidoDoDisco = false;
 
 function carregar(): void {
   if (lidoDoDisco) return;
   lidoDoDisco = true;
-  memoria.canais = ler(CHAVE_CANAIS);
-  memoria.filmes = ler(CHAVE_FILMES);
+  memoria.canais = ler(CHAVE_CANAIS, PADRAO.canais);
+  memoria.filmes = ler(CHAVE_FILMES, PADRAO.filmes);
 }
 
 /** Endereço-base da lista de canais, com barra no fim; `''` se não houver. */
@@ -49,10 +55,16 @@ export function definirLink(lista: Lista, endereco: string): void {
   carregar();
   const chave = lista === 'canais' ? CHAVE_CANAIS : CHAVE_FILMES;
   memoria[lista] = endereco;
-  try {
-    if (endereco) localStorage.setItem(chave, endereco);
-    else localStorage.removeItem(chave);
-  } catch { /* segue só na memória desta visita */ }
+  // Vazio é guardado como vazio: a lista fica desligada, não volta ao padrão.
+  try { localStorage.setItem(chave, endereco); } catch { /* segue só na memória desta visita */ }
+  window.dispatchEvent(new Event(EVENTO));
+}
+
+/** Volta uma lista ao endereço padrão. */
+export function restaurarPadrao(lista: Lista): void {
+  carregar();
+  memoria[lista] = PADRAO[lista];
+  try { localStorage.removeItem(lista === 'canais' ? CHAVE_CANAIS : CHAVE_FILMES); } catch { /* só memória */ }
   window.dispatchEvent(new Event(EVENTO));
 }
 
@@ -66,7 +78,7 @@ const instantaneo = () => `${linkCanais()}\n${linkFilmes()}`;
 
 /** Re-renderiza a tela quando um dos endereços muda. */
 export function useListas(): { canais: string; filmes: string } {
-  const valor = useSyncExternalStore(assinar, instantaneo, () => '\n');
+  const valor = useSyncExternalStore(assinar, instantaneo, () => `${PADRAO.canais}\n${PADRAO.filmes}`);
   const [canais, filmes] = valor.split('\n');
   return { canais, filmes };
 }

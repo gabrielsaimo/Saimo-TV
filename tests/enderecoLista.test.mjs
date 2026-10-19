@@ -34,3 +34,13 @@ test('inválidos', () => {
   assert.equal(n('file:///etc/passwd'), null);
   assert.equal(n('javascript:alert(1)'), null);
 });
+
+test('padrão: ausente usa o padrão, vazio desliga, válido vale', async () => {
+  const { resolverEndereco: r } = await import('../src/utils/enderecoLista.ts');
+  const P = 'https://padrao.exemplo/';
+  assert.equal(r(null, P), P);
+  assert.equal(r('', P), '');
+  assert.equal(r('  ', P), '');
+  assert.equal(r('outro.exemplo/x.txt', P), 'https://outro.exemplo/');
+  assert.equal(r('ftp://ruim', P), P);
+});

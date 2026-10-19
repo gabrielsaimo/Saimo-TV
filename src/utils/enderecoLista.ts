@@ -30,3 +30,13 @@ export function normalizarEndereco(bruto: string | null | undefined): string | n
 
   return `${url.protocol}//${url.host}${caminho}`;
 }
+
+/**
+ * O que vale a partir do valor guardado: ausente (`null`) usa o padrão; vazio
+ * guardado de propósito desliga a lista; endereço válido vale; lixo volta ao padrão.
+ */
+export function resolverEndereco(guardado: string | null, padrao: string): string {
+  if (guardado === null) return padrao;
+  if (guardado.trim() === '') return '';
+  return normalizarEndereco(guardado) || padrao;
+}

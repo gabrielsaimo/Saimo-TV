@@ -5,8 +5,8 @@
  */
 import { useId, useRef, useState, type ReactNode } from 'react';
 import {
-  apagarDadosDa, definirLink, linkCanais, linkFilmes, normalizarEndereco, testarEndereco, useListas,
-  type Lista,
+  apagarDadosDa, definirLink, linkCanais, linkFilmes, normalizarEndereco, PADRAO, restaurarPadrao, testarEndereco,
+  useListas, type Lista,
 } from '../services/listas';
 import './Listas.css';
 
@@ -26,11 +26,12 @@ interface Props {
   /** Mostra "Apagar" ao lado de cada endereço salvo (Ajustes). */
   permitirApagar?: boolean;
   aoApagar?: (lista: Lista) => void;
+  aoRestaurar?: (lista: Lista) => void;
   /** Botão extra, ao lado de Salvar: "Agora não" no diálogo da primeira abertura. */
   secundario?: ReactNode;
 }
 
-export function FormListas({ aoSalvar, secundario, permitirApagar, aoApagar }: Props) {
+export function FormListas({ aoSalvar, secundario, permitirApagar, aoApagar, aoRestaurar }: Props) {
   const atuais = useListas();
   const [valores, setValores] = useState<Record<Lista, string>>(() => ({ canais: atuais.canais, filmes: atuais.filmes }));
   const [fase, setFase] = useState<Fase>({ tipo: 'editando' });
@@ -84,6 +85,15 @@ export function FormListas({ aoSalvar, secundario, permitirApagar, aoApagar }: P
     aoApagar?.(lista);
   };
 
+  const restaurar = (lista: Lista) => {
+    rodada.current++;
+    apagarDadosDa(lista);
+    restaurarPadrao(lista);
+    setValores((atual) => ({ ...atual, [lista]: PADRAO[lista] }));
+    setFase({ tipo: 'editando' });
+    aoRestaurar?.(lista);
+  };
+
   const testando = fase.tipo === 'testando';
   const erro = fase.tipo === 'erro' ? fase : null;
   const muda = (lista: Lista, v: string) => {
@@ -99,9 +109,14 @@ export function FormListas({ aoSalvar, secundario, permitirApagar, aoApagar }: P
           <div className="listas-campo" key={c.lista}>
             <div className="listas-rotulo">
               <label htmlFor={`${id}-${c.lista}`}>{c.rotulo}</label>
-              {permitirApagar && atuais[c.lista] && (
-                <button type="button" className="listas-apagar" onClick={() => apagar(c.lista)} disabled={testando}>Apagar</button>
-              )}
+              <span className="listas-acoes">
+                {atuais[c.lista] !== PADRAO[c.lista] && (
+                  <button type="button" className="listas-apagar neutro" onClick={() => restaurar(c.lista)} disabled={testando}>Restaurar padrão</button>
+                )}
+                {permitirApagar && atuais[c.lista] && (
+                  <button type="button" className="listas-apagar" onClick={() => apagar(c.lista)} disabled={testando}>Apagar</button>
+                )}
+              </span>
             </div>
             <input
               id={`${id}-${c.lista}`}

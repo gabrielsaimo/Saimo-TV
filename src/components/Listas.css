@@ -1,17 +1,3 @@
-.listas-fundo {
-  position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center;
-  padding: 20px; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); animation: listasEntra 0.25s ease;
-}
-@keyframes listasEntra { from { opacity: 0; } to { opacity: 1; } }
-.listas-janela {
-  width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; padding: 28px;
-  border-radius: 24px; background: var(--ground, #0a0a0a); border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); animation: listasSobe 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-@keyframes listasSobe { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.listas-janela h1 { font-size: 1.3rem; font-weight: 700; margin: 0 0 8px; }
-.listas-janela > p { font-size: 0.9rem; line-height: 1.5; color: rgba(255, 255, 255, 0.65); margin: 0 0 18px; }
-
 .listas-form { display: flex; flex-direction: column; gap: 14px; }
 .listas-campo { display: flex; flex-direction: column; gap: 4px; }
 .listas-campo label { font-size: 0.85rem; font-weight: 600; }
@@ -48,3 +34,6 @@
   color: #fca5a5; background: transparent; border: 1px solid rgba(248, 113, 113, 0.4);
 }
 .listas-apagar:hover { background: rgba(248, 113, 113, 0.12); }
+.listas-acoes { display: flex; gap: 6px; }
+.listas-apagar.neutro { color: #fff; border-color: rgba(255, 255, 255, 0.25); }
+.listas-apagar.neutro:hover { background: rgba(255, 255, 255, 0.1); }

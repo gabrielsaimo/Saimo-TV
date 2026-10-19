@@ -1,8 +1,10 @@
 # Trocar o site de GitHub (ou largar o GitHub)
 
-O site não traz lista nem endereço de lista nenhum: quem informa os endereços de
-canais e de filmes e séries é a pessoa, na primeira abertura ou em Ajustes > Listas
-(guardados no `localStorage`). O único endereço fixo é o do `versao.json`:
+O site não embute lista nenhuma. Os endereços de canais
+(`https://canais-saimo.pages.dev/`) e de filmes e séries
+(`https://filmes-saimo.pages.dev/`) são as constantes `PADRAO` de
+`src/services/listas.ts`; em Ajustes > Listas a pessoa troca, desliga (campo vazio)
+ou restaura o padrão, e isso fica no `localStorage`. Fora isso, o único endereço fixo é o do `versao.json`:
 `https://github.com/saimo-tv/saimo-downloads/releases/latest/download/versao.json`
 (`src/services/versao.ts` e `functions/_lib/baixar.ts`). Os botões de download e os
 atalhos `/tvbox`, `/celular`, `/mac`, `/windows` leem os links dele (só aceitam

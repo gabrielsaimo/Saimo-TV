@@ -15,7 +15,6 @@ import { useVoltarFecha } from './hooks/useVoltarFecha';
 import { useCanais } from './hooks/useCanais';
 import { useListas } from './services/listas';
 import { SemLista } from './components/Telas';
-import { PerguntaListas } from './components/PerguntaListas';
 import type { Channel } from './types/channel';
 import type { Movie, SeriesEpisodeInfo } from './types/movie';
 import { useLocalStorage } from './hooks/useLocalStorage';
@@ -638,7 +637,6 @@ function AppLayout() {
       )}
     </Routes>
     <NavegacaoMobile />
-    <PerguntaListas />
     </>
   );
 }
