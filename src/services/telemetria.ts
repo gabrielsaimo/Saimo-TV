@@ -174,7 +174,7 @@ export function descreverAparelho(ua: string, toques: number, modeloDeclarado = 
     /iPad/.test(ua) || ipadDisfarcado ? 'Apple iPad' :
     /AppleTV/.test(ua) ? 'Apple TV' :
     /Tizen/.test(ua) ? 'TV Samsung (Tizen)' :
-    /Web0S|webOS/.test(ua) ? 'TV LG (webOS)' :
+    /Web0S|webOS/.test(ua) || marcaTv() === 'webos' ? 'TV LG (webOS)' :
     /Roku/.test(ua) ? 'Roku' :
     /CrKey/.test(ua) ? 'Chromecast' :
     /Android/.test(ua) ? (codigoAndroid || (tv ? 'TV Android' : androidTablet ? 'Tablet Android' : 'Android')) :
@@ -190,7 +190,7 @@ export function descreverAparelho(ua: string, toques: number, modeloDeclarado = 
     fireTv ? `Fire OS (Android ${ver(/Android (\d+(?:\.\d+)?)/)})` :
     /Android (\d+(?:\.\d+)?)/.test(ua) ? `Android ${versaoDeclarada || ver(/Android (\d+(?:\.\d+)?)/)}` :
     /Tizen ([\d.]+)/.test(ua) ? `Tizen ${ver(/Tizen ([\d.]+)/)}` :
-    /Web0S|webOS/.test(ua) ? 'webOS' :
+    /Web0S|webOS/.test(ua) || marcaTv() === 'webos' ? 'webOS' :
     /Windows NT 10/.test(ua) ? 'Windows 10/11' :
     /Windows NT ([\d.]+)/.test(ua) ? `Windows NT ${ver(/Windows NT ([\d.]+)/)}` :
     /Mac OS X/.test(ua) ? 'macOS' :

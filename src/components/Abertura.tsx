@@ -6,6 +6,7 @@
  * e no dobro da velocidade: no site ela aparece toda vez que a página inicial
  * abre. Clique ou tecla pula.
  */
+import { ehTv } from '../plataforma/tv';
 import { useEffect, useRef, useState } from 'react';
 import './Abertura.css';
 
@@ -38,7 +39,9 @@ function Camada({ nome }: { nome: keyof typeof CAMADAS }) {
 
 export function Abertura() {
   const [saindo, setSaindo] = useState(false);
-  const [fim, setFim] = useState(false);
+  // Na TV a abertura não roda: TV simples engasgava nas 110 partículas do canvas, e as antigas
+  // (Chromium 53) nem têm getTotalLength nos caminhos do SVG — o app ficava sem abrir.
+  const [fim, setFim] = useState(() => ehTv());
   const raiz = useRef<HTMLDivElement>(null);
   const luz = useRef<HTMLCanvasElement>(null);
 
@@ -49,7 +52,7 @@ export function Abertura() {
     const $ = (id: string) => el.querySelector<SVGGraphicsElement>(`#ab-${id}`)!;
     const caminho = (id: string) => {
       const p = el.querySelector<SVGGeometryElement>(`#ab-${id}`)!;
-      const L = p.getTotalLength();
+      const L = typeof p.getTotalLength === 'function' ? p.getTotalLength() : 1000;
       p.style.strokeDasharray = String(L);
       return [p, L] as const;
     };

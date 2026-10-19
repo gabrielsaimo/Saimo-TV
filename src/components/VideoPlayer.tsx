@@ -12,7 +12,7 @@ import { playDash, type DashHandle } from '../services/dashPlayer';
 import * as telemetria from '../services/telemetria';
 import './VideoPlayer.css';
 import './AvisoApp.css';
-import { ehTv } from '../plataforma/tv';
+import { ehAppDaTv } from '../plataforma/tv';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
 
 interface VideoPlayerProps {
@@ -181,7 +181,7 @@ export const VideoPlayer = memo(function VideoPlayer({
    */
   const tentavel = useCallback(
     // Na TV o app é instalado: http abre direto, sem a regra da página https.
-    (a: Attempt | undefined) => !!a && (ehTv() || !a.source.url.startsWith('http://')),
+    (a: Attempt | undefined) => !!a && (ehAppDaTv() || !a.source.url.startsWith('http://')),
     [],
   );
   const semCaminhoNoSite = attempts.length > 0 && !attempts.some(tentavel);
