@@ -9,6 +9,8 @@ VERSAO="$(node -p "require('./package.json').version")"
 echo "==> compilando o app para TV ($VERSAO)"
 ./node_modules/.bin/tsc -b
 ./node_modules/.bin/vite build --mode tv >/dev/null
+# ES5 para TV antiga/fraca (Chromium 38+), conferido com acorn.
+node scripts/tv_es5.mjs dist-tv/saimo.js
 node -e '
 const fs = require("fs"), crypto = require("crypto");
 const v = process.argv[1];
