@@ -5,6 +5,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
+import { FormListas } from '../components/FormListas';
+import { useListas } from '../services/listas';
 import { useAdultMode } from '../contexts/adultoContexto';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useCanais } from '../hooks/useCanais';
@@ -35,6 +37,7 @@ const LIMPAR: { rotulo: string; chaves: string[]; aviso: string }[] = [
 export function Ajustes() {
   const navigate = useNavigate();
   const canais = useCanais();
+  const listas = useListas();
   const [favoritosIds] = useLocalStorage<string[]>('tv-favorites', []);
   const { isAdultUnlocked, lockAdult } = useAdultMode();
   const [aoIniciar, setAoIniciar] = useLocalStorage<AoIniciar>(CHAVE_AO_INICIAR, 'inicio');
@@ -102,6 +105,18 @@ export function Ajustes() {
       <div className="tela-miolo ajustes">
         <h1 className="tela-titulo">Ajustes</h1>
         {aviso && <div className="ajustes-aviso">{aviso}</div>}
+
+        <section className="ajustes-bloco" id="listas">
+          <h2>Listas</h2>
+          <p>Os endereços de onde o site lê os canais e os filmes e séries. Já vêm preenchidos; troque por outros, ou deixe em branco e salve para desligar uma lista (o site fica vazio naquela parte).</p>
+          <FormListas
+            key={`${listas.canais}|${listas.filmes}`}
+            permitirApagar
+            aoSalvar={() => notificar('Listas salvas')}
+            aoApagar={() => notificar('Lista desligada')}
+            aoRestaurar={() => notificar('Endereço padrão restaurado')}
+          />
+        </section>
 
         <section className="ajustes-bloco">
           <h2>Ao iniciar</h2>
@@ -176,7 +191,9 @@ export function Ajustes() {
             <button className="ajustes-botao" onClick={() => navigate('/app')}>Baixar o app (TV Box, celular, Mac, Windows)</button>
             <button className="ajustes-botao" onClick={() => navigate('/novidades')}>Novidades</button>
             <a className="ajustes-botao" href="https://discord.gg/8DKqT3xJvD" target="_blank" rel="noreferrer noopener">Comunidade no Discord</a>
-            <a className="ajustes-botao" href="https://github.com/gabrielsaimo/SaimoPlayer" target="_blank" rel="noreferrer noopener">Lista de canais no GitHub</a>
+            {listas.canais && (
+              <a className="ajustes-botao" href={`${listas.canais}catalogo.txt`} target="_blank" rel="noreferrer noopener">Lista de canais (texto)</a>
+            )}
           </div>
         </section>
       </div>

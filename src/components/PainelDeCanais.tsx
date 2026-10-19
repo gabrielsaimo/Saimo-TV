@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect, useCallback, memo } from 'react';
 import type { Channel } from '../types/channel';
-import { categoryOrder } from '../data/channels';
+import { categoryOrder } from '../data/categorias';
 import { ChannelIcon } from './ChannelIcon';
 import { getCurrentProgram, onEPGUpdate } from '../services/epgService';
 import './PainelDeCanais.css';

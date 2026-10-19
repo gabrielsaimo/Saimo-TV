@@ -1,6 +1,6 @@
 import { useState, useMemo, memo, useEffect, useRef } from 'react';
 import type { Channel } from '../types/channel';
-import { categoryOrder } from '../data/channels';
+import { categoryOrder } from '../data/categorias';
 import { ChannelCard } from './ChannelCard';
 import * as telemetria from '../services/telemetria';
 import './Sidebar.css';

@@ -5,12 +5,22 @@
 </p>
 
 Canais ao vivo, guia de programação, filmes e séries no navegador:
-**<https://saimo-tv.pages.dev>**. Versão atual: **2.1.1**.
+**<https://saimo-tv2.pages.dev>**. Versão atual: **2.1.1**.
 
-Mesma lista de canais e mesmo acervo dos apps de TV Box, celular, Windows e Mac,
-lidos direto do repositório
-[SaimoPlayer](https://github.com/gabrielsaimo/SaimoPlayer) (`catalogo.txt` e
-`vod/`). Nada de lista própria para manter aqui.
+O site não embute lista nenhuma (nem de canais, nem de filmes, nem tabelas do guia).
+Só há dois endereços padrão, as constantes `PADRAO` de `src/services/listas.ts`
+(`canais-saimo.pages.dev` e `filmes-saimo.pages.dev`), ativos sem a pessoa digitar
+nada. Em Ajustes > Listas ela pode trocá-los, restaurar o padrão ou deixar um em
+branco e salvar, o que desliga aquela lista (estado vazio, nenhum pedido de rede);
+os valores ficam no `localStorage`. A lista de canais serve `catalogo.txt`,
+`canais.txt`, `restritos.txt`, `radios.txt` e `guia.txt` (tabelas do guia); a de
+filmes serve a pasta `vod/`. A normalização do endereço está em
+`src/utils/enderecoLista.ts` (testes em `tests/`). O único endereço fixo é o do
+`versao.json` da última release do GitHub, de onde saem os links de download e os
+atalhos `/tvbox`, `/celular`, `/mac` e `/windows`.
+
+Publicar o site: `scripts/publicar_site.sh` (upload direto, sem GitHub). A troca
+do projeto Git-conectado para esse modo está em [docs/TROCA-DO-SITE.md](docs/TROCA-DO-SITE.md).
 
 ## O que tem
 
@@ -88,9 +98,11 @@ bun run lint
 
 ## Publicar
 
-Push em `main` publica. O site no ar é servido pelo Cloudflare Pages
-(`saimo-tv.pages.dev`); `_redirects` em `public/` cuida das rotas, e `/baixar`
-leva para a página de download dos apps.
+`scripts/publicar_site.sh` faz o build e o upload direto para o Cloudflare Pages
+(`saimo-tv2.pages.dev`), sem depender do GitHub. `_redirects` em `public/` cuida
+das rotas, `/baixar` leva para a página de download dos apps e `functions/`
+traz o proxy (`/api/*`) e os atalhos de download (`/tvbox`, `/celular`, `/mac`,
+`/windows`, que leem o `versao.json`).
 
 As rotas usam endereços normais (`/filmes`, `/canal/...`) no navegador e `#` no
 app de desktop, que abre o mesmo `index.html`. Endereços antigos com `#` são
@@ -133,3 +145,13 @@ O workflow `Build Windows Desktop` gera MSI e NSIS ao receber uma tag
 | `functions/`, `api/` | proxy para fontes sem CORS |
 | `public/` | ícones, manifest, service worker, redirecionamentos |
 | `desktop/` | configuração do Tauri |
+
+
+## TV Samsung (Tizen) e LG (webOS)
+
+O mesmo código do site roda como app nas TVs de 2020 em diante: `./scripts/montar_tv.sh` gera
+`build/tv/SaimoTV-Samsung.wgt` e `build/tv/SaimoTV-LG.ipk`. O pacote guarda só uma casca e uma cópia
+do app; ao abrir, o carregador (`tv/comum/carregador.js`) baixa a versão atual de
+`saimo-tv2.pages.dev/tv/`, que o `publicar_site.sh` atualiza junto com o site. Na TV os vídeos abrem
+direto (http inclusive, HLS pelo decodificador da TV), sem o proxy. Plano, estado e o que falta testar
+em TV de verdade: `docs/PLANO-TIZEN-WEBOS.md`. Build: `vite build --mode tv`.

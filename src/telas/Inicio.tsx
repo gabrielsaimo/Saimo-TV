@@ -7,9 +7,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Abertura } from '../components/Abertura';
 import { BarraTopo } from '../components/BarraTopo';
-import { CartaoCapa, CartaoLargo, Fileira, Heroi } from '../components/Telas';
+import { CartaoCapa, CartaoLargo, Fileira, Heroi, SemLista } from '../components/Telas';
 import { useCanais } from '../hooks/useCanais';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useListas } from '../services/listas';
 import { lista as listaAndamento } from '../services/continuar';
 import { getCurrentProgram, onEPGUpdate } from '../services/epgService';
 import { destaques, type FilaDestaque, type ItemDestaque } from '../services/vodService';
@@ -25,6 +26,7 @@ export function Inicio() {
   const navigate = useNavigate();
   const abrirVod = useAbrirVod();
   const canais = useCanais();
+  const links = useListas();
   const [filas, setFilas] = useState<FilaDestaque[]>([]);
   const [favoritos] = useLocalStorage<string[]>('tv-favorites', []);
   const [tic, tique] = useState(0);
@@ -77,6 +79,9 @@ export function Inicio() {
       <Abertura />
       <BarraTopo />
       <Heroi item={heroi} />
+
+      {!links.canais && <SemLista tipo="canais" />}
+      {!links.filmes && <SemLista tipo="filmes" />}
 
       {andamento.length > 0 && (
         <Fileira titulo="Continue assistindo">

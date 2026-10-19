@@ -12,6 +12,7 @@
 
 import type { ChannelSource } from '../types/channel';
 import { httpsFirst } from './sourceOrder';
+import { ehTv, hlsNativo } from '../plataforma/tv';
 
 export function isDash(url: string): boolean {
   return url.toLowerCase().includes('.mpd');
@@ -33,6 +34,9 @@ export function isMpegTs(url: string): boolean {
  * uma tentativa direta antes do proxy.
  */
 export function needsProxy(source: ChannelSource | { url: string }): boolean {
+  // Na TV o app é instalado: não existe conteúdo misto nem CORS de página. O vídeo
+  // abre direto, inclusive http, e o proxy só entra como última tentativa (buildAttempts).
+  if (ehTv()) return false;
   // Masters `.txt` costumam vir como text/plain e sem CORS (como os de
   // embedplayer2). Começar pelo proxy evita uma tentativa direta que o browser
   // obrigatoriamente bloquearia e garante que os filhos também sejam reescritos.
@@ -59,6 +63,8 @@ export function proxyBase(): string {
   // resolve sem mexer no resto — o contrato de `/api/proxy` é o mesmo.
   const externo = import.meta.env.VITE_PROXY_BASE;
   if (externo) return externo.replace(/\/$/, '');
+  // Pacote de TV: a origem é local (file://), então o proxy de reserva é o do site.
+  if (ehTv()) return 'https://saimo-tv2.pages.dev';
   return typeof window !== 'undefined' ? window.location.origin : '';
 }
 
@@ -81,6 +87,8 @@ export interface Attempt {
   source: ChannelSource;
   url: string;
   viaProxy: boolean;
+  /** Na TV: entrega o endereço ao decodificador da própria TV (HLS nativo), sem hls.js. */
+  nativo?: boolean;
 }
 
 /*
@@ -125,8 +133,12 @@ function precisaComecarPeloProxy(source: ChannelSource): boolean {
  */
 export function buildAttempts(sources: ChannelSource[]): Attempt[] {
   const out: Attempt[] = [];
+  const tv = ehTv();
   for (const source of httpsFirst(sources)) {
-    if (!needsProxy(source) && !precisaComecarPeloProxy(source)) {
+    // Na TV a tentativa direta vale para qualquer endereço (http, .txt, dadinho).
+    if (tv && isHls(source.url) && hlsNativo()) out.push({ source, url: source.url, viaProxy: false, nativo: true });
+    if (tv) out.push({ source, url: source.url, viaProxy: false });
+    if (!tv && !needsProxy(source) && !precisaComecarPeloProxy(source)) {
       out.push({ source, url: source.url, viaProxy: false });
     }
     out.push({ source, url: proxyUrl(source), viaProxy: true });

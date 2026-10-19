@@ -31,6 +31,70 @@
     <title>Saimo TV</title>
   </head>
   <body>
+    <!-- Traz os dados do site antigo (favoritos, continuar assistindo, canais próprios…) que o botão do
+         aviso de lá manda no trecho # do endereço. Roda antes do app, e pergunta antes de gravar. -->
+    <script>
+      (function () {
+        var h = location.hash;
+        if (h.indexOf('#migrar=1.') !== 0) return;
+        function limpar() { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+        var CHAVES = ['tv-favorites', 'tv-last-channel', 'tv-volume', 'movie-volume', 'movie-skip-time', 'current-movie-id',
+          'saimo-vod-favoritos', 'saimo-continuar', 'saimo-canais-personalizados', 'saimo-ao-iniciar', 'saimo-upscaling',
+          'saimo-upscale-4k', 'saimo-upscale-hd', 'saimo-buscas-recentes', 'saimo-radios-recentes', 'saimo-entrada',
+          'saimo-telemetria-id'];
+        var PREFIXO = 'movie-progress-';
+        // Nunca vem do endereço: desbloqueio adulto, caches, endereços das listas.
+        var dados;
+        try {
+          var b = h.slice(10).replace(/-/g, '+').replace(/_/g, '/');
+          while (b.length % 4) b += '=';
+          dados = JSON.parse(decodeURIComponent(escape(atob(b))));
+        } catch (e) { limpar(); return; }
+        limpar();
+        var itens = {}, n = 0;
+        if (dados && typeof dados === 'object') {
+          for (var k in dados) {
+            if (!Object.prototype.hasOwnProperty.call(dados, k)) continue;
+            var ok = CHAVES.indexOf(k) >= 0 || (k.indexOf(PREFIXO) === 0 && k.length < 80);
+            var v = dados[k];
+            if (ok && typeof v === 'string' && v.length <= 200000) { itens[k] = v; n++; }
+          }
+        }
+        if (!n) return;
+        function aplicar() {
+          try {
+            for (var k in itens) {
+              var atual = localStorage.getItem(k);
+              if (atual === null) { localStorage.setItem(k, itens[k]); continue; }
+              // Listas (favoritos…): junta o que já tinha aqui com o que veio, sem repetir.
+              try {
+                var a = JSON.parse(atual), c = JSON.parse(itens[k]);
+                if (Array.isArray(a) && Array.isArray(c)) {
+                  var vistos = {}, juntos = [];
+                  a.concat(c).forEach(function (x) { var id = JSON.stringify(x); if (!vistos[id]) { vistos[id] = 1; juntos.push(x); } });
+                  localStorage.setItem(k, JSON.stringify(juntos));
+                }
+              } catch (e) { /* valor simples: o que já está aqui vale */ }
+            }
+          } catch (e) {}
+        }
+        var d = document.createElement('div');
+        d.setAttribute('role', 'alertdialog');
+        d.style.cssText = 'position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:24px;background:#0a0a0acc;font-family:Inter,system-ui,sans-serif;color:#fff;text-align:center';
+        d.innerHTML = '<div style="max-width:480px;background:#18181b;border:1px solid #ffffff26;border-radius:20px;padding:28px">' +
+          '<h2 style="margin:0 0 12px;font-size:26px">Trazer seus dados do endereço antigo?</h2>' +
+          '<p style="margin:0 0 22px;font-size:17px;line-height:1.5;color:#d4d4d8">Seus favoritos, o que você estava assistindo e seus canais próprios vão para este endereço.</p>' +
+          '<button id="migrar-sim" style="padding:14px 26px;border:0;border-radius:12px;background:#7c3aed;color:#fff;font:700 18px inherit;cursor:pointer;margin:4px">Trazer</button>' +
+          '<button id="migrar-nao" style="padding:14px 26px;border:1px solid #ffffff40;border-radius:12px;background:none;color:#fff;font:600 18px inherit;cursor:pointer;margin:4px">Agora não</button></div>';
+        document.addEventListener('DOMContentLoaded', function () {
+          document.body.appendChild(d);
+          var sim = document.getElementById('migrar-sim');
+          if (sim) sim.focus();
+          sim.addEventListener('click', function () { aplicar(); location.replace(location.pathname + location.search); });
+          document.getElementById('migrar-nao').addEventListener('click', function () { d.remove(); });
+        });
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -11,7 +11,8 @@
  * o arquivo .srt (~40 KB) só vem quando a pessoa escolhe uma legenda.
  */
 
-const VOD = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/vod/';
+import { linkFilmes } from './listas';
+
 const OPENSUBTITLES = 'https://opensubtitles-v3.strem.io/subtitles';
 const FRAGMENTOS = 100;
 
@@ -41,10 +42,15 @@ const listas = new Map<string, Promise<LegendaOpcao[]>>();
 const arquivos = new Map<string, Promise<Fala[]>>();
 
 function fragmentoDe(tipo: 'f' | 's', tmdb: number): Promise<Map<number, string>> {
-  const nome = `${tipo}-${String(tmdb % FRAGMENTOS).padStart(2, '0')}`;
+  // Sem endereço de filmes não há mapa de imdb para pedir.
+  const VOD = linkFilmes();
+  if (!VOD) return Promise.resolve(new Map<number, string>());
+  const arquivoDoFragmento = `${tipo}-${String(tmdb % FRAGMENTOS).padStart(2, '0')}`;
+  // Chave com o endereço: trocar de lista não reaproveita o mapa da anterior.
+  const nome = `${VOD}${arquivoDoFragmento}`;
   let pronto = fragmentos.get(nome);
   if (!pronto) {
-    pronto = fetch(`${VOD}imdb/${nome}.txt`)
+    pronto = fetch(`${VOD}imdb/${arquivoDoFragmento}.txt`)
       .then((r) => (r.ok ? r.text() : ''))
       .then((texto) => {
         const mapa = new Map<number, string>();

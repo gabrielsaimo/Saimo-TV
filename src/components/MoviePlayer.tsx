@@ -1,3 +1,4 @@
+import { ehTv } from '../plataforma/tv';
 import { useRef, useEffect, useState, useCallback, memo, useMemo } from 'react';
 import { rota } from '../utils/rotas';
 import { useMediaSession } from '../hooks/useMediaSession';
@@ -209,7 +210,8 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     setFonteIdx(fonteInicial(fontes, movie));
   }, [movie?.id, movie?.initialSourceUrl, fontes]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const noDesktop = !(globalThis as { __SAIMO_DESKTOP__?: boolean }).__SAIMO_DESKTOP__;
+  // Desktop e TV são apps instalados: não têm a barreira de conteúdo misto da página https.
+  const noDesktop = !(globalThis as { __SAIMO_DESKTOP__?: boolean }).__SAIMO_DESKTOP__ && !ehTv();
   const soHttp = noDesktop && !!urlAtiva && urlAtiva.startsWith('http://');
 
   /** O servidor de uma fonte, que é o que distingue uma da outra na lista. */

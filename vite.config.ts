@@ -60,7 +60,26 @@ function proxyDev(): Plugin {
 }
 
 // https://vite.dev/config/
-export default defineConfig({
+// Pacote das TVs Samsung/LG (`vite build --mode tv`): um arquivo comum (IIFE, sem
+// módulos ES, que o webOS bloqueia quando a página vem de file://) mais o CSS, para o
+// carregador de tv/ injetar como <script>/<link> clássicos.
+const configTv = defineConfig({
+  base: './',
+  plugins: [react()],
+  worker: { format: 'iife' },
+  define: { 'process.env.NODE_ENV': JSON.stringify('production'), 'import.meta.env.VITE_TV': '"1"' },
+  build: {
+    outDir: 'dist-tv',
+    target: 'chrome68',
+    cssTarget: 'chrome61',
+    minify: 'oxc',
+    lib: { entry: 'src/entrada-tv.ts', name: 'SaimoTV', formats: ['iife'], fileName: () => 'saimo.js', cssFileName: 'saimo' },
+    chunkSizeWarningLimit: 4000,
+    copyPublicDir: false,
+  },
+})
+
+export default defineConfig(({ mode }) => mode === 'tv' ? configTv : {
   base: '/',
   plugins: [react(), proxyDev()],
   build: {

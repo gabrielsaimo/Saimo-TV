@@ -14,10 +14,10 @@
  * torna a busca confiável o bastante para usar sem checagem manual.
  */
 
+import { linkFilmes } from './listas';
 import { melhorMatch, posterUrl, type TmdbTipo } from './tmdbService';
 import { peneirar as semDesligados } from './fontesDesativadas';
 
-const BASE = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/vod/';
 
 export const LETRAS = [
   '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -82,6 +82,26 @@ let bases: string[] = [];
 const arquivos = new Map<string, Promise<string | null>>();
 let indiceBusca: string | null = null;
 const colecoes = new Map<ColecaoVod, Promise<SerieColecao[]>>();
+/** De qual endereço vem tudo o que está em memória aqui. */
+let baseDaMemoria = '';
+
+/**
+ * Esquece o que foi lido de outro endereço. Trocar ou apagar o link de filmes
+ * em Ajustes não pode deixar a tela com títulos da lista anterior.
+ */
+function sincronizar(): string {
+  const base = linkFilmes();
+  if (base !== baseDaMemoria) {
+    baseDaMemoria = base;
+    bases = [];
+    arquivos.clear();
+    indiceBusca = null;
+    colecoes.clear();
+    filasEmMemoria = null;
+    generosEmMemoria = null;
+  }
+  return base;
+}
 
 function gaveta(letra: string): string {
   return letra === '#' ? '%23' : letra;
@@ -95,6 +115,9 @@ function gaveta(letra: string): string {
  * letra abrir na hora.
  */
 function arquivo(nome: string): Promise<string | null> {
+  // Sem endereço de filmes não se pede nada.
+  const BASE = sincronizar();
+  if (!BASE) return Promise.resolve(null);
   const existente = arquivos.get(nome);
   if (existente) return existente;
 
@@ -260,6 +283,7 @@ function normalizar(texto: string): string {
 export async function buscar(termo: string): Promise<Achado[]> {
   const alvo = normalizar(termo);
   if (alvo.length < 2) return [];
+  sincronizar();
   const texto = indiceBusca ?? (await arquivo('busca.txt'));
   if (!texto) return [];
   indiceBusca = texto;
@@ -293,6 +317,7 @@ export async function buscar(termo: string): Promise<Achado[]> {
  * letra dele, na hora em que for aberto.
  */
 export async function todos(serie: boolean): Promise<Achado[]> {
+  sincronizar();
   const texto = indiceBusca ?? (await arquivo('busca.txt'));
   if (!texto) return [];
   indiceBusca = texto;
@@ -333,6 +358,8 @@ export async function serie(achado: Achado): Promise<Serie | null> {
 
 /** Lê `vod/redeflix/links-animes.txt` ou `links-doramas.txt`. */
 export async function colecao(tipo: ColecaoVod): Promise<SerieColecao[]> {
+  const BASE = sincronizar();
+  if (!BASE) return [];
   if (!bases.length) await indice();
   const existente = colecoes.get(tipo);
   if (existente) return existente;
@@ -446,6 +473,7 @@ export interface FilaDestaque {
 let filasEmMemoria: FilaDestaque[] | null = null;
 
 export async function destaques(): Promise<FilaDestaque[]> {
+  sincronizar();
   if (filasEmMemoria) return filasEmMemoria;
   const texto = await arquivo('destaques.txt');
   if (!texto) return [];
@@ -513,6 +541,7 @@ export interface Generos {
 let generosEmMemoria: Generos | null = null;
 
 export async function generos(): Promise<Generos> {
+  sincronizar();
   if (generosEmMemoria) return generosEmMemoria;
   const texto = await arquivo('fichas.txt');
   const mapa = new Map<string, string[]>();
