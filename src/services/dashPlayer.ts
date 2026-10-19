@@ -1,8 +1,7 @@
 /**
  * DASH com ClearKey no navegador.
  *
- * Dezoito canais do catálogo — Globo, GNT, Multishow, SporTV 2 e 3, a Premiere
- * inteira — só existem em `.mpd` cifrado, e o hls.js não fala DASH nem EME. O
+ * Alguns canais do catálogo só existem em `.mpd` cifrado, e o hls.js não fala DASH nem EME. O
  * Shaka fala os dois, e a chave já vem no catálogo: não há servidor de licença
  * para consultar, é o mesmo par KID:chave que o app entrega ao ExoPlayer.
  *

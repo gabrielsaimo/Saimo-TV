@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './EventsModal.css';
 import { cachedChannels, fetchChannels } from '../services/catalogService';
-import { getAllChannels } from '../data/channels';
+import { linkCanais } from '../services/listas';
 import { acabou, aoVivo, buscarJogos, type Jogo } from '../services/eventos';
 import type { Channel } from '../types/channel';
 
@@ -41,9 +41,10 @@ function grupoDe(j: Jogo, agora: number): number {
   return d === 1 ? 3 : 4;
 }
 
-/** A lista de canais que o site já tem; sem ela, a publicada; sem rede, a embutida. */
+/** A lista de canais que o site já tem; sem ela, a publicada; sem endereço ou sem rede, vazia. */
 async function carregarCanais(): Promise<Channel[]> {
-  const canais = cachedChannels() ?? await fetchChannels() ?? getAllChannels(false);
+  if (!linkCanais()) return [];
+  const canais = cachedChannels() ?? await fetchChannels() ?? [];
   // Canal adulto não entra na agenda.
   return canais.filter((c) => c.category !== 'Adulto' && c.category !== 'ADULTOS');
 }
@@ -127,6 +128,12 @@ export function EventsModal({ onClose, onWatch }: EventsModalProps) {
     buscando.current = true;
     try {
       canaisRef.current ??= await carregarCanais();
+      // Sem canais não há jogo para casar, e nada é pedido à agenda.
+      if (!canaisRef.current.length) {
+        setJogos([]);
+        setErro(false);
+        return;
+      }
       const lidos = await buscarJogos(canaisRef.current);
       setAgora(Date.now());
       if (lidos) {
@@ -191,7 +198,11 @@ export function EventsModal({ onClose, onWatch }: EventsModalProps) {
             <div className="events-error">Não deu para carregar a agenda agora. Tentando de novo em um minuto.</div>
           )}
           {jogos !== null && total === 0 && (
-            <div className="events-empty">Nenhum jogo nos canais da lista agora. A agenda se atualiza sozinha.</div>
+            <div className="events-empty">
+              {linkCanais()
+                ? 'Nenhum jogo nos canais da lista agora. A agenda se atualiza sozinha.'
+                : 'Nenhum jogo. Informe o endereço da lista de canais em Ajustes > Listas.'}
+            </div>
           )}
 
           {grupos.map((lista, i) => lista.length > 0 && (

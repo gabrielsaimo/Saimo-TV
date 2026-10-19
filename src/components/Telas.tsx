@@ -4,6 +4,7 @@
  * cartões. É a mesma linguagem visual do Mac e da TV Box, feita para o mouse.
  */
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Telas.css';
 
 export interface Destaque {
@@ -135,5 +136,32 @@ export function CampoBusca({ valor, aoMudar, placeholder, autoFocus }: {
       <input value={valor} onChange={(e) => aoMudar(e.target.value)} placeholder={placeholder} autoFocus={autoFocus} />
       {valor && <button onClick={() => aoMudar('')} aria-label="Limpar">×</button>}
     </label>
+  );
+}
+
+const TEXTOS_SEM_LISTA = {
+  canais: ['Nenhum canal', 'Informe o endereço da lista de canais em Ajustes > Listas.'],
+  filmes: ['Nenhum filme ou série', 'Informe o endereço da lista de filmes e séries em Ajustes > Listas.'],
+  radios: ['Nenhuma rádio', 'Informe o endereço da lista de canais em Ajustes > Listas.'],
+  eventos: ['Nenhum jogo', 'Os jogos aparecem nos canais da lista. Informe o endereço da lista de canais em Ajustes > Listas.'],
+  guia: ['Sem guia de programação', 'Informe o endereço da lista de canais em Ajustes > Listas.'],
+} as const;
+
+/**
+ * Estado vazio de quem ainda não informou o endereço da lista: diz o que falta
+ * e leva a Ajustes. A tela não faz pedido nenhum de rede enquanto isso.
+ */
+export function SemLista({ tipo }: { tipo: keyof typeof TEXTOS_SEM_LISTA }) {
+  const navigate = useNavigate();
+  const [titulo, texto] = TEXTOS_SEM_LISTA[tipo];
+  return (
+    <div className="tela-vazio sem-lista" role="status">
+      <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor" aria-hidden="true">
+        <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
+      </svg>
+      <h2>{titulo}</h2>
+      <p>{texto}</p>
+      <button type="button" className="sem-lista-acao" onClick={() => navigate('/ajustes')}>Abrir Ajustes</button>
+    </div>
   );
 }

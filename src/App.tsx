@@ -9,14 +9,13 @@ import { Favoritos } from './telas/Favoritos';
 import { Busca } from './telas/Busca';
 import { parar as pararRadio } from './services/radioPlayer';
 import { Ajustes } from './telas/Ajustes';
-import { locais as locaisPersonalizados, aoMudar as aoMudarPersonalizados } from './services/canaisPersonalizados';
 import { Toast } from './components/Toast';
 import { NavegacaoMobile } from './components/NavegacaoMobile';
 import { useVoltarFecha } from './hooks/useVoltarFecha';
-import { getAllChannels, adultChannels } from './data/channels';
-import { fetchChannels, cachedChannels } from './services/catalogService';
-import { atualizar as atualizarFontesDesativadas, VALIDADE_MS as FONTES_MS } from './services/fontesDesativadas';
-import { registerChannels, fetchRealEPG } from './services/epgService';
+import { useCanais } from './hooks/useCanais';
+import { useListas } from './services/listas';
+import { SemLista } from './components/Telas';
+import { PerguntaListas } from './components/PerguntaListas';
 import type { Channel } from './types/channel';
 import type { Movie, SeriesEpisodeInfo } from './types/movie';
 import { useLocalStorage } from './hooks/useLocalStorage';
@@ -75,7 +74,6 @@ function TVPage() {
   const { slug } = useParams<{slug?: string}>();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAdultUnlocked } = useAdultMode();
   // O ao vivo toma o som: a rádio para ao abrir esta tela.
   useEffect(() => { pararRadio(); }, []);
   const [favorites, setFavorites] = useLocalStorage<string[]>('tv-favorites', []);
@@ -90,14 +88,12 @@ function TVPage() {
   const [toast, setToast] = useState<ToastState | null>(null);
   const [isMobile, setIsMobile] = useState(ehCelular);
   const [deitado, setDeitado] = useState(() => ehCelular() && window.innerWidth > window.innerHeight);
-  const [remoteChannels, setRemoteChannels] = useState<Channel[] | null>(() => cachedChannels());
   const [isMultiScreen, setIsMultiScreen] = useState(false);
   const [secondChannel, setSecondChannel] = useState<Channel | null>(null);
   const [activeSide, setActiveSide] = useState<'primary' | 'secondary'>('primary');
   // Canais já vêm abertos no lado ao entrar no Ao vivo
   const [isChannelsPanelOpen, setIsChannelsPanelOpen] = useState(() => window.innerWidth > 640 || !ehCelular());
   const [controlsVisible, setControlsVisible] = useState(true);
-  const [personalizados, setPersonalizados] = useState<Channel[]>(locaisPersonalizados);
 
   // Ao navegar para /tv novamente, reabre os canais
   const [prevPath, setPrevPath] = useState(location.pathname);
@@ -108,19 +104,9 @@ function TVPage() {
     }
   }
 
-  useEffect(() => aoMudarPersonalizados(() => setPersonalizados(locaisPersonalizados())), []);
-
-  /*
-   * A grade vem do mesmo repositório que o aplicativo lê, para que um link
-   * corrigido lá valha aqui sem publicar o site de novo. A lista compilada fica
-   * de piso: se a rede falhar na primeira visita, ainda há canais na tela.
-   */
-  const channels = useMemo(() => {
-    const base = remoteChannels
-      ? (isAdultUnlocked ? [...remoteChannels, ...adultChannels] : remoteChannels)
-      : getAllChannels(isAdultUnlocked);
-    return personalizados.length ? [...base, ...personalizados] : base;
-  }, [remoteChannels, isAdultUnlocked, personalizados]);
+  // A grade vem do endereço de canais que a pessoa informou (ver `useCanais`).
+  const channels = useCanais();
+  const listas = useListas();
 
   // Sem canal escolhido nesta visita, vale o último da visita anterior — assim
   // que a lista (que vem da rede) o trouxer. Derivado, e não copiado para o
@@ -145,54 +131,6 @@ function TVPage() {
   const setSelectedChannel = useCallback((canal: Channel | null) => {
     setEscolha(canal ? { canal, slug } : null);
   }, [slug]);
-
-  useEffect(() => {
-    // O que veio da visita anterior já está na tela e fica nela; a lista
-    // publicada é rebuscada sempre, por trás, e só troca a tela se chegar.
-    // Esperar o cache envelhecer (seis horas) escondia canal recém-publicado
-    // de quem tinha aberto o site no mesmo dia — foi assim com o ESPN 5.
-    let vivo = true;
-    // A lista de servidores desligados vem antes do catálogo: chegando depois,
-    // a tela mostraria por um instante canais que já não abrem.
-    atualizarFontesDesativadas()
-      .catch(() => false)
-      .then(() => fetchChannels())
-      .then((lista) => { if (vivo && lista) setRemoteChannels(lista); })
-      .catch((err) => console.error('Erro ao carregar catálogo remoto:', err));
-    return () => { vivo = false; };
-    // Uma vez por montagem: a lista não muda enquanto a pessoa assiste.
-  }, []);
-
-  /*
-   * Um servidor desligado no painel tem que sumir da tela em minutos, que é o
-   * tempo que alguém aguenta um canal quebrado — sem recarregar a página. A
-   * lista é remontada do que já está em disco: nada é rebaixado da rede, só o
-   * que está morto sai e o que foi religado volta.
-   */
-  useEffect(() => {
-    const relogio = window.setInterval(() => {
-      void atualizarFontesDesativadas().then((mudou) => {
-        if (!mudou) return;
-        const lista = cachedChannels();
-        if (lista) setRemoteChannels(lista);
-      });
-    }, FONTES_MS);
-    return () => window.clearInterval(relogio);
-  }, []);
-
-  /*
-   * O guia procura a programação pelo nome do canal, então ele só pode começar
-   * depois de a grade existir. Registrar e disparar aqui é o que garante que
-   * um canal recém-chegado ao catálogo já entre com programação.
-   */
-  useEffect(() => {
-    if (!channels.length) return;
-    registerChannels(channels);
-    // Só o catálogo publicado vale a montagem: a lista compilada é um piso
-    // provisório, e montar o guia por ela gastaria dezoito megabytes com nomes
-    // que a tela não vai mostrar.
-    if (remoteChannels) void fetchRealEPG();
-  }, [channels, remoteChannels]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -286,7 +224,8 @@ function TVPage() {
       {/* Header Global com auto-hide no Live TV (aparece apenas ao passar o mouse no topo da tela) */}
       {!isTheaterMode && <BarraTopo autoHide={true} />}
 
-      <Suspense fallback={<LoadingFallback />}>
+      {!listas.canais && <SemLista tipo="canais" />}
+      {listas.canais && <Suspense fallback={<LoadingFallback />}>
         {/* Celular: o vídeo fica no alto, e a lista de canais rola embaixo dele */}
         {isMobile && (
           <div className="mobile-content">
@@ -560,7 +499,7 @@ function TVPage() {
           onClose={() => setIsGuideOpen(false)}
           isOpen={isGuideOpen}
         />
-      </Suspense>
+      </Suspense>}
 
       {toast && (
         <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => setToast(null)} />
@@ -573,6 +512,7 @@ function TVPage() {
 function MoviesPage() {
   const navigate = useNavigate();
   const { isAdultUnlocked } = useAdultMode();
+  const { filmes } = useListas();
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [seriesInfo, setSeriesInfo] = useState<SeriesEpisodeInfo | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
@@ -614,7 +554,8 @@ function MoviesPage() {
       {/* O player tem cabeçalho próprio, como nos apps de streaming: sem uma
           segunda barra global ocupando espaço e duplicando o botão de voltar. */}
       {/* Catálogo lido do repositório, o mesmo que o aplicativo usa */}
-      <Suspense fallback={<LoadingFallback />}>
+      {!filmes && <SemLista tipo="filmes" />}
+      {filmes && <Suspense fallback={<LoadingFallback />}>
         <div className={`catalog-container ${selectedMovie ? 'hidden-catalog' : ''}`}>
           <VodCatalog
             onSelectMovie={handleSelectMovie}
@@ -624,7 +565,7 @@ function MoviesPage() {
             activeMovie={selectedMovie}
           />
         </div>
-      </Suspense>
+      </Suspense>}
 
       {/* Player como overlay quando tem filme selecionado */}
       {selectedMovie && (
@@ -659,18 +600,23 @@ function AppLayout() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
+  // Trocar um endereço em Ajustes refaz as telas de dados do zero: nada de
+  // títulos ou canais da lista anterior ficando na memória de um componente.
+  const { canais, filmes } = useListas();
+  const chave = `${canais}|${filmes}`;
+
   return (
     <>
     <Routes>
-      <Route path="/" element={<Inicio />} />
-      <Route path="/busca" element={<Busca />} />
+      <Route path="/" element={<Inicio key={chave} />} />
+      <Route path="/busca" element={<Busca key={chave} />} />
       <Route path="/eventos" element={<Eventos />} />
-      <Route path="/favoritos" element={<Favoritos />} />
-      <Route path="/radios" element={<Radios />} />
+      <Route path="/favoritos" element={<Favoritos key={chave} />} />
+      <Route path="/radios" element={<Radios key={chave} />} />
       <Route path="/ajustes" element={<Ajustes />} />
-      <Route path="/tv" element={<TVPage />} />
-      <Route path="/tv/:slug" element={<TVPage />} />
-            <Route path="/movies" element={<MoviesPage />} />
+      <Route path="/tv" element={<TVPage key={chave} />} />
+      <Route path="/tv/:slug" element={<TVPage key={chave} />} />
+            <Route path="/movies" element={<MoviesPage key={chave} />} />
       <Route path="/app" element={
         <Suspense fallback={<LoadingFallback />}>
           <AppDownload />
@@ -692,6 +638,7 @@ function AppLayout() {
       )}
     </Routes>
     <NavegacaoMobile />
+    <PerguntaListas />
     </>
   );
 }

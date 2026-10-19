@@ -4,10 +4,9 @@
  * em lugar nenhum: o endereço é /novidades.
  */
 import { useEffect, useState } from 'react';
-import { FILMES } from '../services/enderecos';
+import { Link } from 'react-router-dom';
+import { useListas } from '../services/listas';
 import './Novidades.css';
-
-const ENDERECO = `${FILMES}novidades.json`;
 
 interface Titulo {
   t: string;
@@ -70,6 +69,7 @@ function Lista({ titulo, itens, total, base }: { titulo: string; itens: Titulo[]
 export function Novidades() {
   const [dados, setDados] = useState<Arquivo | null>(null);
   const [erro, setErro] = useState(false);
+  const { filmes } = useListas();
 
   useEffect(() => {
     document.title = 'Novidades · Saimo TV';
@@ -78,7 +78,9 @@ export function Novidades() {
     robo.content = 'noindex';
     document.head.appendChild(robo);
     let vivo = true;
-    fetch(ENDERECO, { cache: 'no-cache' })
+    // Sem endereço de filmes não há o que buscar.
+    if (!filmes) return () => { vivo = false; robo.remove(); };
+    fetch(`${filmes}novidades.json`, { cache: 'no-cache' })
       .then(r => (r.ok ? r.json() : Promise.reject(new Error('http'))))
       .then((d: Arquivo) => vivo && setDados(d))
       .catch(() => vivo && setErro(true));
@@ -86,7 +88,7 @@ export function Novidades() {
       vivo = false;
       robo.remove();
     };
-  }, []);
+  }, [filmes]);
 
   return (
     <main className="nov-pagina">
@@ -95,7 +97,12 @@ export function Novidades() {
         <p>O que entrou e o que mudou em cada rodada da atualização (11h e 18h).</p>
       </header>
       {erro && <p className="nov-aviso">Não deu para carregar agora. Tente de novo em instantes.</p>}
-      {!dados && !erro && <p className="nov-aviso">Carregando…</p>}
+      {!filmes && (
+        <p className="nov-aviso">
+          Nenhum título. Informe o endereço da lista de filmes e séries em <Link to="/ajustes">Ajustes &gt; Listas</Link>.
+        </p>
+      )}
+      {filmes && !dados && !erro && <p className="nov-aviso">Carregando…</p>}
       {dados?.rodadas.map((r, i) => {
         const q = quando(r.em);
         const vazio = !r.adicionados_total && !r.atualizados_total;

@@ -5,8 +5,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
-import { CampoBusca, CartaoCapa, CartaoLargo, Fileira } from '../components/Telas';
+import { CampoBusca, CartaoCapa, CartaoLargo, Fileira, SemLista } from '../components/Telas';
 import { useCanais } from '../hooks/useCanais';
+import { useListas } from '../services/listas';
 import {
   buscar, capaDaFicha, colecao, generos as lerGeneros, semAno,
   type Generos, type ItemDestaque, type SerieColecao,
@@ -23,6 +24,7 @@ export function Busca() {
   const navigate = useNavigate();
   const abrirVod = useAbrirVod();
   const canais = useCanais();
+  const links = useListas();
   const [termo, setTermo] = useState('');
   const [acervo, setAcervo] = useState<ItemDestaque[]>([]);
   const [colecoes, setColecoes] = useState<{ animes: SerieColecao[]; doramas: SerieColecao[] } | null>(null);
@@ -31,13 +33,15 @@ export function Busca() {
   const t = termo.trim();
 
   useEffect(() => {
+    // Sem endereço de filmes não há o que carregar (e nada é pedido).
+    if (!links.filmes) return;
     void lerGeneros().then(setFichas);
     void Promise.all([colecao('animes'), colecao('doramas')]).then(([animes, doramas]) => setColecoes({ animes, doramas }));
-  }, []);
+  }, [links.filmes]);
 
   // O índice de nomes é pequeno; espera-se um instante entre as teclas.
   useEffect(() => {
-    if (t.length < 2) return;
+    if (t.length < 2 || !links.filmes) return;
     let vivo = true;
     const espera = window.setTimeout(() => {
       buscar(t).then((achados) => {
@@ -46,7 +50,7 @@ export function Busca() {
       }).catch(() => {});
     }, 200);
     return () => { vivo = false; window.clearTimeout(espera); };
-  }, [t]);
+  }, [t, links.filmes]);
 
   const guardar = (q: string) => {
     if (q.length < 2) return;
@@ -73,7 +77,7 @@ export function Busca() {
   }, [t, colecoes]);
 
   // Sem termo, resultado velho não aparece: ele só vale enquanto se digita.
-  const achadosAcervo = t.length >= 2 ? acervo : [];
+  const achadosAcervo = t.length >= 2 && links.filmes ? acervo : [];
   const filmes = achadosAcervo.filter((i) => i.tipo === 'f');
   const series = achadosAcervo.filter((i) => i.tipo === 's');
   const nada = t.length >= 2 && !canaisAchados.length && !achadosAcervo.length
@@ -103,7 +107,9 @@ export function Busca() {
             </div>
           </>
         )}
-        {nada && <div className="tela-vazio"><h2>Nada encontrado</h2><p>Nada para “{t}”. Tente outro nome.</p></div>}
+        {!links.canais && <SemLista tipo="canais" />}
+        {!links.filmes && <SemLista tipo="filmes" />}
+        {nada && (links.canais || links.filmes) && <div className="tela-vazio"><h2>Nada encontrado</h2><p>Nada para “{t}”. Tente outro nome.</p></div>}
       </div>
 
       {canaisAchados.length > 0 && (

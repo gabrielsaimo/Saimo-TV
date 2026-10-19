@@ -14,11 +14,7 @@
  */
 
 import { decodeEntities, normalise } from '../utils/nomes';
-
-const FEEDS = [
-  'https://iptv-epg.org/files/epg-br.xml',
-  'https://www.open-epg.com/files/brazil3.xml',
-];
+import type { TabelasGuia } from '../utils/guiaTabelas';
 
 /*
  * Janela guardada: três horas para trás e trinta para frente. O guia mostra de
@@ -28,308 +24,6 @@ const FEEDS = [
  */
 const PAST_WINDOW_MS = 3 * 60 * 60 * 1000;
 const FUTURE_WINDOW_MS = 30 * 60 * 60 * 1000;
-
-/** Nomes que os feeds escrevem diferente do catálogo. */
-const ALIASES: Record<string, string> = {
-  'adult swim': 'trutv',
-  history: 'history channel',
-  'sony channel': 'sony',
-  'sportv 2': 'sportv2',
-  'sportv 3': 'sportv3',
-  gnt: 'gnt hd',
-  band: 'band sp',
-  warner: 'warner channel',
-  sbt: 'sbt sp',
-};
-
-/**
- * Nome normalizado do canal -> código do meuguia.
- *
- * A tabela do aplicativo, acrescida dos códigos que só a versão web conhecia e
- * que o meuguia realmente atende. Os que ela inventava — HBO Pop, Cartoonito,
- * Premiere 2 a 4 e mais sete — devolvem página vazia e ficaram de fora: pedi-los
- * era um download por canal para não trazer nada, e quem cobre esses é o XMLTV.
- */
-const CODES: Record<string, string> = {
-  'a e': 'MDO',
-  'animal planet': 'APL',
-  band: 'BAN',
-  'band news': 'NEW',
-  'band sports': 'BSP',
-  'cartoon network': 'CAR',
-  cinemax: 'MNX',
-  combate: '135',
-  'discovery kids': 'DIK',
-  'discovery world': 'DIW',
-  'discovery channel': 'DIS',
-  'discovery home health': 'HEA',
-  'discovery science': 'DSC',
-  'discovery turbo': 'DTU',
-  espn: 'ESP',
-  'espn 2': 'ES2',
-  'espn 3': 'ES3',
-  'espn 4': 'ES4',
-  'espn 5': 'ES5',
-  gnt: 'GNT',
-  'globo rj': 'GRD',
-  'globo sp': 'GRD',
-  globo: 'GRD',
-  globonews: 'GLN',
-  gloob: 'GOB',
-  gloobinho: 'GBI',
-  hbo: 'HBO',
-  hbo2: 'HB2',
-  'hbo family': 'HFA',
-  'hbo plus': 'HPL',
-  history: 'HIS',
-  megapix: 'MPX',
-  multishow: 'MSH',
-  record: 'REC',
-  'record news': 'RCN',
-  redetv: 'RTV',
-  sbt: 'SBT',
-  space: 'SPA',
-  sportv: 'SPO',
-  'sportv 2': 'SP2',
-  'sportv 3': 'SP3',
-  tnt: 'TNT',
-  'tnt series': 'TBS',
-  tcm: 'TCM',
-  tlc: 'TRV',
-  'telecine action': 'TC2',
-  'telecine cult': 'TC5',
-  'telecine fun': 'TC6',
-  'telecine pipoca': 'TC4',
-  'telecine premium': 'TC1',
-  'telecine touch': 'TC3',
-  'universal tv': 'USA',
-  'studio universal': 'HAL',
-  warner: 'WBT',
-  axn: 'AXN',
-  'canal brasil': 'CBR',
-  'canal off': 'OFF',
-  e: 'EET',
-  'sony channel': 'SET',
-  'premiere clubes': '121',
-  viva: 'VIV',
-  'arte 1': 'BQ5',
-  amc: 'MGM',
-  'tv brasil': 'TED',
-  'tv aparecida': 'TAP',
-  'tv cultura': 'CUL',
-  'tv gazeta': 'GAZ',
-};
-
-/**
- * Nome normalizado do canal -> slug do guiadetv.com.
- * Fonte primária rápida para todos os canais cobertos pelo guiadetv.com,
- * com horários precisos no fuso do Brasil, sem rate limit 429 e com sinopse em 99,8% dos programas.
- */
-const GUIADETV_CODES: Record<string, string> = {
-  'a e': 'ae',
-  ae: 'ae',
-  agro: 'agro',
-  'agro mais': 'agro',
-  'canal agro': 'agro',
-  amc: 'amc',
-  'animal planet': 'animal-planet',
-  'arte 1': 'arte-1',
-  arte1: 'arte-1',
-  axn: 'axn',
-  band: 'band',
-  'band sp': 'band',
-  'band campinas': 'band',
-  'band curitiba': 'band',
-  'band mg': 'band',
-  'band para': 'band',
-  'band recife tv tribuna': 'band',
-  'band rn': 'band',
-  'band rs': 'band',
-  'band sergipe': 'band',
-  'band rj': 'band-rj',
-  'band news': 'bandnews',
-  bandnews: 'bandnews',
-  'band sports': 'bandsports',
-  bandsports: 'bandsports',
-  'bbc world': 'bbc-world',
-  'bbc world news': 'bbc-world',
-  bis: 'bis',
-  bloomberg: 'bloomberg',
-  'box kids': 'box-kids',
-  'box kids tv': 'box-kids',
-  'canal educacao': 'canal-educacao',
-  'canal rural': 'canal-rural',
-  'canal uol': 'canal-uol',
-  'cancao nova': 'cancao-nova',
-  'cartoon network': 'cartoon-network',
-  cartoonito: 'cartoonito',
-  cinemax: 'cinemax',
-  'cnn brasil': 'cnn-brasil',
-  combate: 'combate',
-  curta: 'curta',
-  'discovery channel': 'discovery-channel',
-  'discovery home health': 'discovery-home-health',
-  'discovery h h': 'discovery-home-health',
-  'discovery kids': 'discovery-kids',
-  'discovery science': 'discovery-science',
-  'discovery theater': 'discovery-theater',
-  'discovery turbo': 'discovery-turbo',
-  'discovery world': 'discovery-world',
-  'discovery id': 'investigacao-discovery',
-  'investigacao discovery': 'investigacao-discovery',
-  'investigation discovery': 'investigacao-discovery',
-  e: 'e',
-  espn: 'espn',
-  'espn 2': 'espn-2',
-  'espn 3': 'espn-3',
-  'espn 4': 'espn-4',
-  'espn 5': 'espn-5',
-  'espn 6': 'espn-6',
-  'film arts': 'film-arts',
-  'food network': 'food-network',
-  'fox news': 'fox-news',
-  futura: 'futura',
-  'canal futura': 'futura',
-  'ge tv': 'ge-tv',
-  getv: 'ge-tv',
-  'globo news': 'globo-news',
-  globonews: 'globo-news',
-  'globo rj': 'globo-rio-de-janeiro',
-  'globo rio de janeiro': 'globo-rio-de-janeiro',
-  globo: 'globo-sp',
-  'globo sp': 'globo-sp',
-  'globo am': 'globo-sp',
-  'globo ce': 'globo-sp',
-  'globo df': 'globo-sp',
-  'globo es': 'globo-sp',
-  'globo go': 'globo-sp',
-  'globo mg': 'globo-sp',
-  'globo pb': 'globo-sp',
-  'globo pe': 'globo-sp',
-  'globo rs': 'globo-sp',
-  gloob: 'gloob',
-  gloobinho: 'gloobinho',
-  gnt: 'gnt',
-  hbo: 'hbo',
-  'hbo 2': 'hbo-2',
-  hbo2: 'hbo-2',
-  'hbo family': 'hbo-family',
-  'hbo mundi': 'hbo-mundi',
-  'hbo plus': 'hbo-plus',
-  'hbo pop': 'hbo-pop',
-  'hbo signature': 'hbo-signature',
-  'hbo xtreme': 'hbo-xtreme',
-  hgtv: 'hgtv',
-  history: 'history',
-  'history channel': 'history',
-  'history 2': 'history-2',
-  h2: 'history-2',
-  'jovem pan news': 'jovem-pan-news',
-  lifetime: 'lifetime',
-  'lifetime movies': 'lifetime',
-  megapix: 'megapix',
-  multishow: 'multishow',
-  'music box brazil': 'music-box-brazil',
-  'n sports': 'nsports',
-  nsports: 'nsports',
-  'n sports jogo 1': 'nsports',
-  off: 'off',
-  'canal off': 'off',
-  premiere: 'premiere-fc',
-  'premiere clubes': 'premiere-fc',
-  'premiere fc': 'premiere-fc',
-  'premiere 2': 'premiere-2',
-  'premiere 3': 'premiere-3',
-  'premiere 4': 'premiere-4',
-  'premiere 5': 'premiere-5',
-  'premiere 6': 'premiere-6',
-  'premiere 7': 'premiere-7',
-  'prime box brazil': 'prime-box-brazil',
-  'record news': 'record-news',
-  record: 'record-tv',
-  'record tv': 'record-tv',
-  'record sp': 'record-tv',
-  'record go': 'record-tv',
-  'record mg': 'record-tv',
-  'record rj': 'record-tv',
-  'record internacional': 'record-tv',
-  recordtv: 'record-tv',
-  'rede brasil': 'rede-brasil',
-  'rede familia': 'rede-familia',
-  'rede gospel': 'rede-gospel',
-  redetv: 'rede-tv',
-  'rede tv': 'rede-tv',
-  'rede vida': 'rede-vida',
-  sbt: 'sbt',
-  'sbt sp': 'sbt',
-  'sbt alterosa': 'sbt',
-  'sbt ba': 'sbt',
-  'sbt go': 'sbt',
-  'sbt interior': 'sbt',
-  'sbt londrina': 'sbt',
-  'sbt maringa': 'sbt',
-  'sbt mg': 'sbt',
-  'sbt pi': 'sbt',
-  'sbt pr': 'sbt',
-  'sbt news': 'sbt-news',
-  'sbt rj': 'sbt-rio-de-janeiro',
-  'sbt rio de janeiro': 'sbt-rio-de-janeiro',
-  sony: 'sony',
-  'sony channel': 'sony',
-  'sony movies': 'sony-movies',
-  space: 'space',
-  sportv: 'sportv',
-  'sportv 2': 'sportv-2',
-  sportv2: 'sportv-2',
-  'sportv 3': 'sportv-3',
-  sportv3: 'sportv-3',
-  sportynet: 'sportynet',
-  'sportynet 01': 'sportynet',
-  'sportynet 4': 'sportynet',
-  'sportynet 1': 'sportynet',
-  'sportynet 2': 'sportynet',
-  'sportynet 3': 'sportynet',
-  'studio universal': 'studio-universal',
-  syfy: 'syfy',
-  'usa network': 'syfy',
-  tcm: 'tcm',
-  'telecine action': 'telecine-action',
-  'telecine cult': 'telecine-cult',
-  'telecine fun': 'telecine-fun',
-  'telecine pipoca': 'telecine-pipoca',
-  'telecine premium': 'telecine-premium',
-  'telecine touch': 'telecine-touch',
-  'terra viva': 'terra-viva',
-  tlc: 'tlc',
-  tnt: 'tnt',
-  'tnt novelas': 'tnt-novelas',
-  'tnt series': 'tnt-series',
-  tooncast: 'tooncast',
-  'travel box brazil': 'travel-box-brasil',
-  'travel box brasil': 'travel-box-brasil',
-  trutv: 'trutv',
-  'adult swim': 'trutv',
-  'tv aparecida': 'tv-aparecida',
-  'tv brasil': 'tv-brasil',
-  'tv camara': 'tv-camara',
-  'tv cultura': 'tv-cultura',
-  cultura: 'tv-cultura',
-  'tv gazeta': 'tv-gazeta',
-  gazeta: 'tv-gazeta',
-  'tv ra tim bum': 'tv-ra-tim-bum',
-  'ra tim bum': 'tv-ra-tim-bum',
-  'tv senado': 'tv-senado',
-  'universal tv': 'universal-tv',
-  'universal channel': 'universal-tv',
-  viva: 'viva',
-  'canal viva': 'viva',
-  'globoplay novelas': 'viva',
-  warner: 'warner',
-  'warner channel': 'warner',
-  woohoo: 'woohoo',
-  'x sports': 'xsports',
-  xsports: 'xsports',
-};
 
 export interface WorkerProgramme {
   title: string;
@@ -353,17 +47,19 @@ export interface PlutoDoCanal {
 interface Pedido {
   names: string[];
   origin: string;
+  /** As tabelas por canal e os feeds, do `guia.txt` do endereço de canais. */
+  tabelas: TabelasGuia;
   /** Nome do canal -> id da Pluto. */
   pluto?: Record<string, PlutoDoCanal>;
 }
 
-/**
- * Guia da própria Pluto TV, montado pelo i.mjh.nz. Casa pelo id da Pluto, que já
- * está no link do canal: pelo nome, "Pluto TV Novelas" pegaria a programação de
- * outro canal. O raw.githubusercontent libera CORS, então vai direto, sem o
- * proxy (o redirecionamento do i.mjh.nz passa por uma página que não libera).
+/*
+ * Guia da própria Pluto TV, montado pelo i.mjh.nz (endereço na linha `pluto` do
+ * `guia.txt`). Casa pelo id da Pluto, que já está no link do canal: pelo nome,
+ * "Pluto TV Novelas" pegaria a programação de outro canal. O endereço vai
+ * direto, sem o proxy (o redirecionamento do i.mjh.nz passa por uma página que
+ * não libera CORS).
  */
-const PLUTO_URL = 'https://raw.githubusercontent.com/matthuisman/i.mjh.nz/master/PlutoTV/br.xml';
 
 // ============================================================
 // FUSO
@@ -614,14 +310,18 @@ function parseXmltvDate(valor: string): number | null {
  * frouxa de prefixo só roda depois, e nunca sobre um id já reivindicado — sem
  * isso "HBO2" engoliria o id que pertence a "HBO 2".
  */
-function resolverIds(nomeParaIds: Map<string, string[]>, desejados: string[]): Map<string, string> {
+function resolverIds(
+  nomeParaIds: Map<string, string[]>,
+  desejados: string[],
+  aliases: Record<string, string>,
+): Map<string, string> {
   const idParaCanal = new Map<string, string>();
   const tomados = new Set<string>();
   const pendentes: Array<[string, string]> = [];
 
   for (const nome of desejados) {
     const chave = normalise(nome);
-    const ids = nomeParaIds.get(chave) ?? (ALIASES[chave] ? nomeParaIds.get(ALIASES[chave]) : undefined);
+    const ids = nomeParaIds.get(chave) ?? (aliases[chave] ? nomeParaIds.get(aliases[chave]) : undefined);
     if (ids) {
       for (const id of ids) { idParaCanal.set(id, nome); tomados.add(id); }
     } else {
@@ -700,6 +400,8 @@ async function parseFeed(
   porTitulo: Map<string, WorkerProgramme>,
   /** id do feed -> canal, pulando o casamento por nome (guia da Pluto). */
   ids?: Map<string, string>,
+  /** Nome do canal -> nome no feed (linhas `alias` do `guia.txt`). */
+  aliases: Record<string, string> = {},
 ): Promise<Map<string, WorkerProgramme[]>> {
   const resposta = await fetch(ids ? url : `${origin}/api/proxy?url=${encodeURIComponent(url)}`);
   if (!resposta.ok || !resposta.body) throw new Error(`HTTP ${resposta.status} em ${url}`);
@@ -724,7 +426,7 @@ async function parseFeed(
     }
     // O primeiro programa fecha a lista de canais: daqui em diante o mapa de
     // ids está resolvido e não muda mais.
-    const mapa = idParaCanal ?? (idParaCanal = resolverIds(nomeParaIds, desejados));
+    const mapa = idParaCanal ?? (idParaCanal = resolverIds(nomeParaIds, desejados, aliases));
     if (mapa.size === 0) return;
     const achado = parseProgramme(elemento, mapa, de, ate);
     if (!achado) return;
@@ -828,7 +530,9 @@ async function comLimite<T, R>(itens: T[], limite: number, trabalho: (item: T) =
   return saida;
 }
 
-async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<void> {
+const httpOuHttps = (url: string) => /^https?:\/\//i.test(url);
+
+async function montar({ names: todos, origin, tabelas, pluto = {} }: Pedido): Promise<void> {
   const agora = Date.now();
   const de = agora - PAST_WINDOW_MS;
   const ate = agora + FUTURE_WINDOW_MS;
@@ -850,8 +554,8 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
   // Canal da Pluto só usa o guia da Pluto; os outros guias nem tentam casá-lo.
   const names = todos.filter((name) => !pluto[name]?.principal);
   const plutoIds = new Map(Object.entries(pluto).map(([name, p]) => [p.id, name]));
-  const daPluto = plutoIds.size
-    ? parseFeed(PLUTO_URL, origin, [], de, ate, new Map(), plutoIds).catch((erro) => {
+  const daPluto = plutoIds.size && tabelas.pluto
+    ? parseFeed(tabelas.pluto, origin, [], de, ate, new Map(), plutoIds).catch((erro) => {
       console.warn('[EPG] guia da Pluto falhou:', erro);
       return new Map<string, WorkerProgramme[]>();
     })
@@ -876,7 +580,7 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
   const slugParaCanais = new Map<string, string[]>();
   for (const name of names) {
     const limpo = name.replace(/\s*\((?:s\d+|ot|rk|b\d+|alt)\)\s*$/i, '');
-    const slug = GUIADETV_CODES[normalise(limpo)] ?? GUIADETV_CODES[normalise(name)];
+    const slug = tabelas.guiadetv[normalise(limpo)] ?? tabelas.guiadetv[normalise(name)];
     if (!slug) continue;
     const lista = slugParaCanais.get(slug);
     if (lista) lista.push(name); else slugParaCanais.set(slug, [name]);
@@ -884,7 +588,7 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
 
   const baixarSlugGuiaDeTv = async (slug: string): Promise<readonly [string, WorkerProgramme[]]> => {
     try {
-      const alvo = `https://www.guiadetv.com/canal/${slug}`;
+      const alvo = httpOuHttps(slug) ? slug : `https://www.guiadetv.com/canal/${slug}`;
       const r = await fetch(`${origin}/api/proxy?url=${encodeURIComponent(alvo)}`);
       if (!r.ok) return [slug, []];
       const lista = parseGuiaDeTv(await r.text()).filter((p) => p.stop > de && p.start < ate);
@@ -916,13 +620,13 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
    */
   const faltandoMeuGuia = names
     .filter((name) => !grade[name])
-    .map((name) => [name, CODES[normalise(name)]] as const)
+    .map((name) => [name, tabelas.meuguia[normalise(name)]] as const)
     .filter((par): par is readonly [string, string] => Boolean(par[1]));
 
   const baixarMeuGuia = async ([name, code]: readonly [string, string], tentativa = 0):
     Promise<readonly [string, WorkerProgramme[]]> => {
     try {
-      const alvo = `https://meuguia.tv/programacao/canal/${code}`;
+      const alvo = httpOuHttps(code) ? code : `https://meuguia.tv/programacao/canal/${code}`;
       const r = await fetch(`${origin}/api/proxy?url=${encodeURIComponent(alvo)}`);
       if (r.ok) {
         const lista = parseMeuGuia(await r.text()).filter((p) => p.stop > de && p.start < ate);
@@ -945,10 +649,10 @@ async function montar({ names: todos, origin, pluto = {} }: Pedido): Promise<voi
   }
 
   const porTitulo = new Map<string, WorkerProgramme>();
-  for (const url of FEEDS) {
+  for (const url of tabelas.feeds) {
     let lido: Map<string, WorkerProgramme[]>;
     try {
-      lido = await parseFeed(url, origin, names, de, ate, porTitulo);
+      lido = await parseFeed(url, origin, names, de, ate, porTitulo, undefined, tabelas.alias);
       console.log(`[EPG] ${url}: ${lido.size} canais`);
     } catch (erro) {
       console.warn(`[EPG] ${url} falhou:`, erro);

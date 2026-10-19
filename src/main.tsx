@@ -4,7 +4,10 @@ import './index.css'
 import './styles/dpad-navigation.css'
 import App from './App.tsx'
 import { iniciar as iniciarTelemetria } from './services/telemetria'
+import { migrarUmaVez } from './services/listas'
 
+// Antes de qualquer tela: esquece o que as versões anteriores guardaram de listas.
+migrarUmaVez()
 iniciarTelemetria()
 
 createRoot(document.getElementById('root')!).render(

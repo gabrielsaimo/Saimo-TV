@@ -16,8 +16,11 @@ import type { Channel } from '../types/channel';
 import { normalise } from '../utils/nomes';
 import type { Grade, PlutoDoCanal, WorkerProgramme } from '../workers/epgWorker';
 import { proxyBase } from '../utils/streamUrl';
+import { lerGuia, TABELAS_VAZIAS, type TabelasGuia } from '../utils/guiaTabelas';
+import { linkCanais } from './listas';
 
 const CACHE_KEY = 'saimo-epg-v6';
+const CACHE_TABELAS = 'saimo-guia-tabelas';
 /** Chaves de versões antigas, invalidadas a cada mudança de arquitetura do guia. */
 const CACHES_VELHOS = ['saimo-epg-v5', 'saimo-epg-v4', 'saimo-epg-v3'];
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
@@ -155,7 +158,7 @@ function marcarPronto(): void {
 // ============================================================
 
 function assinatura(): string {
-  return nomes.map((n) => normalise(n)).sort().join('|');
+  return linkCanais() + '#' + nomes.map((n) => normalise(n)).sort().join('|');
 }
 
 function lerCache(): CacheGuardado | null {
@@ -182,6 +185,33 @@ function gravarCache(grade: Grade): void {
   // estiver livre, e não no meio de uma rolagem.
   if (typeof requestIdleCallback === 'function') requestIdleCallback(gravar, { timeout: 5000 });
   else setTimeout(gravar, 0);
+}
+
+/**
+ * As tabelas por canal do guia: `guia.txt` do endereço de canais. A última
+ * versão baixada fica em disco; sem o arquivo (ou sem endereço) o guia só tem o
+ * que casa por nome nos feeds, e nenhum pedido é feito.
+ */
+async function carregarTabelas(): Promise<TabelasGuia> {
+  const base = linkCanais();
+  if (!base) return TABELAS_VAZIAS;
+  let guardado = '';
+  try {
+    const bruto = localStorage.getItem(CACHE_TABELAS);
+    const salvo = bruto ? JSON.parse(bruto) as { base: string; texto: string } : null;
+    if (salvo?.base === base) guardado = salvo.texto;
+  } catch { /* sem cache */ }
+  let texto = guardado;
+  try {
+    const r = await fetch(`${base}guia.txt`, { cache: 'no-store' });
+    if (r.ok) {
+      texto = await r.text();
+      try { localStorage.setItem(CACHE_TABELAS, JSON.stringify({ base, texto })); } catch { /* sem cache */ }
+    } else if (r.status === 404) {
+      texto = '';
+    }
+  } catch { /* rede: fica o que estava guardado */ }
+  return lerGuia(texto);
 }
 
 // ============================================================
@@ -255,12 +285,22 @@ export async function fetchRealEPG(): Promise<boolean> {
     return true;
   }
 
+  void iniciarWorker();
+  return true;
+}
+
+async function iniciarWorker(): Promise<void> {
+  const sigPedida = assinatura();
+  const tabelas = await carregarTabelas();
+  // Os canais ou o endereço mudaram enquanto o arquivo baixava: quem registrou
+  // a lista nova já reiniciou o guia por conta própria.
+  if (sigPedida !== assinatura()) return;
   try {
     worker = new Worker(new URL('../workers/epgWorker.ts', import.meta.url), { type: 'module' });
   } catch (e) {
     console.error('[EPG] não foi possível iniciar o worker', e);
     marcarPronto();
-    return Boolean(cache);
+    return;
   }
 
   worker.onmessage = (evento: MessageEvent<{ type: string; grade?: Grade; message?: string }>) => {
@@ -285,8 +325,7 @@ export async function fetchRealEPG(): Promise<boolean> {
     }
   };
 
-  worker.postMessage({ names: nomes, pluto, origin: proxyBase() });
-  return true;
+  worker.postMessage({ names: nomes, pluto, origin: proxyBase(), tabelas });
 }
 
 /** Lista vazia única: uma nova a cada consulta redesenharia à toa as linhas sem grade. */

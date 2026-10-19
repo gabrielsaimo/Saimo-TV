@@ -5,7 +5,7 @@
  * A última lista baixada fica em disco para a tela abrir na hora, e a do
  * repositório é buscada por trás.
  */
-import { CANAIS } from './enderecos';
+import { linkCanais } from './listas';
 
 export interface Radio {
   nome: string;
@@ -13,38 +13,12 @@ export interface Radio {
   logo?: string;
 }
 
-export interface Estilo {
-  titulo: string;
-  palavras: string[];
-}
-
-const URL_LISTA = `${CANAIS}radios.txt`;
 const GUARDADA = 'saimo-radios-lista';
 const RECENTES = 'saimo-radios-recentes';
 
-/** A ordem conta: rádio que cabe em dois estilos fica no primeiro. */
-export const ESTILOS: Estilo[] = [
-  { titulo: 'Rock', palavras: ['rock', 'metal', 'kiss', 'punk'] },
-  { titulo: 'Notícias', palavras: ['news', 'noticia', 'cbn', 'gaucha', 'itatiaia', 'tupi', 'esporte', 'jornal',
-    'bandnews', 'radio globo', 'eldorado', 'bandeirantes'] },
-  { titulo: 'Gospel', palavras: ['gospel', 'evangel', 'catolic', 'crista', 'louvor', 'aleluia', 'cancao nova',
-    'novo tempo', 'aparecida', 'fe ', 'deus', 'jesus', 'igreja', 'biblia'] },
-  { titulo: 'Pop', palavras: ['pop', 'hits', 'dance', 'mix', 'jovem pan', 'transamerica', 'energia', 'eletro',
-    'club', 'pulse', 'top'] },
-  { titulo: 'Brasileiras', palavras: ['sertanej', 'mpb', 'samba', 'pagode', 'forro', 'nativa', 'caipira', 'brega',
-    'axe', 'piseiro', 'moda de viola'] },
-  { titulo: 'Clássica e jazz', palavras: ['classic', 'jazz', 'cultura', 'educativa', 'universit', 'instrumental',
-    'blues', 'lounge'] },
-];
-
-/** Nome sem acento e em minúsculas, para achar o estilo. */
+/** Nome sem acento e em minúsculas, para a busca. */
 export const chave = (nome: string) =>
   nome.normalize('NFD').replace(/\p{M}+/gu, '').toLowerCase();
-
-export function estiloDe(radio: Radio): Estilo | null {
-  const nome = chave(radio.nome) + ' ';
-  return ESTILOS.find((e) => e.palavras.some((p) => nome.includes(p))) ?? null;
-}
 
 function ler(texto: string): Radio[] {
   const vistas = new Set<string>();
@@ -61,11 +35,18 @@ function ler(texto: string): Radio[] {
   return saida;
 }
 
-/** O que já está no aparelho: a última lista baixada. Rápido, sem rede. */
+/**
+ * O que já está no aparelho: a última lista baixada do endereço atual (a
+ * primeira linha guardada diz de qual endereço veio). Rápido, sem rede.
+ */
 export function locais(): Radio[] {
+  const base = linkCanais();
+  if (!base) return [];
   try {
-    const texto = localStorage.getItem(GUARDADA);
-    return texto ? ler(texto) : [];
+    const guardado = localStorage.getItem(GUARDADA);
+    if (!guardado) return [];
+    const corte = guardado.indexOf('\n');
+    return guardado.slice(0, corte) === base ? ler(guardado.slice(corte + 1)) : [];
   } catch {
     return [];
   }
@@ -73,13 +54,15 @@ export function locais(): Radio[] {
 
 /** A lista do repositório, guardada para a próxima vez. Nula se a rede falhou. */
 export async function baixar(): Promise<Radio[] | null> {
+  const base = linkCanais();
+  if (!base) return null;
   try {
-    const r = await fetch(URL_LISTA);
+    const r = await fetch(`${base}radios.txt`);
     if (!r.ok) return null;
     const texto = await r.text();
     const lista = ler(texto);
-    if (lista.length < 10) return null;
-    try { localStorage.setItem(GUARDADA, texto); } catch { /* disco cheio: segue sem guardar */ }
+    if (lista.length < 10 || linkCanais() !== base) return null;
+    try { localStorage.setItem(GUARDADA, `${base}\n${texto}`); } catch { /* disco cheio: segue sem guardar */ }
     return lista;
   } catch {
     return null;

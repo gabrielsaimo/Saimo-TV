@@ -1,16 +1,19 @@
 # Trocar o site de GitHub (ou largar o GitHub)
 
-O site não depende mais de nenhum endereço do GitHub em tempo de execução:
+O site não traz lista nem endereço de lista nenhum: quem informa os endereços de
+canais e de filmes e séries é a pessoa, na primeira abertura ou em Ajustes > Listas
+(guardados no `localStorage`). O único endereço fixo é o do `versao.json`:
+`https://github.com/saimo-tv/saimo-downloads/releases/latest/download/versao.json`
+(`src/services/versao.ts` e `functions/_lib/baixar.ts`). Os botões de download e os
+atalhos `/tvbox`, `/celular`, `/mac`, `/windows` leem os links dele (só aceitam
+`https://github.com/<dono>/<repo>/releases/download/…`).
 
-- catálogo, rádios e `versao.json` vêm de `https://saimo-canais.pages.dev/`
-- filmes, séries, legendas e novidades vêm de `https://saimo-filmes.pages.dev/`
-- os dois endereços ficam num lugar só: `src/services/enderecos.ts`
-- os botões de download e os atalhos `/tvbox`, `/celular`, `/mac`, `/windows`
-  leem os links do `versao.json` (só aceitam `https://github.com/<dono>/<repo>/releases/download/…`)
+O projeto final do Cloudflare Pages é `saimo-tv2` (`saimo-tv2.pages.dev`), o padrão de
+`scripts/publicar_site.sh`.
 
-Falta só o deploy. Hoje o projeto `saimo-tv` do Cloudflare Pages é conectado ao
-Git (publica a cada push). Esse tipo de projeto não pode trocar de repositório
-nem virar upload direto, então a troca é apagar e recriar com o mesmo nome.
+Falta só o deploy. O projeto antigo `saimo-tv` do Cloudflare Pages é conectado ao
+Git (publica a cada push). Esse tipo de projeto não pode virar upload direto, então o site novo é um projeto
+novo, `saimo-tv2`, criado por upload direto.
 
 ## Passo a passo
 
@@ -19,15 +22,12 @@ Com `CLOUDFLARE_ACCOUNT_ID=e0f6d97a9f8f4bb1b7a8ce6a7a470b3f` e wrangler logado
 
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=e0f6d97a9f8f4bb1b7a8ce6a7a470b3f
-wrangler pages project delete saimo-tv --yes
-wrangler pages project create saimo-tv --production-branch main
+wrangler pages project create saimo-tv2 --production-branch main
 scripts/publicar_site.sh
 ```
 
-O site fica fora do ar só entre o `delete` e o fim do upload (build mais envio,
-cerca de 1 minuto). Apagar e recriar o mesmo nome funciona na hora (testado num
-projeto de teste). O endereço `saimo-tv.pages.dev` não muda. Domínio próprio
-ligado ao projeto, se houver, precisa ser ligado de novo.
+O endereço novo é `saimo-tv2.pages.dev`; domínio próprio, se houver, precisa ser
+ligado ao projeto novo.
 
 Depois disso, publicar é sempre `scripts/publicar_site.sh`; push no GitHub não
 publica mais nada. Para outro nome de projeto: `SAIMO_PROJETO_SITE=outro`.
@@ -53,6 +53,5 @@ publica mais nada. Para outro nome de projeto: `SAIMO_PROJETO_SITE=outro`.
 ## Quando mudar de conta no GitHub
 
 1. Mover os repositórios.
-2. Rodar `scripts/publicar_catalogos.sh` no SaimoPlayer e publicar o novo
-   `versao.json` apontando para os releases da conta nova.
+2. Publicar o `versao.json` da última release apontando para os arquivos da conta nova.
 3. O site não precisa de mudança nem de novo deploy.

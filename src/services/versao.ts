@@ -1,10 +1,9 @@
 /**
  * A versão publicada e os links de download dos apps, lidos do `versao.json`
- * do endereço de canais. O site não sabe em que GitHub os arquivos moram: só
- * aceita link de download do próprio GitHub (https, github.com,
- * /<dono>/<repo>/releases/download/…) vindo desse arquivo.
+ * da última release. Esse é o único endereço fixo; os links de download vêm de
+ * dentro dele, e o site só os aceita se forem do próprio GitHub (https,
+ * github.com, /<dono>/<repo>/releases/download/…).
  */
-import { CANAIS } from './enderecos';
 
 export type Plataforma = 'tvbox' | 'celular' | 'mac' | 'windows';
 
@@ -18,6 +17,10 @@ export interface Versao {
   versao: string;
   arquivos: Partial<Record<Plataforma, ArquivoApp>>;
 }
+
+/** Endereço único e fixo do arquivo de versão. */
+export const URL_VERSAO =
+  'https://github.com/saimo-tv/saimo-downloads/releases/latest/download/versao.json';
 
 const PLATAFORMAS: Plataforma[] = ['tvbox', 'celular', 'mac', 'windows'];
 
@@ -51,8 +54,11 @@ let pendente: Promise<Versao | null> | null = null;
 /** Uma busca por sessão; falhou, a próxima chamada tenta de novo. */
 export function buscarVersao(): Promise<Versao | null> {
   if (!pendente) {
-    pendente = fetch(`${CANAIS}versao.json`, { cache: 'no-cache' })
-      .then(r => (r.ok ? r.json() : null))
+    // O github.com redireciona o download para outro host sem liberar CORS ao
+    // navegador; se a busca direta falhar, o proxy do próprio site busca.
+    const buscar = (url: string) => fetch(url, { cache: 'no-cache' }).then(r => (r.ok ? r.json() : Promise.reject(r.status)));
+    pendente = buscar(URL_VERSAO)
+      .catch(() => buscar(`/api/proxy?url=${encodeURIComponent(URL_VERSAO)}`))
       .then(lerVersao)
       .catch(() => null)
       .then(v => { if (!v) pendente = null; return v; });

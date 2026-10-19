@@ -1,9 +1,9 @@
 /**
  * Atalhos curtos de download (/tvbox, /celular, /mac, /windows) para digitar
- * na TV. O destino sai do versao.json publicado, para o site não carregar o
- * nome do dono nem do repositório; só segue link de release do GitHub.
+ * na TV. O destino sai do versao.json da última release; só segue link de
+ * release do GitHub.
  */
-const VERSAO = 'https://saimo-canais.pages.dev/versao.json';
+const VERSAO = 'https://github.com/saimo-tv/saimo-downloads/releases/latest/download/versao.json';
 
 export function atalho(plataforma: string) {
   return async ({ request }: { request: Request }): Promise<Response> => {
