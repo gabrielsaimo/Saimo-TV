@@ -64,7 +64,7 @@ export function proxyBase(): string {
   const externo = import.meta.env.VITE_PROXY_BASE;
   if (externo) return externo.replace(/\/$/, '');
   // Pacote de TV: a origem é local (file://), então o proxy de reserva é o do site.
-  if (ehTv()) return 'https://saimo-tv2.pages.dev';
+  if (ehTv()) return 'https://saimo-tv.pages.dev';
   return typeof window !== 'undefined' ? window.location.origin : '';
 }
 

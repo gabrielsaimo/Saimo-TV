@@ -28,18 +28,18 @@ Existem três jeitos de colocar um app web numa TV. A escolha:
 | Formato | Como é | Prós | Contras |
 |---|---|---|---|
 | Empacotado puro | Todo o JS dentro do `.wgt`/`.ipk` | Funciona offline; origem local, sem CORS/mixed content | Cada correção = reinstalar na TV (e instalar na TV é a parte difícil, ver §6) |
-| Hospedado puro | O app só redireciona para `https://saimo-tv2.pages.dev/tv/` | Atualiza na hora | Página https: vídeo `http://` vira conteúdo misto; CORS igual ao navegador → precisa do `/api/proxy` (custa pedidos de Worker no plano de US$ 10) |
+| Hospedado puro | O app só redireciona para `https://saimo-tv.pages.dev/tv/` | Atualiza na hora | Página https: vídeo `http://` vira conteúdo misto; CORS igual ao navegador → precisa do `/api/proxy` (custa pedidos de Worker no plano de US$ 10) |
 | **Casca + código remoto (escolhido)** | O pacote tem um `index.html` pequeno (o "carregador") que baixa o JS/CSS da versão atual do Pages como `<script>` comum e roda **dentro da origem local do pacote** | Atualiza sem reinstalar **e** mantém os privilégios do pacote (vídeo http, AVPlay da Samsung, teclas do controle) | Precisa do carregador e de um manifesto de versão; tem que validar cedo (Fase 0) que as duas TVs deixam `<script src="https://…">` rodar a partir do pacote |
 
 Fluxo do carregador:
 
 1. Abre instantâneo com a tela de abertura que já vem no pacote.
-2. Lê `https://saimo-tv2.pages.dev/tv/manifesto.json` (`{versao, js:[…], css:[…], minimoCasca}`).
+2. Lê `https://saimo-tv.pages.dev/tv/manifesto.json` (`{versao, js:[…], css:[…], minimoCasca}`).
 3. Injeta os arquivos como `<script>`/`<link>` clássicos (sem `type="module"`: no webOS,
    módulo a partir de `file://` é bloqueado).
 4. Sem rede ou manifesto quebrado: usa a cópia do código que veio no próprio pacote.
 5. `minimoCasca` maior que a casca instalada → mostra "Instale a versão nova do app" com
-   o link curto (`saimo-tv2.pages.dev/samsung` ou `/lg`).
+   o link curto (`saimo-tv.pages.dev/samsung` ou `/lg`).
 
 Assim a casca quase nunca muda; o app em si atualiza junto com o site, na hora.
 
@@ -129,7 +129,7 @@ src/services/players/        adaptador de player (§4.3)
 | Loja oficial | Samsung Seller Office: revisão de semanas, regras de conteúdo | LG Seller Lounge: idem |
 | Modo desenvolvedor | Ligar o modo desenvolvedor, gerar certificado Samsung com o ID da TV (DUID), instalar por `sdb`/`tizen install` | Conta LG + app "Developer Mode"; a sessão **expira a cada ~50 h** e os apps instalados param |
 | Comunidade | Instaladores prontos (estilo Jellyfin2Samsung) fazem certificado + instalação sozinhos | Homebrew Channel (só em firmwares vulneráveis, via root) |
-| Sem instalar nada | Navegador da TV abrindo `saimo-tv2.pages.dev` | Idem |
+| Sem instalar nada | Navegador da TV abrindo `saimo-tv.pages.dev` | Idem |
 
 Recomendação, em ordem:
 1. **Navegador da TV (já, sem instalar)**: o site detecta TV pelo user agent e liga o modo TV.

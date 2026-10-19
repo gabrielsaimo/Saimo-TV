@@ -45,8 +45,8 @@ test('na TV cada fonte é tentada direto primeiro e o proxy fica de reserva', ()
 });
 
 test('o proxy de reserva é o do site, não a origem local do pacote', () => {
-  assert.equal(proxyBase(), 'https://saimo-tv2.pages.dev');
-  assert.ok(buildAttempts([http])[1].url.startsWith('https://saimo-tv2.pages.dev/api/proxy?url='));
+  assert.equal(proxyBase(), 'https://saimo-tv.pages.dev');
+  assert.ok(buildAttempts([http])[1].url.startsWith('https://saimo-tv.pages.dev/api/proxy?url='));
 });
 
 test('com HLS nativo na TV, a primeira tentativa é o decodificador da TV', () => {
