@@ -81,7 +81,7 @@ function aoApertar(e: KeyboardEvent): void {
     // O D-pad do app entende Escape como "voltar". Se ele não tem mais para onde voltar,
     // estamos na tela inicial: a tecla Voltar da TV então fecha o app.
     const tratado = tecla(e.target, 'Escape', 27);
-    if (!tratado) sairDoApp();
+    if (!tratado) pedirParaSair();
     return;
   }
   if (codigo === PLAY || codigo === PAUSA || codigo === PLAY_PAUSA || codigo === PARAR) {
@@ -97,13 +97,37 @@ function aoApertar(e: KeyboardEvent): void {
 
 /** Sai do app (tela inicial da TV). */
 export function sairDoApp(): void {
-  const w = janela();
+  const w = janela() as (JanelaTv & { webOS?: { platformBack?: () => void }; PalmSystem?: { platformBack?: () => void } }) | null;
   if (!w) return;
   try {
-    w.tizen?.application?.getCurrentApplication?.().exit();
-    return;
+    if (w.tizen?.application?.getCurrentApplication) {
+      w.tizen.application.getCurrentApplication().exit();
+      return;
+    }
+  } catch { /* cai no próximo */ }
+  // webOS: o jeito certo de voltar ao menu da TV. O window.close() fazia a LG fechar e
+  // reabrir o app.
+  try {
+    if (w.webOS?.platformBack) { w.webOS.platformBack(); return; }
+    if (w.PalmSystem?.platformBack) { w.PalmSystem.platformBack(); return; }
   } catch { /* cai no fechamento comum */ }
   try { w.close(); } catch { /* sem o que fazer */ }
+}
+
+let ultimoVoltar = 0;
+
+/** Voltar na tela inicial: o primeiro avisa, o segundo (em até 2,5 s) sai. Nada de sair sem querer. */
+function pedirParaSair(): void {
+  const agora = Date.now();
+  if (agora - ultimoVoltar < 2500) { sairDoApp(); return; }
+  ultimoVoltar = agora;
+  const aviso = document.createElement('div');
+  aviso.textContent = 'Aperte Voltar de novo para sair do Saimo TV';
+  aviso.style.cssText = 'position:fixed;left:50%;bottom:8%;transform:translateX(-50%);z-index:2147483647;' +
+    'background:#18181bee;color:#fff;font:600 28px system-ui,sans-serif;padding:18px 32px;border-radius:16px;' +
+    'border:1px solid #ffffff33';
+  document.body.appendChild(aviso);
+  window.setTimeout(() => aviso.remove(), 2500);
 }
 
 let ligado = false;
