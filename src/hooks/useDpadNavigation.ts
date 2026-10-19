@@ -1,5 +1,20 @@
 import { useEffect, useCallback, useRef, useState } from 'react';
 
+/**
+ * Os controles de jogo conectados, sempre como array. Na TV (webOS, Tizen) e em navegador
+ * antigo `getGamepads()` devolve uma GamepadList sem `.some`/iterador, ou nada: chamar `.some`
+ * nela derrubava a tela inteira ("getGamepads(...).some is not a function").
+ */
+function listaDeControles(): (Gamepad | null)[] {
+  try {
+    const lista = typeof navigator.getGamepads === 'function' ? navigator.getGamepads() : null;
+    return lista ? Array.prototype.slice.call(lista) as (Gamepad | null)[] : [];
+  } catch {
+    return [];
+  }
+}
+
+
 // Tipos para navegação D-pad
 export type FocusableElement = HTMLElement;
 export type Direction = 'up' | 'down' | 'left' | 'right';
@@ -351,7 +366,7 @@ export function useDpadNavigation(options: DpadNavigationOptions = {}) {
     let lastButtonStates: boolean[] = [];
 
     const pollGamepad = () => {
-      const gamepads = navigator.getGamepads?.() || [];
+      const gamepads = listaDeControles();
 
       for (const gamepad of gamepads) {
         if (!gamepad) continue;
@@ -417,7 +432,7 @@ export function useDpadNavigation(options: DpadNavigationOptions = {}) {
     window.addEventListener('gamepadconnected', handleGamepadConnected);
 
     // Se já tem gamepad conectado, inicia polling
-    if (navigator.getGamepads?.().some((gp) => gp)) {
+    if (listaDeControles().some((gp) => gp)) {
       pollGamepad();
     }
 

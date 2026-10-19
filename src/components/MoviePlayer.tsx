@@ -1,4 +1,4 @@
-import { ehTv } from '../plataforma/tv';
+import { ehAppDaTv } from '../plataforma/tv';
 import { useRef, useEffect, useState, useCallback, memo, useMemo } from 'react';
 import { rota } from '../utils/rotas';
 import { useMediaSession } from '../hooks/useMediaSession';
@@ -34,6 +34,11 @@ const fonteInicial = (lista: readonly { url: string; versao?: string }[], filme?
   filme?.initialSourceUrl
     ? initialSourceIndex(lista, filme.initialSourceUrl)
     : fontePreferida(serieDe(filme), lista);
+
+/** Pula para um ponto do vídeo; ignora valor não finito (duração ainda desconhecida em TV). */
+function posicionar(video: HTMLVideoElement, segundos: number): void {
+  if (Number.isFinite(segundos)) video.currentTime = Math.max(0, segundos);
+}
 
 export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo, onEpisodeChange }: MoviePlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -211,7 +216,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   }, [movie?.id, movie?.initialSourceUrl, fontes]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Desktop e TV são apps instalados: não têm a barreira de conteúdo misto da página https.
-  const noDesktop = !(globalThis as { __SAIMO_DESKTOP__?: boolean }).__SAIMO_DESKTOP__ && !ehTv();
+  const noDesktop = !(globalThis as { __SAIMO_DESKTOP__?: boolean }).__SAIMO_DESKTOP__ && !ehAppDaTv();
   const soHttp = noDesktop && !!urlAtiva && urlAtiva.startsWith('http://');
 
   /** O servidor de uma fonte, que é o que distingue uma da outra na lista. */
@@ -267,7 +272,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
       if (!atual()) return;
       const salvo = Number(localStorage.getItem(`movie-progress-${movie.id}`));
       if (Number.isFinite(salvo) && salvo > 0 && Number.isFinite(video.duration) && salvo < video.duration - 5) {
-        video.currentTime = salvo;
+        posicionar(video, salvo);
       }
     };
 
@@ -862,7 +867,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     const video = videoRef.current;
     if (!video) return;
     
-    video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + seconds));
+    posicionar(video, Math.max(0, Math.min(video.duration, video.currentTime + seconds)));
   }, []);
 
   const toggleFullscreen = useCallback(() => {
@@ -940,7 +945,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
   const skipIntro = useCallback(() => {
     const video = videoRef.current;
     if (!video || !trechoAtual) return;
-    video.currentTime = Math.min(video.duration, trechoAtual.fim ?? video.duration);
+    posicionar(video, Math.min(video.duration, trechoAtual.fim ?? video.duration));
     setTrechoPulado(trechoAtual);
   }, [trechoAtual]);
 
@@ -983,7 +988,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
     if (!video || fracao == null) return;
     const total = video.duration;
     if (!Number.isFinite(total) || total <= 0) return;
-    video.currentTime = fracao * total;
+    posicionar(video, fracao * total);
     setCurrentTime(video.currentTime);
   }, [posicaoDoEvento]);
 

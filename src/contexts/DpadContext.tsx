@@ -3,6 +3,21 @@ import { DpadContext, type Direction, type DpadContextValue } from './dpadContex
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ehTv } from '../plataforma/tv';
 
+/**
+ * Os controles de jogo conectados, sempre como array. Na TV (webOS, Tizen) e em navegador
+ * antigo `getGamepads()` devolve uma GamepadList sem `.some`/iterador, ou nada: chamar `.some`
+ * nela derrubava a tela inteira ("getGamepads(...).some is not a function").
+ */
+function listaDeControles(): (Gamepad | null)[] {
+  try {
+    const lista = typeof navigator.getGamepads === 'function' ? navigator.getGamepads() : null;
+    return lista ? Array.prototype.slice.call(lista) as (Gamepad | null)[] : [];
+  } catch {
+    return [];
+  }
+}
+
+
 // Tipos
 
 
@@ -532,7 +547,7 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
     const NAVIGATION_DELAY = 150; // Delay entre navegações em ms
 
     const pollGamepad = () => {
-      const gamepads = navigator.getGamepads?.() || [];
+      const gamepads = listaDeControles();
       const now = Date.now();
 
       for (const gamepad of gamepads) {
@@ -640,7 +655,7 @@ export function DpadNavigationProvider({ children }: { children: React.ReactNode
     window.addEventListener('gamepadconnected', handleGamepadConnected);
 
     // Inicia se já tem gamepad
-    if (navigator.getGamepads?.().some((gp) => gp)) {
+    if (listaDeControles().some((gp) => gp)) {
       pollGamepad();
     }
 

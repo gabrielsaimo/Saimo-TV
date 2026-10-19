@@ -4,6 +4,8 @@ import test from 'node:test';
 // Simula o ambiente da TV antes de carregar os módulos.
 Object.defineProperty(globalThis, 'navigator', { value: { userAgent: 'Mozilla/5.0 (SMART-TV; Linux; Tizen 5.5) AppleWebKit/537.36 Chrome/69' }, configurable: true });
 globalThis.window = globalThis;
+// O app instalado: o carregador do pacote grava a marca.
+globalThis.__SAIMO_TV__ = 'tizen';
 globalThis.localStorage = { getItem: () => null, setItem() {} };
 
 // Os módulos importam sem extensão (resolução do bundler): empacota antes de carregar.
@@ -49,14 +51,22 @@ test('o proxy de reserva é o do site, não a origem local do pacote', () => {
   assert.ok(buildAttempts([http])[1].url.startsWith('https://saimo-tv.pages.dev/api/proxy?url='));
 });
 
-test('com HLS nativo na TV, a primeira tentativa é o decodificador da TV', () => {
+test('com HLS nativo na TV, o decodificador da TV vem logo depois do hls.js direto', () => {
   globalThis.document = { createElement: () => ({ canPlayType: () => 'maybe' }) };
   const t = buildAttempts([http]);
-  assert.deepEqual(t.map((a) => [a.nativo === true, a.viaProxy]), [[true, false], [false, false], [false, true]]);
+  assert.deepEqual(t.map((a) => [a.nativo === true, a.viaProxy]), [[false, false], [true, false], [false, true]]);
   assert.equal(t[0].url, http.url);
   delete globalThis.document;
 });
 
 test('TV sem HLS nativo não inventa a tentativa nativa', () => {
   assert.ok(buildAttempts([http]).every((a) => !a.nativo));
+});
+
+test('site aberto no navegador da TV (sem o pacote) segue as regras de página https', () => {
+  delete globalThis.__SAIMO_TV__;
+  globalThis.location = { origin: 'https://saimo-tv.pages.dev' };
+  assert.equal(needsProxy(http), true);
+  assert.ok(buildAttempts([http]).every((a) => a.viaProxy));
+  globalThis.__SAIMO_TV__ = 'tizen';
 });

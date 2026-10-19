@@ -37,6 +37,17 @@ export function ehTv(): boolean {
   return marcaTv() !== null;
 }
 
+/**
+ * O app instalado na TV (o pacote .wgt/.ipk), e não o site aberto no navegador da TV. Só o app
+ * escapa das regras de página https (vídeo http, CORS): no navegador da TV o site segue as
+ * mesmas regras de qualquer navegador, com o proxy. O carregador do pacote é quem grava
+ * `__SAIMO_TV__`.
+ */
+export function ehAppDaTv(): boolean {
+  const w = janela();
+  return !!w && (w.__SAIMO_TV__ === 'tizen' || w.__SAIMO_TV__ === 'webos');
+}
+
 /** Teclas do controle remoto → ação. Os números são das duas marcas (Samsung e LG). */
 const VOLTAR = new Set([10009, 461, 27]);
 const PLAY = 415;
@@ -154,7 +165,7 @@ export function iniciarTv(): void {
  * caminho mais confiável para http e para os servidores que exigem cabeçalhos.
  */
 export function hlsNativo(): boolean {
-  if (!ehTv() || typeof document === 'undefined') return false;
+  if (!ehAppDaTv() || typeof document === 'undefined') return false;
   try {
     return !!document.createElement('video').canPlayType('application/vnd.apple.mpegurl');
   } catch { return false; }
