@@ -12,15 +12,19 @@ import { sondarProxy } from './utils/streamUrl'
 migrarUmaVez()
 iniciarTv()
 // O proxy do site pode estar cortado pela cota do dia: confere ao abrir e a cada 10 minutos.
-void sondarProxy()
 window.setInterval(() => { void sondarProxy() }, 10 * 60 * 1000)
 iniciarTelemetria()
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// A tela só abre depois da sondagem do proxy (no máximo 1,5 s): o player monta as tentativas de cada
+// canal ao abrir, e precisa saber se o proxy do site está de pé ou cortado pela cota do dia.
+const sondagem = Promise.race([sondarProxy(), new Promise<void>((ok) => window.setTimeout(ok, 1500))])
+void sondagem.finally(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  )
+})
 
 // Casca do app em cache e o site instalável como app (só no site publicado:
 // no app de desktop e em desenvolvimento, nada de service worker).
