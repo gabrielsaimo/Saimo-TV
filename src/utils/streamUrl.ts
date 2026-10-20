@@ -66,15 +66,37 @@ export function proxyBase(): string {
   // resolve sem mexer no resto — o contrato de `/api/proxy` é o mesmo.
   const externo = import.meta.env.VITE_PROXY_BASE;
   if (externo) return externo.replace(/\/$/, '');
-  // Pacote de TV ou deploy antigo sem Pages Functions: o proxy ativo com workers atende em saimo-tv2.
-  if (ehAppDaTv()) return 'https://saimo-tv2.pages.dev';
-  if (typeof window !== 'undefined') {
-    if (window.location.origin.includes('saimo-tv.pages.dev')) {
-      return 'https://saimo-tv2.pages.dev';
-    }
-    return window.location.origin;
+  // Pacote de TV: a origem é local (file://), então o proxy de reserva é o do site.
+  const principal = ehAppDaTv()
+    ? PROXY_PRINCIPAL
+    : (typeof window !== 'undefined' ? window.location.origin : '');
+  // O plano gratuito da Cloudflare corta as funções do site (e com elas o proxy) depois de 100 mil
+  // pedidos no dia: aí `/api/proxy` devolve a página inicial. Quando a sondagem acusa isso, o proxy
+  // de reserva (outra conta, sem esse corte) atende no lugar.
+  if (proxyPrincipalCaido && principal !== PROXY_RESERVA) return PROXY_RESERVA;
+  return principal;
+}
+
+const PROXY_PRINCIPAL = 'https://saimo-tv.pages.dev';
+const PROXY_RESERVA = 'https://saimo-tv2.pages.dev';
+let proxyPrincipalCaido = false;
+
+/**
+ * Confere se o proxy principal está de pé. Sem o parâmetro `url` um proxy vivo responde 400 em
+ * JSON; um proxy cortado (cota do dia) responde a página do site. Chamar ao abrir e de tempos em
+ * tempos: custa um pedido.
+ */
+export async function sondarProxy(): Promise<void> {
+  if (typeof window === 'undefined' || typeof fetch !== 'function') return;
+  const base = ehAppDaTv() ? PROXY_PRINCIPAL : window.location.origin;
+  if (!/^https?:/.test(base) || base === PROXY_RESERVA) { proxyPrincipalCaido = false; return; }
+  try {
+    const r = await fetch(`${base}/api/proxy`, { cache: 'no-store' });
+    const tipo = r.headers.get('content-type') || '';
+    proxyPrincipalCaido = tipo.includes('text/html');
+  } catch {
+    // Sem rede ou bloqueio: não dá para dizer que o proxy caiu.
   }
-  return 'https://saimo-tv2.pages.dev';
 }
 
 /** Endereço do proxy desta origem para uma fonte, com os cabeçalhos dela. */

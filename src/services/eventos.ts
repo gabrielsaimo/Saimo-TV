@@ -34,7 +34,9 @@ export const acabou = (j: Jogo, agora: number) => j.estado === 'post' || agora >
 
 // A agenda passa pela função do site (functions/api/events.ts): a embedtv
 // não manda o cabeçalho de CORS. A ESPN manda, então vai direto.
-const EMBED = `${proxyBase()}/api/events`;
+// Calculado a cada busca (e não ao carregar o módulo): o proxy do site pode estar cortado pela cota
+// do dia, e quem decide isso é a sondagem que roda ao abrir (ver `sondarProxy`).
+const embed = () => `${proxyBase()}/api/events`;
 const STREAMING = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1/eventos';
 const ESPN = [
     'soccer/bra.1', 'soccer/bra.2', 'soccer/bra.copa_do_brazil', 'soccer/conmebol.libertadores',
@@ -206,7 +208,7 @@ function mesmoTime(a: string, b: string): boolean {
 /** null quando a agenda não veio. */
 export async function buscarJogos(canais: Channel[]): Promise<Jogo[] | null> {
     const [agenda, streaming, ...placares] = await Promise.all([
-        json(EMBED),
+        json(embed()),
         doMonitor(),
         ...ESPN.map(l => json(`https://site.api.espn.com/apis/site/v2/sports/${l}/scoreboard`)),
     ]);

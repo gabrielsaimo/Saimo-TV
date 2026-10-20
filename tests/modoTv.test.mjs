@@ -70,3 +70,16 @@ test('site aberto no navegador da TV (sem o pacote) segue as regras de página h
   assert.ok(buildAttempts([http]).every((a) => a.viaProxy));
   globalThis.__SAIMO_TV__ = 'tizen';
 });
+
+test('proxy do site cortado pela cota do dia: usa o de reserva; de pé: usa o próprio', async () => {
+  delete globalThis.__SAIMO_TV__;
+  globalThis.location = { origin: 'https://saimo-tv.pages.dev' };
+  const { sondarProxy: sondar, proxyBase: base } = await import(saida);
+  globalThis.fetch = async () => ({ headers: { get: () => 'text/html; charset=utf-8' } });
+  await sondar();
+  assert.equal(base(), 'https://saimo-tv2.pages.dev');
+  globalThis.fetch = async () => ({ headers: { get: () => 'application/json' } });
+  await sondar();
+  assert.equal(base(), 'https://saimo-tv.pages.dev');
+  globalThis.__SAIMO_TV__ = 'tizen';
+});
