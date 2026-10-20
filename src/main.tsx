@@ -6,10 +6,14 @@ import App from './App.tsx'
 import { iniciar as iniciarTelemetria } from './services/telemetria'
 import { migrarUmaVez } from './services/listas'
 import { iniciarTv } from './plataforma/tv'
+import { sondarProxy } from './utils/streamUrl'
 
 // Antes de qualquer tela: esquece o que as versões anteriores guardaram de listas.
 migrarUmaVez()
 iniciarTv()
+// O proxy do site pode estar cortado pela cota do dia: confere ao abrir e a cada 10 minutos.
+void sondarProxy()
+window.setInterval(() => { void sondarProxy() }, 10 * 60 * 1000)
 iniciarTelemetria()
 
 createRoot(document.getElementById('root')!).render(
