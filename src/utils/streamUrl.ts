@@ -37,6 +37,9 @@ export function needsProxy(source: ChannelSource | { url: string }): boolean {
   // Na TV o app é instalado: não existe conteúdo misto nem CORS de página. O vídeo
   // abre direto, inclusive http, e o proxy só entra como última tentativa (buildAttempts).
   if (ehAppDaTv()) return false;
+  // CDNs como s23-cloudfront-net.lat já entregam CORS completo (Access-Control-Allow-Origin: *)
+  // e HTTPS com tipo apple.mpegurl, mesmo com terminação .txt: toca direto sem sobrecarregar o proxy.
+  if (source.url.includes('s23-cloudfront-net.lat')) return false;
   // Masters `.txt` costumam vir como text/plain e sem CORS (como os de
   // embedplayer2). Começar pelo proxy evita uma tentativa direta que o browser
   // obrigatoriamente bloquearia e garante que os filhos também sejam reescritos.
@@ -63,9 +66,15 @@ export function proxyBase(): string {
   // resolve sem mexer no resto — o contrato de `/api/proxy` é o mesmo.
   const externo = import.meta.env.VITE_PROXY_BASE;
   if (externo) return externo.replace(/\/$/, '');
-  // Pacote de TV: a origem é local (file://), então o proxy de reserva é o do site.
-  if (ehAppDaTv()) return 'https://saimo-tv.pages.dev';
-  return typeof window !== 'undefined' ? window.location.origin : '';
+  // Pacote de TV ou deploy antigo sem Pages Functions: o proxy ativo com workers atende em saimo-tv2.
+  if (ehAppDaTv()) return 'https://saimo-tv2.pages.dev';
+  if (typeof window !== 'undefined') {
+    if (window.location.origin.includes('saimo-tv.pages.dev')) {
+      return 'https://saimo-tv2.pages.dev';
+    }
+    return window.location.origin;
+  }
+  return 'https://saimo-tv2.pages.dev';
 }
 
 /** Endereço do proxy desta origem para uma fonte, com os cabeçalhos dela. */
