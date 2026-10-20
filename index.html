@@ -31,104 +31,7 @@
     <title>Saimo TV</title>
   </head>
   <body>
-    <!-- 1. Se estiver no endereço antigo (saimo-tv.pages.dev), avisa e redireciona com os dados -->
-    <script>
-      (function () {
-        if (location.hostname !== 'saimo-tv.pages.dev') return;
-
-        var CHAVES = ['tv-favorites', 'tv-last-channel', 'tv-volume', 'movie-volume', 'movie-skip-time', 'current-movie-id',
-          'saimo-vod-favoritos', 'saimo-continuar', 'saimo-canais-personalizados', 'saimo-ao-iniciar', 'saimo-upscaling',
-          'saimo-upscale-4k', 'saimo-upscale-hd', 'saimo-buscas-recentes', 'saimo-radios-recentes', 'saimo-entrada',
-          'saimo-telemetria-id'];
-        var PREFIXO = 'movie-progress-';
-
-        function montarDestino() {
-          var dados = {};
-          try {
-            for (var i = 0; i < localStorage.length; i++) {
-              var k = localStorage.key(i);
-              if (!k) continue;
-              if (CHAVES.indexOf(k) >= 0 || k.indexOf(PREFIXO) === 0) {
-                var v = localStorage.getItem(k);
-                if (typeof v === 'string' && v.length <= 200000) dados[k] = v;
-              }
-            }
-          } catch (e) {}
-
-          var hash = '';
-          try {
-            var raw = JSON.stringify(dados);
-            if (raw && raw !== '{}') {
-              var b64 = btoa(unescape(encodeURIComponent(raw)))
-                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-              hash = '#migrar=1.' + b64;
-            }
-          } catch (e) {}
-
-          var path = location.pathname;
-          var search = location.search;
-          return 'https://saimo-tv2.pages.dev' + path + search + hash;
-        }
-
-        var destino = montarDestino();
-        var segundos = 5;
-
-        function ir() {
-          location.replace(destino);
-        }
-
-        var modal = document.createElement('div');
-        modal.setAttribute('role', 'alertdialog');
-        modal.style.cssText = 'position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:24px;background:#0a0a0af2;backdrop-filter:blur(10px);font-family:Inter,system-ui,sans-serif;color:#fff;text-align:center';
-        modal.innerHTML = '<div style="max-width:500px;background:#18181b;border:1px solid #7c3aed66;box-shadow:0 24px 60px rgba(0,0,0,0.85);border-radius:24px;padding:32px 24px">' +
-          '<div style="width:58px;height:58px;border-radius:18px;background:#7c3aed26;border:1px solid #7c3aed66;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px">🚀</div>' +
-          '<h2 style="margin:0 0 10px;font-size:24px;font-weight:700;color:#fff">O Saimo TV mudou de endereço!</h2>' +
-          '<p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#d4d4d8">Para continuar assistindo com carregamento rápido, canais ao vivo e programação 100% atualizados, use o novo endereço oficial:</p>' +
-          '<div style="background:#09090b;border:1px solid #27272a;border-radius:12px;padding:12px 14px;margin:0 0 20px;word-break:break-all">' +
-            '<a id="migrar-link" href="' + destino + '" style="color:#a78bfa;font-weight:600;font-size:15px;text-decoration:none">https://saimo-tv2.pages.dev' + location.pathname + '</a>' +
-          '</div>' +
-          '<button id="migrar-agora-btn" style="width:100%;padding:14px 20px;border:0;border-radius:12px;background:#7c3aed;color:#fff;font:700 16px inherit;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 14px rgba(124,58,237,0.4)">' +
-            'Ir para o novo endereço agora' +
-          '</button>' +
-          '<p id="migrar-contagem" style="margin:0;font-size:13px;color:#a1a1aa">Redirecionando automaticamente em <strong style="color:#fff">' + segundos + 's</strong>... (seus dados serão levados junto)</p>' +
-        '</div>';
-
-        function iniciar() {
-          document.body.appendChild(modal);
-          var btn = document.getElementById('migrar-agora-btn');
-          if (btn) {
-            btn.focus();
-            btn.addEventListener('click', ir);
-          }
-          var link = document.getElementById('migrar-link');
-          if (link) {
-            link.addEventListener('click', function (e) {
-              e.preventDefault();
-              ir();
-            });
-          }
-          var timer = setInterval(function () {
-            segundos--;
-            var contagemEl = document.getElementById('migrar-contagem');
-            if (contagemEl) {
-              contagemEl.innerHTML = 'Redirecionando automaticamente em <strong style="color:#fff">' + segundos + 's</strong>... (seus dados serão levados junto)';
-            }
-            if (segundos <= 0) {
-              clearInterval(timer);
-              ir();
-            }
-          }, 1000);
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', iniciar);
-        } else {
-          iniciar();
-        }
-      })();
-    </script>
-
-    <!-- 2. Traz os dados do site antigo (favoritos, continuar assistindo, canais próprios…) que o botão do
+    <!-- Traz os dados do site antigo (favoritos, continuar assistindo, canais próprios…) que o botão do
          aviso de lá manda no trecho # do endereço. Roda antes do app, e pergunta antes de gravar. -->
     <script>
       (function () {
@@ -177,28 +80,19 @@
         }
         var d = document.createElement('div');
         d.setAttribute('role', 'alertdialog');
-        d.style.cssText = 'position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:24px;background:#0a0a0ae6;backdrop-filter:blur(10px);font-family:Inter,system-ui,sans-serif;color:#fff;text-align:center';
-        d.innerHTML = '<div style="max-width:480px;background:#18181b;border:1px solid #7c3aed66;box-shadow:0 24px 60px rgba(0,0,0,0.85);border-radius:24px;padding:32px 26px">' +
-          '<div style="width:58px;height:58px;border-radius:18px;background:#7c3aed26;border:1px solid #7c3aed66;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px">📥</div>' +
-          '<h2 style="margin:0 0 10px;font-size:24px;font-weight:700;color:#fff">Trazer seus dados do endereço antigo?</h2>' +
-          '<p style="margin:0 0 22px;font-size:15px;line-height:1.5;color:#d4d4d8">Seus favoritos, o que você estava assistindo e seus canais próprios vão para este novo endereço.</p>' +
-          '<div style="display:flex;gap:12px;justify-content:center">' +
-            '<button id="migrar-sim" style="flex:1;padding:14px 20px;border:0;border-radius:12px;background:#7c3aed;color:#fff;font:700 16px inherit;cursor:pointer;box-shadow:0 4px 14px rgba(124,58,237,0.4)">Trazer dados</button>' +
-            '<button id="migrar-nao" style="flex:1;padding:14px 20px;border:1px solid #ffffff33;border-radius:12px;background:none;color:#fff;font:600 16px inherit;cursor:pointer">Agora não</button>' +
-          '</div></div>';
-
-        function exibir() {
+        d.style.cssText = 'position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:24px;background:#0a0a0acc;font-family:Inter,system-ui,sans-serif;color:#fff;text-align:center';
+        d.innerHTML = '<div style="max-width:480px;background:#18181b;border:1px solid #ffffff26;border-radius:20px;padding:28px">' +
+          '<h2 style="margin:0 0 12px;font-size:26px">Trazer seus dados do endereço antigo?</h2>' +
+          '<p style="margin:0 0 22px;font-size:17px;line-height:1.5;color:#d4d4d8">Seus favoritos, o que você estava assistindo e seus canais próprios vão para este endereço.</p>' +
+          '<button id="migrar-sim" style="padding:14px 26px;border:0;border-radius:12px;background:#7c3aed;color:#fff;font:700 18px inherit;cursor:pointer;margin:4px">Trazer</button>' +
+          '<button id="migrar-nao" style="padding:14px 26px;border:1px solid #ffffff40;border-radius:12px;background:none;color:#fff;font:600 18px inherit;cursor:pointer;margin:4px">Agora não</button></div>';
+        document.addEventListener('DOMContentLoaded', function () {
           document.body.appendChild(d);
           var sim = document.getElementById('migrar-sim');
           if (sim) sim.focus();
           sim.addEventListener('click', function () { aplicar(); location.replace(location.pathname + location.search); });
           document.getElementById('migrar-nao').addEventListener('click', function () { d.remove(); });
-        }
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', exibir);
-        } else {
-          exibir();
-        }
+        });
       })();
     </script>
     <div id="root"></div>
