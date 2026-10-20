@@ -727,3 +727,22 @@
 .modo-tv .video-player-container [title^="Sair da tela cheia"] {
   display: none !important;
 }
+
+/* Otimizações de GPU e rendering para Smart TVs fracas (Tizen/webOS) */
+.modo-tv * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.modo-tv .painel-de-canais-container {
+  background: rgba(11, 14, 20, 0.98) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8) !important;
+}
+
+.modo-tv .vod-sub-barra {
+  background: rgba(18, 20, 34, 0.98) !important;
+}
+
+.modo-tv .barra-topo-container {
+  background: rgba(11, 14, 20, 0.98) !important;
+}

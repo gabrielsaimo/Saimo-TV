@@ -41,6 +41,7 @@ export const ChannelIcon = memo(function ChannelIcon({
           alt={channel.name}
           className="channel-icon-img"
           loading="lazy"
+          decoding="async"
           onError={() => setHasError(true)}
         />
       ) : (

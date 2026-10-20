@@ -197,6 +197,19 @@
   padding-right: 4px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  contain: content;
+  -webkit-overflow-scrolling: touch;
+  transform: translateZ(0);
+}
+
+.painel-carregando-mais {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 8px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 13px;
+  letter-spacing: 0.02em;
 }
 
 .painel-lista-rolagem::-webkit-scrollbar {

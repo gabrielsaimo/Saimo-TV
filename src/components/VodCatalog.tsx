@@ -18,7 +18,7 @@
  *   menu de contexto de botão direito para favoritar.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import type { Movie, MovieSource, SeriesEpisodeInfo } from '../types/movie';
@@ -394,30 +394,46 @@ export function VodCatalog({
     [abrirItem],
   );
 
-  // Carga inicial dos arquivos do repositório
+  // Carga inicial dos arquivos do repositório (otimizada para Smart TVs fracas)
   useEffect(() => {
     let vivo = true;
+
+    // 1. Destaques principais (arquivo pequeno): mostra a tela quase instantaneamente!
+    destaques()
+      .then((filas) => {
+        if (!vivo) return;
+        setFilasDestaque(filas);
+        setCarregandoDados(false);
+      })
+      .catch(() => {
+        if (vivo) setCarregandoDados(false);
+      });
+
+    // 2. Metadados de coleções, gêneros e gavetas carregam em segundo plano
     Promise.all([
-      destaques().catch(() => []),
       lerGeneros().catch(() => null),
       indice().catch(() => []),
       colecao('animes').catch(() => []),
       colecao('doramas').catch(() => []),
-    ]).then(([filas, gen, gav, animes, doramas]) => {
+    ]).then(([gen, gav, animes, doramas]) => {
       if (!vivo) return;
-      setFilasDestaque(filas);
-      setGeneros(gen);
+      if (gen) setGeneros(gen);
       setGavetas(gav);
       setAnimesColecao(animes);
       setDoramasColecao(doramas);
-      setCarregandoDados(false);
     });
 
-    // Carga dos títulos de busca para gerar fileiras de gênero
-    listarTudo(false).then((lista) => { if (vivo) setTodosFilmes(lista); });
-    listarTudo(true).then((lista) => { if (vivo) setTodasSeries(lista); });
+    // 3. Carga do índice completo de busca (30k títulos) postergada para não concorrer com as capas
+    const timerBusca = setTimeout(() => {
+      if (!vivo) return;
+      listarTudo(false).then((lista) => { if (vivo) setTodosFilmes(lista); });
+      listarTudo(true).then((lista) => { if (vivo) setTodasSeries(lista); });
+    }, 350);
 
-    return () => { vivo = false; };
+    return () => {
+      vivo = false;
+      clearTimeout(timerBusca);
+    };
   }, []);
 
   // Totais para exibição nos cartões de categoria e Hero
@@ -521,25 +537,47 @@ export function VodCatalog({
     const tipoLetra = ehSerie ? 's' : 'f';
     const prefixoTitulo = secao === null ? 'Filmes de ' : '';
 
-    for (const g of generosAlvo) {
-      if (!generos.todos.includes(g)) continue;
-      const doGenero = listaBase
-        .filter((item) => temGenero(generos, item.titulo, ehSerie, g))
-        .map((item) => ({
-          tipo: tipoLetra,
-          titulo: item.titulo,
-          letra: item.letra,
-          ano: item.ano,
-          capa: capaDaFicha(generos, item.titulo, ehSerie) || '',
-        }))
-        .filter((item) => !!item.capa)
-        .slice(0, 25);
+    // Otimização extrema para TV: UMA ÚNICA PASSADA com early break assim que preencher as cotas
+    const generosValidos = generosAlvo.filter((g) => generos.todos.includes(g));
+    const baldes: Record<string, ItemDestaque[]> = {};
+    for (const g of generosValidos) baldes[g] = [];
 
-      if (doGenero.length >= 4) {
+    const COTA = 25;
+    let pendentes = generosValidos.length;
+
+    for (let i = 0; i < listaBase.length; i++) {
+      const item = listaBase[i];
+      let capaCache: string | null | undefined = undefined;
+
+      for (const g of generosValidos) {
+        if (baldes[g].length >= COTA) continue;
+        if (temGenero(generos, item.titulo, ehSerie, g)) {
+          if (capaCache === undefined) {
+            capaCache = capaDaFicha(generos, item.titulo, ehSerie) || '';
+          }
+          if (capaCache) {
+            baldes[g].push({
+              tipo: tipoLetra,
+              titulo: item.titulo,
+              letra: item.letra,
+              ano: item.ano,
+              capa: capaCache,
+            });
+            if (baldes[g].length === COTA) {
+              pendentes--;
+            }
+          }
+        }
+      }
+      if (pendentes <= 0) break;
+    }
+
+    for (const g of generosValidos) {
+      if (baldes[g].length >= 4) {
         out.push({
           titulo: prefixoTitulo ? `${prefixoTitulo}${g.toLowerCase()}` : g,
           genero: g,
-          itens: doGenero,
+          itens: baldes[g],
         });
       }
     }
@@ -1218,12 +1256,12 @@ export function VodCatalog({
           )}
 
           {/* Destaques do catálogo (Filtrados por seção ou todos) */}
-          {filasDestaque.map((fila) => {
+          {filasDestaque.map((fila, idx) => {
             const itensDaFila = secao
               ? fila.itens.filter((i) => (secao === 'filmes' ? i.tipo === 'f' : secao === 'series' ? i.tipo === 's' : secao === 'animes' ? i.tipo === 'a' : i.tipo === 'd'))
               : fila.itens;
             if (itensDaFila.length < 3) return null;
-            return (
+            const elemento = (
               <CarrosselFileira
                 key={fila.titulo}
                 titulo={fila.titulo}
@@ -1232,26 +1270,28 @@ export function VodCatalog({
                 aoPassar={passarItem}
               />
             );
+            return idx < 2 ? elemento : <LazyFileira key={fila.titulo}>{elemento}</LazyFileira>;
           })}
 
-          {/* Fileiras de Gênero dinâmicas (Filmes, Séries, Animes ou Doramas) */}
+          {/* Fileiras de Gênero dinâmicas com Lazy Loading (Filmes, Séries, Animes ou Doramas) */}
           {fileirasDeGenero.map((fg) => (
-            <CarrosselFileira
-              key={fg.genero}
-              titulo={fg.titulo}
-              itens={fg.itens}
-              aoAbrir={abrirItemDestaque}
-              aoPassar={passarItem}
-              verTodos={() => {
-                if (secao === 'series') setSecao('series');
-                else if (secao === 'animes') setSecao('animes');
-                else if (secao === 'doramas') setSecao('doramas');
-                else setSecao('filmes');
-                setGeneroFiltro(fg.genero);
-                setModo('explorar');
-              }}
-              rotuloVerTodos={`Todos de ${fg.genero}`}
-            />
+            <LazyFileira key={fg.genero}>
+              <CarrosselFileira
+                titulo={fg.titulo}
+                itens={fg.itens}
+                aoAbrir={abrirItemDestaque}
+                aoPassar={passarItem}
+                verTodos={() => {
+                  if (secao === 'series') setSecao('series');
+                  else if (secao === 'animes') setSecao('animes');
+                  else if (secao === 'doramas') setSecao('doramas');
+                  else setSecao('filmes');
+                  setGeneroFiltro(fg.genero);
+                  setModo('explorar');
+                }}
+                rotuloVerTodos={`Todos de ${fg.genero}`}
+              />
+            </LazyFileira>
           ))}
 
           {/* Seção Explorar de A a Z */}
@@ -1848,6 +1888,46 @@ export function VodCatalog({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Subcomponente de Fileira com Carregamento Sob Demanda (Lazy Row) para TVs
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface LazyFileiraProps {
+  children: React.ReactNode;
+  altura?: number;
+}
+
+const LazyFileira = memo(function LazyFileira({ children, altura = 300 }: LazyFileiraProps) {
+  const [visivel, setVisivel] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setVisivel(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisivel(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '600px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} style={visivel ? undefined : { minHeight: `${altura}px` }}>
+      {visivel ? children : null}
+    </div>
+  );
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Subcomponente de Fileira Horizontal com Suporte a Mouse Wheel e Setas de Vidro
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -1937,7 +2017,7 @@ function CarrosselFileira({
               >
                 <div className="vod-card-poster-thumb">
                   {item.capa ? (
-                    <img src={item.capa} alt={item.titulo} loading="lazy" referrerPolicy="no-referrer" />
+                    <img src={item.capa} alt={item.titulo} loading="lazy" decoding="async" referrerPolicy="no-referrer" />
                   ) : (
                     <span className="vod-poster-letra">{item.titulo.charAt(0)}</span>
                   )}

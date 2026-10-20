@@ -45,7 +45,6 @@ const LinhaDeCanal = memo(function LinhaDeCanal({
 
   useEffect(() => {
     const atualizar = () => setProg(getCurrentProgram(channel.id));
-    atualizar();
     const unsub = onEPGUpdate(atualizar);
     return () => unsub();
   }, [channel.id]);
@@ -212,12 +211,77 @@ export const PainelDeCanais = memo(function PainelDeCanais({
     return result;
   }, [channels, categoriaAtiva, busca, favorites]);
 
+  const CHUNK_SIZE = 40;
+
+  // Lazy Loading / Renderização progressiva para não travar Smart TVs fracas
+  const [renderLimit, setRenderLimit] = useState<number>(() => {
+    if (activeChannelId) {
+      const idx = channels.findIndex((c) => c.id === activeChannelId);
+      if (idx >= 0) return Math.min(channels.length, Math.max(CHUNK_SIZE, idx + 15));
+    }
+    return CHUNK_SIZE;
+  });
+
+  // Reseta ou ajusta limite ao mudar categoria ou busca
+  useEffect(() => {
+    if (activeChannelId && categoriaAtiva === 'Todos' && !busca.trim()) {
+      const idx = channels.findIndex((c) => c.id === activeChannelId);
+      if (idx >= 0) {
+        setRenderLimit(Math.min(channels.length, Math.max(CHUNK_SIZE, idx + 15)));
+        return;
+      }
+    }
+    setRenderLimit(CHUNK_SIZE);
+  }, [categoriaAtiva, busca, activeChannelId, channels]);
+
+  const carregarMais = useCallback(() => {
+    setRenderLimit((prev) => {
+      if (prev >= canaisFiltrados.length) return prev;
+      return Math.min(canaisFiltrados.length, prev + CHUNK_SIZE);
+    });
+  }, [canaisFiltrados.length]);
+
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      const el = e.currentTarget;
+      if (el.scrollHeight - (el.scrollTop + el.clientHeight) < 450) {
+        carregarMais();
+      }
+    },
+    [carregarMais]
+  );
+
+  const sentinelaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sentinela = sentinelaRef.current;
+    if (!sentinela || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          carregarMais();
+        }
+      },
+      { root: listaRef.current, rootMargin: '350px' }
+    );
+
+    observer.observe(sentinela);
+    return () => observer.disconnect();
+  }, [carregarMais, canaisFiltrados.length, renderLimit]);
+
+  // Canais realmente desenhados no DOM nesta rodada
+  const canaisVisiveis = useMemo(() => {
+    if (canaisFiltrados.length <= renderLimit) return canaisFiltrados;
+    return canaisFiltrados.slice(0, renderLimit);
+  }, [canaisFiltrados, renderLimit]);
+
   const grupos = useMemo(() => {
     if (categoriaAtiva !== 'Todos' && categoriaAtiva !== 'Favoritos') {
-      return [{ categoria: categoriaAtiva, canais: canaisFiltrados }];
+      return [{ categoria: categoriaAtiva, canais: canaisVisiveis }];
     }
     const mapa = new Map<string, Channel[]>();
-    canaisFiltrados.forEach((c) => {
+    canaisVisiveis.forEach((c) => {
       const cat = c.category || 'Outros';
       const arr = mapa.get(cat) || [];
       arr.push(c);
@@ -240,7 +304,7 @@ export const PainelDeCanais = memo(function PainelDeCanais({
     });
 
     return out;
-  }, [canaisFiltrados, categoriaAtiva]);
+  }, [canaisVisiveis, categoriaAtiva]);
 
   const handleCategoryClick = (cat: string) => {
     setCategoriaAtiva(cat);
@@ -360,7 +424,7 @@ export const PainelDeCanais = memo(function PainelDeCanais({
       </div>
 
       {/* Lista de Canais com grupos */}
-      <div className="painel-lista-rolagem" ref={listaRef}>
+      <div className="painel-lista-rolagem" ref={listaRef} onScroll={handleScroll}>
         {grupos.length === 0 ? (
           <div className="painel-vazio">Nenhum canal encontrado</div>
         ) : (
@@ -388,6 +452,11 @@ export const PainelDeCanais = memo(function PainelDeCanais({
               </div>
             </div>
           ))
+        )}
+        {canaisVisiveis.length < canaisFiltrados.length && (
+          <div ref={sentinelaRef} className="painel-carregando-mais">
+            <span>Carregando mais canais…</span>
+          </div>
         )}
       </div>
 
