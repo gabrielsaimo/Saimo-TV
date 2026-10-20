@@ -16,7 +16,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-e0f6d97a9f8f4bb1b7a8ce6a7a470b3f}"
-PROJETO="${SAIMO_PROJETO_SITE:-saimo-tv2}"
+PROJETO="${SAIMO_PROJETO_SITE:-saimo-tv}"
 
 achar_wrangler() {
   if command -v wrangler >/dev/null 2>&1; then command -v wrangler; return; fi

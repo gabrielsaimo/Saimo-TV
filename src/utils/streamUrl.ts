@@ -66,15 +66,11 @@ export function proxyBase(): string {
   // resolve sem mexer no resto — o contrato de `/api/proxy` é o mesmo.
   const externo = import.meta.env.VITE_PROXY_BASE;
   if (externo) return externo.replace(/\/$/, '');
-  // Pacote de TV ou deploy antigo sem Pages Functions: o proxy ativo com workers atende em saimo-tv2.
-  if (ehAppDaTv()) return 'https://saimo-tv2.pages.dev';
-  if (typeof window !== 'undefined') {
-    if (window.location.origin.includes('saimo-tv.pages.dev')) {
-      return 'https://saimo-tv2.pages.dev';
-    }
-    return window.location.origin;
-  }
-  return 'https://saimo-tv2.pages.dev';
+  // Pacote de TV: a origem é local (file://), então o proxy de reserva é o do site. O proxy
+  // do saimo-tv.pages.dev (Cloudflare nova) é o que alcança os servidores http da lista: medido em
+  // 20/10/2026 com 40 fontes reais, 40 abriram nele e só 14 no saimo-tv2 (conta antiga, 403).
+  if (ehAppDaTv()) return 'https://saimo-tv.pages.dev';
+  return typeof window !== 'undefined' ? window.location.origin : '';
 }
 
 /** Endereço do proxy desta origem para uma fonte, com os cabeçalhos dela. */
