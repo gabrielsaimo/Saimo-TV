@@ -57,6 +57,49 @@ async function buscarAddon(url: string, timeoutMs: number = 5000): Promise<Addon
   }
 }
 
+async function buscarNoCatalogo(id: string, isSerie: boolean, season: string, episode: string, versao: string): Promise<string | null> {
+  const CATALOG_BASE = 'https://filmes-saimo.pages.dev';
+  try {
+    const fichasRes = await fetch(`${CATALOG_BASE}/fichas.txt`);
+    if (!fichasRes.ok) return null;
+    const fichasTxt = await fichasRes.text();
+    const prefixoTipo = isSerie ? 's' : 'f';
+    let tituloAchado = '';
+    for (const linha of fichasTxt.split('\n')) {
+      const p = linha.split('\t');
+      if (p.length >= 3 && p[0] === prefixoTipo && p[2] === id) {
+        tituloAchado = p[1];
+        break;
+      }
+    }
+    if (!tituloAchado) return null;
+
+    const norm = tituloAchado.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').trim();
+    const inicial = norm.charAt(0).toUpperCase();
+    const l = (inicial >= 'A' && inicial <= 'Z') ? inicial : '#';
+
+    if (!isSerie) {
+      const fRes = await fetch(`${CATALOG_BASE}/filmes-${l}.txt`);
+      if (!fRes.ok) return null;
+      const fTxt = await fRes.text();
+      for (const linha of fTxt.split('\n')) {
+        const p = linha.split('\t');
+        if (p.length >= 2 && (p[0] === tituloAchado || p[0].startsWith(tituloAchado.split(' (')[0]))) {
+          for (let i = 1; i < p.length; i++) {
+            if (p[i].startsWith(`${versao}=`) || p[i].startsWith('dub=') || p[i].startsWith('leg=')) {
+              const urls = p[i].substring(4).split(',');
+              for (const u of urls) {
+                if (u && !u.includes('api/stream')) return u;
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch {}
+  return null;
+}
+
 export const onRequestGet: PagesFunction = async ({ request }) => {
   const url = new URL(request.url);
   const tipo = (url.searchParams.get('tipo') || url.searchParams.get('type') || 'movie').toLowerCase();
@@ -129,15 +172,57 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   }
 
   if (todos.length === 0) {
+    const doCatalogo = await buscarNoCatalogo(cleanId, isSerie, season, episode, versao);
+    if (doCatalogo) {
+      todos = [{ url: doCatalogo, title: 'Catálogo Saimo' }];
+    }
+  }
+
+  if (todos.length === 0) {
     let rawText = '';
     let fallbackText = '';
     let imdbIdUsed = '';
+    let fenixHeaders: Record<string, string> = {};
+    let outboundEcho: any = null;
+    let testVariants: Record<string, any> = {};
+
     try {
       const r = await fetch(fenixUrl, { headers: { 'User-Agent': AGENTE, 'Accept': 'application/json' } });
       rawText = await r.text();
+      r.headers.forEach((v, k) => { fenixHeaders[k] = v; });
     } catch (e: any) {
       rawText = e?.message || String(e);
     }
+
+    // Teste 1: com nocache param
+    try {
+      const rNoCache = await fetch(`${fenixUrl}?_t=${Date.now()}`, { headers: { 'Accept': '*/*' } });
+      testVariants['nocache_param'] = (await rNoCache.text()).slice(0, 150);
+    } catch (e: any) {
+      testVariants['nocache_param'] = e?.message;
+    }
+
+    // Teste 2: com client IP em X-Forwarded-For
+    const clientIp = request.headers.get('cf-connecting-ip') || '';
+    if (clientIp) {
+      try {
+        const rXff = await fetch(fenixUrl, {
+          headers: { 'X-Forwarded-For': clientIp, 'User-Agent': AGENTE, 'Accept': 'application/json' }
+        });
+        testVariants['xff_client'] = (await rXff.text()).slice(0, 150);
+      } catch (e: any) {
+        testVariants['xff_client'] = e?.message;
+      }
+    }
+
+    // Teste 3: o que o outbound fetch manda para a internet
+    try {
+      const echoRes = await fetch('https://httpbin.org/headers');
+      outboundEcho = await echoRes.json();
+    } catch (e: any) {
+      outboundEcho = e?.message;
+    }
+
     if (/^\d+$/.test(cleanId)) {
       try {
         const ext = await (await fetch(`https://api.themoviedb.org/3/${isSerie ? 'tv' : 'movie'}/${cleanId}/external_ids?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb`)).json() as any;
@@ -154,6 +239,9 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
       error: 'Nenhum stream encontrado para este título',
       fenixUrl,
       rawText,
+      fenixHeaders,
+      testVariants,
+      outboundEcho,
       imdbIdUsed,
       fallbackText,
     }), {
