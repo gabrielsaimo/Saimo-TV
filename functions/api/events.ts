@@ -5,7 +5,7 @@
  * a tela de Eventos não fica vazia por causa de uma fonte fora do ar.
  */
 const EMBED = 'https://embedtv.cc/api/events';
-const MONITOR = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1/eventos';
+const MONITOR = 'https://saimo-tv.pages.dev/eventos-extra.json';
 const AGENTE = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
 async function buscar(url: string, prazoMs: number): Promise<string | null> {

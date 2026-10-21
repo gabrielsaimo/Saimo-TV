@@ -16,7 +16,7 @@
  * não respondeu.
  */
 
-const ENDERECO = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1/fontes';
+const ENDERECO = 'https://saimo-tv.pages.dev/fontes-desativadas.json';
 /** Uma hora, guardada entre aberturas: o monitor cobra por pedido, e com
  *  milhares de abas pedindo a cada dois minutos a conta passava da franquia.
  *  Desligar um servidor no painel vale em até uma hora. */

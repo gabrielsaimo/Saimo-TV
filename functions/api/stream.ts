@@ -31,7 +31,13 @@ function classificar(s: StreamItem): 'dub' | 'leg' {
   return 'dub';
 }
 
-async function buscarAddon(url: string, timeoutMs: number = 5000): Promise<StreamItem[]> {
+interface AddonResult {
+  streams: StreamItem[];
+  status: number;
+  err?: string;
+}
+
+async function buscarAddon(url: string, timeoutMs: number = 5000): Promise<AddonResult> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
@@ -39,14 +45,59 @@ async function buscarAddon(url: string, timeoutMs: number = 5000): Promise<Strea
       headers: { 'User-Agent': AGENTE, 'Accept': 'application/json' },
       signal: ctrl.signal,
     });
-    if (!res.ok) return [];
-    const data = await res.json() as { streams?: StreamItem[] };
-    return data.streams || [];
-  } catch {
-    return [];
+    if (!res.ok) {
+      return { streams: [], status: res.status, err: `HTTP ${res.status}` };
+    }
+    const data = (await res.json()) as { streams?: StreamItem[] };
+    return { streams: data.streams || [], status: res.status };
+  } catch (e: any) {
+    return { streams: [], status: 0, err: e?.message || String(e) };
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function buscarNoCatalogo(id: string, isSerie: boolean, season: string, episode: string, versao: string): Promise<string | null> {
+  const CATALOG_BASE = 'https://filmes-saimo.pages.dev';
+  try {
+    const fichasRes = await fetch(`${CATALOG_BASE}/fichas.txt`);
+    if (!fichasRes.ok) return null;
+    const fichasTxt = await fichasRes.text();
+    const prefixoTipo = isSerie ? 's' : 'f';
+    let tituloAchado = '';
+    for (const linha of fichasTxt.split('\n')) {
+      const p = linha.split('\t');
+      if (p.length >= 3 && p[0] === prefixoTipo && p[2] === id) {
+        tituloAchado = p[1];
+        break;
+      }
+    }
+    if (!tituloAchado) return null;
+
+    const norm = tituloAchado.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').trim();
+    const inicial = norm.charAt(0).toUpperCase();
+    const l = (inicial >= 'A' && inicial <= 'Z') ? inicial : '#';
+
+    if (!isSerie) {
+      const fRes = await fetch(`${CATALOG_BASE}/filmes-${l}.txt`);
+      if (!fRes.ok) return null;
+      const fTxt = await fRes.text();
+      for (const linha of fTxt.split('\n')) {
+        const p = linha.split('\t');
+        if (p.length >= 2 && (p[0] === tituloAchado || p[0].startsWith(tituloAchado.split(' (')[0]))) {
+          for (let i = 1; i < p.length; i++) {
+            if (p[i].startsWith(`${versao}=`) || p[i].startsWith('dub=') || p[i].startsWith('leg=')) {
+              const urls = p[i].substring(4).split(',');
+              for (const u of urls) {
+                if (u && !u.includes('api/stream')) return u;
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch {}
+  return null;
 }
 
 export const onRequestGet: PagesFunction = async ({ request }) => {
@@ -57,6 +108,7 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   const e = url.searchParams.get('e') || url.searchParams.get('ep') || url.searchParams.get('episodio') || '1';
   const versao = (url.searchParams.get('versao') || url.searchParams.get('v') || 'dub').toLowerCase();
   const querJson = url.searchParams.get('json') === '1';
+  const debug = url.searchParams.get('debug') === '1';
 
   if (!id) {
     return new Response(JSON.stringify({ error: 'Parâmetro "id" é obrigatório' }), {
@@ -90,14 +142,15 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
     : `${MAGNET_BASE}/stream/movie/${prefixId}.json`;
 
   // Busca em paralelo com limite de 6s
-  const [fenixStreams, magnetStreams] = await Promise.all([
+  const [fenixRes, magnetRes] = await Promise.all([
     buscarAddon(fenixUrl, 5000),
     buscarAddon(magnetUrl, 5000),
   ]);
 
-  let todos = [...fenixStreams, ...magnetStreams].filter(st => !!st.url);
+  let todos = [...fenixRes.streams, ...magnetRes.streams].filter(st => !!st.url);
 
   // Se não achou streams e o ID é numérico (TMDB), tenta resolver o IMDb ID via TMDB API
+  let fallbackRes: AddonResult | undefined;
   if (todos.length === 0 && /^\d+$/.test(cleanId)) {
     try {
       const extRes = await fetch(
@@ -111,15 +164,87 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
           const fallbackUrl = isSerie
             ? `${FENIX_BASE}/stream/series/${imdbId}:${season}:${episode}.json`
             : `${FENIX_BASE}/stream/movie/${imdbId}.json`;
-          const fallbackStreams = await buscarAddon(fallbackUrl, 5000);
-          todos = fallbackStreams.filter(st => !!st.url);
+          fallbackRes = await buscarAddon(fallbackUrl, 5000);
+          todos = fallbackRes.streams.filter(st => !!st.url);
         }
       }
     } catch {}
   }
 
   if (todos.length === 0) {
-    return new Response(JSON.stringify({ error: 'Nenhum stream encontrado para este título' }), {
+    const doCatalogo = await buscarNoCatalogo(cleanId, isSerie, season, episode, versao);
+    if (doCatalogo) {
+      todos = [{ url: doCatalogo, title: 'Catálogo Saimo' }];
+    }
+  }
+
+  if (todos.length === 0) {
+    let rawText = '';
+    let fallbackText = '';
+    let imdbIdUsed = '';
+    let fenixHeaders: Record<string, string> = {};
+    let outboundEcho: any = null;
+    let testVariants: Record<string, any> = {};
+
+    try {
+      const r = await fetch(fenixUrl, { headers: { 'User-Agent': AGENTE, 'Accept': 'application/json' } });
+      rawText = await r.text();
+      r.headers.forEach((v, k) => { fenixHeaders[k] = v; });
+    } catch (e: any) {
+      rawText = e?.message || String(e);
+    }
+
+    // Teste 1: com nocache param
+    try {
+      const rNoCache = await fetch(`${fenixUrl}?_t=${Date.now()}`, { headers: { 'Accept': '*/*' } });
+      testVariants['nocache_param'] = (await rNoCache.text()).slice(0, 150);
+    } catch (e: any) {
+      testVariants['nocache_param'] = e?.message;
+    }
+
+    // Teste 2: com client IP em X-Forwarded-For
+    const clientIp = request.headers.get('cf-connecting-ip') || '';
+    if (clientIp) {
+      try {
+        const rXff = await fetch(fenixUrl, {
+          headers: { 'X-Forwarded-For': clientIp, 'User-Agent': AGENTE, 'Accept': 'application/json' }
+        });
+        testVariants['xff_client'] = (await rXff.text()).slice(0, 150);
+      } catch (e: any) {
+        testVariants['xff_client'] = e?.message;
+      }
+    }
+
+    // Teste 3: o que o outbound fetch manda para a internet
+    try {
+      const echoRes = await fetch('https://httpbin.org/headers');
+      outboundEcho = await echoRes.json();
+    } catch (e: any) {
+      outboundEcho = e?.message;
+    }
+
+    if (/^\d+$/.test(cleanId)) {
+      try {
+        const ext = await (await fetch(`https://api.themoviedb.org/3/${isSerie ? 'tv' : 'movie'}/${cleanId}/external_ids?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb`)).json() as any;
+        imdbIdUsed = ext?.imdb_id || '';
+        if (imdbIdUsed) {
+          const fb = await fetch(`${FENIX_BASE}/stream/${isSerie ? 'series' : 'movie'}/${imdbIdUsed}${isSerie ? `:${season}:${episode}` : ''}.json`, { headers: { 'User-Agent': AGENTE, 'Accept': 'application/json' } });
+          fallbackText = await fb.text();
+        }
+      } catch (e: any) {
+        fallbackText = e?.message || String(e);
+      }
+    }
+    return new Response(JSON.stringify({
+      error: 'Nenhum stream encontrado para este título',
+      fenixUrl,
+      rawText,
+      fenixHeaders,
+      testVariants,
+      outboundEcho,
+      imdbIdUsed,
+      fallbackText,
+    }), {
       status: 404,
       headers: {
         'Content-Type': 'application/json',
@@ -131,7 +256,12 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
 
   // Filtra de acordo com a versão pedida (dublado/legendado)
   const candidatos = todos.filter(st => classificar(st) === versao);
-  const escolhido = (candidatos.length > 0 ? candidatos[0] : todos[0]).url!;
+  let escolhido = (candidatos.length > 0 ? candidatos[0] : todos[0]).url!;
+
+  // Garante HTTPS: Android e navegadores bloqueiam HTTP não criptografado (Cleartext Traffic)
+  if (escolhido.startsWith('http://')) {
+    escolhido = 'https://' + escolhido.slice(7);
+  }
 
   const headers = new Headers();
   headers.set('Access-Control-Allow-Origin', '*');
