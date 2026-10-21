@@ -20,6 +20,7 @@ import './AvisoApp.css';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { CHAVE_UPSCALING, type ModoUpscaling } from '../telas/Ajustes';
+import { audioInteligenteService } from '../services/audioInteligente';
 
 interface MoviePlayerProps {
   movie: Movie | null;
@@ -340,6 +341,7 @@ export const MoviePlayer = memo(function MoviePlayer({ movie, onBack, seriesInfo
 
     const reproduzir = () => {
       if (!atual()) return;
+      audioInteligenteService.conectar(video);
       video.play().catch(() => {
         if (!atual()) return;
         video.muted = true;

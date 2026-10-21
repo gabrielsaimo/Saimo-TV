@@ -10,6 +10,7 @@ import { useListas } from '../services/listas';
 import { useAdultMode } from '../contexts/adultoContexto';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useCanais } from '../hooks/useCanais';
+import { audioInteligenteService, CHAVE_AUDIO_INTELIGENTE } from '../services/audioInteligente';
 import {
   aoMudar as aoMudarPersonalizados,
   exportarM3U,
@@ -42,9 +43,15 @@ export function Ajustes() {
   const { isAdultUnlocked, lockAdult } = useAdultMode();
   const [aoIniciar, setAoIniciar] = useLocalStorage<AoIniciar>(CHAVE_AO_INICIAR, 'inicio');
   const [upscaling, setUpscaling] = useLocalStorage<ModoUpscaling>(CHAVE_UPSCALING, 'off');
+  const [audioInteligente, setAudioInteligente] = useLocalStorage<boolean>(CHAVE_AUDIO_INTELIGENTE, true);
   const [aviso, setAviso] = useState('');
   const [personalizados, setPersonalizados] = useState<Channel[]>(canaisLocais);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const alterarAudioInteligente = (ativo: boolean) => {
+    setAudioInteligente(ativo);
+    audioInteligenteService.setAtivo(ativo);
+  };
 
   const alterarUpscaling = (modo: ModoUpscaling) => {
     setUpscaling(modo);
@@ -134,6 +141,15 @@ export function Ajustes() {
             <button className={upscaling === 'off' ? 'on' : ''} onClick={() => alterarUpscaling('off')}>Desligado</button>
             <button className={upscaling === 'hd' ? 'on' : ''} onClick={() => alterarUpscaling('hd')}>Nitidez HD (720p → Full HD)</button>
             <button className={upscaling === '4k' ? 'on' : ''} onClick={() => alterarUpscaling('4k')}>Super Resolução Ultra (Full HD → 4K)</button>
+          </div>
+        </section>
+
+        <section className="ajustes-bloco">
+          <h2>Áudio Inteligente (Nivelar Volume)</h2>
+          <p>Nivela dinamicamente o volume entre diferentes canais e fontes, eliminando discrepâncias sonoras.</p>
+          <div className="pilulas">
+            <button className={audioInteligente ? 'on' : ''} onClick={() => alterarAudioInteligente(true)}>Ligado</button>
+            <button className={!audioInteligente ? 'on' : ''} onClick={() => alterarAudioInteligente(false)}>Desligado</button>
           </div>
         </section>
 

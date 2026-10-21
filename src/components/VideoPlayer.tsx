@@ -9,6 +9,7 @@ import castService, { type CastMethod, type CastState } from '../services/castSe
 import { buildAttempts, isDash, isMpegTs, marcarSemCors, type Attempt } from '../utils/streamUrl';
 import { makeNestedPathLoader } from '../utils/hlsLoader';
 import { playDash, type DashHandle } from '../services/dashPlayer';
+import { audioInteligenteService } from '../services/audioInteligente';
 import * as telemetria from '../services/telemetria';
 import './VideoPlayer.css';
 import './AvisoApp.css';
@@ -392,6 +393,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       pararRelogio();
       const vid = videoRef.current;
       vid.volume = volumeRef.current;
+      audioInteligenteService.conectar(vid);
       vid.play().catch(() => {
         // Autoplay com som é bloqueado até a pessoa interagir com a página;
         // começar mudo e desmutar no primeiro clique é melhor que não começar.
