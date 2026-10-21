@@ -369,7 +369,8 @@ export const VideoPlayer = memo(function VideoPlayer({
     limpar();
 
     // Ativa vigia de borda e monitor de latência para a fonte ativa
-    vigiaRef.current = iniciarVigiaAoVivo(video, modoZeroDelayRef.current);
+    const isMSE = Boolean(isMpegTs(source.url) || isDash(source.url) || Hls.isSupported());
+    vigiaRef.current = iniciarVigiaAoVivo(video, modoZeroDelayRef.current, undefined, isMSE);
     const timerLatencia = window.setInterval(() => {
       if (vigiaRef.current) {
         setLatenciaInfo(vigiaRef.current.obterLatencia());

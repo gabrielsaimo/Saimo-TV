@@ -62,6 +62,7 @@ export function iniciarVigiaAoVivo(
   video: HTMLVideoElement,
   modo: ModoZeroDelay,
   onPulo?: (novoTempo: number) => void,
+  isMSE = false,
 ): VigiaAoVivoHandle {
   let cancelado = false;
   let ultimoPulo = 0;
@@ -74,7 +75,7 @@ export function iniciarVigiaAoVivo(
     const t = video.currentTime;
     const atraso = Math.max(0, borda - t);
     // Considera na borda se estiver dentro de uma margem aceitável de acordo com o modo
-    const limiteBorda = modo === 'agressivo' ? 3.5 : modo === 'equilibrado' ? 7.0 : 15.0;
+    const limiteBorda = modo === 'agressivo' ? 4.0 : modo === 'equilibrado' ? 8.0 : 15.0;
     return {
       atrasoSegundos: Math.round(atraso * 10) / 10,
       naBorda: atraso <= limiteBorda,
@@ -85,10 +86,10 @@ export function iniciarVigiaAoVivo(
   const pularParaBorda = () => {
     const borda = obterBordaAoVivo(video);
     if (borda === null) return;
-    // Margem calculada para não esgotar o buffer na chegada
-    const margem = modo === 'agressivo' ? 1.2 : modo === 'equilibrado' ? 3.0 : 5.0;
+    // Margem calculada para não esgotar o buffer na chegada (evita congelamento imediato)
+    const margem = modo === 'agressivo' ? 2.8 : modo === 'equilibrado' ? 4.5 : 8.0;
     const alvo = Math.max(0, borda - margem);
-    if (Math.abs(video.currentTime - alvo) > 1.2) {
+    if (Math.abs(video.currentTime - alvo) > 1.5) {
       try {
         video.currentTime = alvo;
         ultimoPulo = performance.now();
@@ -100,7 +101,10 @@ export function iniciarVigiaAoVivo(
   };
 
   // Se o Zero Delay estiver desligado, o vigia apenas calcula a latência sem forçar pulos ou velocidade
-  if (modo === 'off') {
+  if (modo === 'off' || isMSE) {
+    // Quando MSE (hls.js, mpegts.js) está no controle, quem gerencia a sincronização da borda
+    // é o próprio player especializado (hls.js liveSync / mpegts liveBufferLatencyChasing).
+    // O vigia externo não deve forçar currentTime periodicamente para não esgotar o SourceBuffer e travar!
     return {
       destroy: () => {
         cancelado = true;
@@ -110,13 +114,13 @@ export function iniciarVigiaAoVivo(
     };
   }
 
-  // Intervalo de verificação da guarda anti-congelamento (buffer guard)
-  const intervaloMs = modo === 'agressivo' ? 1500 : 3000;
+  // Intervalo de verificação da guarda anti-congelamento (apenas para reprodução NATIVA)
+  const intervaloMs = modo === 'agressivo' ? 2500 : 4000;
   const intervaloId = window.setInterval(() => {
     if (cancelado || video.paused || video.ended) return;
 
     // 1. Guarda de Buffer Frontal (Anti-Starvation):
-    // Se o buffer à frente estiver perigosamente baixo (< 1.5s), trava velocidade em 1.0x para nunca travar!
+    // Se o buffer à frente estiver baixo (< 1.5s), trava velocidade em 1.0x para nunca travar!
     const bufferFrente = obterBufferFrente(video);
     if (bufferFrente > 0 && bufferFrente < 1.5) {
       if (video.playbackRate > 1.0) {
@@ -133,13 +137,13 @@ export function iniciarVigiaAoVivo(
     const agora = performance.now();
 
     if (modo === 'agressivo') {
-      // No agressivo: tolerância máxima de 6 segundos. Se passar e houver buffer suficiente, sincroniza
-      if (atraso > 6.0 && agora - ultimoPulo > 4000 && bufferFrente >= 2.0) {
+      // No agressivo nativo: tolerância de 8 segundos. Se passar e houver buffer suficiente, sincroniza
+      if (atraso > 8.0 && agora - ultimoPulo > 8000 && bufferFrente >= 3.0) {
         pularParaBorda();
       }
     } else {
-      // No equilibrado: tolerância de 14 segundos, com intervalo de pelo menos 15s entre pulos
-      if (atraso > 14.0 && agora - ultimoPulo > 15000 && bufferFrente >= 3.0) {
+      // No equilibrado nativo: tolerância de 15 segundos, com intervalo de pelo menos 15s entre pulos
+      if (atraso > 15.0 && agora - ultimoPulo > 15000 && bufferFrente >= 4.0) {
         pularParaBorda();
       }
     }
