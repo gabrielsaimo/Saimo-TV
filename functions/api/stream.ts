@@ -78,15 +78,16 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   }
 
   const cleanId = id.replace(/^(tmdb:|imdb:)/i, '');
+  const prefixId = cleanId.startsWith('tt') ? cleanId : `tmdb:${cleanId}`;
   const isSerie = tipo === 'series' || tipo === 'tv';
 
   const fenixUrl = isSerie
-    ? `${FENIX_BASE}/stream/series/${cleanId}:${season}:${episode}.json`
-    : `${FENIX_BASE}/stream/movie/${cleanId}.json`;
+    ? `${FENIX_BASE}/stream/series/${prefixId}:${season}:${episode}.json`
+    : `${FENIX_BASE}/stream/movie/${prefixId}.json`;
 
   const magnetUrl = isSerie
-    ? `${MAGNET_BASE}/stream/series/tmdb:${cleanId}:${season}:${episode}.json`
-    : `${MAGNET_BASE}/stream/movie/tmdb:${cleanId}.json`;
+    ? `${MAGNET_BASE}/stream/series/${prefixId}:${season}:${episode}.json`
+    : `${MAGNET_BASE}/stream/movie/${prefixId}.json`;
 
   // Busca em paralelo com limite de 6s
   const [fenixStreams, magnetStreams] = await Promise.all([
@@ -94,7 +95,28 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
     buscarAddon(magnetUrl, 5000),
   ]);
 
-  const todos = [...fenixStreams, ...magnetStreams].filter(st => !!st.url);
+  let todos = [...fenixStreams, ...magnetStreams].filter(st => !!st.url);
+
+  // Se não achou streams e o ID é numérico (TMDB), tenta resolver o IMDb ID via TMDB API
+  if (todos.length === 0 && /^\d+$/.test(cleanId)) {
+    try {
+      const extRes = await fetch(
+        `https://api.themoviedb.org/3/${isSerie ? 'tv' : 'movie'}/${cleanId}/external_ids?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb`,
+        { headers: { 'User-Agent': AGENTE, 'Accept': 'application/json' } }
+      );
+      if (extRes.ok) {
+        const extData = (await extRes.json()) as { imdb_id?: string };
+        if (extData?.imdb_id) {
+          const imdbId = extData.imdb_id;
+          const fallbackUrl = isSerie
+            ? `${FENIX_BASE}/stream/series/${imdbId}:${season}:${episode}.json`
+            : `${FENIX_BASE}/stream/movie/${imdbId}.json`;
+          const fallbackStreams = await buscarAddon(fallbackUrl, 5000);
+          todos = fallbackStreams.filter(st => !!st.url);
+        }
+      }
+    } catch {}
+  }
 
   if (todos.length === 0) {
     return new Response(JSON.stringify({ error: 'Nenhum stream encontrado para este título' }), {
@@ -131,6 +153,8 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   headers.set('Location', escolhido);
   return new Response(null, { status: 302, headers });
 };
+
+export const onRequestHead = onRequestGet;
 
 export const onRequestOptions: PagesFunction = async () => {
   return new Response(null, {
