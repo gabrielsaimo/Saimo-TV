@@ -49,12 +49,12 @@ class AudioInteligenteService {
     const t = this.audioCtx.currentTime;
 
     if (ativo) {
-      this.compressor.threshold.setValueAtTime(-24, t);
-      this.compressor.knee.setValueAtTime(30, t);
-      this.compressor.ratio.setValueAtTime(12, t);
-      this.compressor.attack.setValueAtTime(0.003, t);
-      this.compressor.release.setValueAtTime(0.25, t);
-      this.makeupGain.gain.setValueAtTime(1.8, t); // +5 dB ganho dinâmico para canais baixos
+      this.compressor.threshold.setValueAtTime(-22, t);
+      this.compressor.knee.setValueAtTime(24, t);
+      this.compressor.ratio.setValueAtTime(8, t);
+      this.compressor.attack.setValueAtTime(0.005, t);
+      this.compressor.release.setValueAtTime(0.20, t);
+      this.makeupGain.gain.setValueAtTime(1.4, t); // +3 dB ganho dinâmico equilibrado sem clipping
     } else {
       this.compressor.threshold.setValueAtTime(0, t);
       this.makeupGain.gain.setValueAtTime(1.0, t);
@@ -64,6 +64,13 @@ class AudioInteligenteService {
   public conectar(video: HTMLMediaElement | null): void {
     if (!video) return;
     if (this.connectedElements.has(video)) return;
+
+    // Se for URL remota direta sem MSE (ex.: player nativo do Safari ou TV com video.src direto),
+    // o navegador pode silenciar o elemento de mídia caso a origem não forneça cabeçalhos CORS.
+    // Só acoplamos o Web Audio quando o streaming roda sobre MSE (blob:) ou se houver crossorigin.
+    if (video.src && !video.src.startsWith('blob:') && !video.src.startsWith('data:') && !video.crossOrigin) {
+      return;
+    }
 
     try {
       const ctx = this.obterAudioContext();
