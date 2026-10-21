@@ -12,7 +12,7 @@
 
 import { marcaTv } from '../plataforma/tv';
 
-const BASE = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1';
+const BASE = 'https://saimo-tv.pages.dev/api/online/v1';
 const PLATAFORMA = marcaTv() ?? 'site';
 const VERSAO = 'web';
 /** Zapeando, cada canal que passa não vira batida: só quem ficou. */

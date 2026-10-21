@@ -37,7 +37,7 @@ export const acabou = (j: Jogo, agora: number) => j.estado === 'post' || agora >
 // Calculado a cada busca (e não ao carregar o módulo): o proxy do site pode estar cortado pela cota
 // do dia, e quem decide isso é a sondagem que roda ao abrir (ver `sondarProxy`).
 const embed = () => `${proxyBase()}/api/events`;
-const STREAMING = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1/eventos';
+const STREAMING = 'https://saimo-tv.pages.dev/eventos-extra.json';
 const ESPN = [
     'soccer/bra.1', 'soccer/bra.2', 'soccer/bra.copa_do_brazil', 'soccer/conmebol.libertadores',
     'soccer/conmebol.sudamericana', 'soccer/uefa.champions', 'soccer/uefa.europa', 'soccer/eng.1',

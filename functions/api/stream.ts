@@ -131,7 +131,28 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
 
   // Filtra de acordo com a versão pedida (dublado/legendado)
   const candidatos = todos.filter(st => classificar(st) === versao);
-  const escolhido = (candidatos.length > 0 ? candidatos[0] : todos[0]).url!;
+  let escolhido = (candidatos.length > 0 ? candidatos[0] : todos[0]).url!;
+
+  // Garante HTTPS: navegadores bloqueiam redirecionamento HTTP a partir de HTTPS (Mixed Content)
+  if (escolhido.startsWith('http://')) {
+    escolhido = 'https://' + escolhido.slice(7);
+  }
+
+  // Tenta resolver para a URL final do CDN direto (ex: fenixhub 307 -> c.direitonapratica.com CDN)
+  try {
+    const headCtrl = new AbortController();
+    const headTimer = setTimeout(() => headCtrl.abort(), 3500);
+    const headRes = await fetch(escolhido, {
+      method: 'HEAD',
+      redirect: 'follow',
+      headers: { 'User-Agent': AGENTE },
+      signal: headCtrl.signal,
+    });
+    clearTimeout(headTimer);
+    if (headRes.url && headRes.url.startsWith('https://')) {
+      escolhido = headRes.url;
+    }
+  } catch {}
 
   const headers = new Headers();
   headers.set('Access-Control-Allow-Origin', '*');
