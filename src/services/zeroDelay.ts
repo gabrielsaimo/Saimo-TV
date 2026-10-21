@@ -41,24 +41,24 @@ class ZeroDelayService {
   public obterConfigHls(modo: ModoZeroDelay): Partial<HlsConfig> {
     if (modo === 'off') {
       return {
-        lowLatencyMode: true,
+        lowLatencyMode: false,
         backBufferLength: 90,
       };
     }
 
     if (modo === 'agressivo') {
       return {
-        lowLatencyMode: true,
-        // Inicia na menor margem segura do fragmento sem colidir no fim do buffer
-        liveSyncDurationCount: 1.5,
-        // Tolerância de 3.5 fragmentos antes de salto
-        liveMaxLatencyDurationCount: 3.5,
-        // Perseguição suave a 1.08x: rápida sem drenar o buffer
-        maxLiveSyncPlaybackRate: 1.08,
-        // Auto-recuo defensivo de 0.5s se a rede oscilar para evitar travamento em loop
-        liveSyncOnStallIncrease: 0.5,
-        maxBufferLength: 10,
-        maxMaxBufferLength: 16,
+        lowLatencyMode: false,
+        // Inicia a ~2.0 fragmentos da borda ao vivo (garante buffer suficiente sem engasgos)
+        liveSyncDurationCount: 2.0,
+        // Tolerância de até 4.0 fragmentos antes de salto
+        liveMaxLatencyDurationCount: 4.0,
+        // Perseguição suave a 1.04x para não queimar o buffer frontal
+        maxLiveSyncPlaybackRate: 1.04,
+        // Auto-recuo protetor de 1.5s se a rede oscilar para evitar travamento em loop
+        liveSyncOnStallIncrease: 1.5,
+        maxBufferLength: 12,
+        maxMaxBufferLength: 20,
         backBufferLength: 15,
         startFragPrefetch: true,
       };
@@ -66,15 +66,15 @@ class ZeroDelayService {
 
     // Modo equilibrado (padrão ativo)
     return {
-      lowLatencyMode: true,
-      // Inicia a ~2.2 segmentos da borda (ótima margem de segurança contra travamentos)
-      liveSyncDurationCount: 2.2,
+      lowLatencyMode: false,
+      // Inicia a ~2.8 segmentos da borda (ótima margem de estabilidade contra travamentos)
+      liveSyncDurationCount: 2.8,
       // Se atrasar mais de 5 segmentos, salta para o ao vivo
-      liveMaxLatencyDurationCount: 5.0,
-      // Persegue acelerando suavemente a 1.04x (preserva estabilidade e tom de voz)
-      maxLiveSyncPlaybackRate: 1.04,
-      // Se houver travamento no CDN, recua a meta em 1s automaticamente
-      liveSyncOnStallIncrease: 1.0,
+      liveMaxLatencyDurationCount: 5.5,
+      // Persegue acelerando suavemente a 1.03x (preserva estabilidade e tom de voz)
+      maxLiveSyncPlaybackRate: 1.03,
+      // Se houver travamento no CDN, recua a meta em 1.5s automaticamente
+      liveSyncOnStallIncrease: 1.5,
       maxBufferLength: 20,
       backBufferLength: 30,
       startFragPrefetch: true,
@@ -97,15 +97,14 @@ class ZeroDelayService {
       return {
         enableWorker: true,
         seekType: 'range',
-        // Sem buffer intermediário do mpegts
         enableStashBuffer: false,
         liveSync: true,
-        liveSyncTargetLatency: 1.0,
-        liveSyncMaxLatency: 2.5,
-        liveSyncPlaybackRate: 1.08,
+        liveSyncTargetLatency: 1.5,
+        liveSyncMaxLatency: 3.5,
+        liveSyncPlaybackRate: 1.05,
         liveBufferLatencyChasing: true,
-        liveBufferLatencyMaxLatency: 4.0,
-        liveBufferLatencyMinRemain: 0.8,
+        liveBufferLatencyMaxLatency: 5.0,
+        liveBufferLatencyMinRemain: 1.2,
         liveBufferLatencyChasingOnPaused: true,
         autoCleanupSourceBuffer: true,
         autoCleanupMaxBackwardDuration: 15,
@@ -119,9 +118,9 @@ class ZeroDelayService {
       seekType: 'range',
       enableStashBuffer: false,
       liveSync: true,
-      liveSyncTargetLatency: 2.0,
-      liveSyncMaxLatency: 4.0,
-      liveSyncPlaybackRate: 1.04,
+      liveSyncTargetLatency: 2.5,
+      liveSyncMaxLatency: 5.0,
+      liveSyncPlaybackRate: 1.03,
       liveBufferLatencyChasing: true,
       liveBufferLatencyMaxLatency: 8.0,
       liveBufferLatencyMinRemain: 1.8,
