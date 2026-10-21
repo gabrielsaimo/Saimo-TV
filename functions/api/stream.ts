@@ -31,7 +31,13 @@ function classificar(s: StreamItem): 'dub' | 'leg' {
   return 'dub';
 }
 
-async function buscarAddon(url: string, timeoutMs: number = 5000): Promise<StreamItem[]> {
+interface AddonResult {
+  streams: StreamItem[];
+  status: number;
+  err?: string;
+}
+
+async function buscarAddon(url: string, timeoutMs: number = 5000): Promise<AddonResult> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
@@ -39,11 +45,13 @@ async function buscarAddon(url: string, timeoutMs: number = 5000): Promise<Strea
       headers: { 'User-Agent': AGENTE, 'Accept': 'application/json' },
       signal: ctrl.signal,
     });
-    if (!res.ok) return [];
-    const data = await res.json() as { streams?: StreamItem[] };
-    return data.streams || [];
-  } catch {
-    return [];
+    if (!res.ok) {
+      return { streams: [], status: res.status, err: `HTTP ${res.status}` };
+    }
+    const data = (await res.json()) as { streams?: StreamItem[] };
+    return { streams: data.streams || [], status: res.status };
+  } catch (e: any) {
+    return { streams: [], status: 0, err: e?.message || String(e) };
   } finally {
     clearTimeout(timer);
   }
@@ -57,6 +65,7 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   const e = url.searchParams.get('e') || url.searchParams.get('ep') || url.searchParams.get('episodio') || '1';
   const versao = (url.searchParams.get('versao') || url.searchParams.get('v') || 'dub').toLowerCase();
   const querJson = url.searchParams.get('json') === '1';
+  const debug = url.searchParams.get('debug') === '1';
 
   if (!id) {
     return new Response(JSON.stringify({ error: 'Parâmetro "id" é obrigatório' }), {
@@ -90,14 +99,15 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
     : `${MAGNET_BASE}/stream/movie/${prefixId}.json`;
 
   // Busca em paralelo com limite de 6s
-  const [fenixStreams, magnetStreams] = await Promise.all([
+  const [fenixRes, magnetRes] = await Promise.all([
     buscarAddon(fenixUrl, 5000),
     buscarAddon(magnetUrl, 5000),
   ]);
 
-  let todos = [...fenixStreams, ...magnetStreams].filter(st => !!st.url);
+  let todos = [...fenixRes.streams, ...magnetRes.streams].filter(st => !!st.url);
 
   // Se não achou streams e o ID é numérico (TMDB), tenta resolver o IMDb ID via TMDB API
+  let fallbackRes: AddonResult | undefined;
   if (todos.length === 0 && /^\d+$/.test(cleanId)) {
     try {
       const extRes = await fetch(
@@ -111,15 +121,42 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
           const fallbackUrl = isSerie
             ? `${FENIX_BASE}/stream/series/${imdbId}:${season}:${episode}.json`
             : `${FENIX_BASE}/stream/movie/${imdbId}.json`;
-          const fallbackStreams = await buscarAddon(fallbackUrl, 5000);
-          todos = fallbackStreams.filter(st => !!st.url);
+          fallbackRes = await buscarAddon(fallbackUrl, 5000);
+          todos = fallbackRes.streams.filter(st => !!st.url);
         }
       }
     } catch {}
   }
 
   if (todos.length === 0) {
-    return new Response(JSON.stringify({ error: 'Nenhum stream encontrado para este título' }), {
+    let rawText = '';
+    let fallbackText = '';
+    let imdbIdUsed = '';
+    try {
+      const r = await fetch(fenixUrl, { headers: { 'User-Agent': AGENTE, 'Accept': 'application/json' } });
+      rawText = await r.text();
+    } catch (e: any) {
+      rawText = e?.message || String(e);
+    }
+    if (/^\d+$/.test(cleanId)) {
+      try {
+        const ext = await (await fetch(`https://api.themoviedb.org/3/${isSerie ? 'tv' : 'movie'}/${cleanId}/external_ids?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb`)).json() as any;
+        imdbIdUsed = ext?.imdb_id || '';
+        if (imdbIdUsed) {
+          const fb = await fetch(`${FENIX_BASE}/stream/${isSerie ? 'series' : 'movie'}/${imdbIdUsed}${isSerie ? `:${season}:${episode}` : ''}.json`, { headers: { 'User-Agent': AGENTE, 'Accept': 'application/json' } });
+          fallbackText = await fb.text();
+        }
+      } catch (e: any) {
+        fallbackText = e?.message || String(e);
+      }
+    }
+    return new Response(JSON.stringify({
+      error: 'Nenhum stream encontrado para este título',
+      fenixUrl,
+      rawText,
+      imdbIdUsed,
+      fallbackText,
+    }), {
       status: 404,
       headers: {
         'Content-Type': 'application/json',
@@ -133,26 +170,10 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   const candidatos = todos.filter(st => classificar(st) === versao);
   let escolhido = (candidatos.length > 0 ? candidatos[0] : todos[0]).url!;
 
-  // Garante HTTPS: navegadores bloqueiam redirecionamento HTTP a partir de HTTPS (Mixed Content)
+  // Garante HTTPS: Android e navegadores bloqueiam HTTP não criptografado (Cleartext Traffic)
   if (escolhido.startsWith('http://')) {
     escolhido = 'https://' + escolhido.slice(7);
   }
-
-  // Tenta resolver para a URL final do CDN direto (ex: fenixhub 307 -> c.direitonapratica.com CDN)
-  try {
-    const headCtrl = new AbortController();
-    const headTimer = setTimeout(() => headCtrl.abort(), 3500);
-    const headRes = await fetch(escolhido, {
-      method: 'HEAD',
-      redirect: 'follow',
-      headers: { 'User-Agent': AGENTE },
-      signal: headCtrl.signal,
-    });
-    clearTimeout(headTimer);
-    if (headRes.url && headRes.url.startsWith('https://')) {
-      escolhido = headRes.url;
-    }
-  } catch {}
 
   const headers = new Headers();
   headers.set('Access-Control-Allow-Origin', '*');
