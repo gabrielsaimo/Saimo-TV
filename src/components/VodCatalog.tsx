@@ -460,6 +460,16 @@ export function VodCatalog({
     const pegarCapas = (tipoChar: string) => {
       const comCapa = todosDestaques.filter((i) => i.tipo === tipoChar && i.capa);
       const unicos = [...new Set(comCapa.map((i) => i.capa))];
+      if (unicos.length >= 4) return unicos.slice(0, 4);
+      // Fallback seguro caso as fileiras de destaque não contenham o tipo
+      if (tipoChar === 's' && unicos.length === 0) {
+        return [
+          'https://image.tmdb.org/t/p/w342/dx28DE7EgLy0FatOvnaUg0k9j92.jpg',
+          'https://image.tmdb.org/t/p/w342/rOYLWCdAifpUtPlTf1WHxyaxeMt.jpg',
+          'https://image.tmdb.org/t/p/w342/3f7lVELRz23j4GOEh3419UyR3XA.jpg',
+          'https://image.tmdb.org/t/p/w342/rdNvIaPXpkUZl5tQLsTP15osfu2.jpg',
+        ];
+      }
       return unicos.slice(0, 4);
     };
     return {
