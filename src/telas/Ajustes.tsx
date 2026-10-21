@@ -11,6 +11,7 @@ import { useAdultMode } from '../contexts/adultoContexto';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useCanais } from '../hooks/useCanais';
 import { audioInteligenteService, CHAVE_AUDIO_INTELIGENTE } from '../services/audioInteligente';
+import { zeroDelayService, CHAVE_ZERO_DELAY, type ModoZeroDelay } from '../services/zeroDelay';
 import {
   aoMudar as aoMudarPersonalizados,
   exportarM3U,
@@ -44,6 +45,7 @@ export function Ajustes() {
   const [aoIniciar, setAoIniciar] = useLocalStorage<AoIniciar>(CHAVE_AO_INICIAR, 'inicio');
   const [upscaling, setUpscaling] = useLocalStorage<ModoUpscaling>(CHAVE_UPSCALING, 'off');
   const [audioInteligente, setAudioInteligente] = useLocalStorage<boolean>(CHAVE_AUDIO_INTELIGENTE, true);
+  const [zeroDelay, setZeroDelay] = useLocalStorage<ModoZeroDelay>(CHAVE_ZERO_DELAY, 'off');
   const [aviso, setAviso] = useState('');
   const [personalizados, setPersonalizados] = useState<Channel[]>(canaisLocais);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -51,6 +53,11 @@ export function Ajustes() {
   const alterarAudioInteligente = (ativo: boolean) => {
     setAudioInteligente(ativo);
     audioInteligenteService.setAtivo(ativo);
+  };
+
+  const alterarZeroDelay = (modo: ModoZeroDelay) => {
+    setZeroDelay(modo);
+    zeroDelayService.setModo(modo);
   };
 
   const alterarUpscaling = (modo: ModoUpscaling) => {
@@ -151,6 +158,32 @@ export function Ajustes() {
             <button className={audioInteligente ? 'on' : ''} onClick={() => alterarAudioInteligente(true)}>Ligado</button>
             <button className={!audioInteligente ? 'on' : ''} onClick={() => alterarAudioInteligente(false)}>Desligado</button>
           </div>
+        </section>
+
+        <section className="ajustes-bloco">
+          <h2>Zero Delay (Menor Atraso ao Vivo)</h2>
+          <p>Reduz o atraso da transmissão para acompanhar eventos esportivos e notícias no tempo real mais próximo do estádio/emissora.</p>
+          <div className="pilulas">
+            <button className={zeroDelay === 'off' ? 'on' : ''} onClick={() => alterarZeroDelay('off')}>
+              Desligado
+            </button>
+            <button className={zeroDelay === 'equilibrado' ? 'on' : ''} onClick={() => alterarZeroDelay('equilibrado')}>
+              Equilibrado
+            </button>
+            <button className={zeroDelay === 'agressivo' ? 'on' : ''} onClick={() => alterarZeroDelay('agressivo')}>
+              Agressivo (Ultra)
+            </button>
+          </div>
+          {zeroDelay === 'agressivo' && (
+            <p className="ajustes-dica" style={{ fontSize: '0.85rem', color: '#ffaa00', marginTop: '8px' }}>
+              ⚡ <strong>Modo Agressivo:</strong> Cola na ponta máxima da transmissão ignorando margens de segurança. Busca estar o mais ao vivo possível sem recuo automático.
+            </p>
+          )}
+          {zeroDelay === 'equilibrado' && (
+            <p className="ajustes-dica" style={{ fontSize: '0.85rem', color: '#4ade80', marginTop: '8px' }}>
+              ✓ <strong>Modo Equilibrado:</strong> Reduz o atraso consideravelmente com perseguição suave e proteção inteligente contra travamentos.
+            </p>
+          )}
         </section>
 
         <section className="ajustes-bloco">
