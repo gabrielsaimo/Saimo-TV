@@ -37,6 +37,25 @@ export function obterBordaAoVivo(video: HTMLMediaElement): number | null {
 }
 
 /**
+ * Calcula os segundos de buffer carregados à frente do cursor de reprodução atual.
+ */
+export function obterBufferFrente(video: HTMLMediaElement): number {
+  try {
+    const s = video.buffered;
+    if (!s || s.length === 0) return 0;
+    const t = video.currentTime;
+    for (let i = 0; i < s.length; i++) {
+      if (s.start(i) <= t && t <= s.end(i)) {
+        return Math.max(0, s.end(i) - t);
+      }
+    }
+    return 0;
+  } catch {
+    return 0;
+  }
+}
+
+/**
  * Inicia o vigia de baixa latência para reprodução nativa ou para monitoramento.
  */
 export function iniciarVigiaAoVivo(
@@ -55,7 +74,7 @@ export function iniciarVigiaAoVivo(
     const t = video.currentTime;
     const atraso = Math.max(0, borda - t);
     // Considera na borda se estiver dentro de uma margem aceitável de acordo com o modo
-    const limiteBorda = modo === 'agressivo' ? 2.5 : modo === 'equilibrado' ? 6.0 : 15.0;
+    const limiteBorda = modo === 'agressivo' ? 3.5 : modo === 'equilibrado' ? 7.0 : 15.0;
     return {
       atrasoSegundos: Math.round(atraso * 10) / 10,
       naBorda: atraso <= limiteBorda,
@@ -66,10 +85,10 @@ export function iniciarVigiaAoVivo(
   const pularParaBorda = () => {
     const borda = obterBordaAoVivo(video);
     if (borda === null) return;
-    // Margem mínima para evitar starvation imediato ao buscar a ponta
-    const margem = modo === 'agressivo' ? 0.4 : modo === 'equilibrado' ? 2.0 : 4.0;
+    // Margem calculada para não esgotar o buffer na chegada
+    const margem = modo === 'agressivo' ? 1.2 : modo === 'equilibrado' ? 3.0 : 5.0;
     const alvo = Math.max(0, borda - margem);
-    if (Math.abs(video.currentTime - alvo) > 0.8) {
+    if (Math.abs(video.currentTime - alvo) > 1.2) {
       try {
         video.currentTime = alvo;
         ultimoPulo = performance.now();
@@ -80,7 +99,7 @@ export function iniciarVigiaAoVivo(
     }
   };
 
-  // Se o Zero Delay estiver desligado, o vigia apenas calcula a latência sem forçar pulos
+  // Se o Zero Delay estiver desligado, o vigia apenas calcula a latência sem forçar pulos ou velocidade
   if (modo === 'off') {
     return {
       destroy: () => {
@@ -91,10 +110,20 @@ export function iniciarVigiaAoVivo(
     };
   }
 
-  // Intervalo de verificação: 1.5s no modo agressivo, 4s no equilibrado
-  const intervaloMs = modo === 'agressivo' ? 1500 : 4000;
+  // Intervalo de verificação da guarda anti-congelamento (buffer guard)
+  const intervaloMs = modo === 'agressivo' ? 1500 : 3000;
   const intervaloId = window.setInterval(() => {
     if (cancelado || video.paused || video.ended) return;
+
+    // 1. Guarda de Buffer Frontal (Anti-Starvation):
+    // Se o buffer à frente estiver perigosamente baixo (< 1.5s), trava velocidade em 1.0x para nunca travar!
+    const bufferFrente = obterBufferFrente(video);
+    if (bufferFrente > 0 && bufferFrente < 1.5) {
+      if (video.playbackRate > 1.0) {
+        video.playbackRate = 1.0;
+      }
+      return; // Não faz pulo ou aceleração enquanto o buffer estiver frágil
+    }
 
     const borda = obterBordaAoVivo(video);
     if (borda === null) return;
@@ -104,13 +133,13 @@ export function iniciarVigiaAoVivo(
     const agora = performance.now();
 
     if (modo === 'agressivo') {
-      // No agressivo: tolerância máxima de 3.5 segundos. Ultrapassou, já sincroniza na ponta
-      if (atraso > 3.5 && agora - ultimoPulo > 2000) {
+      // No agressivo: tolerância máxima de 6 segundos. Se passar e houver buffer suficiente, sincroniza
+      if (atraso > 6.0 && agora - ultimoPulo > 4000 && bufferFrente >= 2.0) {
         pularParaBorda();
       }
     } else {
-      // No equilibrado: tolerância de 12 segundos, com intervalo de pelo menos 15s entre pulos
-      if (atraso > 12.0 && agora - ultimoPulo > 15000) {
+      // No equilibrado: tolerância de 14 segundos, com intervalo de pelo menos 15s entre pulos
+      if (atraso > 14.0 && agora - ultimoPulo > 15000 && bufferFrente >= 3.0) {
         pularParaBorda();
       }
     }
