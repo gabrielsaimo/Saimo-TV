@@ -130,6 +130,14 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   }
 
   const cleanId = id.replace(/^(tmdb:|imdb:)/i, '');
+
+  const BLACKLIST_IDS = new Set(['1400940']);
+  if (BLACKLIST_IDS.has(cleanId)) {
+    return new Response(JSON.stringify({ error: 'Título indisponível ou somente em cartaz nos cinemas' }), {
+      status: 404,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
   const prefixId = cleanId.startsWith('tt') ? cleanId : `tmdb:${cleanId}`;
   const isSerie = tipo === 'series' || tipo === 'tv';
 
@@ -148,6 +156,14 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   ]);
 
   let todos = [...fenixRes.streams, ...magnetRes.streams].filter(st => !!st.url);
+
+  // Filtra streams com arquivos de outros filmes associados erroneamente pelo provedor
+  todos = todos.filter(st => {
+    if (cleanId !== '432613' && st.url && (st.url.includes('98853.mp4') || st.url.includes('Cara.mp4') || st.url.includes('97968.mp4'))) {
+      return false;
+    }
+    return true;
+  });
 
   // Se não achou streams e o ID é numérico (TMDB), tenta resolver o IMDb ID via TMDB API
   let fallbackRes: AddonResult | undefined;
