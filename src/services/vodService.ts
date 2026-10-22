@@ -590,6 +590,25 @@ export function semAno(titulo: string): string {
  * sabe de qual dos dois veio, então procura-se o nome como ele chegou e, não
  * achando, sem o ano.
  */
+/** Chaves candidatas para casamento tolerante a pontuação e espaços em fichas.txt */
+function chavesCandidatas(marca: string, titulo: string): string[] {
+  const sAno = semAno(titulo);
+  const chaves = new Set<string>();
+  for (const t of [titulo, sAno]) {
+    if (!t) continue;
+    chaves.add(`${marca}|${t}`);
+    // Variações de vírgula (com espaço / sem espaço)
+    chaves.add(`${marca}|${t.replace(/,\s*/g, ', ')}`);
+    chaves.add(`${marca}|${t.replace(/,\s*/g, ',')}`);
+    // Variações de dois pontos
+    chaves.add(`${marca}|${t.replace(/:\s*/g, ': ')}`);
+    chaves.add(`${marca}|${t.replace(/:\s*/g, ':')}`);
+    // Espaços em branco normais
+    chaves.add(`${marca}|${t.replace(/\s+/g, ' ').trim()}`);
+  }
+  return [...chaves];
+}
+
 /**
  * O pôster de um título, pelo id que o gerador já resolveu.
  *
@@ -599,13 +618,21 @@ export function semAno(titulo: string): string {
  */
 export function capaDaFicha(g: Generos, titulo: string, serie: boolean): string | null {
   const marca = serie ? 's' : 'f';
-  return g.capas.get(`${marca}|${titulo}`) ?? g.capas.get(`${marca}|${semAno(titulo)}`) ?? null;
+  for (const c of chavesCandidatas(marca, titulo)) {
+    const val = g.capas.get(c);
+    if (val) return val;
+  }
+  return null;
 }
 
 /** O id do TMDB de um título, quando o gerador o resolveu. */
 export function idDaFicha(g: Generos, titulo: string, serie: boolean): number | null {
   const marca = serie ? 's' : 'f';
-  return g.ids.get(`${marca}|${titulo}`) ?? g.ids.get(`${marca}|${semAno(titulo)}`) ?? null;
+  for (const c of chavesCandidatas(marca, titulo)) {
+    const val = g.ids.get(c);
+    if (val) return val;
+  }
+  return null;
 }
 
 /** O título do acervo que corresponde a um id do TMDB, se houver. */
@@ -616,6 +643,9 @@ export function tituloDoId(g: Generos, id: number, serie: boolean): string | nul
 export function temGenero(g: Generos, titulo: string, serie: boolean, genero: string): boolean {
   if (!genero) return true;
   const marca = serie ? 's' : 'f';
-  const lista = g.mapa.get(`${marca}|${titulo}`) ?? g.mapa.get(`${marca}|${semAno(titulo)}`) ?? [];
-  return lista.includes(genero);
+  for (const c of chavesCandidatas(marca, titulo)) {
+    const lista = g.mapa.get(c);
+    if (lista) return lista.includes(genero);
+  }
+  return false;
 }

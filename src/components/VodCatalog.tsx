@@ -50,6 +50,7 @@ import {
 } from '../services/vodService';
 import {
   ficha as buscarFicha,
+  melhorMatch,
   creditosDe,
   perfil as buscarPerfil,
   episodiosDaTemporada,
@@ -716,18 +717,38 @@ export function VodCatalog({
 
 
   // Ficha do título aberto
+  const [tmdbFallbackId, setTmdbFallbackId] = useState<number | null>(null);
   const idFicha = aberto && generos ? idDaFicha(generos, aberto.titulo, aberto.serie) : null;
-  const chaveFicha = aberto && idFicha ? `${aberto.serie ? 's' : 'f'}:${idFicha}` : null;
+  const idEfetivo = idFicha ?? tmdbFallbackId;
+  const chaveFicha = aberto && idEfetivo ? `${aberto.serie ? 's' : 'f'}:${idEfetivo}` : null;
   const ficha = chaveFicha && fichaAchada?.chave === chaveFicha ? fichaAchada.ficha : null;
 
   useEffect(() => {
-    if (!aberto || !idFicha || !chaveFicha) return;
+    setTmdbFallbackId(null);
+  }, [aberto?.chave]);
+
+  useEffect(() => {
+    if (!aberto) return;
     let vivo = true;
-    buscarFicha(idFicha, aberto.serie)
-      .then((achada) => { if (vivo) setFichaAchada({ chave: chaveFicha, ficha: achada }); })
-      .catch(() => { if (vivo) setFichaAchada({ chave: chaveFicha, ficha: null }); });
+    if (idFicha) {
+      const k = `${aberto.serie ? 's' : 'f'}:${idFicha}`;
+      buscarFicha(idFicha, aberto.serie)
+        .then((achada) => { if (vivo) setFichaAchada({ chave: k, ficha: achada }); })
+        .catch(() => { if (vivo) setFichaAchada({ chave: k, ficha: null }); });
+    } else {
+      // Fallback: se não estiver no fichas.txt, busca dinamicamente pelo título no TMDB
+      melhorMatch(aberto.titulo, aberto.serie ? 'tv' : 'movie')
+        .then(async (match) => {
+          if (!vivo || !match?.resultado?.id) return;
+          const novoId = match.resultado.id;
+          setTmdbFallbackId(novoId);
+          const f = await buscarFicha(novoId, aberto.serie);
+          if (vivo) setFichaAchada({ chave: `${aberto.serie ? 's' : 'f'}:${novoId}`, ficha: f });
+        })
+        .catch(() => {});
+    }
     return () => { vivo = false; };
-  }, [aberto, idFicha, chaveFicha]);
+  }, [aberto, idFicha]);
 
   // Filmografia do Ator
   useEffect(() => {
@@ -806,7 +827,7 @@ export function VodCatalog({
 
       onSelectMovie(
         {
-          tmdbId: (generos && idDaFicha(generos, titulo, false)) || undefined,
+          tmdbId: (generos && idDaFicha(generos, titulo, false)) || tmdbFallbackId || undefined,
           origem,
           id: `movie-${titulo}-${primeira}`.slice(0, 200),
           name: titulo,
@@ -841,7 +862,7 @@ export function VodCatalog({
       seriesName: aberto.rotulo,
       seasonNumber: e.temporada,
       episodeNumber: e.numero,
-      tmdbId: (generos && idDaFicha(generos, aberto.titulo, true)) || undefined,
+      tmdbId: (generos && idDaFicha(generos, aberto.titulo, true)) || tmdbFallbackId || undefined,
       origem: {
         tipo: aberto.chave.startsWith('animes') ? 'a' : aberto.chave.startsWith('doramas') ? 'd' : 's',
         titulo: aberto.titulo,
@@ -896,7 +917,7 @@ export function VodCatalog({
     : (partidaSerie?.temporada ?? temporadas[0] ?? 1);
 
   // Detalhes dos episódios da temporada (TMDB)
-  const idTmdbAberto = aberto && generos ? idDaFicha(generos, aberto.titulo, aberto.serie) : null;
+  const idTmdbAberto = aberto && generos ? (idDaFicha(generos, aberto.titulo, aberto.serie) ?? tmdbFallbackId) : (tmdbFallbackId ?? null);
   useEffect(() => {
     if (!aberto?.serie || !idTmdbAberto || temporadaAtiva <= 0) return;
     let cancelado = false;
@@ -1643,7 +1664,7 @@ export function VodCatalog({
                             titulo: aberto.titulo,
                             letra: aberto.letra,
                             ano: aberto.ano || '',
-                            capa: (generos && capaDaFicha(generos, aberto.titulo, aberto.serie)) || '',
+                            capa: (generos && capaDaFicha(generos, aberto.titulo, aberto.serie)) || ficha?.capa || '',
                           };
                           const fav = ehFavorito(origemItem);
                           return (
