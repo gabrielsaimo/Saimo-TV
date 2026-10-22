@@ -10,9 +10,10 @@ Canais ao vivo, guia de programação, filmes e séries direto no navegador:
 O site não embute lista nenhuma (nem de canais, nem de filmes, nem tabelas do guia).
 Os endereços padrão são servidos de forma rápida e estável via Cloudflare Pages
 (`canais-saimo.pages.dev` e `filmes-saimo.pages.dev`). Em Ajustes > Listas o usuário pode
-alternar, restaurar o padrão ou configurar fontes personalizadas. O único endereço fixo
-de infraestrutura é o [`versao.json`](https://canais-saimo.pages.dev/versao.json), de onde saem os links
-de download e os atalhos `/tvbox`, `/celular`, `/mac` e `/windows`.
+alternar, restaurar o padrão ou configurar fontes personalizadas. Os links de download e os
+atalhos `/tvbox`, `/celular`, `/mac`, `/windows`, `/samsung` e `/lg` saem dos anexos da última
+release de [`SaimoTV/saimo-downloads`](https://github.com/SaimoTV/saimo-downloads/releases/latest),
+lidos na hora; o [`versao.json`](https://canais-saimo.pages.dev/versao.json) só informa a versão.
 
 ---
 
