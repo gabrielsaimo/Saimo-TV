@@ -1,0 +1,98 @@
+/**
+ * Fontes e controles um pouco maiores só na LG (webOS), para leitura a distância.
+ *
+ * A classe `tv-webos` é colocada no <html> por src/plataforma/tv.ts. Aqui tudo
+ * cresce por um único fator, `--tv-fs`: mude esse número e a interface inteira
+ * acompanha. Nada de ajustar valor por valor.
+ *
+ * Como funciona:
+ *  - O que está em `rem` (a maior parte dos textos e espaçamentos do app) cresce
+ *    sozinho, porque aumentamos o `font-size` da raiz — e `rem` é relativo a ela.
+ *  - O que está em `px` (barra, painel de canais e controles do player) não
+ *    acompanha o `rem`, então é escalado explicitamente com `calc(base * --tv-fs)`.
+ */
+html.tv-webos {
+    --tv-fs: 2.2;
+    --tv-ts: 2.1;
+    --barra-largura: 90vw;
+    font-size: calc(16px * var(--tv-fs));
+}
+
+/* ===================== Barra do topo ===================== */
+.tv-webos .barra-topo { height: calc(52px * var(--tv-ts)); width: min(var(--barra-largura), calc(100vw - 32px)); }
+.tv-webos .barra-abas button { height: calc(34px * var(--tv-ts)); }
+.tv-webos .barra-capsula { height: calc(34px * var(--tv-ts)); }
+.tv-webos .barra-abas button svg { width: calc(16px * var(--tv-fs)); height: calc(16px * var(--tv-fs)); }
+.tv-webos .barra-logo svg { width: calc(26px * var(--tv-fs)); height: calc(26px * var(--tv-fs)); }
+.tv-webos .barra-engrenagem svg { width: calc(18px * var(--tv-ts)); height: calc(18px * var(--tv-ts)); }
+.tv-webos .tela-com-barra { padding-top: calc(55px * var(--tv-fs)); }
+
+/* ===================== Heroi ===================== */
+.tv-webos .heroi-texto { max-width: min(40vw); }
+/*.tv-webos .heroi {  margin: calc(-76px / calc(var(--tv-fs))*0.5) 0 1.2rem; }*/
+.tv-webos .heroi {  margin: 0 0 1.2rem; }
+
+
+/* ===================== Busca ===================== */
+
+.tv-webos .campo-busca { height: calc(44px * var(--tv-fs)); }
+.tv-webos .campo-busca svg { width: calc(18px * var(--tv-fs)); height: calc(18px * var(--tv-fs)); }
+
+/* ===================== Cartões (largura em px) ===================== */
+
+.tv-webos .cartao-capa { width: calc(154px * var(--tv-fs)); }
+.tv-webos .cartao-largo { width: calc(190px * var(--tv-fs)); }
+.tv-webos .vod-card-poster { flex-basis: calc(154px * var(--tv-fs)); width: calc(154px * var(--tv-fs)); }
+.tv-webos .cartao-largo strong { margin-bottom: 5px; }
+
+/* ===================== Painel de canais ===================== */
+
+.tv-webos .painel-de-canais-container:not(.mobile-inline) {
+    width: min(calc(400px * var(--tv-fs)), calc(100vw - 32px));
+}
+.tv-webos .painel-canal-nome { font-size: calc(15px * var(--tv-fs)); }
+.tv-webos .painel-canal-programa { font-size: calc(12px * var(--tv-fs)); }
+.tv-webos .painel-canal-numero { font-size: calc(14px * var(--tv-fs)); width: calc(30px * var(--tv-fs)); }
+.tv-webos .painel-pilula { font-size: calc(13px * var(--tv-fs)); }
+.tv-webos .painel-grupo-titulo { font-size: calc(11px * var(--tv-fs)); }
+.tv-webos .painel-busca-input { font-size: calc(14px * var(--tv-fs)); }
+.tv-webos .painel-busca-icone { width: calc(16px * var(--tv-fs)); height: calc(16px * var(--tv-fs)); }
+.tv-webos .painel-rodape { font-size: calc(11px * var(--tv-fs)); }
+.tv-webos .painel-btn-estrela svg {
+    width: calc(18px * var(--tv-fs));
+    height: calc(18px * var(--tv-fs));
+}
+
+/* ===================== Player (controles em px) ===================== */
+
+.tv-webos .control-btn { width: calc(38px * var(--tv-fs)); height: calc(38px * var(--tv-fs)); }
+.tv-webos .control-btn svg { width: calc(20px * var(--tv-fs)); height: calc(20px * var(--tv-fs)); }
+.tv-webos .control-btn-icon { width: calc(32px * var(--tv-fs)); height: calc(32px * var(--tv-fs)); }
+.tv-webos .control-btn-icon svg { width: calc(18px * var(--tv-fs)); height: calc(18px * var(--tv-fs)); }
+.tv-webos .pill-channels-btn { width: calc(40px * var(--tv-fs)); height: calc(40px * var(--tv-fs)); }
+.tv-webos .pill-channels-btn svg { width: calc(19px * var(--tv-fs)); height: calc(19px * var(--tv-fs)); }
+.tv-webos .live-badge-text { font-size: calc(11px * var(--tv-fs)); }
+.tv-webos .quality-badge-mac { font-size: calc(11px * var(--tv-fs)); }
+.tv-webos .source-badge-mac { font-size: calc(11px * var(--tv-fs)); }
+.tv-webos .volume-slider-mac { width: calc(80px * var(--tv-fs)); height: calc(4px * var(--tv-fs)); }
+
+/* ===================== Modal de transmitir (Cast) ===================== */
+
+.tv-webos .cast-modal { max-width: calc(420px * var(--tv-fs)); }
+.tv-webos .cast-option svg { width: calc(26px * var(--tv-fs)); height: calc(26px * var(--tv-fs)); }
+
+/* ===================== Descricao programas ===================== */
+.tv-webos .program-description { font-size: calc(12px * var(--tv-fs)); }
+.tv-webos .program-duration { font-size: calc(11px * var(--tv-fs)); }
+.tv-webos .program-time { font-size: calc(12px * var(--tv-fs)); }
+.tv-webos .program-title { font-size: calc(16px * var(--tv-fs)); }
+.tv-webos .program-now-badge { font-size: calc(10px * var(--tv-fs)); }
+
+/* ===================== Programa A seguir ===================== */
+.tv-webos .program-next-badge { font-size: calc(9px * var(--tv-fs)); }
+.tv-webos .program-title-small { font-size: calc(13px * var(--tv-fs)); max-width: unset; }
+.tv-webos .program-time-small { font-size: calc(11px * var(--tv-fs)); }
+.tv-webos .next-program { width: min(35vw); }
+
+/* ===================== Configurações ===================== */
+.tv-webos .ajustes { max-width: calc(760px * var(--tv-fs)); }
