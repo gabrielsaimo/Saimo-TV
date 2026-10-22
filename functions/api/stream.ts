@@ -258,9 +258,33 @@ export const onRequestGet: PagesFunction = async ({ request }) => {
   const candidatos = todos.filter(st => classificar(st) === versao);
   let escolhido = (candidatos.length > 0 ? candidatos[0] : todos[0]).url!;
 
-  // Garante HTTPS: Android e navegadores bloqueiam HTTP não criptografado (Cleartext Traffic)
+  // Se a URL aponta para servidores de redirecionamento legados (dbonline/zjo/corruptx),
+  // segue o redirecionamento para pegar a URL final (ex: Cloudflare Workers HTTPS)
+  if (escolhido.includes('tech-cdn.top') || escolhido.includes('zjo.lat') || escolhido.includes('corruptx.org')) {
+    try {
+      const probe = await fetch(escolhido, {
+        method: 'GET',
+        headers: { 'User-Agent': AGENTE, 'Range': 'bytes=0-1' },
+        redirect: 'follow',
+      });
+      if (probe.url && probe.url.startsWith('http')) {
+        escolhido = probe.url;
+      }
+    } catch {}
+  }
+
+  // Garante HTTPS apenas quando suportado (não força https em portas :80 nem certificados quebrados)
   if (escolhido.startsWith('http://')) {
-    escolhido = 'https://' + escolhido.slice(7);
+    try {
+      const parsed = new URL(escolhido);
+      if (parsed.port !== '80' && !parsed.hostname.includes('tech-cdn.top') && !parsed.hostname.includes('corruptx.org')) {
+        escolhido = 'https://' + escolhido.slice(7);
+      } else if (parsed.hostname.includes('workers.dev')) {
+        escolhido = 'https://' + escolhido.slice(7);
+      }
+    } catch {
+      escolhido = 'https://' + escolhido.slice(7);
+    }
   }
 
   const headers = new Headers();
