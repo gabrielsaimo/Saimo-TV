@@ -1,5 +1,5 @@
 /**
- * Ajustes: o que abrir ao iniciar, modo adulto, importar/exportar canais,
+ * Ajustes: o que abrir ao iniciar, importar/exportar canais,
  * atalhos, limpezas e links.
  */
 import { useEffect, useRef, useState } from 'react';
@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
 import { FormListas } from '../components/FormListas';
 import { useListas } from '../services/listas';
-import { useAdultMode } from '../contexts/adultoContexto';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useCanais } from '../hooks/useCanais';
 import { audioInteligenteService, CHAVE_AUDIO_INTELIGENTE } from '../services/audioInteligente';
@@ -41,7 +40,6 @@ export function Ajustes() {
   const canais = useCanais();
   const listas = useListas();
   const [favoritosIds] = useLocalStorage<string[]>('tv-favorites', []);
-  const { isAdultUnlocked, lockAdult } = useAdultMode();
   const [aoIniciar, setAoIniciar] = useLocalStorage<AoIniciar>(CHAVE_AO_INICIAR, 'inicio');
   const [upscaling, setUpscaling] = useLocalStorage<ModoUpscaling>(CHAVE_UPSCALING, 'off');
   const [audioInteligente, setAudioInteligente] = useLocalStorage<boolean>(CHAVE_AUDIO_INTELIGENTE, true);
@@ -215,15 +213,6 @@ export function Ajustes() {
             )}
           </div>
         </section>
-
-        <section className="ajustes-bloco">
-          <h2>Modo adulto (+18)</h2>
-          <p>{isAdultUnlocked
-            ? 'Ligado: o catálogo mostra também o conteúdo adulto.'
-            : 'Desligado. Para ligar, clique vinte vezes no ícone da barra do topo e digite o PIN.'}</p>
-          {isAdultUnlocked && <button className="ajustes-botao" onClick={lockAdult}>Desligar</button>}
-        </section>
-
 
         <section className="ajustes-bloco">
           <h2>Dados deste navegador</h2>
