@@ -10,8 +10,10 @@
  * CORS, nada que atrase o vídeo, e a última batida ainda sai quando a aba fecha.
  */
 
-const BASE = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1';
-const PLATAFORMA = 'site';
+import { marcaTv } from '../plataforma/tv';
+
+const BASE = 'https://saimo-tv.pages.dev/api/online/v1';
+const PLATAFORMA = marcaTv() ?? 'site';
 const VERSAO = 'web';
 /** Zapeando, cada canal que passa não vira batida: só quem ficou. */
 const MINIMO_PARA_CONTAR_MS = 20_000;
@@ -71,6 +73,49 @@ function idDoAparelho(): string {
 
 const id = idDoAparelho();
 
+/*
+ * Amostra. Só uma fração fixa dos aparelhos fala com o monitor — o servidor
+ * cobra por pedido, e com milhares de abas abertas a conta passava da franquia.
+ * Os escolhidos são sempre os mesmos: FNV-1a de 32 bits sobre o id (o mesmo
+ * cálculo do worker), dentro quando `hash % 10000 < pct * 100`. O percentual
+ * vem de `telemetria.json`, arquivo estático do monitor (não conta pedido),
+ * relido no máximo uma vez por dia; vale na próxima abertura.
+ */
+const CHAVE_PCT = 'saimo-telemetria-amostra';
+const PCT_PADRAO = 5;
+
+function fnv1a(texto: string): number {
+  let h = 0x811c9dc5;
+  for (const b of new TextEncoder().encode(texto)) {
+    h ^= b;
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h;
+}
+
+function percentualGuardado(): number {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(CHAVE_PCT) || 'null') as { pct?: number; em?: number } | null;
+    const pct = Number(salvo?.pct);
+    if (!salvo || !Number.isFinite(pct) || pct <= 0 || pct > 100 || Date.now() - Number(salvo.em || 0) > 86_400_000) {
+      void fetch(BASE.replace(/\/v1$/, '/telemetria.json'), { cache: 'no-store' })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          const novo = Number(d?.amostraPct);
+          if (Number.isFinite(novo) && novo > 0 && novo <= 100) {
+            localStorage.setItem(CHAVE_PCT, JSON.stringify({ pct: novo, em: Date.now() }));
+          }
+        })
+        .catch(() => {});
+    }
+    return Number.isFinite(pct) && pct > 0 && pct <= 100 ? pct : PCT_PADRAO;
+  } catch {
+    return PCT_PADRAO;
+  }
+}
+
+export const amostrado = fnv1a(id.toLowerCase()) % 10000 < percentualGuardado() * 100;
+
 function host(url?: string | null): string | null {
   if (!url) return null;
   try { return new URL(url).host.replace(/^www\./, ''); } catch { return null; }
@@ -129,7 +174,7 @@ export function descreverAparelho(ua: string, toques: number, modeloDeclarado = 
     /iPad/.test(ua) || ipadDisfarcado ? 'Apple iPad' :
     /AppleTV/.test(ua) ? 'Apple TV' :
     /Tizen/.test(ua) ? 'TV Samsung (Tizen)' :
-    /Web0S|webOS/.test(ua) ? 'TV LG (webOS)' :
+    /Web0S|webOS/.test(ua) || marcaTv() === 'webos' ? 'TV LG (webOS)' :
     /Roku/.test(ua) ? 'Roku' :
     /CrKey/.test(ua) ? 'Chromecast' :
     /Android/.test(ua) ? (codigoAndroid || (tv ? 'TV Android' : androidTablet ? 'Tablet Android' : 'Android')) :
@@ -145,7 +190,7 @@ export function descreverAparelho(ua: string, toques: number, modeloDeclarado = 
     fireTv ? `Fire OS (Android ${ver(/Android (\d+(?:\.\d+)?)/)})` :
     /Android (\d+(?:\.\d+)?)/.test(ua) ? `Android ${versaoDeclarada || ver(/Android (\d+(?:\.\d+)?)/)}` :
     /Tizen ([\d.]+)/.test(ua) ? `Tizen ${ver(/Tizen ([\d.]+)/)}` :
-    /Web0S|webOS/.test(ua) ? 'webOS' :
+    /Web0S|webOS/.test(ua) || marcaTv() === 'webos' ? 'webOS' :
     /Windows NT 10/.test(ua) ? 'Windows 10/11' :
     /Windows NT ([\d.]+)/.test(ua) ? `Windows NT ${ver(/Windows NT ([\d.]+)/)}` :
     /Mac OS X/.test(ua) ? 'macOS' :
@@ -177,6 +222,8 @@ async function aparelhoDesteNavegador(): Promise<Aparelho> {
 }
 
 function enviar(rota: string, corpo: Record<string, unknown>, beacon = true): Promise<Response | null> {
+  // Fora da amostra, nada sai deste navegador.
+  if (!amostrado) return Promise.resolve(null);
   const texto = JSON.stringify({ ...corpo, deviceId: id, platform: PLATAFORMA, version: VERSAO });
   const url = `${BASE}/${rota}`;
   if (beacon && typeof navigator.sendBeacon === 'function') {
@@ -188,7 +235,13 @@ function enviar(rota: string, corpo: Record<string, unknown>, beacon = true): Pr
     .catch(() => null);
 }
 
-function baterAgora() {
+/** Batida fora do relógio (pausa, troca, parada): no máximo uma a cada 30 s. */
+const INTERVALO_MINIMO_MS = 30_000;
+let ultimaBatida = 0;
+
+function baterAgora(forcar = false) {
+  if (!forcar && Date.now() - ultimaBatida < INTERVALO_MINIMO_MS) return;
+  ultimaBatida = Date.now();
   const segundos = tocando ? Math.round(rodandoMs() / 1000) : 0;
   acumuladoMs = 0;
   if (rodandoDesde) rodandoDesde = Date.now();
@@ -197,7 +250,7 @@ function baterAgora() {
 
 function agendar() {
   if (relogio !== undefined) window.clearInterval(relogio);
-  relogio = window.setInterval(baterAgora, intervaloMs);
+  relogio = window.setInterval(() => baterAgora(true), intervaloMs);
 }
 
 function evento(type: string, extra: Record<string, unknown> = {}) {
@@ -230,7 +283,7 @@ export function iniciar() {
 
   // Aba fechando: a última batida e o "parou", pelo beacon que sobrevive à saída.
   window.addEventListener('pagehide', () => {
-    baterAgora();
+    baterAgora(true);
     if (tocando) void enviar('event', { type: 'play_stop' });
   });
 

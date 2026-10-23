@@ -1,0 +1,39 @@
+.listas-form { display: flex; flex-direction: column; gap: 14px; }
+.listas-campo { display: flex; flex-direction: column; gap: 4px; }
+.listas-campo label { font-size: 0.85rem; font-weight: 600; }
+.listas-campo input {
+  width: 100%; padding: 11px 14px; border-radius: 14px; font: inherit; font-size: 0.92rem; color: #fff;
+  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.listas-campo input::placeholder { color: rgba(255, 255, 255, 0.35); }
+.listas-campo input:focus { outline: 2px solid rgba(79, 243, 224, 0.7); outline-offset: 1px; }
+.listas-campo input.invalido { border-color: #f87171; }
+.listas-campo input:disabled { opacity: 0.6; }
+.listas-campo small { font-size: 0.76rem; color: rgba(255, 255, 255, 0.5); }
+
+.listas-erro {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px; font-size: 0.86rem;
+  color: #fecaca; background: rgba(248, 113, 113, 0.12); border: 1px solid rgba(248, 113, 113, 0.4);
+}
+.listas-erro svg { flex: none; color: #f87171; }
+
+.listas-botoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.listas-botao {
+  padding: 9px 18px; border-radius: 16px; font: inherit; font-size: 0.86rem; font-weight: 600; cursor: pointer; color: #fff;
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.listas-botao:hover { background: rgba(255, 255, 255, 0.16); }
+.listas-botao:focus-visible { outline: 2px solid rgba(79, 243, 224, 0.8); outline-offset: 2px; }
+.listas-botao.principal { background: #fff; color: #0a0a0a; border-color: #fff; }
+.listas-botao.principal:hover { background: #e6e6ef; }
+.listas-botao:disabled { opacity: 0.6; cursor: default; }
+
+.listas-rotulo { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.listas-apagar {
+  padding: 2px 10px; border-radius: 12px; font: inherit; font-size: 0.76rem; font-weight: 600; cursor: pointer;
+  color: #fca5a5; background: transparent; border: 1px solid rgba(248, 113, 113, 0.4);
+}
+.listas-apagar:hover { background: rgba(248, 113, 113, 0.12); }
+.listas-acoes { display: flex; gap: 6px; }
+.listas-apagar.neutro { color: #fff; border-color: rgba(255, 255, 255, 0.25); }
+.listas-apagar.neutro:hover { background: rgba(255, 255, 255, 0.1); }

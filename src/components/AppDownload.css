@@ -388,3 +388,15 @@
     padding: 2px 7px;
   }
 }
+
+/* Botão sem link ainda (carregando o versao.json ou falha): mesmo visual do link. */
+button.download-button {
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button.download-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

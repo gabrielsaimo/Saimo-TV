@@ -16,13 +16,22 @@
  * não respondeu.
  */
 
-const ENDERECO = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1/fontes';
-/** Desligar um servidor tem que valer em minutos, que é o tempo que alguém
- *  aguenta um canal quebrado. */
-export const VALIDADE_MS = 120_000;
+const ENDERECO = 'https://saimo-tv.pages.dev/fontes-desativadas.json';
+/** Uma hora, guardada entre aberturas: o monitor cobra por pedido, e com
+ *  milhares de abas pedindo a cada dois minutos a conta passava da franquia.
+ *  Desligar um servidor no painel vale em até uma hora. */
+export const VALIDADE_MS = 3_600_000;
+const CHAVE = 'saimo-fontes-desativadas';
 
 let hosts = new Set<string>();
 let lidoEm = 0;
+try {
+  const salvo = JSON.parse(localStorage.getItem(CHAVE) || 'null') as { hosts?: string[]; em?: number } | null;
+  if (salvo && Array.isArray(salvo.hosts) && Number(salvo.em) > 0) {
+    hosts = new Set(salvo.hosts);
+    lidoEm = Number(salvo.em);
+  }
+} catch { /* sem localStorage: pede na rede */ }
 
 /** Os servidores desligados agora, sem ir à rede. */
 export function atuais(): ReadonlySet<string> {
@@ -35,8 +44,16 @@ export function atuais(): ReadonlySet<string> {
  * Devolve `true` quando mudou, que é quando quem chamou precisa remontar a
  * lista de canais.
  */
-export async function atualizar(): Promise<boolean> {
-  if (Date.now() - lidoEm < VALIDADE_MS) return false;
+let emAndamento: Promise<boolean> | null = null;
+
+export function atualizar(): Promise<boolean> {
+  if (Date.now() - lidoEm < VALIDADE_MS) return Promise.resolve(false);
+  // Duas telas pedindo juntas na abertura viram um pedido só.
+  emAndamento ??= buscar().finally(() => { emAndamento = null; });
+  return emAndamento;
+}
+
+async function buscar(): Promise<boolean> {
   try {
     // A resposta vem com `max-age` de dois minutos, e o navegador o respeita:
     // somado ao relógio daqui, a lista podia demorar o dobro para mudar. Quem
@@ -53,6 +70,7 @@ export async function atualizar(): Promise<boolean> {
         .map((h) => h.trim().toLowerCase())
         .filter(Boolean),
     );
+    try { localStorage.setItem(CHAVE, JSON.stringify({ hosts: [...novos], em: lidoEm })); } catch { /* segue */ }
     if (novos.size === hosts.size && [...novos].every((h) => hosts.has(h))) return false;
     hosts = novos;
     console.info(

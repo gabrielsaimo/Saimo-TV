@@ -530,22 +530,24 @@ body:has(.tv-page.deitado.tocando) .navegacao-mobile {
   display: none;
 }
 
-/* ── Super Resolução (Upscaling via SVG Convolution Filter) ── */
-html[data-upscaling="hd"] .video-element,
-html[data-upscaling="hd"] .movie-player video,
-html[data-upscaling="hd"] video.movie-video,
-html[data-upscaling="hd"] .movie-video,
-html[data-upscaling="hd"] :fullscreen video,
-html[data-upscaling="hd"] video:fullscreen {
+/* ── Super Resolução (Upscaling via SVG Convolution Filter) ──
+   Vídeo que já chega na altura do alvo (data-nativo, ver App.tsx) fica sem o filtro: no 4K o
+   filtro só gastava processamento a cada quadro. */
+html[data-upscaling="hd"] .video-element:not([data-nativo="1"]),
+html[data-upscaling="hd"] .movie-player video:not([data-nativo="1"]),
+html[data-upscaling="hd"] video.movie-video:not([data-nativo="1"]),
+html[data-upscaling="hd"] .movie-video:not([data-nativo="1"]),
+html[data-upscaling="hd"] :fullscreen video:not([data-nativo="1"]),
+html[data-upscaling="hd"] video:fullscreen:not([data-nativo="1"]) {
   filter: url(#saimo-upscale-hd) contrast(1.02) saturate(1.03);
 }
 
-html[data-upscaling="4k"] .video-element,
-html[data-upscaling="4k"] .movie-player video,
-html[data-upscaling="4k"] video.movie-video,
-html[data-upscaling="4k"] .movie-video,
-html[data-upscaling="4k"] :fullscreen video,
-html[data-upscaling="4k"] video:fullscreen {
+html[data-upscaling="4k"] .video-element:not([data-nativo="1"]),
+html[data-upscaling="4k"] .movie-player video:not([data-nativo="1"]),
+html[data-upscaling="4k"] video.movie-video:not([data-nativo="1"]),
+html[data-upscaling="4k"] .movie-video:not([data-nativo="1"]),
+html[data-upscaling="4k"] :fullscreen video:not([data-nativo="1"]),
+html[data-upscaling="4k"] video:fullscreen:not([data-nativo="1"]) {
   filter: url(#saimo-upscale-4k) contrast(1.04) saturate(1.05);
 }
 

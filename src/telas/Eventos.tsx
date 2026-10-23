@@ -7,13 +7,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
-import { Fileira, Heroi, type Destaque } from '../components/Telas';
+import { Fileira, Heroi, SemLista, type Destaque } from '../components/Telas';
 import { useCanais } from '../hooks/useCanais';
+import { useListas } from '../services/listas';
 import { acabou, aoVivo, buscarJogos, type Jogo } from '../services/eventos';
 import './Eventos.css';
 
 const HORA = 3_600_000;
-const INTERVALO = 60_000;
+// Três minutos: a agenda do monitor é cobrada por pedido, e o placar não
+// precisa de mais que isso.
+const INTERVALO = 180_000;
 const GRUPOS = ['Ao vivo agora', 'Começa em breve', 'Hoje mais tarde', 'Amanhã', 'Próximos dias'];
 
 const diaDe = (ms: number) => {
@@ -77,6 +80,7 @@ function CartaoJogo({ jogo, agora, aoAbrir, aoPassar }: {
 export function Eventos() {
   const navigate = useNavigate();
   const canais = useCanais();
+  const { canais: link } = useListas();
   const [jogos, setJogos] = useState<Jogo[] | null>(null);
   const [falhou, setFalhou] = useState(false);
   const [agora, setAgora] = useState(Date.now);
@@ -124,7 +128,8 @@ export function Eventos() {
     <div className="tela tela-com-barra">
       <BarraTopo />
       <Heroi item={destaque} />
-      {jogos === null && !falhou && <p className="tela-vazio">Buscando os jogos…</p>}
+      {!link && <SemLista tipo="eventos" />}
+      {link && jogos === null && !falhou && <p className="tela-vazio">Buscando os jogos…</p>}
       {falhou && (
         <div className="tela-vazio"><h2>Não deu para carregar os jogos</h2>
           <p>Confira a conexão; a tela tenta de novo sozinha a cada minuto.</p></div>

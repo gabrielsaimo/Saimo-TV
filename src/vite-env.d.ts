@@ -8,3 +8,8 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare module 'smoothscroll-polyfill' {
+  const smoothscroll: { polyfill: () => void };
+  export default smoothscroll;
+}

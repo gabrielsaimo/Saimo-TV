@@ -1239,7 +1239,18 @@
   background: radial-gradient(circle at 50% 38%, rgba(139, 92, 246, 0.16), rgba(0, 0, 0, 0.92) 62%);
   padding: 24px;
   overflow-y: auto;
+  /* Com muitas fontes o aviso passa da altura: centrado pelo flex, o começo
+     ficava cortado no alto, fora do alcance da rolagem. As margens automáticas
+     centram quando cabe e deixam rolar desde o título quando não cabe. */
+  justify-content: flex-start;
 }
+
+.player-overlay.aviso > :first-child { margin-top: auto; }
+
+/* Com erro, a barra de baixo (tempo, play) não tem o que fazer e aparecia por
+   trás da lista de fontes. O topo fica: é por ele que se volta. */
+.player-controls.com-erro .controls-bottom { visibility: hidden; }
+.player-overlay.aviso > :last-child { margin-bottom: auto; }
 
 .player-overlay.aviso .aviso-icone {
   width: 46px;

@@ -9,9 +9,13 @@ import castService, { type CastMethod, type CastState } from '../services/castSe
 import { buildAttempts, isDash, isMpegTs, marcarSemCors, type Attempt } from '../utils/streamUrl';
 import { makeNestedPathLoader } from '../utils/hlsLoader';
 import { playDash, type DashHandle } from '../services/dashPlayer';
+import { audioInteligenteService } from '../services/audioInteligente';
+import { zeroDelayService, EVENTO_ZERO_DELAY, type ModoZeroDelay } from '../services/zeroDelay';
+import { iniciarVigiaAoVivo, type VigiaAoVivoHandle, type LatenciaInfo } from '../utils/vigiaAoVivo';
 import * as telemetria from '../services/telemetria';
 import './VideoPlayer.css';
 import './AvisoApp.css';
+import { ehAppDaTv } from '../plataforma/tv';
 import { alternarTelaCheia, elementoEmTelaCheia, EVENTOS_TELA_CHEIA, soltarOrientacao } from '../utils/telaCheia';
 
 interface VideoPlayerProps {
@@ -117,6 +121,47 @@ export const VideoPlayer = memo(function VideoPlayer({
   const recoveryAttemptsRef = useRef(0);
   const maxRecoveryAttempts = 3;
 
+  // Zero Delay: sincronização na borda ao vivo e latência mínima
+  const [modoZeroDelay, setModoZeroDelay] = useState<ModoZeroDelay>(() => zeroDelayService.getModo());
+  const modoZeroDelayRef = useRef<ModoZeroDelay>(modoZeroDelay);
+  const [latenciaInfo, setLatenciaInfo] = useState<LatenciaInfo>({ atrasoSegundos: null, naBorda: true, bordaDisponivel: false });
+  const vigiaRef = useRef<VigiaAoVivoHandle | null>(null);
+  const [toastZeroDelay, setToastZeroDelay] = useState<string | null>(null);
+  const toastTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    modoZeroDelayRef.current = modoZeroDelay;
+  }, [modoZeroDelay]);
+
+  useEffect(() => {
+    const tratarMudanca = () => {
+      const novo = zeroDelayService.getModo();
+      setModoZeroDelay(novo);
+      modoZeroDelayRef.current = novo;
+      setReloadTick((t) => t + 1);
+    };
+    window.addEventListener(EVENTO_ZERO_DELAY, tratarMudanca);
+    return () => window.removeEventListener(EVENTO_ZERO_DELAY, tratarMudanca);
+  }, []);
+
+  const alternarZeroDelay = useCallback(() => {
+    const atual = modoZeroDelayRef.current;
+    const proximo: ModoZeroDelay = atual === 'off' ? 'equilibrado' : atual === 'equilibrado' ? 'agressivo' : 'off';
+    zeroDelayService.setModo(proximo);
+    setModoZeroDelay(proximo);
+    modoZeroDelayRef.current = proximo;
+
+    const msg =
+      proximo === 'off'
+        ? 'Zero Delay: Desligado'
+        : proximo === 'equilibrado'
+        ? 'Zero Delay: Equilibrado ativado'
+        : 'Zero Delay: Agressivo (Ultra Ao Vivo)!';
+    if (toastTimeoutRef.current) window.clearTimeout(toastTimeoutRef.current);
+    setToastZeroDelay(msg);
+    toastTimeoutRef.current = window.setTimeout(() => setToastZeroDelay(null), 2500);
+  }, []);
+
 
   /*
    * As fontes do canal, HTTPS primeiro e depois na ordem publicada. Um canal antigo, guardado antes de
@@ -179,7 +224,8 @@ export const VideoPlayer = memo(function VideoPlayer({
    * separada, e o aviso aparece de saída.
    */
   const tentavel = useCallback(
-    (a: Attempt | undefined) => !!a && !a.source.url.startsWith('http://'),
+    // Na TV o app é instalado: http abre direto, sem a regra da página https.
+    (a: Attempt | undefined) => !!a && (ehAppDaTv() || !a.source.url.startsWith('http://')),
     [],
   );
   const semCaminhoNoSite = attempts.length > 0 && !attempts.some(tentavel);
@@ -258,7 +304,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       setIsLoading(false);
       return;
     }
-    const { source, url, viaProxy } = attempt;
+    const { source, url, viaProxy, nativo } = attempt;
 
     // Monitor: trocar de canal ou escolher fonte à mão é uma abertura; descer
     // para a próxima tentativa depois de uma falha, não.
@@ -318,8 +364,18 @@ export const VideoPlayer = memo(function VideoPlayer({
       if (hlsRef.current) { hlsRef.current.destroy(); hlsRef.current = null; }
       if (mpegtsRef.current) { mpegtsRef.current.destroy(); mpegtsRef.current = null; }
       if (dashRef.current) { dashRef.current.destroy(); dashRef.current = null; }
+      if (vigiaRef.current) { vigiaRef.current.destroy(); vigiaRef.current = null; }
     };
     limpar();
+
+    // Ativa vigia de borda e monitor de latência para a fonte ativa
+    const isMSE = Boolean(isMpegTs(source.url) || isDash(source.url) || Hls.isSupported());
+    vigiaRef.current = iniciarVigiaAoVivo(video, modoZeroDelayRef.current, undefined, isMSE);
+    const timerLatencia = window.setInterval(() => {
+      if (vigiaRef.current) {
+        setLatenciaInfo(vigiaRef.current.obterLatencia());
+      }
+    }, 1000);
 
     /** Desce para a fonte seguinte; só vira erro quando acabaram todas. */
     const descer = (motivo: string) => {
@@ -390,6 +446,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       pararRelogio();
       const vid = videoRef.current;
       vid.volume = volumeRef.current;
+      audioInteligenteService.conectar(vid);
       vid.play().catch(() => {
         // Autoplay com som é bloqueado até a pessoa interagir com a página;
         // começar mudo e desmutar no primeiro clique é melhor que não começar.
@@ -400,8 +457,19 @@ export const VideoPlayer = memo(function VideoPlayer({
       });
     };
 
-    if (isDash(source.url)) {
-      playDash(video, url, source, falhar)
+    if (nativo) {
+      // TV: o decodificador da TV abre o HLS sozinho (sem CORS, com aceleração).
+      video.src = url;
+      video.addEventListener('loadedmetadata', () => {
+        setIsLoading(false);
+        video.muted = forceMutedRef.current || isMutedRef.current;
+        tocar();
+      }, { once: true });
+      video.addEventListener('error', () => falhar('nativo'), { once: true });
+      video.load();
+      retomar = () => { try { void video.play(); } catch { /* o vigia decide depois */ } };
+    } else if (isDash(source.url)) {
+      playDash(video, url, source, falhar, modoZeroDelayRef.current)
         .then((handle) => {
           if (cancelado) { handle.destroy(); return; }
           dashRef.current = handle;
@@ -410,9 +478,10 @@ export const VideoPlayer = memo(function VideoPlayer({
         })
         .catch((e) => falhar(e instanceof Error ? e.message : 'dash'));
     } else if (isMpegTs(source.url) && mpegts.isSupported()) {
+      const mpegConfig = zeroDelayService.obterConfigMpegts(modoZeroDelayRef.current);
       const player = mpegts.createPlayer(
         { type: 'mpegts', isLive: true, url, cors: true },
-        { enableWorker: true, lazyLoadMaxDuration: 3 * 60, seekType: 'range' },
+        mpegConfig,
       );
       player.attachMediaElement(video);
       player.load();
@@ -430,10 +499,10 @@ export const VideoPlayer = memo(function VideoPlayer({
       mpegtsRef.current = player;
       tocar();
     } else if (Hls.isSupported()) {
+      const hlsConfig = zeroDelayService.obterConfigHls(modoZeroDelayRef.current);
       const hls = new Hls({
         enableWorker: true,
-        lowLatencyMode: true,
-        backBufferLength: 90,
+        ...hlsConfig,
         // Pela origem, quem monta o endereço do segmento é o hls.js, e alguns
         // canais guardam os segmentos noutra pasta. Passando pelo proxy a
         // correção já veio feita no manifesto.
@@ -515,8 +584,10 @@ export const VideoPlayer = memo(function VideoPlayer({
       cancelado = true;
       pararRelogio();
       window.clearInterval(vigia);
+      window.clearInterval(timerLatencia);
       video.removeEventListener('timeupdate', marcarAvanco);
       limpar();
+      if (nativo) { video.removeAttribute('src'); video.load(); }
     };
   }, [channel, attempts, sourceIndex, reloadTick, semCaminhoNoSite, tentavel]);
 
@@ -1127,6 +1198,30 @@ export const VideoPlayer = memo(function VideoPlayer({
                 </button>
               )}
 
+              {/* Selo Ao Vivo e Indicador de Latência */}
+              {channel && (
+                <button
+                  className={`live-badge-mac ${modoZeroDelay !== 'off' && !latenciaInfo.naBorda ? 'delayed' : 'on-air'}`}
+                  onClick={() => {
+                    resetControlsTimeout();
+                    vigiaRef.current?.pularParaBorda();
+                  }}
+                  title={
+                    modoZeroDelay === 'off'
+                      ? 'Ao Vivo (Clique para sincronizar)'
+                      : latenciaInfo.naBorda
+                      ? `Ao Vivo em Tempo Real (${modoZeroDelay === 'agressivo' ? 'Modo Ultra' : 'Equilibrado'})`
+                      : `Atraso estimado: -${latenciaInfo.atrasoSegundos}s. Clique para saltar para a borda ao vivo!`
+                  }
+                  data-focusable="true"
+                >
+                  <span className={`live-dot ${modoZeroDelay !== 'off' && !latenciaInfo.naBorda ? 'yellow' : 'green'}`} />
+                  {modoZeroDelay !== 'off' && !latenciaInfo.naBorda && latenciaInfo.atrasoSegundos !== null
+                    ? `-${latenciaInfo.atrasoSegundos}s PULAR`
+                    : 'AO VIVO'}
+                </button>
+              )}
+
               {/* Controle de Volume */}
               <div className="volume-control-mac">
                 <button
@@ -1174,6 +1269,41 @@ export const VideoPlayer = memo(function VideoPlayer({
                   <circle cx="12" cy="15" r="2" fill="currentColor" />
                 </svg>
               </button>
+
+              {/* Zero Delay (Baixa Latência) */}
+              {channel && (
+                <button
+                  className={`control-btn zero-delay-btn ${
+                    modoZeroDelay === 'agressivo'
+                      ? 'active-ultra'
+                      : modoZeroDelay === 'equilibrado'
+                      ? 'active-balanced'
+                      : ''
+                  }`}
+                  onClick={() => {
+                    resetControlsTimeout();
+                    alternarZeroDelay();
+                  }}
+                  title={
+                    modoZeroDelay === 'off'
+                      ? 'Zero Delay: Desligado (Clique para ativar)'
+                      : modoZeroDelay === 'equilibrado'
+                      ? 'Zero Delay: Equilibrado (Menor atraso inteligente)'
+                      : 'Zero Delay: Agressivo (Máximo tempo real / Ultra ao vivo)'
+                  }
+                  data-focusable="true"
+                  aria-label="Zero Delay"
+                >
+                  <svg viewBox="0 0 24 24" fill={modoZeroDelay !== 'off' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>
+                  {modoZeroDelay !== 'off' && (
+                    <span className="zero-delay-pill-text">
+                      {modoZeroDelay === 'agressivo' ? 'ULTRA' : 'ZERO'}
+                    </span>
+                  )}
+                </button>
+              )}
 
               {/* Qualidade e Áudio */}
               {(audioTracks.length > 1 || qualityLevels.length > 1) && (
@@ -1270,6 +1400,16 @@ export const VideoPlayer = memo(function VideoPlayer({
                 <circle cx="2" cy="20" r="2" fill="currentColor" />
               </svg>
               <span>{castMessage}</span>
+            </div>
+          )}
+
+          {/* Notificação flutuante de Zero Delay */}
+          {toastZeroDelay && (
+            <div className="zero-delay-toast">
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+              <span>{toastZeroDelay}</span>
             </div>
           )}
 

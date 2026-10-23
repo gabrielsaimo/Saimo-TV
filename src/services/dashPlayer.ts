@@ -1,8 +1,7 @@
 /**
  * DASH com ClearKey no navegador.
  *
- * Dezoito canais do catálogo — Globo, GNT, Multishow, SporTV 2 e 3, a Premiere
- * inteira — só existem em `.mpd` cifrado, e o hls.js não fala DASH nem EME. O
+ * Alguns canais do catálogo só existem em `.mpd` cifrado, e o hls.js não fala DASH nem EME. O
  * Shaka fala os dois, e a chave já vem no catálogo: não há servidor de licença
  * para consultar, é o mesmo par KID:chave que o app entrega ao ExoPlayer.
  *
@@ -10,6 +9,7 @@
  */
 
 import type { ChannelSource } from '../types/channel';
+import { zeroDelayService, type ModoZeroDelay } from './zeroDelay';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type ShakaPlayer = {
@@ -54,6 +54,7 @@ export async function playDash(
   url: string,
   source: ChannelSource,
   onFatal: (mensagem: string) => void,
+  modoZeroDelay: ModoZeroDelay = 'off',
 ): Promise<DashHandle> {
   const shaka = await carregarShaka();
   if (!shaka.Player.isBrowserSupported()) {
@@ -63,10 +64,21 @@ export async function playDash(
   const player: ShakaPlayer = new shaka.Player();
   await player.attach(video);
 
+  const shakaConfig: Record<string, unknown> = {};
+
   if (source.keyId && source.key) {
     // Chave local: o ClearKey do W3C dispensa servidor de licença, e é assim que
     // o catálogo a publica — em hexadecimal, KID e chave.
-    player.configure({ drm: { clearKeys: { [source.keyId]: source.key } } });
+    shakaConfig.drm = { clearKeys: { [source.keyId]: source.key } };
+  }
+
+  if (modoZeroDelay !== 'off') {
+    const zeroConfig = zeroDelayService.obterConfigShaka(modoZeroDelay);
+    Object.assign(shakaConfig, zeroConfig);
+  }
+
+  if (Object.keys(shakaConfig).length > 0) {
+    player.configure(shakaConfig);
   }
 
   player.addEventListener('error', (event: any) => {

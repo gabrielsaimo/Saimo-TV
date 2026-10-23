@@ -1,13 +1,16 @@
 /**
- * Ajustes: o que abrir ao iniciar, modo adulto, importar/exportar canais,
+ * Ajustes: o que abrir ao iniciar, importar/exportar canais,
  * atalhos, limpezas e links.
  */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarraTopo } from '../components/BarraTopo';
-import { useAdultMode } from '../contexts/adultoContexto';
+import { FormListas } from '../components/FormListas';
+import { useListas } from '../services/listas';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useCanais } from '../hooks/useCanais';
+import { audioInteligenteService, CHAVE_AUDIO_INTELIGENTE } from '../services/audioInteligente';
+import { zeroDelayService, CHAVE_ZERO_DELAY, type ModoZeroDelay } from '../services/zeroDelay';
 import {
   aoMudar as aoMudarPersonalizados,
   exportarM3U,
@@ -35,13 +38,25 @@ const LIMPAR: { rotulo: string; chaves: string[]; aviso: string }[] = [
 export function Ajustes() {
   const navigate = useNavigate();
   const canais = useCanais();
+  const listas = useListas();
   const [favoritosIds] = useLocalStorage<string[]>('tv-favorites', []);
-  const { isAdultUnlocked, lockAdult } = useAdultMode();
   const [aoIniciar, setAoIniciar] = useLocalStorage<AoIniciar>(CHAVE_AO_INICIAR, 'inicio');
   const [upscaling, setUpscaling] = useLocalStorage<ModoUpscaling>(CHAVE_UPSCALING, 'off');
+  const [audioInteligente, setAudioInteligente] = useLocalStorage<boolean>(CHAVE_AUDIO_INTELIGENTE, true);
+  const [zeroDelay, setZeroDelay] = useLocalStorage<ModoZeroDelay>(CHAVE_ZERO_DELAY, 'off');
   const [aviso, setAviso] = useState('');
   const [personalizados, setPersonalizados] = useState<Channel[]>(canaisLocais);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const alterarAudioInteligente = (ativo: boolean) => {
+    setAudioInteligente(ativo);
+    audioInteligenteService.setAtivo(ativo);
+  };
+
+  const alterarZeroDelay = (modo: ModoZeroDelay) => {
+    setZeroDelay(modo);
+    zeroDelayService.setModo(modo);
+  };
 
   const alterarUpscaling = (modo: ModoUpscaling) => {
     setUpscaling(modo);
@@ -103,6 +118,18 @@ export function Ajustes() {
         <h1 className="tela-titulo">Ajustes</h1>
         {aviso && <div className="ajustes-aviso">{aviso}</div>}
 
+        <section className="ajustes-bloco" id="listas">
+          <h2>Listas</h2>
+          <p>Os endereços de onde o site lê os canais e os filmes e séries. Já vêm preenchidos; troque por outros, ou deixe em branco e salve para desligar uma lista (o site fica vazio naquela parte).</p>
+          <FormListas
+            key={`${listas.canais}|${listas.filmes}`}
+            permitirApagar
+            aoSalvar={() => notificar('Listas salvas')}
+            aoApagar={() => notificar('Lista desligada')}
+            aoRestaurar={() => notificar('Endereço padrão restaurado')}
+          />
+        </section>
+
         <section className="ajustes-bloco">
           <h2>Ao iniciar</h2>
           <p>O que o site abre quando você entra.</p>
@@ -120,6 +147,41 @@ export function Ajustes() {
             <button className={upscaling === 'hd' ? 'on' : ''} onClick={() => alterarUpscaling('hd')}>Nitidez HD (720p → Full HD)</button>
             <button className={upscaling === '4k' ? 'on' : ''} onClick={() => alterarUpscaling('4k')}>Super Resolução Ultra (Full HD → 4K)</button>
           </div>
+        </section>
+
+        <section className="ajustes-bloco">
+          <h2>Áudio Inteligente (Nivelar Volume)</h2>
+          <p>Nivela dinamicamente o volume entre diferentes canais e fontes, eliminando discrepâncias sonoras.</p>
+          <div className="pilulas">
+            <button className={audioInteligente ? 'on' : ''} onClick={() => alterarAudioInteligente(true)}>Ligado</button>
+            <button className={!audioInteligente ? 'on' : ''} onClick={() => alterarAudioInteligente(false)}>Desligado</button>
+          </div>
+        </section>
+
+        <section className="ajustes-bloco">
+          <h2>Zero Delay (Menor Atraso ao Vivo)</h2>
+          <p>Reduz o atraso da transmissão para acompanhar eventos esportivos e notícias no tempo real mais próximo do estádio/emissora.</p>
+          <div className="pilulas">
+            <button className={zeroDelay === 'off' ? 'on' : ''} onClick={() => alterarZeroDelay('off')}>
+              Desligado
+            </button>
+            <button className={zeroDelay === 'equilibrado' ? 'on' : ''} onClick={() => alterarZeroDelay('equilibrado')}>
+              Equilibrado
+            </button>
+            <button className={zeroDelay === 'agressivo' ? 'on' : ''} onClick={() => alterarZeroDelay('agressivo')}>
+              Agressivo (Ultra)
+            </button>
+          </div>
+          {zeroDelay === 'agressivo' && (
+            <p className="ajustes-dica" style={{ fontSize: '0.85rem', color: '#ffaa00', marginTop: '8px' }}>
+              ⚡ <strong>Modo Agressivo:</strong> Cola na ponta máxima da transmissão ignorando margens de segurança. Busca estar o mais ao vivo possível sem recuo automático.
+            </p>
+          )}
+          {zeroDelay === 'equilibrado' && (
+            <p className="ajustes-dica" style={{ fontSize: '0.85rem', color: '#4ade80', marginTop: '8px' }}>
+              ✓ <strong>Modo Equilibrado:</strong> Reduz o atraso consideravelmente com perseguição suave e proteção inteligente contra travamentos.
+            </p>
+          )}
         </section>
 
         <section className="ajustes-bloco">
@@ -153,15 +215,6 @@ export function Ajustes() {
         </section>
 
         <section className="ajustes-bloco">
-          <h2>Modo adulto (+18)</h2>
-          <p>{isAdultUnlocked
-            ? 'Ligado: o catálogo mostra também o conteúdo adulto.'
-            : 'Desligado. Para ligar, clique vinte vezes no ícone da barra do topo e digite o PIN.'}</p>
-          {isAdultUnlocked && <button className="ajustes-botao" onClick={lockAdult}>Desligar</button>}
-        </section>
-
-
-        <section className="ajustes-bloco">
           <h2>Dados deste navegador</h2>
           <div className="ajustes-botoes">
             {LIMPAR.map((l) => (
@@ -176,7 +229,9 @@ export function Ajustes() {
             <button className="ajustes-botao" onClick={() => navigate('/app')}>Baixar o app (TV Box, celular, Mac, Windows)</button>
             <button className="ajustes-botao" onClick={() => navigate('/novidades')}>Novidades</button>
             <a className="ajustes-botao" href="https://discord.gg/8DKqT3xJvD" target="_blank" rel="noreferrer noopener">Comunidade no Discord</a>
-            <a className="ajustes-botao" href="https://github.com/gabrielsaimo/SaimoPlayer" target="_blank" rel="noreferrer noopener">Lista de canais no GitHub</a>
+            {listas.canais && (
+              <a className="ajustes-botao" href={`${listas.canais}catalogo.txt`} target="_blank" rel="noreferrer noopener">Lista de canais (texto)</a>
+            )}
           </div>
         </section>
       </div>

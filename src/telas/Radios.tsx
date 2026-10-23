@@ -1,12 +1,13 @@
 /**
- * Rádios: a mesma lista da TV (`vod/radios.txt`), em fileiras de ouvidas por
- * último, por estilo e de A a Z. A que toca aparece no alto com o equalizador.
+ * Rádios: a lista do endereço de canais (`radios.txt`), em fileiras de ouvidas
+ * por último e de A a Z. A que toca aparece no alto com o equalizador.
  * Toca num player só dela (um <audio>), e para ao sair da tela.
  */
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { BarraTopo } from '../components/BarraTopo';
-import { CampoBusca, Fileira } from '../components/Telas';
-import { baixar, chave, ESTILOS, estiloDe, locais, recentes, type Radio } from '../services/radios';
+import { CampoBusca, Fileira, SemLista } from '../components/Telas';
+import { useListas } from '../services/listas';
+import { baixar, chave, locais, recentes, type Radio } from '../services/radios';
 import { assinar, atual as atualRadio, parar, tocar } from '../services/radioPlayer';
 import './Radios.css';
 
@@ -29,6 +30,7 @@ function Equalizador() {
 }
 
 export function Radios() {
+  const { canais: link } = useListas();
   const [lista, setLista] = useState<Radio[]>(locais);
   const [termo, setTermo] = useState('');
   const { radio: atual, estado } = useSyncExternalStore(assinar, atualRadio);
@@ -37,7 +39,14 @@ export function Radios() {
     return recentes();
   }, [atual]);
 
-  useEffect(() => { void baixar().then((l) => { if (l) setLista(l); }); }, []);
+  useEffect(() => {
+    // Trocar ou apagar o endereço de canais troca ou esvazia a lista.
+    setLista(locais());
+    if (!link) return;
+    let vivo = true;
+    void baixar().then((l) => { if (vivo && l) setLista(l); });
+    return () => { vivo = false; };
+  }, [link]);
 
   const filtradas = useMemo(() => {
     const t = chave(termo.trim());
@@ -46,16 +55,6 @@ export function Radios() {
 
   const recentesLista = useMemo(
     () => ouvidas.map((n) => lista.find((r) => r.nome === n)).filter((r): r is Radio => !!r), [ouvidas, lista]);
-
-  const porEstilo = useMemo(() => {
-    const mapa = new Map<string, Radio[]>();
-    for (const r of filtradas) {
-      const e = estiloDe(r)?.titulo ?? 'Outras';
-      mapa.set(e, [...(mapa.get(e) ?? []), r]);
-    }
-    return [...ESTILOS.map((e) => e.titulo), 'Outras']
-      .map((t) => [t, mapa.get(t)] as const).filter((x): x is [string, Radio[]] => !!x[1]);
-  }, [filtradas]);
 
   const deAaZ = useMemo(() => [...filtradas].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR')), [filtradas]);
 
@@ -78,7 +77,7 @@ export function Radios() {
                 <div>
                   <small>{estado === 'erro' ? 'Não foi possível tocar' : estado === 'carregando' ? 'Conectando…' : 'Tocando agora'}</small>
                   <h1>{atual.nome}</h1>
-                  <p>{estiloDe(atual)?.titulo ?? 'Rádio'}</p>
+                  <p>Rádio</p>
                 </div>
                 {estado === 'tocando' && <Equalizador />}
                 <button className="radio-parar" onClick={parar}>Parar</button>
@@ -91,9 +90,9 @@ export function Radios() {
         </section>
       </div>
 
-      {lista.length === 0 && <p className="tela-vazio">Carregando as rádios…</p>}
+      {!link && <SemLista tipo="radios" />}
+      {link && lista.length === 0 && <p className="tela-vazio">Carregando as rádios…</p>}
       {!termo && recentesLista.length > 0 && <Fileira titulo="Ouvidas por último">{recentesLista.map(cartao)}</Fileira>}
-      {porEstilo.map(([titulo, rs]) => <Fileira key={titulo} titulo={titulo}>{rs.map(cartao)}</Fileira>)}
       {deAaZ.length > 0 && <Fileira titulo="Todas, de A a Z">{deAaZ.map(cartao)}</Fileira>}
       {lista.length > 0 && filtradas.length === 0 && <p className="tela-vazio">Nenhuma rádio com “{termo}”.</p>}
     </div>

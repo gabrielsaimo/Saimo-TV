@@ -9,6 +9,7 @@
  * placar e o tempo de jogo, e trazem escudos melhores. Só entra jogo que tem canal (sem canal não há o que
  * assistir), e jogo encerrado sai.
  */
+import { proxyBase } from '../utils/streamUrl';
 import type { Channel } from '../types/channel';
 
 export interface Jogo {
@@ -33,8 +34,10 @@ export const acabou = (j: Jogo, agora: number) => j.estado === 'post' || agora >
 
 // A agenda passa pela função do site (functions/api/events.ts): a embedtv
 // não manda o cabeçalho de CORS. A ESPN manda, então vai direto.
-const EMBED = '/api/events';
-const STREAMING = 'https://saimo-monitor.gabrielsaimo68.workers.dev/v1/eventos';
+// Calculado a cada busca (e não ao carregar o módulo): o proxy do site pode estar cortado pela cota
+// do dia, e quem decide isso é a sondagem que roda ao abrir (ver `sondarProxy`).
+const embed = () => `${proxyBase()}/api/events`;
+const STREAMING = 'https://saimo-tv.pages.dev/eventos-extra.json';
 const ESPN = [
     'soccer/bra.1', 'soccer/bra.2', 'soccer/bra.copa_do_brazil', 'soccer/conmebol.libertadores',
     'soccer/conmebol.sudamericana', 'soccer/uefa.champions', 'soccer/uefa.europa', 'soccer/eng.1',
@@ -45,6 +48,16 @@ const ESPN = [
 const SIGLAS = new Set(['fc', 'ec', 'sc', 'ac', 'afc', 'cf', 'cd', 'club', 'clube', 'esporte', 'sport',
     'futebol', 'de', 'do', 'da', 'sp', 'rj', 'mg', 'rs', 'pr', 'ba', 'pe', 'ce', 'go', 'sad']);
 const HORA = 3_600_000;
+
+/** A agenda do monitor, reaproveitada por um minuto: abrir, fechar e voltar à
+ *  tela não vira um pedido a cada vez (o monitor cobra por pedido). */
+let doMonitorGuardado: { em: number; dados: unknown } | null = null;
+async function doMonitor(): Promise<unknown> {
+    if (doMonitorGuardado && Date.now() - doMonitorGuardado.em < 60_000) return doMonitorGuardado.dados;
+    const dados = await json(STREAMING);
+    if (dados != null) doMonitorGuardado = { em: Date.now(), dados };
+    return dados;
+}
 
 interface Placar {
     casa: string; fora: string; casaLogo: string; foraLogo: string; ligaLogo: string;
@@ -195,8 +208,8 @@ function mesmoTime(a: string, b: string): boolean {
 /** null quando a agenda não veio. */
 export async function buscarJogos(canais: Channel[]): Promise<Jogo[] | null> {
     const [agenda, streaming, ...placares] = await Promise.all([
-        json(EMBED),
-        json(STREAMING),
+        json(embed()),
+        doMonitor(),
         ...ESPN.map(l => json(`https://site.api.espn.com/apis/site/v2/sports/${l}/scoreboard`)),
     ]);
     // A função do site devolve {error} quando a embedtv falha; aí a tela segue só

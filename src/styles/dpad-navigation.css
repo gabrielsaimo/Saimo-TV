@@ -702,3 +702,47 @@
   outline: 2px solid red !important;
 }
 */
+
+
+/* TV (Samsung/LG): qualquer controle pode receber o foco do controle remoto, então o
+   destaque vale para todos, bem visível a três metros de distância. */
+.modo-tv .dpad-focused {
+  outline: 5px solid #a78bfa !important;
+  outline-offset: 3px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 8px rgba(167, 139, 250, 0.28);
+  position: relative;
+  z-index: 5;
+}
+.modo-tv *:focus { outline: none; }
+.modo-tv .dpad-focused:focus { outline: 5px solid #a78bfa; }
+
+/* TV: o que não serve no controle remoto sai da barra do player. O volume é o da própria TV
+   (o controle deslizante prendia as setas), e transmitir, picture-in-picture e tela cheia não
+   existem no app da TV (ele já ocupa a tela toda). Sem eles a seta anda direto até a multi tela. */
+.modo-tv .volume-slider-mac,
+.modo-tv .video-player-container [title^="Transmitir"],
+.modo-tv .video-player-container [title^="Picture in Picture"],
+.modo-tv .video-player-container [title^="Tela cheia"],
+.modo-tv .video-player-container [title^="Sair da tela cheia"] {
+  display: none !important;
+}
+
+/* Otimizações de GPU e rendering para Smart TVs fracas (Tizen/webOS) */
+.modo-tv * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.modo-tv .painel-de-canais-container {
+  background: rgba(11, 14, 20, 0.98) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8) !important;
+}
+
+.modo-tv .vod-sub-barra {
+  background: rgba(18, 20, 34, 0.98) !important;
+}
+
+.modo-tv .barra-topo-container {
+  background: rgba(11, 14, 20, 0.98) !important;
+}

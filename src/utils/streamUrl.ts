@@ -12,6 +12,7 @@
 
 import type { ChannelSource } from '../types/channel';
 import { httpsFirst } from './sourceOrder';
+import { ehAppDaTv, hlsNativo } from '../plataforma/tv';
 
 export function isDash(url: string): boolean {
   return url.toLowerCase().includes('.mpd');
@@ -33,6 +34,12 @@ export function isMpegTs(url: string): boolean {
  * uma tentativa direta antes do proxy.
  */
 export function needsProxy(source: ChannelSource | { url: string }): boolean {
+  // Na TV o app é instalado: não existe conteúdo misto nem CORS de página. O vídeo
+  // abre direto, inclusive http, e o proxy só entra como última tentativa (buildAttempts).
+  if (ehAppDaTv()) return false;
+  // CDNs como s23-cloudfront-net.lat já entregam CORS completo (Access-Control-Allow-Origin: *)
+  // e HTTPS com tipo apple.mpegurl, mesmo com terminação .txt: toca direto sem sobrecarregar o proxy.
+  if (source.url.includes('s23-cloudfront-net.lat')) return false;
   // Masters `.txt` costumam vir como text/plain e sem CORS (como os de
   // embedplayer2). Começar pelo proxy evita uma tentativa direta que o browser
   // obrigatoriamente bloquearia e garante que os filhos também sejam reescritos.
@@ -59,7 +66,37 @@ export function proxyBase(): string {
   // resolve sem mexer no resto — o contrato de `/api/proxy` é o mesmo.
   const externo = import.meta.env.VITE_PROXY_BASE;
   if (externo) return externo.replace(/\/$/, '');
-  return typeof window !== 'undefined' ? window.location.origin : '';
+  // Pacote de TV: a origem é local (file://), então o proxy de reserva é o do site.
+  const principal = ehAppDaTv()
+    ? PROXY_PRINCIPAL
+    : (typeof window !== 'undefined' ? window.location.origin : '');
+  // O plano gratuito da Cloudflare corta as funções do site (e com elas o proxy) depois de 100 mil
+  // pedidos no dia: aí `/api/proxy` devolve a página inicial. Quando a sondagem acusa isso, o proxy
+  // de reserva (outra conta, sem esse corte) atende no lugar.
+  if (proxyPrincipalCaido && principal !== PROXY_RESERVA) return PROXY_RESERVA;
+  return principal;
+}
+
+const PROXY_PRINCIPAL = 'https://saimo-tv.pages.dev';
+const PROXY_RESERVA = 'https://saimo-tv2.pages.dev';
+let proxyPrincipalCaido = false;
+
+/**
+ * Confere se o proxy principal está de pé. Sem o parâmetro `url` um proxy vivo responde 400 em
+ * JSON; um proxy cortado (cota do dia) responde a página do site. Chamar ao abrir e de tempos em
+ * tempos: custa um pedido.
+ */
+export async function sondarProxy(): Promise<void> {
+  if (typeof window === 'undefined' || typeof fetch !== 'function') return;
+  const base = ehAppDaTv() ? PROXY_PRINCIPAL : window.location.origin;
+  if (!/^https?:/.test(base) || base === PROXY_RESERVA) { proxyPrincipalCaido = false; return; }
+  try {
+    const r = await fetch(`${base}/api/proxy`, { cache: 'no-store' });
+    const tipo = r.headers.get('content-type') || '';
+    proxyPrincipalCaido = tipo.includes('text/html');
+  } catch {
+    // Sem rede ou bloqueio: não dá para dizer que o proxy caiu.
+  }
 }
 
 /** Endereço do proxy desta origem para uma fonte, com os cabeçalhos dela. */
@@ -81,6 +118,8 @@ export interface Attempt {
   source: ChannelSource;
   url: string;
   viaProxy: boolean;
+  /** Na TV: entrega o endereço ao decodificador da própria TV (HLS nativo), sem hls.js. */
+  nativo?: boolean;
 }
 
 /*
@@ -125,8 +164,15 @@ function precisaComecarPeloProxy(source: ChannelSource): boolean {
  */
 export function buildAttempts(sources: ChannelSource[]): Attempt[] {
   const out: Attempt[] = [];
+  const tv = ehAppDaTv();
   for (const source of httpsFirst(sources)) {
-    if (!needsProxy(source) && !precisaComecarPeloProxy(source)) {
+    // No app da TV a tentativa direta vale para qualquer endereço (http, .txt, dadinho): primeiro
+    // pelo hls.js (o mesmo caminho do site, que já se provou), depois pelo decodificador da
+    // própria TV (sem CORS), e por último o proxy. Muitas TVs dizem que tocam HLS sozinhas e
+    // depois recusam ("The element has no supported sources").
+    if (tv) out.push({ source, url: source.url, viaProxy: false });
+    if (tv && isHls(source.url) && hlsNativo()) out.push({ source, url: source.url, viaProxy: false, nativo: true });
+    if (!tv && !needsProxy(source) && !precisaComecarPeloProxy(source)) {
       out.push({ source, url: source.url, viaProxy: false });
     }
     out.push({ source, url: proxyUrl(source), viaProxy: true });

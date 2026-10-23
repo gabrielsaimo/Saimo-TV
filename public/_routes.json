@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "include": [
+    "/api/*",
+    "/tvbox",
+    "/celular",
+    "/mac",
+    "/windows",
+    "/samsung",
+    "/lg"
+  ],
+  "exclude": []
+}

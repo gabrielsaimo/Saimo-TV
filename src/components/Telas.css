@@ -13,6 +13,13 @@
 .tela-sub { color: rgba(255, 255, 255, 0.55); font-size: 0.92rem; margin-bottom: 1rem; }
 .tela-vazio { padding: 4rem 1rem; text-align: center; color: rgba(255, 255, 255, 0.55); }
 .tela-vazio h2 { color: #fff; font-size: 1.2rem; margin-bottom: 0.4rem; }
+.sem-lista svg { opacity: 0.45; margin-bottom: 0.6rem; }
+.sem-lista p { max-width: 34rem; margin: 0 auto; line-height: 1.5; }
+.sem-lista-acao {
+  margin-top: 1.1rem; padding: 0.65rem 1.4rem; border: 0; border-radius: 999px;
+  background: #fff; color: #0a0a0a; font: inherit; font-weight: 600; cursor: pointer;
+}
+.sem-lista-acao:hover, .sem-lista-acao:focus-visible { background: #e6e6ef; outline: 2px solid rgba(255, 255, 255, 0.5); outline-offset: 2px; }
 
 /* ---------- Destaque ---------- */
 .heroi {

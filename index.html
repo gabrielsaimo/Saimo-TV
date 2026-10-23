@@ -2,6 +2,112 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <!-- Redirecionamento automático de saimo-tv.pages.dev para saimo-tv-f2w.pages.dev com migração de dados -->
+    <script>
+      (function () {
+        var host = (location.hostname || '').toLowerCase();
+        var CHAVES = [
+          'tv-favorites', 'tv-last-channel', 'tv-volume', 'movie-volume', 'movie-skip-time',
+          'current-movie-id', 'saimo-vod-favoritos', 'saimo-continuar', 'saimo-canais-personalizados',
+          'saimo-ao-iniciar', 'saimo-upscaling', 'saimo-upscale-4k', 'saimo-upscale-hd',
+          'saimo-zero-delay', 'saimo-audio-inteligente', 'saimo-buscas-recentes',
+          'saimo-radios-recentes', 'saimo-entrada', 'saimo-telemetria-id', 'adult-mode-global'
+        ];
+        var PREFIXO = 'movie-progress-';
+
+        // 1. ORIGEM: No saimo-tv.pages.dev, exporta dados do localStorage e redireciona
+        if (host === 'saimo-tv.pages.dev' || host === 'www.saimo-tv.pages.dev') {
+          var dados = {};
+          var temDados = false;
+          try {
+            for (var i = 0; i < CHAVES.length; i++) {
+              var k = CHAVES[i];
+              var v = localStorage.getItem(k);
+              if (v !== null && typeof v === 'string' && v.length <= 200000) {
+                dados[k] = v;
+                temDados = true;
+              }
+            }
+            for (var j = 0; j < localStorage.length; j++) {
+              var lk = localStorage.key(j);
+              if (lk && lk.indexOf(PREFIXO) === 0 && lk.length < 80) {
+                var lv = localStorage.getItem(lk);
+                if (lv !== null && typeof lv === 'string' && lv.length <= 100) {
+                  dados[lk] = lv;
+                  temDados = true;
+                }
+              }
+            }
+          } catch (e) {}
+
+          var hash = location.hash || '';
+          if (temDados) {
+            try {
+              var jsonStr = JSON.stringify(dados);
+              var b64 = btoa(unescape(encodeURIComponent(jsonStr)))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
+              hash = '#migrar=1.' + b64;
+            } catch (e) {}
+          }
+
+          var destino = 'https://saimo-tv-f2w.pages.dev' + location.pathname + location.search + hash;
+          location.replace(destino);
+          return;
+        }
+
+        // 2. DESTINO: Se recebeu migração via hash (#migrar=1....), aplica automaticamente
+        var h = location.hash || '';
+        if (h.indexOf('#migrar=1.') === 0) {
+          function limparHash() {
+            try {
+              history.replaceState(null, '', location.pathname + location.search);
+            } catch (e) {}
+          }
+          try {
+            var b = h.slice(10).replace(/-/g, '+').replace(/_/g, '/');
+            while (b.length % 4) b += '=';
+            var recebidos = JSON.parse(decodeURIComponent(escape(atob(b))));
+            if (recebidos && typeof recebidos === 'object') {
+              for (var chave in recebidos) {
+                if (!Object.prototype.hasOwnProperty.call(recebidos, chave)) continue;
+                var ok = CHAVES.indexOf(chave) >= 0 || (chave.indexOf(PREFIXO) === 0 && chave.length < 80);
+                if (!ok) continue;
+                var valor = recebidos[chave];
+                if (typeof valor !== 'string' || valor.length > 200000) continue;
+                var atual = localStorage.getItem(chave);
+                if (atual === null) {
+                  localStorage.setItem(chave, valor);
+                } else if (chave.indexOf(PREFIXO) === 0) {
+                  var nAtual = Number(atual) || 0;
+                  var nNovo = Number(valor) || 0;
+                  if (nNovo > nAtual) localStorage.setItem(chave, valor);
+                } else {
+                  try {
+                    var arrAtual = JSON.parse(atual);
+                    var arrNovo = JSON.parse(valor);
+                    if (Array.isArray(arrAtual) && Array.isArray(arrNovo)) {
+                      var vistos = {};
+                      var combinados = [];
+                      arrAtual.concat(arrNovo).forEach(function (x) {
+                        var id = (x && typeof x === 'object') ? (x.id || (x.origem && x.origem.id) || JSON.stringify(x)) : String(x);
+                        if (!vistos[id]) {
+                          vistos[id] = 1;
+                          combinados.push(x);
+                        }
+                      });
+                      localStorage.setItem(chave, JSON.stringify(combinados));
+                    }
+                  } catch (e) {}
+                }
+              }
+            }
+          } catch (e) {}
+          limparHash();
+        }
+      })();
+    </script>
     <link rel="icon" type="image/png" href="%BASE_URL%favicon.png" />
     <link rel="apple-touch-icon" href="%BASE_URL%icons/apple-touch-icon.png" />
     <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
@@ -12,15 +118,15 @@
     <meta property="og:site_name" content="Saimo TV" />
     <meta property="og:title" content="Saimo TV" />
     <meta property="og:description" content="Canais ao vivo, filmes e séries — no navegador, na TV, no celular e no computador." />
-    <meta property="og:url" content="https://saimo-tv.pages.dev/" />
+    <meta property="og:url" content="https://saimo-tv-f2w.pages.dev/" />
     <!-- Absoluto: WhatsApp e redes sociais não resolvem caminho relativo. -->
-    <meta property="og:image" content="https://saimo-tv.pages.dev/icons/icon-512.png" />
+    <meta property="og:image" content="https://saimo-tv-f2w.pages.dev/icons/icon-512.png" />
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
     <meta property="og:locale" content="pt_BR" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:image" content="https://saimo-tv.pages.dev/icons/icon-512.png" />
-    <link rel="canonical" href="https://saimo-tv.pages.dev/" />
+    <meta name="twitter:image" content="https://saimo-tv-f2w.pages.dev/icons/icon-512.png" />
+    <link rel="canonical" href="https://saimo-tv-f2w.pages.dev/" />
     <meta name="theme-color" content="#0a0a0a" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

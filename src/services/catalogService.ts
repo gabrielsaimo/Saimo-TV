@@ -13,18 +13,15 @@
 
 import type { Channel, ChannelSource } from '../types/channel';
 import { httpsFirst } from '../utils/sourceOrder';
-import { channels as localChannels, adultChannels, categoryOrder } from '../data/channels';
-import { restrictedChannels } from '../data/restrictedChannels';
+import { categoryOrder } from '../data/categorias';
 import { normalise } from '../utils/nomes';
+import { linkCanais } from './listas';
 import { peneirarCanais } from './fontesDesativadas';
 
 export { normalise };
 
-const BASE = 'https://raw.githubusercontent.com/gabrielsaimo/SaimoPlayer/main/';
-const CATALOG_URL = `${BASE}catalogo.txt`;
-const EXTRAS_URL = `${BASE}canais.txt`;
-
 const CACHE_KEY = 'saimo-catalogo-v2';
+const CACHE_RESTRITOS = 'saimo-restritos-v1';
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 
 interface ParsedChannel {
@@ -175,52 +172,31 @@ export function mergeCatalogs(base: ParsedChannel[], published: ParsedChannel[])
   return [...merged, ...published.filter((c) => !usados.has(normalise(c.name)))];
 }
 
-/** Categoria conhecida deste canal na lista local, casando pelo nome normalizado. */
-const categoriaLocal = (() => {
-  const mapa = new Map<string, string>();
-  for (const c of [...localChannels, ...adultChannels, ...restrictedChannels]) {
-    if (c.category) mapa.set(normalise(c.name), c.category);
-  }
-  return mapa;
-})();
-
 /**
- * Reduz qualquer rótulo de origem a uma das categorias que a barra lateral
- * ordena.
+ * Reduz o rótulo `categoria:` (ou `group-title`) a uma das seções que a barra
+ * lateral ordena.
  *
- * As três procedências rotulam diferente a mesma prateleira — "FILMES E SÉRIES"
- * no `group-title`, "Canais | HBO" na lista antiga, nada no `catalogo.txt` — e
- * deixá-las passar cruas espalharia HBO, Telecine e Megapix por três seções que
- * o leitor lê como a mesma.
+ * Catálogo e extras rotulam a mesma prateleira de jeitos diferentes —
+ * "FILMES E SÉRIES", "Filmes" — e deixá-los passar crus espalharia o mesmo
+ * assunto por seções que o leitor lê como a mesma. Só palavras de assunto
+ * entram aqui, nunca nome de canal. Rótulo desconhecido vira seção própria.
  */
 function canonizar(rotulo: string): string | null {
   const n = normalise(rotulo).replace(/^canais /, '');
   if (!n) return null;
-  if (/(esporte|espn|premiere|sportv|combate|ppv|dazn|nba|futsal|campeonato|jogos)/.test(n)) return 'Esportes';
-  if (/(filme|serie|hbo|telecine|max|paramount|disney|prime video|apple tv|cinema)/.test(n)) return 'Filmes';
+  if (/(esporte|ppv|futsal|campeonato|jogos)/.test(n)) return 'Esportes';
+  if (/(filme|serie|cinema)/.test(n)) return 'Filmes';
   if (/(infanti|kids|desenho)/.test(n)) return 'Infantil';
   if (/(document)/.test(n)) return 'Documentarios';
   if (/(notic|news)/.test(n)) return 'Noticias';
   if (/(novela)/.test(n)) return 'Series';
-  if (/(aberto|globos|tv aberta)/.test(n)) return 'TV Aberta';
+  if (/(aberto)/.test(n)) return 'TV Aberta';
   if (/(adulto)/.test(n)) return 'Adulto';
   if (/(internacion|legendado)/.test(n)) return 'Internacionais';
   if (/^pluto tv$/.test(n)) return 'Pluto TV';
   if (/^24 horas$/.test(n)) return '24 Horas';
-  if (/(variedade|estilo de vida|entretenimento|religios|24 horas|4k)/.test(n)) return 'Entretenimento';
+  if (/(variedade|estilo de vida|entretenimento|religios|4k)/.test(n)) return 'Entretenimento';
   return null;
-}
-
-/** Palavras do próprio nome, quando não há grupo nem canal local que sirva. */
-function categoriaPeloNome(name: string): string {
-  const n = normalise(name);
-  if (/(premiere|sportv|espn|combate|band sports|nsports|cazetv|tnt sports)/.test(n)) return 'Esportes';
-  if (/(telecine|hbo|megapix|cinemax|paramount|space|tnt|amc|studio universal|sony movies)/.test(n)) return 'Filmes';
-  if (/(cartoon|gloob|nick|discovery kids|boomerang|tooncast|infantil|kids)/.test(n)) return 'Infantil';
-  if (/(discovery|history|animal planet|nat geo|investigacao|h2|a e)/.test(n)) return 'Documentarios';
-  if (/(news|globonews|cnn|record news|jovem pan|bandnews)/.test(n)) return 'Noticias';
-  if (/(globo|sbt|record|band|rede tv|tv brasil|cultura)/.test(n)) return 'TV Aberta';
-  return 'Entretenimento';
 }
 
 function slugify(name: string): string {
@@ -234,11 +210,8 @@ export function toChannels(parsed: ParsedChannel[]): Channel[] {
   const comCategoria = parsed
     .filter((c) => c.sources.length > 0)
     .map((c) => {
-      const local = categoriaLocal.get(normalise(c.name));
-      const category =
-        (c.group && canonizar(c.group)) ||
-        (local && canonizar(local)) ||
-        categoriaPeloNome(c.name);
+      // A seção vem do campo `categoria:` do catálogo; sem ele, "Outros".
+      const category = c.group ? (canonizar(c.group) ?? c.group.trim()) : 'Outros';
       return { ...c, category };
     });
 
@@ -273,15 +246,20 @@ export function toChannels(parsed: ParsedChannel[]): Channel[] {
 
 interface CachedCatalog {
   at: number;
+  /** De que endereço veio: trocar o link invalida o que estava guardado. */
+  base: string;
   catalogo: string;
   canais: string;
 }
 
 function readCache(): CachedCatalog | null {
+  const base = linkCanais();
+  if (!base) return null;
   try {
     const raw = localStorage.getItem(CACHE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as CachedCatalog;
+    if (parsed.base !== base) return null;
     if (!parsed.catalogo && !parsed.canais) return null;
     return parsed;
   } catch {
@@ -312,7 +290,7 @@ function montar(catalogo: string, canais: string): Channel[] {
   );
 }
 
-/** A lista que já está em disco, sem tocar na rede. Vazia na primeira visita. */
+/** A lista que já está em disco, sem tocar na rede. Nula sem endereço ou sem cache. */
 export function cachedChannels(): Channel[] | null {
   const cache = readCache();
   if (!cache) return null;
@@ -328,14 +306,19 @@ export function cacheIsStale(): boolean {
 
 /**
  * Baixa a lista publicada. Devolve nulo quando não veio nada aproveitável, e aí
- * quem chamou fica com o que já tinha em vez de esvaziar a tela.
+ * quem chamou fica com o que já tinha em vez de esvaziar a tela. Sem endereço
+ * não pede nada.
  */
 export async function fetchChannels(): Promise<Channel[] | null> {
+  const base = linkCanais();
+  if (!base) return null;
   const cache = readCache();
   const [catalogo, canais] = await Promise.all([
-    baixar(CATALOG_URL).catch(() => ''),
-    baixar(EXTRAS_URL).catch(() => ''),
+    baixar(`${base}catalogo.txt`).catch(() => ''),
+    baixar(`${base}canais.txt`).catch(() => ''),
   ]);
+  // O endereço mudou enquanto baixava: o que veio é da lista antiga.
+  if (linkCanais() !== base) return null;
 
   const usarCatalogo = catalogo || cache?.catalogo || '';
   const usarCanais = canais || cache?.canais || '';
@@ -345,7 +328,43 @@ export async function fetchChannels(): Promise<Channel[] | null> {
   if (!channels.length) return null;
 
   if (catalogo || canais) {
-    writeCache({ at: Date.now(), catalogo: usarCatalogo, canais: usarCanais });
+    writeCache({ at: Date.now(), base, catalogo: usarCatalogo, canais: usarCanais });
   }
   return channels;
+}
+
+// ============================================================
+// RESTRITOS (só depois do código do controle parental)
+// ============================================================
+
+/** O que o último `restritos.txt` baixado guardou, sem rede. */
+export function cachedRestritos(): Channel[] {
+  const base = linkCanais();
+  if (!base) return [];
+  try {
+    const raw = localStorage.getItem(CACHE_RESTRITOS);
+    if (!raw) return [];
+    const guardado = JSON.parse(raw) as { base: string; texto: string };
+    return guardado.base === base ? toChannels(parseCatalog(guardado.texto)) : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Baixa o `restritos.txt` do endereço de canais. Só quem já destravou o modo
+ * adulto chama; para os outros o arquivo nem é pedido.
+ */
+export async function fetchRestritos(): Promise<Channel[] | null> {
+  const base = linkCanais();
+  if (!base) return null;
+  try {
+    const texto = await baixar(`${base}restritos.txt`);
+    if (linkCanais() !== base) return null;
+    const canais = toChannels(parseCatalog(texto)).map((c) => ({ ...c, id: `restrito-${c.id}` }));
+    try { localStorage.setItem(CACHE_RESTRITOS, JSON.stringify({ base, texto })); } catch { /* sem cache */ }
+    return canais;
+  } catch {
+    return null;
+  }
 }
