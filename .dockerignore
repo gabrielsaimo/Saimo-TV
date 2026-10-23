@@ -1,0 +1,25 @@
+# O que não entra no contexto de build da imagem.
+node_modules
+dist
+dist-ssr
+.git
+.github
+.agent
+.claude
+.vscode
+.idea
+
+# Documentação e arquivos auxiliares que não participam do build.
+docs
+*.md
+missing_*.txt
+update.json
+update-cell.json
+check-channels.cjs
+test-proxy.js
+server.js
+
+# Infra do próprio contêiner.
+Dockerfile
+.dockerignore
+docker-compose.yml

@@ -60,6 +60,45 @@ bun run build      # Gera o build de produção em dist/
 bun run lint       # Validação de código e tipos
 ```
 
+## Docker
+
+Imagem de produção: o build roda em Bun e a imagem final serve o `dist/` mais
+as mesmas Pages Functions de `/api/*` (proxy, `resolve-vod` e eventos) num
+processo Bun (`docker/server.ts`). As regras de `public/_redirects` são
+respeitadas, incluindo o endereço limpo das telas.
+
+```bash
+docker build -t saimo-tv .
+docker run --rm -p 3000:3000 saimo-tv     # http://localhost:3000
+```
+
+Com Docker Compose:
+
+```bash
+docker compose up --build        # produção      -> http://localhost:3000
+docker compose up dev            # desenvolvimento (Vite) -> http://localhost:5173
+```
+
+O `VITE_PROXY_BASE` é lido em tempo de **build** (vem de `import.meta.env`, não
+do ambiente do contêiner). Para apontar o proxy para outro host — útil quando os
+CDNs recusam os IPs da Cloudflare — passe-o como argumento de build:
+
+```bash
+VITE_PROXY_BASE=https://seu-proxy.vercel.app docker compose up --build
+```
+
+Arquivos: `Dockerfile`, `.dockerignore`, `docker-compose.yml` e
+`docker/server.ts`. A porta é configurável por `PORT` (padrão `3000`).
+
+## Publicar
+
+Push em `main` publica. O site no ar é servido pelo Cloudflare Pages
+(`saimo-tv.pages.dev`); `_redirects` em `public/` cuida das rotas, e `/baixar`
+leva para a página de download dos apps.
+
+As rotas usam endereços normais (`/filmes`, `/canal/...`) no navegador e `#` no
+app de desktop, que abre o mesmo `index.html`. Endereços antigos com `#` são
+convertidos na abertura.
 ---
 
 ## Smart TVs (Samsung Tizen e LG webOS)
